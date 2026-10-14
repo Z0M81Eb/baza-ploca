@@ -61,12 +61,19 @@ def scrape_ezop_api():
     )
     scraper.mount('https://', TlsAdapter())
 
+    # Prolazimo inicijalnu zaštitu naslovnice
+    try:
+        scraper.get("https://ezop-antikvarijat.hr/", timeout=20)
+        time.sleep(2)
+    except:
+        pass
+
     cat_id = get_glazba_category_id(scraper)
     page = 1
     per_page = 50
     max_retries = 3
 
-    print("\n=== POKREĆEM EZOP API SKENIRANJE ===", flush=True)
+    print("\n=== POKREĆEM EZOP CLOUDSCRAPER API ===", flush=True)
 
     while True:
         if cat_id:
@@ -121,7 +128,6 @@ def scrape_ezop_api():
             s_omot = ""
             s_medij = ""
 
-            # 1. Provjera u variations
             for var in item.get('variations', []):
                 for attr in var.get('attributes', []):
                     ime_attr = attr.get('name', '').lower()
@@ -133,7 +139,6 @@ def scrape_ezop_api():
                         s_medij = pretvori_ocjenu(vrijednost)
                         is_vinyl = True
 
-            # 2. Provjera u top-level attributes
             for attr in item.get('attributes', []):
                 ime_attr = attr.get('name', '').lower()
                 terms = attr.get('terms', [])
@@ -145,7 +150,6 @@ def scrape_ezop_api():
                     s_medij = pretvori_ocjenu(vrijednost)
                     is_vinyl = True
 
-            # 3. Provjera po kategorijama ako je u kategoriji gramofonske ploče / vinil
             kategorije = [k.get('slug', '').lower() for k in item.get('categories', [])]
             if any(w in k for k in kategorije for w in ['gramofonske', 'ploce', 'vinil', 'vinyl', 'lp']):
                 is_vinyl = True
@@ -182,7 +186,6 @@ def scrape_ezop_api():
         page += 1
         time.sleep(0.5)
 
-    # Brisanje prodanih SAMO ako je skeniranje prošlo do kraja i pronašlo barem 50 ploča
     if uspjesno_skenirano and len(vidjeni_linkovi) > 50:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in vidjeni_linkovi}
