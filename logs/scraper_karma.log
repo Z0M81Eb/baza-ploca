@@ -1,0 +1,89 @@
+=== IZVJEŠTAJ RADA: scraper_karma.py ===
+Vrijeme pokretanja (UTC): 14.10.2026. 14:15:11
+----------------------------------------
+Trenutna radna mapa: /home/runner/work/baza-ploca/baza-ploca
+KARMA VINIL: Pokrećem redovito skeniranje, osvježavanje i čišćenje baze...
+Učitano 4908 postojećih ploča iz memorije.
+Skeniram stranicu 1... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 2... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 3... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 4... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 5... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 6... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 7... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 8... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 9... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 10... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 11... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 12... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 13... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 14... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 15... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 16... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 17... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 18... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 19... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 20... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 21... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 22... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 23... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 24... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 25... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 26... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 27... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 28... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 29... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 30... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 31... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 32... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 33... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 34... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 35... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 36... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 37... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 38... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 39... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 40... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 41... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 42... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 43... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 44... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 45... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 46... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 47... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 48... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 49... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 50... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 51... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 52... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 53... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 54... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 55... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 56... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 57... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 58... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 59... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 60... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 61... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 62... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 63... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 64... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 65... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 66... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 67... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 68... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 69... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 70... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 71... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 72... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 73... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 74... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 75... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 76... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 77... -> Pronađeno/ažurirano ploča: 42
+Skeniram stranicu 78... -> Nema više proizvoda. Kraj arhive.
+
+Analiza završena. Obrisano 2 prodanih ploča koje više ne postoje na webshopu.
+Završeno! Baza je ažurna i sadrži 4906 ploča.
+----------------------------------------
+Vrijeme završetka (UTC): 14.10.2026. 14:19:18

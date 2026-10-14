@@ -1,0 +1,32 @@
+=== IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
+Vrijeme pokretanja (UTC): 14.10.2026. 14:15:12
+----------------------------------------
+ANALOGNI ZVUK: Pokrećem hibridni API + Cloudscraper sistem...
+Učitano 1620 postojećih ploča.
+
+Probijanje početne zaštite (Naslovnica)...
+
+--- Pokušavam brzi WooCommerce Store API ---
+API Paket 1 -> OK (100 ploča)
+API Paket 2 -> OK (100 ploča)
+API Paket 3 -> OK (100 ploča)
+API Paket 4 -> OK (100 ploča)
+API Paket 5 -> OK (100 ploča)
+API Paket 6 -> OK (100 ploča)
+API Paket 7 -> OK (100 ploča)
+API Paket 8 -> OK (100 ploča)
+API Paket 9 -> OK (100 ploča)
+API Paket 10 -> OK (100 ploča)
+API Paket 11 -> OK (100 ploča)
+API Paket 12 -> OK (100 ploča)
+API Paket 13 -> OK (100 ploča)
+API Paket 14 -> OK (100 ploča)
+API Paket 15 -> OK (100 ploča)
+API Paket 16 -> OK (100 ploča)
+API Paket 17 -> OK (23 ploča)
+
+Sinkronizacija prodanih ploča uspješna.
+
+Gotovo! Ukupno u CSV-u: 1623
+----------------------------------------
+Vrijeme završetka (UTC): 14.10.2026. 14:15:48
