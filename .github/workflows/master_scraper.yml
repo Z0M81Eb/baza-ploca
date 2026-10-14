@@ -1,0 +1,115 @@
+name: Master Scraper Engine
+
+on:
+  schedule:
+    - cron: '0 2 * * *'
+  workflow_dispatch:
+    inputs:
+      target_scraper:
+        description: 'Upiši ALL za sve scrapere ili naziv skripte (npr. scraper_menart.py)'
+        required: false
+        default: 'ALL'
+
+jobs:
+  # 1. POSAO: Automatski pronalazi sve scraper_*.py skripte (ili odabranu skriptu)
+  discover:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.set-matrix.outputs.matrix }}
+    steps:
+      - name: Checkout repozitorija
+        uses: actions/checkout@v4
+
+      - name: Pronađi Python scrapere za pokretanje
+        id: set-matrix
+        run: |
+          TARGET="${{ github.event.inputs.target_scraper }}"
+          if [ -z "$TARGET" ] || [ "$TARGET" = "ALL" ]; then
+            SCRIPTS=$(ls scraper_*.py | jq -R -s -c 'split("\n")[:-1]')
+          else
+            SCRIPTS=$(echo "$TARGET" | jq -R -s -c 'split("\n")[:-1]')
+          fi
+          echo "Pronađene skripte: $SCRIPTS"
+          echo "matrix=$SCRIPTS" >> $GITHUB_OUTPUT
+
+  # 2. POSAO: Paralelno izvršavanje s kliznim redom čekanja (podržava 20, 30, 50+ trgovina)
+  run_scrapers:
+    needs: discover
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      max-parallel: 15
+      matrix:
+        script: ${{ fromJson(needs.discover.outputs.matrix) }}
+
+    steps:
+      - name: Checkout repozitorija
+        uses: actions/checkout@v4
+
+      - name: Postavljanje Pythona
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalacija biblioteka
+        run: |
+          python -m pip install --upgrade pip
+          pip install requests cloudscraper beautifulsoup4 lxml
+
+      - name: Pokretanje scrapera i snimanje loga
+        run: |
+          mkdir -p out_data/logs
+          SCRIPT_NAME="${{ matrix.script }}"
+          LOG_FILE="out_data/logs/${SCRIPT_NAME%.py}.log"
+          echo "=== IZVJEŠTAJ RADA: $SCRIPT_NAME ===" > "$LOG_FILE"
+          echo "Vrijeme pokretanja (UTC): $(date '+%d.%m.%Y. %H:%M:%S')" >> "$LOG_FILE"
+          echo "----------------------------------------" >> "$LOG_FILE"
+          
+          # Pokrećemo Python u ne-buferiranom modu (-u) i snimamo izlaz u log datoteku
+          python -u "$SCRIPT_NAME" 2>&1 | tee -a "$LOG_FILE"
+          
+          echo "----------------------------------------" >> "$LOG_FILE"
+          echo "Vrijeme završetka (UTC): $(date '+%d.%m.%Y. %H:%M:%S')" >> "$LOG_FILE"
+          
+          # Kopiramo sve CSV datoteke u izlazni spremnik
+          cp *.csv out_data/ 2>/dev/null || true
+
+      - name: Predaja rezultata završnom sakupljaču
+        uses: actions/upload-artifact@v4
+        with:
+          name: rezultat-${{ matrix.script }}
+          path: out_data/
+          overwrite: true
+
+  # 3. POSAO: Sakuplja sve CSV baze i logove te radi JEDAN siguran Commit i Push
+  commit_results:
+    needs: run_scrapers
+    if: always()
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repozitorija
+        uses: actions/checkout@v4
+
+      - name: Preuzmi sve obrađene CSV-ove i logove
+        uses: actions/download-artifact@v4
+        with:
+          path: collected_outputs
+
+      - name: Spoji nove podatke i spremi na GitHub
+        run: |
+          mkdir -p logs
+          # Kopiramo sve preuzete CSV datoteke i logove na pravo mjesto
+          find collected_outputs -name "*.csv" -exec cp {} . \;
+          find collected_outputs -name "*.log" -exec cp {} logs/ \;
+
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Master Action"
+          git add *.csv logs/*.log 2>/dev/null || true
+
+          if ! git diff --staged --quiet; then
+            git commit -m "Master Sync: Automatsko ažuriranje kataloga i logova"
+            git pull --rebase origin main
+            git push
+          else
+            echo "Nema promjena za spremanje."
+          fi
