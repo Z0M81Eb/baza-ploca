@@ -65,7 +65,7 @@ jobs:
       - name: Instalacija biblioteka
         run: |
           python -m pip install --upgrade pip
-          pip install requests cloudscraper beautifulsoup4 lxml
+          pip install requests cloudscraper curl_cffi beautifulsoup4 lxml
 
       - name: Pokretanje scrapera i snimanje loga
         run: |
