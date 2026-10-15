@@ -1,12 +1,36 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 15.10.2026. 07:12:48
+Vrijeme pokretanja (UTC): 15.10.2026. 08:58:08
 ----------------------------------------
-Učitano 10333 postojećih ploča iz memorije.
-Tražim ID kategorije 'Glazba'...
+📦 Učitano 10333 postojećih ploča iz memorije.
+📡 Status naslovnice Ezop: 403 (Server: cloudflare)
+🔍 Tražim ID kategorije 'Glazba'...
+⚠️ Nastavljam bez filtera kategorije...
 
-=== POKREĆEM EZOP CLOUDSCRAPER API ===
-Preuzimam API paket 1... [Kod: 403] Ponovni pokušaj... [Kod: 403] Ponovni pokušaj... [Kod: 403] Ponovni pokušaj... 
-UPOZORENJE: Preskačem brisanje starih ploča radi sigurnosti baze.
-Završeno. U bazi je sada ukupno 10333 ažurnih ploča.
+=== POKREĆEM EZOP API SKENIRANJE ===
+Preuzimam API paket 1... [Kod: 403] 
+📄 Odgovor servera (prvih 200 znakova): <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-
+📡 Status naslovnice Ezop: 403 (Server: cloudflare)
+[Kod: 403] 📡 Status naslovnice Ezop: 403 (Server: cloudflare)
+[Kod: 403] [Kod: 403] 
+📄 Odgovor servera (prvih 200 znakova): <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-
+📡 Status naslovnice Ezop: 403 (Server: cloudflare)
+[Kod: 403] 📡 Status naslovnice Ezop: 403 (Server: cloudflare)
+[Kod: 403] [Kod: 403] 
+📄 Odgovor servera (prvih 200 znakova): <!DOCTYPE html>
+<!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 7]>    <html class="no-js ie7 oldie" lang="en-US"> <![endif]-->
+<!--[if IE 8]>    <html class="no-
+📡 Status naslovnice Ezop: 403 (Server: cloudflare)
+[Kod: 403] 📡 Status naslovnice Ezop: 403 (Server: cloudflare)
+[Kod: 403] -> ❌ Pristup odbijen sa svih ulaza. Prekidam radi sigurnosti baze.
+
+⚠️ UPOZORENJE: Preskačem brisanje starih ploča radi sigurnosti baze.
+🎉 Završeno. U bazi je sada ukupno 10333 ažurnih ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 15.10.2026. 07:13:06
+Vrijeme završetka (UTC): 15.10.2026. 08:58:43 | Kod izlaza: 0
