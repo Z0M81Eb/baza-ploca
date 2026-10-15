@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_menart.py ===
-Vrijeme pokretanja (UTC): 15.10.2026. 07:12:54
+Vrijeme pokretanja (UTC): 15.10.2026. 08:15:29
 ----------------------------------------
 🔍 Tražim ID kategorije 'Glazba'...
 ⚠️ Nastavljam bez filtera kategorije (skenirat ću sve i filtrirati ručno).
@@ -9,4 +9,4 @@ Vrijeme pokretanja (UTC): 15.10.2026. 07:12:54
 
 ⚠️ Nije pronađena niti jedna ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 15.10.2026. 07:12:55
+Vrijeme završetka (UTC): 15.10.2026. 08:15:30 | Kod izlaza: 0
