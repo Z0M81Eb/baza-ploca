@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 14.10.2026. 14:15:08
+Vrijeme pokretanja (UTC): 15.10.2026. 07:12:48
 ----------------------------------------
 Učitano 10333 postojećih ploča iz memorije.
 Tražim ID kategorije 'Glazba'...
@@ -9,4 +9,4 @@ Preuzimam API paket 1... [Kod: 403] Ponovni pokušaj... [Kod: 403] Ponovni poku�
 UPOZORENJE: Preskačem brisanje starih ploča radi sigurnosti baze.
 Završeno. U bazi je sada ukupno 10333 ažurnih ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 14.10.2026. 14:15:26
+Vrijeme završetka (UTC): 15.10.2026. 07:13:06

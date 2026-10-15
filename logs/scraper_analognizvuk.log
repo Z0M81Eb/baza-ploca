@@ -1,8 +1,8 @@
 === IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
-Vrijeme pokretanja (UTC): 14.10.2026. 14:15:12
+Vrijeme pokretanja (UTC): 15.10.2026. 07:12:46
 ----------------------------------------
 ANALOGNI ZVUK: Pokrećem hibridni API + Cloudscraper sistem...
-Učitano 1620 postojećih ploča.
+Učitano 1623 postojećih ploča.
 
 Probijanje početne zaštite (Naslovnica)...
 
@@ -23,10 +23,10 @@ API Paket 13 -> OK (100 ploča)
 API Paket 14 -> OK (100 ploča)
 API Paket 15 -> OK (100 ploča)
 API Paket 16 -> OK (100 ploča)
-API Paket 17 -> OK (23 ploča)
+API Paket 17 -> OK (22 ploča)
 
 Sinkronizacija prodanih ploča uspješna.
 
-Gotovo! Ukupno u CSV-u: 1623
+Gotovo! Ukupno u CSV-u: 1622
 ----------------------------------------
-Vrijeme završetka (UTC): 14.10.2026. 14:15:48
+Vrijeme završetka (UTC): 15.10.2026. 07:13:20
