@@ -6,16 +6,12 @@ on:
   workflow_dispatch:
     inputs:
       target_scraper:
-        description: 'Upiši ALL za sve scrapere ili naziv skripte (npr. scraper_menart.py)'
+        description: 'Upiši ALL za sve scrapere ili naziv skripte (npr. scraper_ezop.py ili samo ezop)'
         required: false
         default: 'ALL'
 
-permissions:
-  contents: write
-  actions: read
-
 jobs:
-  # 1. POSAO: Automatski pronalazi sve scraper_*.py skripte (ili odabranu skriptu)
+  # 1. POSAO: Određuje pokrećemo li SVE scrapere paralelno ili samo JEDAN odabrani za testiranje
   discover:
     runs-on: ubuntu-latest
     outputs:
@@ -31,12 +27,23 @@ jobs:
           if [ -z "$TARGET" ] || [ "$TARGET" = "ALL" ]; then
             SCRIPTS=$(ls scraper_*.py | jq -R -s -c 'split("\n")[:-1]')
           else
+            # Ako korisnik upiše samo "ezop", automatski pretvori u "scraper_ezop.py"
+            if [[ "$TARGET" != scraper_* ]]; then
+              TARGET="scraper_${TARGET}"
+            fi
+            if [[ "$TARGET" != *.py ]]; then
+              TARGET="${TARGET}.py"
+            fi
+            if [ ! -f "$TARGET" ]; then
+              echo "GREŠKA: Skripta $TARGET ne postoji u repozitoriju!"
+              exit 1
+            fi
             SCRIPTS=$(echo "$TARGET" | jq -R -s -c 'split("\n")[:-1]')
           fi
-          echo "Pronađene skripte: $SCRIPTS"
+          echo "Pokrećem skripte: $SCRIPTS"
           echo "matrix=$SCRIPTS" >> $GITHUB_OUTPUT
 
-  # 2. POSAO: Paralelno izvršavanje s kliznim redom čekanja (max 15 istovremeno za 20+ trgovina)
+  # 2. POSAO: Izvršava odabrane scrapere (1 ako testiraš pojedinačno, ili do 15 paralelno ako ide ALL)
   run_scrapers:
     needs: discover
     runs-on: ubuntu-latest
@@ -60,36 +67,40 @@ jobs:
           python -m pip install --upgrade pip
           pip install requests cloudscraper beautifulsoup4 lxml
 
-      - name: Pokretanje scrapera i izolacija novog CSV-a
+      - name: Pokretanje scrapera i snimanje loga
         run: |
           mkdir -p out_data/logs
           SCRIPT_NAME="${{ matrix.script }}"
           LOG_FILE="out_data/logs/${SCRIPT_NAME%.py}.log"
           
-          # Postavljamo vremenski marker prije pokretanja kako ne bismo kopirali tuđe stare CSV-ove
-          touch /tmp/scrape_start_marker
+          # Označavamo točan trenutak početka kako bismo spremili SAMO CSV koji ova skripta promijeni
+          touch .scrape_start
           sleep 1
-
+          
           echo "=== IZVJEŠTAJ RADA: $SCRIPT_NAME ===" > "$LOG_FILE"
           echo "Vrijeme pokretanja (UTC): $(date '+%d.%m.%Y. %H:%M:%S')" >> "$LOG_FILE"
           echo "----------------------------------------" >> "$LOG_FILE"
           
+          set +e
           python -u "$SCRIPT_NAME" 2>&1 | tee -a "$LOG_FILE"
+          EXIT_CODE=${PIPESTATUS[0]}
+          set -e
           
           echo "----------------------------------------" >> "$LOG_FILE"
-          echo "Vrijeme završetka (UTC): $(date '+%d.%m.%Y. %H:%M:%S')" >> "$LOG_FILE"
+          echo "Vrijeme završetka (UTC): $(date '+%d.%m.%Y. %H:%M:%S') | Kod izlaza: $EXIT_CODE" >> "$LOG_FILE"
           
-          # Kopiramo SAMO onaj CSV koji je ova skripta upravo kreirala ili ažurirala
-          find . -maxdepth 1 -name "*.csv" -newer /tmp/scrape_start_marker -exec cp -f {} out_data/ \;
+          # Kopiramo ISKLJUČIVO CSV datoteke koje je ova skripta upravo kreirala ili ažurirala!
+          find . -maxdepth 1 -name "*.csv" -newer .scrape_start -exec cp {} out_data/ \;
 
       - name: Predaja rezultata završnom sakupljaču
         uses: actions/upload-artifact@v4
         with:
           name: rezultat-${{ matrix.script }}
           path: out_data/
+          if-no-files-found: ignore
           overwrite: true
 
-  # 3. POSAO: Sakuplja samo novonastale CSV baze i logove te radi JEDAN siguran Commit i Push
+  # 3. POSAO: Sakuplja nove CSV-ove i logove te radi JEDAN siguran Commit i Push
   commit_results:
     needs: run_scrapers
     if: always()
@@ -97,8 +108,6 @@ jobs:
     steps:
       - name: Checkout repozitorija
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Preuzmi sve obrađene CSV-ove i logove
         uses: actions/download-artifact@v4
@@ -108,17 +117,17 @@ jobs:
       - name: Spoji nove podatke i spremi na GitHub
         run: |
           mkdir -p logs
-          find collected_outputs -name "*.csv" -exec cp -f {} . \;
-          find collected_outputs -name "*.log" -exec cp -f {} logs/ \;
+          find collected_outputs -name "*.csv" -exec cp {} . \;
+          find collected_outputs -name "*.log" -exec cp {} logs/ \;
 
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Master Action"
           git add *.csv logs/*.log 2>/dev/null || true
 
           if ! git diff --staged --quiet; then
-            git commit -m "Master Sync: Automatsko ažuriranje kataloga ($(date '+%d.%m.%Y. %H:%M'))"
-            git pull --rebase -X ours origin main
-            git push origin main
+            git commit -m "Master Sync: Automatsko ažuriranje kataloga i logova"
+            git pull --rebase origin main
+            git push
           else
             echo "Nema promjena za spremanje."
           fi
