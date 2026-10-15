@@ -1,14 +1,208 @@
 === IZVJEŠTAJ RADA: scraper_menart.py ===
-Vrijeme pokretanja (UTC): 15.10.2026. 08:31:21
+Vrijeme pokretanja (UTC): 15.10.2026. 08:46:15
 ----------------------------------------
 📦 Učitano 1409 postojećih ploča iz memorije.
-🔍 Tražim ID kategorije 'Glazba'...
-⚠️ Nastavljam bez filtera kategorije (skenirat ću sve i filtrirati ručno).
 
-🚀 Pokrećem brzi Chrome-TLS API sweep za Menart...
-📄 Preuzimam API paket 1... [Kod: 403 na ulazu 1] [Kod: 403 na ulazu 1] [Kod: 403 na ulazu 1] [Kod: 403 na ulazu 2] [Kod: 403 na ulazu 2] [Kod: 403 na ulazu 2] [Kod: 403 na ulazu 3] [Kod: 403 na ulazu 3] [Kod: 403 na ulazu 3] [Kod: 403 na ulazu 4] [Kod: 403 na ulazu 4] [Kod: 403 na ulazu 4] -> ❌ Svi API ulazi su odbili pristup (403/Mreža). Prekidam radi sigurnosti baze.
+🚀 Pokrećem HTML skeniranje Menart vinilnih arhiva (API zaobiđen)...
 
-⚠️ UPOZORENJE: Skeniranje nije došlo do kraja. Zadržavam postojeće ploče u bazi.
-🎉 GOTOVO! U bazi je ukupno 1409 ploča.
+📂 Skeniram arhivu: https://menartshop.hr/format-glazba/lp/ (LP)
+📄 Stranica 1... -> Pronađeno 48 aktivnih vinila.
+📄 Stranica 2... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 3... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 4... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 5... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 6... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 7... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 8... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 9... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 10... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 11... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 12... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 13... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 14... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 15... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 16... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 17... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 18... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 19... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 20... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 21... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 22... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 23... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 24... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 25... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 26... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 27... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 28... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 29... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 30... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 31... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 32... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 33... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 34... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 35... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 36... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 37... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 38... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 39... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 40... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 41... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 42... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 43... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 44... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 45... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 46... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 47... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 48... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 49... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 50... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 51... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 52... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 53... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 54... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 55... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 56... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 57... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 58... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 59... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 60... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 61... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 62... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 63... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 64... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 65... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 66... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 67... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 68... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 69... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 70... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 71... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 72... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 73... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 74... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 75... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 76... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 77... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 78... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 79... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 80... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 81... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 82... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 83... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 84... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 85... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 86... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 87... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 88... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 89... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 90... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 91... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 92... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 93... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 94... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 95... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 96... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 97... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 98... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 99... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 100... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 101... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 102... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 103... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 104... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 105... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 106... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 107... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 108... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 109... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 110... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 111... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 112... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 113... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 114... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 115... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 116... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 117... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 118... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 119... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 120... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 121... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 122... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 123... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 124... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 125... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 126... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 127... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 128... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 129... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 130... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 131... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 132... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 133... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 134... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 135... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 136... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 137... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 138... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 139... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 140... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 141... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 142... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 143... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 144... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 145... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 146... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 147... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 148... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 149... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 150... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 151... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 152... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 153... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 154... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 155... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 156... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 157... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 158... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 159... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 160... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 161... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 162... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 163... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 164... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 165... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 166... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 167... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 168... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 169... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 170... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 171... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 172... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 173... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 174... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 175... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 176... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 177... -> Pronađeno 33 aktivnih vinila.
+📄 Stranica 178... -> 0 na zalihi na ovoj stranici.
+📄 Stranica 179... -> 0 na zalihi na ovoj stranici.
+📄 Stranica 180... -> 0 na zalihi na ovoj stranici.
+📄 Stranica 181... -> 0 na zalihi na ovoj stranici.
+📄 Stranica 182... -> 0 na zalihi na ovoj stranici.
+
+📂 Skeniram arhivu: https://menartshop.hr/format-glazba/lp-cd/ (LP+CD)
+📄 Stranica 1... -> Pronađeno 36 aktivnih vinila.
+📄 Stranica 2... -> Pronađeno 10 aktivnih vinila.
+📄 Stranica 3... -> Kraj arhive (404).
+
+📂 Skeniram arhivu: https://menartshop.hr/format-glazba/cd-lp/ (CD+LP)
+📄 Stranica 1... -> Pronađeno 4 aktivnih vinila.
+📄 Stranica 2... -> Kraj arhive (404).
+
+📂 Skeniram arhivu: https://menartshop.hr/format-glazba/lp-dvd/ (LP+DVD)
+📄 Stranica 1... -> Pronađeno 4 aktivnih vinila.
+📄 Stranica 2... -> Kraj arhive (404).
+
+🧹 Analiza završena. Obrisano 55 rasprodanih ploča.
+🎉 GOTOVO! U bazi je sada ukupno 6423 ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 15.10.2026. 08:31:59 | Kod izlaza: 0
+Vrijeme završetka (UTC): 15.10.2026. 08:52:28 | Kod izlaza: 0
