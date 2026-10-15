@@ -1,92 +1,141 @@
 from curl_cffi import requests as cffi_requests
+from bs4 import BeautifulSoup
 import csv
 import os
+import re
 import time
 import html
 
-# --- POSTAVKE ---
-SITE_URL = "https://menartshop.hr"
 CSV_FILENAME = "menart_katalog.csv"
 
+# Direktne Menart arhive u kojima se nalaze isključivo vinilna izdanja
+VINYL_ARCHIVES = [
+    ("https://menartshop.hr/format-glazba/lp/", "LP"),
+    ("https://menartshop.hr/format-glazba/lp-cd/", "LP+CD"),
+    ("https://menartshop.hr/format-glazba/cd-lp/", "CD+LP"),
+    ("https://menartshop.hr/format-glazba/lp-dvd/", "LP+DVD")
+]
+
 HEADERS = {
-    "Accept": "application/json, text/plain, */*",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Referer": "https://menartshop.hr/",
-    "Origin": "https://menartshop.hr"
+    "Referer": "https://menartshop.hr/"
 }
 
-# Lista mogućih API ulaza (ako firewall blokira /wp-json/, skripta automatski prelazi na ?rest_route=)
-API_ENDPOINTS = [
-    ("https://menartshop.hr/wp-json/wc/store/products", "?"),
-    ("https://menartshop.hr/wp-json/wc/store/v1/products", "?"),
-    ("https://menartshop.hr/?rest_route=/wc/store/products", "&"),
-    ("https://menartshop.hr/?rest_route=/wc/store/v1/products", "&")
-]
-
-CAT_ENDPOINTS = [
-    "https://menartshop.hr/wp-json/wc/store/products/categories?per_page=100",
-    "https://menartshop.hr/?rest_route=/wc/store/products/categories&per_page=100"
-]
-
-def kreiraj_sesiju(profil="chrome120"):
-    session = cffi_requests.Session(impersonate=profil)
+def kreiraj_sesiju():
+    session = cffi_requests.Session(impersonate="chrome120")
     session.headers.update(HEADERS)
     try:
-        # Inicijalni posjet naslovnici radi preuzimanja kolačića (cookies)
-        session.get(SITE_URL, timeout=20)
+        session.get("https://menartshop.hr/", timeout=20)
         time.sleep(1)
-    except Exception as e:
-        print(f"⚠️ Upozorenje pri otvaranju naslovnice: {e}", flush=True)
+    except Exception:
+        pass
     return session
 
-def get_glazba_category_id(session):
-    print("🔍 Tražim ID kategorije 'Glazba'...", flush=True)
-    for url in CAT_ENDPOINTS:
+def izvuci_cijenu(tekst):
+    """Pronalazi zadnju (prodajnu/akcijsku) cijenu u formatu 24,95 € ili 24.95 €."""
+    svi_brojevi = re.findall(r'(\d{1,4}[.,]\d{2})\s*€', tekst)
+    if not svi_brojevi:
+        svi_brojevi = re.findall(r'(\d{1,4}[.,]\d{2})', tekst)
+    if svi_brojevi:
+        zadnja = svi_brojevi[-1].replace('.', '').replace(',', '.')
+        # Ako je slučajno imalo decimalnu točku prije zamjene
+        dijelovi = svi_brojevi[-1].replace(',', '.').split('.')
+        if len(dijelovi) == 2:
+            zadnja = f"{dijelovi[0]}.{dijelovi[1]}"
         try:
-            res = session.get(url, timeout=20)
-            if res.status_code == 200:
-                for cat in res.json():
-                    if cat.get('slug') == 'glazba':
-                        print(f"✅ Kategorija 'Glazba' pronađena (ID: {cat['id']})", flush=True)
-                        return cat['id']
+            val = float(zadnja)
+            if val > 0:
+                return f"{val:.2f}"
         except Exception:
+            pass
+    return "0.00"
+
+def izvuci_sliku(kartica):
+    img = kartica.find('img')
+    if not img:
+        return ""
+    for attr in ['data-lazy-src', 'data-src', 'src']:
+        val = img.get(attr, '').strip()
+        if val and not val.startswith('data:image'):
+            return val
+    srcset = img.get('srcset', '') or img.get('data-lazy-srcset', '')
+    if srcset:
+        prvi = srcset.split(',')[0].strip().split(' ')[0]
+        if prvi and not prvi.startswith('data:image'):
+            return prvi
+    return ""
+
+def parsiraj_kartice_na_stranici(soup, default_format):
+    pronadjeno = []
+    # Standardni WooCommerce selektori + fallback na sve kartice s linkom na /proizvod/
+    kartice = soup.select('li.product, div.product, article.product, .type-product')
+
+    if not kartice:
+        # Fallback: pronađi roditeljske elemente oko linkova na /proizvod/
+        vidjeni_roditelji = set()
+        for a in soup.select('a[href*="/proizvod/"]'):
+            roditelj = a.find_parent(['li', 'article', 'div'])
+            if roditelj and id(roditelj) not in vidjeni_roditelji:
+                vidjeni_roditelji.add(id(roditelj))
+                kartice.append(roditelj)
+
+    for k in kartice:
+        klase = " ".join(k.get('class', [])).lower()
+        tekst_kartice = k.get_text(" ", strip=True)
+        tekst_lower = tekst_kartice.lower()
+
+        # 1. Provjera zalihe: artikl mora imati "Dodaj u košaricu" i ne smije biti outofstock
+        if 'outofstock' in klase:
+            continue
+        if 'dodaj u košaricu' not in tekst_lower and 'add_to_cart' not in str(k).lower():
             continue
 
-    print("⚠️ Nastavljam bez filtera kategorije (skenirat ću sve i filtrirati ručno).", flush=True)
-    return None
+        # 2. Link proizvoda
+        link = ""
+        for a in k.find_all('a', href=True):
+            href = a['href'].strip()
+            if '/proizvod/' in href and '?add-to-cart=' not in href:
+                link = href
+                break
+        if not link:
+            continue
 
-def dohvati_api_paket(session, page, per_page, glazba_id, aktivni_endpoint_idx):
-    """Pokušava dohvatiti paket preko aktivnog endpointa, a u slučaju 403 isprobava rezervne ulaze i profile."""
-    profili = ["chrome120", "chrome116", "safari15_5"]
-
-    for idx in range(aktivni_endpoint_idx, len(API_ENDPOINTS)):
-        base_url, sep = API_ENDPOINTS[idx]
-        if glazba_id:
-            url = f"{base_url}{sep}category={glazba_id}&page={page}&per_page={per_page}"
+        # 3. Naslov proizvoda
+        naslov_el = k.select_one('.woocommerce-loop-product__title, .product-title, h2, h3, h4')
+        if naslov_el:
+            naslov = naslov_el.get_text(" ", strip=True)
         else:
-            url = f"{base_url}{sep}page={page}&per_page={per_page}"
+            naslov = ""
+            for a in k.find_all('a', href=True):
+                if '/proizvod/' in a['href']:
+                    t = a.get_text(" ", strip=True)
+                    if t and 'dodaj u košaricu' not in t.lower() and 'pogledaj' not in t.lower():
+                        naslov = t
+                        break
 
-        for pokusaj, profil in enumerate(profili):
-            try:
-                if pokusaj > 0:
-                    session = kreiraj_sesiju(profil)
-                res = session.get(url, timeout=25)
-                if res.status_code in [200, 400, 404]:
-                    return res, session, idx
-                print(f"[Kod: {res.status_code} na ulazu {idx+1}]", end=" ", flush=True)
-                time.sleep(2)
-            except Exception as e:
-                print(f"[Greška: {e}]", end=" ", flush=True)
-                time.sleep(2)
+        naslov = html.unescape(naslov).strip()
+        if not naslov:
+            continue
 
-    return None, session, aktivni_endpoint_idx
+        # 4. Cijena proizvoda
+        cijena_el = k.select_one('.price ins, .price')
+        cijena = izvuci_cijenu(cijena_el.get_text(" ", strip=True) if cijena_el else tekst_kartice)
+        if cijena == "0.00":
+            continue
 
-def scrape_menart_api():
+        # 5. Slika proizvoda
+        slika_url = izvuci_sliku(k)
+
+        pronadjeno.append((link, [naslov, cijena, link, slika_url, "Novo", "Novo", default_format]))
+
+    return pronadjeno
+
+def scrape_menart_html():
     sve_ploce = {}
     vidjeni_linkovi = set()
     uspjesno_skenirano = False
 
-    # Učitavanje postojećeg CSV-a radi zaštite od brisanja u slučaju pada mreže
     if os.path.exists(CSV_FILENAME):
         with open(CSV_FILENAME, 'r', encoding='utf-8') as f:
             reader = csv.reader(f)
@@ -96,107 +145,77 @@ def scrape_menart_api():
                     sve_ploce[row[2]] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih ploča iz memorije.", flush=True)
 
-    session = kreiraj_sesiju("chrome120")
-    glazba_id = get_glazba_category_id(session)
+    session = kreiraj_sesiju()
+    print("\n🚀 Pokrećem HTML skeniranje Menart vinilnih arhiva (API zaobiđen)...", flush=True)
 
-    page = 1
-    per_page = 80
-    aktivni_endpoint_idx = 0
+    for base_url, format_oznaka in VINYL_ARCHIVES:
+        print(f"\n📂 Skeniram arhivu: {base_url} ({format_oznaka})", flush=True)
+        page = 1
+        praznih_zaredom = 0
 
-    print("\n🚀 Pokrećem brzi Chrome-TLS API sweep za Menart...", flush=True)
+        while True:
+            url = base_url if page == 1 else f"{base_url}page/{page}/"
+            print(f"📄 Stranica {page}...", end=" ", flush=True)
 
-    while True:
-        print(f"📄 Preuzimam API paket {page}...", end=" ", flush=True)
-        res, session, aktivni_endpoint_idx = dohvati_api_paket(
-            session, page, per_page, glazba_id, aktivni_endpoint_idx
-        )
-
-        if res is None:
-            print("-> ❌ Svi API ulazi su odbili pristup (403/Mreža). Prekidam radi sigurnosti baze.", flush=True)
-            break
-
-        if res.status_code in [400, 404]:
-            print("-> Kraj baze dosegnut.", flush=True)
-            uspjesno_skenirano = True
-            break
-
-        try:
-            data = res.json()
-        except Exception:
-            print("-> Neispravan JSON odgovor. Prekidam.", flush=True)
-            break
-
-        if not data:
-            print("-> Paket prazan, završavam.", flush=True)
-            uspjesno_skenirano = True
-            break
-
-        dodano = 0
-
-        for item in data:
-            if not item.get('is_in_stock', False):
-                continue
-
-            naslov = html.unescape(item.get('name', 'Nepoznat naslov')).strip()
-            attributes = item.get('attributes', [])
-            format_ploca = ""
-            je_li_vinil = False
-
-            for attr in attributes:
-                attr_name = attr.get('name', '').lower()
-                if 'format' in attr_name:
-                    terms = attr.get('terms', [])
-                    if terms:
-                        format_val = terms[0].get('name', '')
-                        if any(k in format_val.lower() for k in ['lp', 'vinyl', 'vinil', 'single']):
-                            format_ploca = format_val
-                            je_li_vinil = True
-
-            if not je_li_vinil:
-                naslov_lower = f" {naslov.lower()} "
-                if any(k in naslov_lower for k in [' lp ', '2lp', 'vinyl', 'vinil']):
-                    je_li_vinil = True
-                    if not format_ploca:
-                        format_ploca = "LP"
-
-            if not je_li_vinil:
-                continue
-
-            if not format_ploca:
-                format_ploca = "LP"
-
-            link = item.get('permalink', '')
-            prices = item.get('prices', {})
-            raw_price = prices.get('price', '0')
-            minor_unit = prices.get('currency_minor_unit', 2)
             try:
-                price_val = float(raw_price) / (10 ** minor_unit)
-                cijena = f"{price_val:.2f}"
-            except Exception:
-                cijena = "0.00"
+                res = session.get(url, timeout=25)
+                if res.status_code == 404:
+                    print("-> Kraj arhive (404).", flush=True)
+                    if page > 1 and format_oznaka == "LP":
+                        uspjesno_skenirano = True
+                    break
+                elif res.status_code != 200:
+                    print(f"-> [HTTP Status: {res.status_code}]", flush=True)
+                    break
 
-            if cijena == "0.00" or not link:
-                continue
+                # Ako nas je preusmjerilo natrag na 1. stranicu, došli smo do kraja
+                if page > 1 and res.url.rstrip('/') == base_url.rstrip('/'):
+                    print("-> Preusmjereno na početak (kraj arhive).", flush=True)
+                    if format_oznaka == "LP":
+                        uspjesno_skenirano = True
+                    break
 
-            images = item.get('images', [])
-            slika_url = images[0].get('src', '') if images else ""
+                soup = BeautifulSoup(res.text, 'lxml')
+                stavke = parsiraj_kartice_na_stranici(soup, format_oznaka)
 
-            sve_ploce[link] = [naslov, cijena, link, slika_url, "Novo", "Novo", format_ploca]
-            vidjeni_linkovi.add(link)
-            dodano += 1
+                if not stavke:
+                    # Provjeri postoje li uopće ikakvi proizvodi na stranici (možda su svi rasprodani na ovoj stranici)
+                    ima_bilo_kakvih = len(soup.select('a[href*="/proizvod/"]')) > 0
+                    if not ima_bilo_kakvih:
+                        print("-> Nema više proizvoda. Kraj arhive.", flush=True)
+                        if page > 1 and format_oznaka == "LP":
+                            uspjesno_skenirano = True
+                        break
+                    else:
+                        print("-> 0 na zalihi na ovoj stranici.", flush=True)
+                        praznih_zaredom += 1
+                        if praznih_zaredom >= 5:
+                            uspjesno_skenirano = True
+                            break
+                else:
+                    praznih_zaredom = 0
+                    novih_na_str = 0
+                    for link, red_podataka in stavke:
+                        sve_ploce[link] = red_podataka
+                        if link not in vidjeni_linkovi:
+                            novih_na_str += 1
+                        vidjeni_linkovi.add(link)
+                    print(f"-> Pronađeno {len(stavke)} aktivnih vinila.", flush=True)
 
-        print(f"-> Pronađeno {dodano} aktivnih vinila u paketu.", flush=True)
-        page += 1
-        time.sleep(0.6)
+                page += 1
+                time.sleep(0.5)
 
-    # Čišćenje prodanih samo ako je skeniranje prošlo do kraja
-    if uspjesno_skenirano and len(vidjeni_linkovi) > 50:
+            except Exception as e:
+                print(f"\n❌ Greška na stranici {page}: {e}", flush=True)
+                break
+
+    if uspjesno_skenirano and len(vidjeni_linkovi) > 100:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in vidjeni_linkovi}
         obrisano = pocetni_broj - len(sve_ploce)
-        print(f"\n🧹 Analiza završena. Obrisano {obrisano} prodanih ploča.", flush=True)
+        print(f"\n🧹 Analiza završena. Obrisano {obrisano} rasprodanih ploča.", flush=True)
     else:
-        print("\n⚠️ UPOZORENJE: Skeniranje nije došlo do kraja. Zadržavam postojeće ploče u bazi.", flush=True)
+        print(f"\n⚠️ Pronađeno ukupno {len(vidjeni_linkovi)} ploča. Zadržavam postojeće u bazi radi sigurnosti.", flush=True)
 
     if sve_ploce:
         zaglavlja = ["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"]
@@ -204,7 +223,7 @@ def scrape_menart_api():
             writer = csv.writer(file)
             writer.writerow(zaglavlja)
             writer.writerows(sve_ploce.values())
-        print(f"🎉 GOTOVO! U bazi je ukupno {len(sve_ploce)} ploča.", flush=True)
+        print(f"🎉 GOTOVO! U bazi je sada ukupno {len(sve_ploce)} ploča.", flush=True)
 
 if __name__ == "__main__":
-    scrape_menart_api()
+    scrape_menart_html()
