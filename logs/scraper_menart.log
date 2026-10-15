@@ -1,12 +1,14 @@
 === IZVJEŠTAJ RADA: scraper_menart.py ===
-Vrijeme pokretanja (UTC): 15.10.2026. 08:15:29
+Vrijeme pokretanja (UTC): 15.10.2026. 08:31:21
 ----------------------------------------
+📦 Učitano 1409 postojećih ploča iz memorije.
 🔍 Tražim ID kategorije 'Glazba'...
 ⚠️ Nastavljam bez filtera kategorije (skenirat ću sve i filtrirati ručno).
 
-🚀 Pokrećem brzi API sweep za Menart...
-📄 Preuzimam API paket 1... -> [GREŠKA SERVERA: 403]
+🚀 Pokrećem brzi Chrome-TLS API sweep za Menart...
+📄 Preuzimam API paket 1... [Kod: 403 na ulazu 1] [Kod: 403 na ulazu 1] [Kod: 403 na ulazu 1] [Kod: 403 na ulazu 2] [Kod: 403 na ulazu 2] [Kod: 403 na ulazu 2] [Kod: 403 na ulazu 3] [Kod: 403 na ulazu 3] [Kod: 403 na ulazu 3] [Kod: 403 na ulazu 4] [Kod: 403 na ulazu 4] [Kod: 403 na ulazu 4] -> ❌ Svi API ulazi su odbili pristup (403/Mreža). Prekidam radi sigurnosti baze.
 
-⚠️ Nije pronađena niti jedna ploča.
+⚠️ UPOZORENJE: Skeniranje nije došlo do kraja. Zadržavam postojeće ploče u bazi.
+🎉 GOTOVO! U bazi je ukupno 1409 ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 15.10.2026. 08:15:30 | Kod izlaza: 0
+Vrijeme završetka (UTC): 15.10.2026. 08:31:59 | Kod izlaza: 0
