@@ -17,57 +17,59 @@ HEADERS = {
 API_ENDPOINTS = [
     ("https://ezop-antikvarijat.hr/wp-json/wc/store/products", "?"),
     ("https://ezop-antikvarijat.hr/wp-json/wc/store/v1/products", "?"),
-    ("https://ezop-antikvarijat.hr/?rest_route=/wc/store/products", "&"),
-    ("https://ezop-antikvarijat.hr/?rest_route=/wc/store/v1/products", "&")
-]
-
-CAT_ENDPOINTS = [
-    "https://ezop-antikvarijat.hr/wp-json/wc/store/products/categories?per_page=100",
-    "https://ezop-antikvarijat.hr/?rest_route=/wc/store/products/categories&per_page=100"
+    ("https://ezop-antikvarijat.hr/?rest_route=/wc/store/products", "&")
 ]
 
 def pretvori_ocjenu(ocjena_str):
     if not ocjena_str:
         return ""
-    tekst = str(ocjena_str).strip().upper()
-    if tekst in ["M", "NM", "VG+", "VG", "G+", "G", "F", "P", "NOVO"]:
-        return tekst
+    tekst = str(ocjena_str).strip()
+    tekst_upper = tekst.upper()
+    if tekst_upper in ["M", "NM", "VG+", "VG", "G+", "G", "F", "P", "NOVO"]:
+        return tekst_upper
+    if "RABLJENO" in tekst_upper:
+        return "VG+"
     try:
         ocjena = int(float(tekst))
         mape = {10: "M", 9: "NM", 8: "VG+", 7: "VG", 6: "G+", 5: "G"}
         return mape.get(ocjena, "VG")
     except Exception:
-        return tekst
+        return tekst_upper
 
 def kreiraj_sesiju(profil="chrome120"):
     session = cffi_requests.Session(impersonate=profil)
     session.headers.update(HEADERS)
     try:
-        session.get(SITE_URL, timeout=20)
-        time.sleep(1.5)
+        r = session.get(SITE_URL, timeout=20)
+        print(f"📡 Status naslovnice Ezop: {r.status_code} (Server: {r.headers.get('Server', 'Nepoznat')})", flush=True)
+        time.sleep(1)
     except Exception as e:
-        print(f"Upozorenje pri otvaranju naslovnice: {e}", flush=True)
+        print(f"⚠️ Upozorenje pri otvaranju naslovnice: {e}", flush=True)
     return session
 
 def get_glazba_category_id(session):
-    print("Tražim ID kategorije 'Glazba'...", flush=True)
-    for url in CAT_ENDPOINTS:
+    print("🔍 Tražim ID kategorije 'Glazba'...", flush=True)
+    for url in [
+        "https://ezop-antikvarijat.hr/wp-json/wc/store/products/categories?per_page=100",
+        "https://ezop-antikvarijat.hr/?rest_route=/wc/store/products/categories&per_page=100"
+    ]:
         try:
             res = session.get(url, timeout=20)
             if res.status_code == 200:
                 for cat in res.json():
-                    if cat.get('slug') == 'glazba':
-                        print(f"Pronađena kategorija Glazba (ID: {cat['id']})", flush=True)
+                    slug = cat.get('slug', '').lower()
+                    link = cat.get('link', '').lower()
+                    if slug == 'glazba' or link.endswith('/kategorija/glazba/'):
+                        print(f"✅ Pronađena kategorija Glazba (ID: {cat['id']})", flush=True)
                         return cat['id']
         except Exception:
             continue
-    print("Nastavljam bez filtera kategorije...", flush=True)
+    print("⚠️ Nastavljam bez filtera kategorije...", flush=True)
     return None
 
-def dohvati_api_paket(session, page, per_page, cat_id, aktivni_endpoint_idx):
+def dohvati_api_paket(session, page, per_page, cat_id, aktivni_idx):
     profili = ["chrome120", "chrome116", "safari15_5"]
-
-    for idx in range(aktivni_endpoint_idx, len(API_ENDPOINTS)):
+    for idx in range(aktivni_idx, len(API_ENDPOINTS)):
         base_url, sep = API_ENDPOINTS[idx]
         if cat_id:
             url = f"{base_url}{sep}category={cat_id}&page={page}&per_page={per_page}"
@@ -81,13 +83,14 @@ def dohvati_api_paket(session, page, per_page, cat_id, aktivni_endpoint_idx):
                 res = session.get(url, timeout=30)
                 if res.status_code in [200, 400, 404]:
                     return res, session, idx
-                print(f"[Kod: {res.status_code} na ulazu {idx+1}]", end=" ", flush=True)
+                print(f"[Kod: {res.status_code}]", end=" ", flush=True)
+                if page == 1 and pokusaj == 0:
+                    print(f"\n📄 Odgovor servera (prvih 200 znakova): {res.text[:200]}", flush=True)
                 time.sleep(3)
             except Exception as e:
-                print(f"[Greška mreže: {e}]", end=" ", flush=True)
+                print(f"[Greška: {e}]", end=" ", flush=True)
                 time.sleep(3)
-
-    return None, session, aktivni_endpoint_idx
+    return None, session, aktivni_idx
 
 def scrape_ezop_api():
     sve_ploce = {}
@@ -101,24 +104,22 @@ def scrape_ezop_api():
             for row in reader:
                 if len(row) >= 7:
                     sve_ploce[row[2]] = row
-        print(f"Učitano {len(sve_ploce)} postojećih ploča iz memorije.", flush=True)
+        print(f"📦 Učitano {len(sve_ploce)} postojećih ploča iz memorije.", flush=True)
 
     session = kreiraj_sesiju("chrome120")
     cat_id = get_glazba_category_id(session)
     page = 1
     per_page = 50
-    aktivni_endpoint_idx = 0
+    aktivni_idx = 0
 
-    print("\n=== POKREĆEM EZOP CHROME-TLS API SKENIRANJE ===", flush=True)
+    print("\n=== POKREĆEM EZOP API SKENIRANJE ===", flush=True)
 
     while True:
         print(f"Preuzimam API paket {page}...", end=" ", flush=True)
-        res, session, aktivni_endpoint_idx = dohvati_api_paket(
-            session, page, per_page, cat_id, aktivni_endpoint_idx
-        )
+        res, session, aktivni_idx = dohvati_api_paket(session, page, per_page, cat_id, aktivni_idx)
 
         if res is None:
-            print("-> Svi API ulazi su blokirani (403). Prekidam radi sigurnosti baze.", flush=True)
+            print("-> ❌ Pristup odbijen sa svih ulaza. Prekidam radi sigurnosti baze.", flush=True)
             break
 
         if res.status_code in [400, 404]:
@@ -144,36 +145,48 @@ def scrape_ezop_api():
                 continue
 
             is_vinyl = False
+            nije_vinil_medij = False
             s_omot = ""
             s_medij = ""
 
+            # 1. Provjera varijacija (uključujući i 'Stanje': 'rabljeno' iz novog JSON formata)
             for var in item.get('variations', []):
                 for attr in var.get('attributes', []):
                     ime_attr = attr.get('name', '').lower()
                     vrijednost = attr.get('value', '')
+                    vrijednost_lower = vrijednost.lower()
+                    if 'cd' in vrijednost_lower or 'kazet' in vrijednost_lower or 'knjig' in vrijednost_lower:
+                        nije_vinil_medij = True
                     if 'omot' in ime_attr:
                         s_omot = pretvori_ocjenu(vrijednost)
                         is_vinyl = True
-                    elif 'medij' in ime_attr or 'ploč' in ime_attr or 'ploc' in ime_attr:
+                    elif any(k in ime_attr for k in ['medij', 'ploč', 'ploc', 'stanje']):
                         s_medij = pretvori_ocjenu(vrijednost)
-                        is_vinyl = True
 
+            # 2. Provjera atributa
             for attr in item.get('attributes', []):
                 ime_attr = attr.get('name', '').lower()
                 terms = attr.get('terms', [])
                 vrijednost = terms[0].get('name', '') if terms else ''
+                vrijednost_lower = vrijednost.lower()
+                if 'cd' in vrijednost_lower or 'kazet' in vrijednost_lower or 'knjig' in vrijednost_lower:
+                    nije_vinil_medij = True
                 if 'omot' in ime_attr and not s_omot:
                     s_omot = pretvori_ocjenu(vrijednost)
                     is_vinyl = True
-                elif ('medij' in ime_attr or 'stanje' in ime_attr) and not s_medij:
+                elif any(k in ime_attr for k in ['medij', 'stanje']) and not s_medij:
                     s_medij = pretvori_ocjenu(vrijednost)
+
+            # 3. Provjera kategorija (prepoznaje i '/kategorija/glazba/' linkove!)
+            for k in item.get('categories', []):
+                slug = k.get('slug', '').lower()
+                link_kat = k.get('link', '').lower()
+                if any(w in slug for w in ['cd', 'kazet', 'strip', 'knjig']):
+                    nije_vinil_medij = True
+                if any(w in slug for w in ['gramofonske', 'ploce', 'vinil', 'vinyl', 'lp', 'glazba']) or '/kategorija/glazba/' in link_kat:
                     is_vinyl = True
 
-            kategorije = [k.get('slug', '').lower() for k in item.get('categories', [])]
-            if any(w in k for k in kategorije for w in ['gramofonske', 'ploce', 'vinil', 'vinyl', 'lp']):
-                is_vinyl = True
-
-            if not is_vinyl:
+            if nije_vinil_medij or not is_vinyl:
                 continue
 
             if not s_medij:
@@ -209,16 +222,16 @@ def scrape_ezop_api():
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in vidjeni_linkovi}
         obrisano = pocetni_broj - len(sve_ploce)
-        print(f"\nAnaliza završena. Obrisano {obrisano} prodanih ploča.", flush=True)
+        print(f"\n🧹 Analiza završena. Obrisano {obrisano} prodanih ploča.", flush=True)
     else:
-        print("\nUPOZORENJE: Preskačem brisanje starih ploča radi sigurnosti baze.", flush=True)
+        print("\n⚠️ UPOZORENJE: Preskačem brisanje starih ploča radi sigurnosti baze.", flush=True)
 
     if sve_ploce:
         with open(CSV_FILENAME, 'w', newline='', encoding='utf-8') as f:
             writer = csv.writer(f)
             writer.writerow(['Naslov', 'Cijena', 'URL_Proizvoda', 'URL_Slike', 'Stanje_Medija', 'Stanje_Omota', 'Tip_Artikla'])
             writer.writerows(sve_ploce.values())
-        print(f"Završeno. U bazi je sada ukupno {len(sve_ploce)} ažurnih ploča.", flush=True)
+        print(f"🎉 Završeno. U bazi je sada ukupno {len(sve_ploce)} ažurnih ploča.", flush=True)
 
 if __name__ == "__main__":
     scrape_ezop_api()
