@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
-Vrijeme pokretanja (UTC): 16.10.2026. 06:56:22
+Vrijeme pokretanja (UTC): 17.10.2026. 06:47:32
 ----------------------------------------
 ANALOGNI ZVUK: Pokrećem hibridni API + Cloudscraper sistem...
 Učitano 1622 postojećih ploča.
@@ -16,4 +16,4 @@ UPOZORENJE: Pronađeno premalo linkova (0). Zadržavam postojeću bazu.
 
 Gotovo! Ukupno u CSV-u: 1622
 ----------------------------------------
-Vrijeme završetka (UTC): 16.10.2026. 06:56:28 | Kod izlaza: 0
+Vrijeme završetka (UTC): 17.10.2026. 06:47:36 | Kod izlaza: 0
