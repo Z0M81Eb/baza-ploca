@@ -1,32 +1,31 @@
 === IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
-Vrijeme pokretanja (UTC): 19.10.2026. 07:33:30
+Vrijeme pokretanja (UTC): 19.10.2026. 13:04:45
 ----------------------------------------
-ANALOGNI ZVUK: Pokrećem hibridni API + Cloudscraper sistem...
-Učitano 1624 postojećih ploča.
+ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem sa 100% zaštitom slika...
+📦 Učitano 1623 postojećih ploča.
 
 Probijanje početne zaštite (Naslovnica)...
 
 --- Pokušavam brzi WooCommerce Store API ---
-API Paket 1 -> OK (100 ploča)
-API Paket 2 -> OK (100 ploča)
-API Paket 3 -> OK (100 ploča)
-API Paket 4 -> OK (100 ploča)
-API Paket 5 -> OK (100 ploča)
-API Paket 6 -> OK (100 ploča)
-API Paket 7 -> OK (100 ploča)
-API Paket 8 -> OK (100 ploča)
-API Paket 9 -> OK (100 ploča)
-API Paket 10 -> OK (100 ploča)
-API Paket 11 -> OK (100 ploča)
-API Paket 12 -> OK (100 ploča)
-API Paket 13 -> OK (100 ploča)
-API Paket 14 -> OK (100 ploča)
-API Paket 15 -> OK (100 ploča)
-API Paket 16 -> OK (100 ploča)
-API Paket 17 -> OK (23 ploča)
+API Paket 1 -> OK (100 ploča, sa slikom: 99/100)
+API Paket 2 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 3 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 4 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 5 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 6 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 7 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 8 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 9 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 10 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 11 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 12 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 13 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 14 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 15 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 16 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 17 -> OK (23 ploča, sa slikom: 23/23)
 
-Sinkronizacija prodanih ploča uspješna.
-
-Gotovo! Ukupno u CSV-u: 1623
+🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: 0).
+🎉 Gotovo! Ukupno u CSV-u: 1623 (Sa slikom: 1622)
 ----------------------------------------
-Vrijeme završetka (UTC): 19.10.2026. 07:34:08 | Kod izlaza: 0
+Vrijeme završetka (UTC): 19.10.2026. 13:05:20 | Kod izlaza: 0
