@@ -33,83 +33,167 @@ def kreiraj_sesiju():
         pass
     return session
 
-def ocisti_url_slike(raw_url):
+def normaliziraj_link_proizvoda(href):
+    if not href:
+        return ""
+    puni = urljoin(SITE_URL, href.strip())
+    return puni.split('?')[0].rstrip('/') + '/'
+
+def ocisti_url_slike(raw_url, is_srcset=False):
     if not raw_url:
         return ""
-    val = raw_url.strip()
-    if val.startswith('data:image') or 'placeholder' in val.lower() or 'blank.' in val.lower():
+    val = html.unescape(str(raw_url)).strip()
+    val_lower = val.lower()
+
+    if val_lower.startswith('data:image') or any(x in val_lower for x in ['placeholder', 'blank.', 'spinner', 'loader', '.svg', '1x1', 'emoji', 'gravatar']):
         return ""
-    # Ako je srcset (npr. "https://.../slika.jpg 300w, ..."), uzmi samo prvi URL
-    if ' ' in val or ',' in val:
-        val = val.split(',')[0].strip().split(' ')[0].strip()
+
+    if is_srcset:
+        # Kod srcseta (npr. "https://.../slika.jpg 300w, https://.../slika2.jpg 600w")
+        # Režemo isključivo prema oznaci širine/gustoće (npr. " 300w" ili " 2x"), a ne po imenu datoteke!
+        kandidati = re.split(r'\s+\d+[wx]\s*,?\s*', val)
+        kandidati = [k.strip().rstrip(',') for k in kandidati if k.strip()]
+        if not kandidati:
+            return ""
+        # Uzimamo prvi kandidat (ili zadnji ako želimo veću rezoluciju)
+        val = kandidati[0]
+        if ' ' in val and re.search(r'\s+\d+[wx]$', val):
+            val = re.sub(r'\s+\d+[wx]$', '', val).strip()
+
     if val.startswith('//'):
-        return 'https:' + val
-    if val.startswith('/'):
-        return urljoin(SITE_URL, val)
+        val = 'https:' + val
+    elif val.startswith('/'):
+        val = urljoin(SITE_URL, val)
+
+    if not val.startswith('http'):
+        return ""
+
+    # Zamijeni razmake u nazivu datoteke sa %20 kako URL ne bi puknuo u WordPressu
+    val = val.replace(' ', '%20')
     return val
 
 def izvuci_sliku_iz_elementa(el):
     if not el:
         return ""
 
-    # 1. Provjeri sve <img> oznake unutar elementa
-    for img in el.find_all('img'):
-        for attr in ['data-lazy-src', 'data-src', 'data-original', 'data-large_image', 'src']:
-            url = ocisti_url_slike(img.get(attr, ''))
-            if url:
-                return url
-        for attr in ['data-lazy-srcset', 'data-srcset', 'srcset']:
-            url = ocisti_url_slike(img.get(attr, ''))
-            if url:
-                return url
+    imgs = [el] if getattr(el, 'name', None) == 'img' else el.find_all('img')
 
-    # 2. Provjeri <source> oznake (ako koriste <picture> tag)
+    # 1. Provjeri sve poznate lazy-load i standardne atribute na <img> oznakama
+    lazy_attrs = [
+        'data-lazy-src', 'data-src', 'data-original', 'data-large_image',
+        'data-opt-src', 'nitro-lazy-src', 'data-breeze', 'data-wood-src',
+        'data-src-img', 'data-echo', 'src'
+    ]
+    srcset_attrs = ['data-lazy-srcset', 'data-srcset', 'srcset']
+
+    for img in imgs:
+        for attr in lazy_attrs:
+            url = ocisti_url_slike(img.get(attr, ''), is_srcset=False)
+            if url:
+                return url
+        for attr in srcset_attrs:
+            url = ocisti_url_slike(img.get(attr, ''), is_srcset=True)
+            if url:
+                return url
+        # Provjeri i sve ostale atribute na <img> ako sadrže wp-content/uploads
+        for attr_name, attr_val in img.attrs.items():
+            if isinstance(attr_val, str) and '/wp-content/uploads/' in attr_val:
+                is_ss = 'srcset' in attr_name.lower()
+                url = ocisti_url_slike(attr_val, is_srcset=is_ss)
+                if url:
+                    return url
+
+    # 2. Provjeri <source> oznake (unutar <picture> elementa)
     for source in el.find_all('source'):
-        for attr in ['data-srcset', 'srcset', 'src']:
-            url = ocisti_url_slike(source.get(attr, ''))
+        for attr in ['data-srcset', 'srcset']:
+            url = ocisti_url_slike(source.get(attr, ''), is_srcset=True)
             if url:
                 return url
+        url = ocisti_url_slike(source.get('src', ''), is_srcset=False)
+        if url:
+            return url
 
-    # 3. Provjeri <noscript> (često kod WP-Rocket / LiteSpeed lazy loada)
+    # 3. Provjeri sve <img> oznake u sirovom HTML-u (hvata <noscript> slike koje lxml drži kao tekst!)
     raw_html = str(el)
-    ns_match = re.search(r'<img[^>]+src=["\']([^"\']+)["\']', raw_html, re.IGNORECASE)
-    if ns_match:
-        url = ocisti_url_slike(ns_match.group(1))
+    for m in re.finditer(r'<img[^>]+(?:data-lazy-src|data-src|src)=["\']([^"\']+)["\']', raw_html, re.IGNORECASE):
+        url = ocisti_url_slike(m.group(1), is_srcset=False)
         if url:
             return url
 
     # 4. Provjeri CSS background-image
-    bg_match = re.search(r'background-image\s*:\s*url\(["\']?([^"\')]+)["\']?\)', raw_html, re.IGNORECASE)
-    if bg_match:
-        url = ocisti_url_slike(bg_match.group(1))
+    for m in re.finditer(r'background-image\s*:\s*url\(["\']?([^"\')]+)["\']?\)', raw_html, re.IGNORECASE):
+        url = ocisti_url_slike(m.group(1), is_srcset=False)
+        if url:
+            return url
+
+    # 5. Direktni ulov bilo kojeg /wp-content/uploads/ linka slike unutar HTML bloka kartice
+    upload_match = re.search(r'(https?://[^"\'\s<>)]+/wp-content/uploads/[^"\'\s<>)]+\.(?:jpg|jpeg|png|webp))', raw_html, re.IGNORECASE)
+    if upload_match:
+        url = ocisti_url_slike(upload_match.group(1), is_srcset=False)
         if url:
             return url
 
     return ""
 
+def broj_razlicitih_proizvoda_u_elementu(el):
+    linkovi = set()
+    for a in el.find_all('a', href=True):
+        h = a['href'].strip()
+        if '/proizvod/' in h and '?add-to-cart=' not in h:
+            linkovi.add(normaliziraj_link_proizvoda(h))
+            if len(linkovi) > 1:
+                return len(linkovi)
+    return len(linkovi)
+
+def pronadji_puni_okvir_kartice(start_el):
+    """Penje se uz DOM stablo sve do najvišeg okvira koji i dalje pripada SAMO tom jednom proizvodu."""
+    kandidat = start_el
+    for _ in range(7):
+        roditelj = kandidat.parent
+        if not roditelj or getattr(roditelj, 'name', None) in ['body', 'main', 'html', '[document]']:
+            break
+        if broj_razlicitih_proizvoda_u_elementu(roditelj) == 1:
+            kandidat = roditelj
+        else:
+            break
+    return kandidat
+
 def izgradi_mapu_slika_na_stranici(soup):
-    """Mapira svaki link proizvoda (/proizvod/...) s pripadajućom slikom bilo gdje na stranici."""
     mapa_slika = {}
     for a in soup.find_all('a', href=True):
         href = a['href'].strip()
         if '/proizvod/' not in href or '?add-to-cart=' in href:
             continue
-        norm_link = href.rstrip('/')
+        norm_link = normaliziraj_link_proizvoda(href)
         if norm_link in mapa_slika and mapa_slika[norm_link]:
             continue
 
-        # Provjeri je li slika direktno unutar ovog <a> linka
-        slika = izvuci_sliku_iz_elementa(a)
-        if not slika and a.parent:
-            # Provjeri roditeljski element
-            slika = izvuci_sliku_iz_elementa(a.parent)
-        if not slika and a.parent and a.parent.parent:
-            # Provjeri zajednički okvir kartice (2 razine iznad)
-            slika = izvuci_sliku_iz_elementa(a.parent.parent)
-
+        okvir = pronadji_puni_okvir_kartice(a)
+        slika = izvuci_sliku_iz_elementa(okvir)
         if slika:
             mapa_slika[norm_link] = slika
     return mapa_slika
+
+def dohvati_sliku_sa_stranice_proizvoda(session, product_url):
+    """Sigurnosni fallback: ako slika nije pronađena na arhivi, otvara sam proizvod i uzima og:image."""
+    try:
+        r = session.get(product_url, timeout=15)
+        if r.status_code != 200:
+            return ""
+        s = BeautifulSoup(r.text, 'lxml')
+        og = s.find('meta', property='og:image') or s.find('meta', attrs={'name': 'twitter:image'})
+        if og and og.get('content'):
+            url = ocisti_url_slike(og['content'], is_srcset=False)
+            if url:
+                return url
+        galerija = s.select_one('.woocommerce-product-gallery, .product-images, .images, .product-main-image')
+        if galerija:
+            url = izvuci_sliku_iz_elementa(galerija)
+            if url:
+                return url
+    except Exception:
+        pass
+    return ""
 
 def izvuci_cijenu(tekst):
     svi_brojevi = re.findall(r'(\d{1,4}[.,]\d{2})\s*€', tekst)
@@ -133,47 +217,44 @@ def parsiraj_kartice_na_stranici(soup, default_format):
     kartice = soup.select('li.product, div.product, article.product, .type-product, .product-item, .product-grid-item')
 
     if not kartice:
-        vidjeni_roditelji = set()
+        vidjeni_okviri = set()
         for a in soup.select('a[href*="/proizvod/"]'):
-            # Penjemo se do okvira koji sadrži i cijenu/košaricu i sliku
-            kandidat = a
-            for _ in range(4):
-                if kandidat.parent and kandidat.parent.name in ['li', 'article', 'div']:
-                    kandidat = kandidat.parent
-                    t = kandidat.get_text(" ", strip=True)
-                    if '€' in t and ('košaric' in t.lower() or 'pročitaj' in t.lower() or 'rasprodano' in t.lower()):
-                        break
-            if kandidat and id(kandidat) not in vidjeni_roditelji:
-                vidjeni_roditelji.add(id(kandidat))
-                kartice.append(kandidat)
+            if '?add-to-cart=' in a.get('href', ''):
+                continue
+            okvir = pronadji_puni_okvir_kartice(a)
+            if okvir and id(okvir) not in vidjeni_okviri:
+                vidjeni_okviri.add(id(okvir))
+                kartice.append(okvir)
 
     vidjeni_linkovi_na_str = set()
 
     for k in kartice:
-        klase = " ".join(k.get('class', [])).lower()
-        tekst_kartice = k.get_text(" ", strip=True)
+        # Osiguraj da imamo puni vanjski okvir kartice ovog jednog proizvoda
+        puni_k = pronadji_puni_okvir_kartice(k)
+        klase = " ".join((k.get('class', []) or []) + (puni_k.get('class', []) or [])).lower()
+        tekst_kartice = puni_k.get_text(" ", strip=True)
         tekst_lower = tekst_kartice.lower()
 
         if 'outofstock' in klase:
             continue
-        if 'dodaj u košaricu' not in tekst_lower and 'add_to_cart' not in str(k).lower():
+        if 'dodaj u košaricu' not in tekst_lower and 'add_to_cart' not in str(puni_k).lower():
             continue
 
         link = ""
-        for a in k.find_all('a', href=True):
+        for a in puni_k.find_all('a', href=True):
             href = a['href'].strip()
             if '/proizvod/' in href and '?add-to-cart=' not in href:
-                link = href
+                link = normaliziraj_link_proizvoda(href)
                 break
         if not link or link in vidjeni_linkovi_na_str:
             continue
 
-        naslov_el = k.select_one('.woocommerce-loop-product__title, .product-title, h2, h3, h4')
+        naslov_el = puni_k.select_one('.woocommerce-loop-product__title, .product-title, h2, h3, h4')
         if naslov_el:
             naslov = naslov_el.get_text(" ", strip=True)
         else:
             naslov = ""
-            for a in k.find_all('a', href=True):
+            for a in puni_k.find_all('a', href=True):
                 if '/proizvod/' in a['href']:
                     t = a.get_text(" ", strip=True)
                     if t and 'dodaj u košaricu' not in t.lower() and 'pogledaj' not in t.lower():
@@ -184,18 +265,14 @@ def parsiraj_kartice_na_stranici(soup, default_format):
         if not naslov:
             continue
 
-        cijena_el = k.select_one('.price ins, .price')
+        cijena_el = puni_k.select_one('.price ins, .price')
         cijena = izvuci_cijenu(cijena_el.get_text(" ", strip=True) if cijena_el else tekst_kartice)
         if cijena == "0.00":
             continue
 
-        # Izvlačenje slike (iz kartice, iz mape stranice ili iz roditeljskog okvira)
-        norm_link = link.rstrip('/')
-        slika_url = izvuci_sliku_iz_elementa(k)
+        slika_url = izvuci_sliku_iz_elementa(puni_k)
         if not slika_url:
-            slika_url = mapa_slika.get(norm_link, '')
-        if not slika_url and k.parent:
-            slika_url = izvuci_sliku_iz_elementa(k.parent)
+            slika_url = mapa_slika.get(link, '')
 
         vidjeni_linkovi_na_str.add(link)
         pronadjeno.append((link, [naslov, cijena, link, slika_url, "Novo", "Novo", default_format]))
@@ -213,11 +290,14 @@ def scrape_menart_html():
             next(reader, None)
             for row in reader:
                 if len(row) >= 7:
-                    sve_ploce[row[2]] = row
+                    norm_k = normaliziraj_link_proizvoda(row[2])
+                    row[2] = norm_k
+                    sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih ploča iz memorije.", flush=True)
 
     session = kreiraj_sesiju()
     print("\n🚀 Pokrećem HTML skeniranje Menart vinilnih arhiva...", flush=True)
+    ispisan_primjer_slike = False
 
     for base_url, format_oznaka in VINYL_ARCHIVES:
         print(f"\n📂 Skeniram arhivu: {base_url} ({format_oznaka})", flush=True)
@@ -265,11 +345,22 @@ def scrape_menart_html():
                     praznih_zaredom = 0
                     sa_slikom = 0
                     for link, red_podataka in stavke:
-                        # Ako slučajno nova slika nije pronađena, zadrži staru sliku iz CSV-a ako postoji
+                        # 1. Ako slika nije nađena na arhivi, provjeri imamo li već važeću sliku u starom CSV-u
                         if not red_podataka[3] and link in sve_ploce and len(sve_ploce[link]) >= 4:
-                            red_podataka[3] = sve_ploce[link][3]
+                            stara_slika = ocisti_url_slike(sve_ploce[link][3], is_srcset=False)
+                            if stara_slika:
+                                red_podataka[3] = stara_slika
+
+                        # 2. Ako je i dalje prazna, otvori pojedinačnu stranicu proizvoda i izvuci og:image
+                        if not red_podataka[3]:
+                            red_podataka[3] = dohvati_sliku_sa_stranice_proizvoda(session, link)
+
                         if red_podataka[3]:
                             sa_slikom += 1
+                            if not ispisan_primjer_slike:
+                                print(f"\n🖼️ Primjer uhvaćene slike: {red_podataka[3]}", end=" ", flush=True)
+                                ispisan_primjer_slike = True
+
                         sve_ploce[link] = red_podataka
                         vidjeni_linkovi.add(link)
                     print(f"-> Pronađeno {len(stavke)} vinila (Sa slikom: {sa_slikom}/{len(stavke)}).", flush=True)
