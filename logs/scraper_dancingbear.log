@@ -1,9 +1,9 @@
 === IZVJEŠTAJ RADA: scraper_dancingbear.py ===
-Vrijeme pokretanja (UTC): 18.10.2026. 07:07:34
+Vrijeme pokretanja (UTC): 19.10.2026. 07:33:29
 ----------------------------------------
 Trenutna radna mapa: /home/runner/work/baza-ploca/baza-ploca
 DANCING BEAR: Pokrećem napredni API Sweep s 'Mirror' logikom...
-Učitano 7660 postojećih ploča iz memorije.
+Učitano 7636 postojećih ploča iz memorije.
 
 === POKREĆEM SKENIRANJE ===
 Preuzimam API paket 1... -> Pronađeno vinila: 35
@@ -52,7 +52,7 @@ Preuzimam API paket 43... -> Pronađeno vinila: 49
 Preuzimam API paket 44... -> Pronađeno vinila: 37
 Preuzimam API paket 45... -> Pronađeno vinila: 35
 Preuzimam API paket 46... -> Pronađeno vinila: 17
-Preuzimam API paket 47... -> Pronađeno vinila: 55
+Preuzimam API paket 47... -> Pronađeno vinila: 54
 Preuzimam API paket 48... -> Pronađeno vinila: 27
 Preuzimam API paket 49... -> Pronađeno vinila: 27
 Preuzimam API paket 50... -> Pronađeno vinila: 40
@@ -267,7 +267,7 @@ Preuzimam API paket 258... -> Pronađeno vinila: 6
 Preuzimam API paket 259... -> Pronađeno vinila: 0
 Preuzimam API paket 260... -> Paket prazan. Kraj arhive.
 
-Analiza završena. Obrisano 28 prodanih ploča koje više ne postoje na webshopu.
-Završeno! Baza je ažurna i sadrži 7636 ploča.
+Analiza završena. Obrisano 1 prodanih ploča koje više ne postoje na webshopu.
+Završeno! Baza je ažurna i sadrži 7635 ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 18.10.2026. 07:18:21 | Kod izlaza: 0
+Vrijeme završetka (UTC): 19.10.2026. 07:45:58 | Kod izlaza: 0

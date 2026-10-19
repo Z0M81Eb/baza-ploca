@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 18.10.2026. 07:07:36
+Vrijeme pokretanja (UTC): 19.10.2026. 07:33:31
 ----------------------------------------
 📦 Učitano 10333 postojećih ploča iz memorije.
 📡 Status naslovnice Ezop: 403 (Server: cloudflare)
@@ -33,4 +33,4 @@ Preuzimam API paket 1... [Kod: 403]
 ⚠️ UPOZORENJE: Preskačem brisanje starih ploča radi sigurnosti baze.
 🎉 Završeno. U bazi je sada ukupno 10333 ažurnih ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 18.10.2026. 07:08:11 | Kod izlaza: 0
+Vrijeme završetka (UTC): 19.10.2026. 07:34:06 | Kod izlaza: 0
