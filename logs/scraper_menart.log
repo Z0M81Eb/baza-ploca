@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_menart.py ===
-Vrijeme pokretanja (UTC): 19.10.2026. 08:22:49
+Vrijeme pokretanja (UTC): 20.10.2026. 07:21:45
 ----------------------------------------
 📦 Učitano 6525 postojećih ploča iz memorije.
 
@@ -7,7 +7,7 @@ Vrijeme pokretanja (UTC): 19.10.2026. 08:22:49
 
 📂 Skeniram arhivu: https://menartshop.hr/format-glazba/lp/ (LP)
 📄 Stranica 1... 
-🖼️ Primjer uhvaćene slike: https://menartshop.hr/app/uploads/2026/09/ba0ff9b1-704c-4cc6-81df-52930cfc1ea4-200x300-png.webp -> Pronađeno 48 vinila (Sa slikom: 48/48).
+🖼️ Primjer uhvaćene slike: https://menartshop.hr/app/uploads/2026/09/ba0ff9b1-704c-4cc6-81df-52930cfc1ea4-200x300-png.webp -> Pronađeno 47 vinila (Sa slikom: 47/47).
 📄 Stranica 2... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 3... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 4... -> Pronađeno 36 vinila (Sa slikom: 36/36).
@@ -185,13 +185,12 @@ Vrijeme pokretanja (UTC): 19.10.2026. 08:22:49
 📄 Stranica 176... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 177... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 178... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 179... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 180... -> Pronađeno 27 vinila (Sa slikom: 27/27).
+📄 Stranica 179... -> Pronađeno 35 vinila (Sa slikom: 35/35).
+📄 Stranica 180... -> 0 na zalihi na ovoj stranici.
 📄 Stranica 181... -> 0 na zalihi na ovoj stranici.
 📄 Stranica 182... -> 0 na zalihi na ovoj stranici.
 📄 Stranica 183... -> 0 na zalihi na ovoj stranici.
 📄 Stranica 184... -> 0 na zalihi na ovoj stranici.
-📄 Stranica 185... -> 0 na zalihi na ovoj stranici.
 
 📂 Skeniram arhivu: https://menartshop.hr/format-glazba/lp-cd/ (LP+CD)
 📄 Stranica 1... -> Pronađeno 36 vinila (Sa slikom: 36/36).
@@ -206,7 +205,7 @@ Vrijeme pokretanja (UTC): 19.10.2026. 08:22:49
 📄 Stranica 1... -> Pronađeno 4 vinila (Sa slikom: 4/4).
 📄 Stranica 2... -> Kraj arhive (404).
 
-🧹 Analiza završena. Obrisano 0 rasprodanih ploča.
-🎉 GOTOVO! U bazi je ukupno 6525 ploča (od toga sa slikom: 6525).
+🧹 Analiza završena. Obrisano 30 rasprodanih ploča.
+🎉 GOTOVO! U bazi je ukupno 6497 ploča (od toga sa slikom: 6497).
 ----------------------------------------
-Vrijeme završetka (UTC): 19.10.2026. 08:29:51 | Kod izlaza: 0
+Vrijeme završetka (UTC): 20.10.2026. 07:28:43 | Kod izlaza: 0
