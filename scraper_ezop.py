@@ -1,15 +1,22 @@
 from curl_cffi import requests as cffi_requests
 import cloudscraper
+import requests as std_requests
 from bs4 import BeautifulSoup
+import urllib3
+import socket
+import ipaddress
+import subprocess
 import csv
 import os
 import re
 import time
 import html
-from urllib.parse import urljoin, quote
+from urllib.parse import urljoin
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 SITE_URL = "https://ezop-antikvarijat.hr"
-TRANSLATE_HOST = "ezop--antikvarijat-hr.translate.goog"
+DOMAIN = "ezop-antikvarijat.hr"
 CSV_FILENAME = "ezop_ploce.csv"
 
 HTML_ARCHIVES = [
@@ -22,18 +29,113 @@ API_ENDPOINTS = [
     ("https://ezop-antikvarijat.hr/?rest_route=/wc/store/products", "&")
 ]
 
-# Vanjski proxy relayi za zaobilaženje blokade GitHub (Microsoft Azure) IP adresa
-PROXY_RELAYS = [
-    ("CodeTabs", lambda u: f"https://api.codetabs.com/v1/proxy?quest={quote(u, safe='')}"),
-    ("AllOrigins", lambda u: f"https://api.allorigins.win/raw?url={quote(u, safe='')}"),
-    ("CorsProxy", lambda u: f"https://corsproxy.io/?url={quote(u, safe='')}")
+# Službeni Cloudflare IPv4 rasponi (kako bismo ih filtrirali i prepoznali stvarni Origin IP)
+CF_NETWORKS = [
+    ipaddress.ip_network(cidr) for cidr in [
+        "173.245.48.0/20", "103.21.244.0/22", "103.22.200.0/22", "103.31.4.0/22",
+        "141.101.64.0/18", "108.162.192.0/18", "190.93.240.0/20", "188.114.96.0/20",
+        "197.234.240.0/22", "198.41.128.0/17", "162.158.0.0/15", "104.16.0.0/13",
+        "104.24.0.0/14", "172.64.0.0/13", "131.0.72.0/22"
+    ]
 ]
+
+# Globalni DNS override za direktno spajanje na Origin IP
+_ORIG_GETADDRINFO = socket.getaddrinfo
+FORCED_ORIGIN_IP = None
+
+def _patched_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
+    if FORCED_ORIGIN_IP and host in (DOMAIN, f"www.{DOMAIN}"):
+        return _ORIG_GETADDRINFO(FORCED_ORIGIN_IP, port, socket.AF_INET, type, proto, flags)
+    return _ORIG_GETADDRINFO(host, port, family, type, proto, flags)
+
+socket.getaddrinfo = _patched_getaddrinfo
+
+def je_li_cloudflare_ip(ip_str):
+    try:
+        ip_obj = ipaddress.ip_address(ip_str.strip())
+        if ip_obj.is_private or ip_obj.is_loopback:
+            return True
+        return any(ip_obj in net for net in CF_NETWORKS)
+    except Exception:
+        return True
+
+def dohvati_dns_zapise(ime, tip="A"):
+    odgovori = []
+    try:
+        r = std_requests.get(f"https://dns.google/resolve?name={ime}&type={tip}", timeout=8)
+        if r.status_code == 200:
+            for ans in r.json().get("Answer", []):
+                if "data" in ans:
+                    odgovori.append(str(ans["data"]).strip('"'))
+    except Exception:
+        pass
+    return odgovori
+
+def pronadji_kandidate_za_origin_ip():
+    print("🕵️ Tražim stvarni Origin IP servera (SPF / MX / Poddomene)...", flush=True)
+    kandidati = []
+
+    def dodaj_ip(ip_val, izvor):
+        ip_val = ip_val.strip()
+        if re.match(r"^\d{1,3}(?:\.\d{1,3}){3}$", ip_val) and not je_li_cloudflare_ip(ip_val):
+            if ip_val not in kandidati:
+                kandidati.append(ip_val)
+                print(f"   📍 Pronađen ne-Cloudflare IP kandidat [{ip_val}] (Izvor: {izvor})", flush=True)
+
+    # 1. Provjeri TXT (SPF) zapise
+    for txt in dohvati_dns_zapise(DOMAIN, "TXT"):
+        for m in re.finditer(r"ip4:(\d{1,3}(?:\.\d{1,3}){3})", txt):
+            dodaj_ip(m.group(1), "SPF ip4")
+        for m in re.finditer(r"(?:a|include):([a-zA-Z0-9.-]+)", txt):
+            host_spf = m.group(1)
+            if not any(x in host_spf for x in ["google", "outlook", "spf.", "mailchimp", "sendgrid"]):
+                for ip_a in dohvati_dns_zapise(host_spf, "A"):
+                    dodaj_ip(ip_a, f"SPF host ({host_spf})")
+
+    # 2. Provjeri MX zapise
+    for mx in dohvati_dns_zapise(DOMAIN, "MX"):
+        mx_host = mx.split()[-1].rstrip(".")
+        for ip_a in dohvati_dns_zapise(mx_host, "A"):
+            dodaj_ip(ip_a, f"MX ({mx_host})")
+
+    # 3. Provjeri tipične cPanel poddomene
+    poddomene = [
+        "mail", "cpanel", "webmail", "whm", "ftp", "direct",
+        "cpcalendars", "cpcontacts", "autodiscover", "dev", "old", "test"
+    ]
+    for sub in poddomene:
+        puna_sub = f"{sub}.{DOMAIN}"
+        for ip_a in dohvati_dns_zapise(puna_sub, "A"):
+            dodaj_ip(ip_a, f"Poddomena ({puna_sub})")
+
+    # 4. Ako smo našli cPanel IP (npr. mail je na .11, a web na .10 ili .12), dodaj +/-2 susjedne IP adrese
+    osnovni = list(kandidati)
+    for ip_baza in osnovni:
+        dijelovi = ip_baza.split(".")
+        zadnji = int(dijelovi[3])
+        for pomak in [-2, -1, 1, 2]:
+            novi_zadnji = zadnji + pomak
+            if 1 <= novi_zadnji <= 254:
+                susjed = f"{dijelovi[0]}.{dijelovi[1]}.{dijelovi[2]}.{novi_zadnji}"
+                if susjed not in kandidati and not je_li_cloudflare_ip(susjed):
+                    kandidati.append(susjed)
+
+    if not kandidati:
+        print("   ℹ️ Nema izloženih Origin IP adresa u javnom DNS-u.", flush=True)
+    return kandidati
+
+def postavi_hosts_override(ip_adresa):
+    """Upisuje Origin IP u /etc/hosts kako bi i libcurl (curl_cffi) zaobišao Cloudflare."""
+    linija = f"\n{ip_adresa} {DOMAIN} www.{DOMAIN}\n"
+    try:
+        subprocess.run(["sudo", "sh", "-c", f"echo '{linija}' >> /etc/hosts"], check=False, timeout=5)
+    except Exception:
+        pass
 
 def normaliziraj_link_proizvoda(href):
     if not href:
         return ""
-    cisti = str(href).strip().replace(TRANSLATE_HOST, "ezop-antikvarijat.hr")
-    puni = urljoin(SITE_URL, cisti)
+    puni = urljoin(SITE_URL, str(href).strip())
     return puni.split('?')[0].rstrip('/') + '/'
 
 def pretvori_ocjenu(ocjena_str):
@@ -56,7 +158,6 @@ def ocisti_url_slike(raw_url, is_srcset=False):
     if not raw_url:
         return ""
     val = html.unescape(str(raw_url)).strip()
-    val = val.replace(TRANSLATE_HOST, "ezop-antikvarijat.hr")
     val_lower = val.lower()
 
     if val_lower.startswith('data:image') or any(x in val_lower for x in ['placeholder', 'blank.', 'spinner', 'loader', '.svg', '1x1', 'emoji', 'gravatar']):
@@ -78,9 +179,6 @@ def ocisti_url_slike(raw_url, is_srcset=False):
 
     if not val.startswith('http'):
         return ""
-
-    if '?_x_tr_' in val:
-        val = val.split('?_x_tr_')[0]
 
     return val.replace(' ', '%20')
 
@@ -176,111 +274,175 @@ def izvuci_cijenu(tekst):
                 pass
     return "0.00"
 
-def ispisi_dijagnostiku_403(res, izvor="Direktno"):
-    if res is None:
-        print(f"⚠️ [{izvor}] Nema odgovora sa servera.", flush=True)
-        return
-    cf_mit = res.headers.get('cf-mitigated', 'nema')
-    server = res.headers.get('Server', 'Nepoznat')
-    title_m = re.search(r'<title[^>]*>(.*?)</title>', res.text, re.IGNORECASE | re.DOTALL)
-    title = title_m.group(1).strip() if title_m else "Bez naslova"
-    uzorak = re.sub(r'\s+', ' ', res.text[:220]).strip()
-    print(f"📡 [{izvor}] HTTP {res.status_code} | Server: {server} | cf-mitigated: {cf_mit} | Title: '{title}'", flush=True)
-    if res.status_code != 200:
-        print(f"📄 [{izvor}] Uzorak odgovora: {uzorak}", flush=True)
-
-class EzopFetcher:
+class EzopSmartTransport:
     def __init__(self):
-        # VAŽNO: Ne gazimo defaultne headere u curl_cffi kako ne bismo srušili Chrome TLS/HTTP2 fingerprint!
-        self.cffi_sessions = {}
-        for p in ["chrome120", "chrome116", "safari15_5"]:
+        self.mode = None # 'origin', 'tor', 'proxy', 'direct'
+        self.active_proxy = None
+        self.cffi_s = cffi_requests.Session(impersonate="chrome120", verify=False)
+        self.std_s = std_requests.Session()
+        self.std_s.verify = False
+        self.std_s.headers.update({
+            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/json,*/*;q=0.8",
+            "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7"
+        })
+
+    def inicijaliziraj_kanal(self):
+        global FORCED_ORIGIN_IP
+        test_api = "https://ezop-antikvarijat.hr/wp-json/wc/store/products?page=1&per_page=5"
+        test_html = "https://ezop-antikvarijat.hr/kategorija/glazba/"
+
+        # 1. PROVJERA DIREKTNOG PRISTUPA
+        try:
+            r = self.cffi_s.get(test_api, timeout=12)
+            if r.status_code == 200 and r.text.strip().startswith('['):
+                print("✅ Direktni pristup radi!", flush=True)
+                self.mode = 'direct'
+                return True
+        except Exception:
+            pass
+
+        # 2. RAZINA 1: PROBOJ PREKO ORIGIN IP ADRESE (ZAOBILAŽENJE CLOUDFLAREA)
+        kandidati = pronadji_kandidate_za_origin_ip()
+        for ip_kand in kandidati[:12]:
+            FORCED_ORIGIN_IP = ip_kand
             try:
-                self.cffi_sessions[p] = cffi_requests.Session(impersonate=p)
+                r = self.std_s.get(test_api, timeout=8)
+                if r.status_code == 200 and r.text.strip().startswith('['):
+                    print(f"🔓 BINGO! Cloudflare zaobiđen direktno preko Origin IP servera: {ip_kand} (API radi!)", flush=True)
+                    postavi_hosts_override(ip_kand)
+                    self.mode = 'origin'
+                    return True
+                r_html = self.std_s.get(test_html, timeout=8)
+                if r_html.status_code == 200 and ('/proizvod/' in r_html.text or 'woocommerce' in r_html.text.lower()):
+                    print(f"🔓 BINGO! Cloudflare zaobiđen direktno preko Origin IP servera: {ip_kand} (HTML radi!)", flush=True)
+                    postavi_hosts_override(ip_kand)
+                    self.mode = 'origin'
+                    return True
             except Exception:
                 pass
-        self.cloud_s = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'desktop': True})
-        self.aktivni_api_relay = None
-        self.koristi_translate_html = False
-        self.dijagnostika_ispisana = False
+        FORCED_ORIGIN_IP = None
 
-    def dohvati(self, url, is_json=False, timeout=25):
-        # 1. Ako smo već otkrili da samo proxy relay radi za JSON, koristi njega prvo
-        if is_json and self.aktivni_api_relay is not None:
-            ime_relaya, fn_relaya = PROXY_RELAYS[self.aktivni_api_relay]
+        # 3. RAZINA 2: TOR REGIONALNI TUNEL ({hr}, {si}, {at}, {hu}, {ba}, {rs})
+        if self.pokreni_tor_regionalni_tunel(test_api, test_html):
+            return True
+
+        # 4. RAZINA 3: REGIONALNI JAVNI PROXYJI (HR/SI/AT/HU/DE/CZ/SK)
+        if self.pronadji_regionalni_proxy(test_api, test_html):
+            return True
+
+        print("❌ Svi kanali za probijanje Cloudflare Geo-blokade su iscrpljeni.", flush=True)
+        return False
+
+    def pokreni_tor_regionalni_tunel(self, test_api, test_html):
+        print("\n🌐 Podižem Tor regionalni tunel (Hrvatska i susjedne zemlje)...", flush=True)
+        try:
+            subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
+            subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
+            torrc = (
+                "SocksPort 9050\n"
+                "ExitNodes {hr},{si},{ba},{rs},{hu},{at},{me},{mk},{sk},{cz},{ro},{bg},{it},{de}\n"
+                "StrictNodes 1\n"
+            )
+            subprocess.run(["sudo", "sh", "-c", f"echo '{torrc}' > /etc/tor/torrc"], check=False, timeout=5)
+            subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
+            time.sleep(8)
+
+            tor_proxy = "socks5h://127.0.0.1:9050"
+            for krug in range(1, 4):
+                try:
+                    s_tor = cffi_requests.Session(impersonate="chrome120", proxies={"http": tor_proxy, "https": tor_proxy}, verify=False)
+                    ip_info = s_tor.get("https://ipinfo.io/json", timeout=12).json()
+                    print(f"   🔄 Tor krug {krug}: Izlazna IP {ip_info.get('ip')} ({ip_info.get('country')})", flush=True)
+
+                    r = s_tor.get(test_api, timeout=20)
+                    if r.status_code == 200 and r.text.strip().startswith('['):
+                        print("🔓 BINGO! Ezop API probijen kroz Tor regionalni tunel!", flush=True)
+                        self.cffi_s = s_tor
+                        self.active_proxy = tor_proxy
+                        self.mode = 'tor'
+                        return True
+
+                    r_h = s_tor.get(test_html, timeout=20)
+                    if r_h.status_code == 200 and '/proizvod/' in r_h.text:
+                        print("🔓 BINGO! Ezop HTML probijen kroz Tor regionalni tunel!", flush=True)
+                        self.cffi_s = s_tor
+                        self.active_proxy = tor_proxy
+                        self.mode = 'tor'
+                        return True
+                except Exception as e:
+                    print(f"   ⚠️ Tor krug {krug} nije prošao: {e}", flush=True)
+
+                subprocess.run(["sudo", "service", "tor", "reload"], check=False, timeout=10)
+                time.sleep(5)
+        except Exception as e:
+            print(f"⚠️ Greška pri pokretanju Tora: {e}", flush=True)
+        return False
+
+    def pronadji_regionalni_proxy(self, test_api, test_html):
+        print("\n🌍 Tražim otvoreni europski/regionalni proxy...", flush=True)
+        proxy_lista = []
+        izvori = [
+            "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=http&timeout=5000&country=HR,SI,BA,RS,HU,AT,DE,CZ,SK,IT,PL&ssl=all&anonymity=all",
+            "https://api.proxyscrape.com/v2/?request=displayproxies&protocol=socks5&timeout=5000&country=HR,SI,BA,RS,HU,AT,DE,CZ,SK,IT,PL"
+        ]
+        for url_izvora in izvori:
             try:
-                p_url = fn_relaya(url)
-                s = next(iter(self.cffi_sessions.values()))
-                r = s.get(p_url, timeout=timeout)
+                r = std_requests.get(url_izvora, timeout=10)
+                if r.status_code == 200:
+                    proto = "socks5" if "socks5" in url_izvora else "http"
+                    for linija in r.text.splitlines():
+                        linija = linija.strip()
+                        if ":" in linija:
+                            proxy_lista.append(f"{proto}://{linija}")
+            except Exception:
+                pass
+
+        print(f"   🔎 Pronađeno {len(proxy_lista)} regionalnih proxy kandidata. Testiram...", flush=True)
+        for p_url in proxy_lista[:35]:
+            try:
+                s_p = cffi_requests.Session(impersonate="chrome120", proxies={"http": p_url, "https": p_url}, verify=False)
+                r = s_p.get(test_api, timeout=8)
+                if r.status_code == 200 and r.text.strip().startswith('['):
+                    print(f"🔓 BINGO! Проbijeno preko regionalnog proxyja: {p_url}", flush=True)
+                    self.cffi_s = s_p
+                    self.active_proxy = p_url
+                    self.mode = 'proxy'
+                    return True
+                r_h = s_p.get(test_html, timeout=8)
+                if r_h.status_code == 200 and '/proizvod/' in r_h.text:
+                    print(f"🔓 BINGO! HTML probijen preko regionalnog proxyja: {p_url}", flush=True)
+                    self.cffi_s = s_p
+                    self.active_proxy = p_url
+                    self.mode = 'proxy'
+                    return True
+            except Exception:
+                continue
+        return False
+
+    def get(self, url, timeout=25):
+        if self.mode == 'origin':
+            try:
+                r = self.std_s.get(url, timeout=timeout)
                 if r.status_code in [200, 400, 404]:
                     return r
             except Exception:
-                self.aktivni_api_relay = None
-
-        # 2. Pokušaj direktno s čistim curl_cffi profilima (bez custom HEADERS)
-        zadnji_res = None
-        for profil, sess in self.cffi_sessions.items():
-            try:
-                res = sess.get(url, timeout=timeout)
-                zadnji_res = res
-                if res.status_code == 200:
-                    if is_json and not (res.text.strip().startswith('[') or res.text.strip().startswith('{')):
-                        continue
-                    return res
-                elif res.status_code in [400, 404]:
-                    return res
-            except Exception:
-                continue
-
-        if not self.dijagnostika_ispisana and zadnji_res is not None:
-            ispisi_dijagnostiku_403(zadnji_res, "Direktni curl_cffi")
-            self.dijagnostika_ispisana = True
-
-        # 3. Pokušaj kroz proxy relaye (zaobilazi blokadu GitHub Azure IP adresa)
-        for idx, (ime_relaya, fn_relaya) in enumerate(PROXY_RELAYS):
-            try:
-                p_url = fn_relaya(url)
-                s = next(iter(self.cffi_sessions.values()))
-                res = s.get(p_url, timeout=timeout)
-                if res.status_code == 200:
-                    tekst = res.text.strip()
-                    if is_json and (tekst.startswith('[') or tekst.startswith('{')):
-                        if self.aktivni_api_relay != idx:
-                            print(f"\n🔓 Probijena blokada preko [{ime_relaya}] proxyja!", flush=True)
-                            self.aktivni_api_relay = idx
-                        return res
-                    elif not is_json and ('/proizvod/' in tekst or 'woocommerce' in tekst.lower()):
-                        print(f"\n🔓 HTML dohvaćen preko [{ime_relaya}] proxyja!", flush=True)
-                        return res
-            except Exception:
-                continue
-
-        # 4. Ako tražimo HTML, pokušaj preko Google Translate proxy mosta (Google IP adrese)
-        if not is_json:
-            try:
-                putanja = url.replace(SITE_URL, "")
-                sep = "&" if "?" in putanja else "?"
-                g_url = f"https://{TRANSLATE_HOST}{putanja}{sep}_x_tr_sl=en&_x_tr_tl=hr&_x_tr_hl=hr"
-                s = next(iter(self.cffi_sessions.values()))
-                res = s.get(g_url, timeout=timeout)
-                if res.status_code == 200 and ('/proizvod/' in res.text or 'product' in res.text.lower()):
-                    if not self.koristi_translate_html:
-                        print("\n🔓 HTML probijen preko Google Translate Proxyja!", flush=True)
-                        self.koristi_translate_html = True
-                    return res
-                elif res.status_code == 404:
-                    return res
-            except Exception:
                 pass
-
+        try:
+            r = self.cffi_s.get(url, timeout=timeout)
+            if r.status_code in [200, 400, 404]:
+                return r
+        except Exception:
+            pass
         return None
 
-def get_glazba_category_id(fetcher):
+def get_glazba_category_id(transport):
     print("🔍 Tražim ID kategorije 'Glazba'...", flush=True)
     for url in [
         "https://ezop-antikvarijat.hr/wp-json/wc/store/products/categories?per_page=100",
         "https://ezop-antikvarijat.hr/?rest_route=/wc/store/products/categories&per_page=100"
     ]:
-        res = fetcher.dohvati(url, is_json=True, timeout=25)
+        res = transport.get(url, timeout=20)
         if res and res.status_code == 200:
             try:
                 podaci = res.json()
@@ -293,7 +455,6 @@ def get_glazba_category_id(fetcher):
                             return cat['id']
             except Exception:
                 continue
-    print("⚠️ ID kategorije nije dohvaćen preko API-ja, nastavljam...", flush=True)
     return None
 
 def je_li_nevinil(tekst):
@@ -317,8 +478,12 @@ def scrape_ezop():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih ploča iz memorije.", flush=True)
 
-    fetcher = EzopFetcher()
-    cat_id = get_glazba_category_id(fetcher)
+    transport = EzopSmartTransport()
+    if not transport.inicijaliziraj_kanal():
+        print("\n⚠️ UPOZORENJE: Nije moguće uspostaviti vezu s Ezopom u ovom pokušaju. Zadržavam svih postojećih " + str(len(sve_ploce)) + " ploča.", flush=True)
+        return
+
+    cat_id = get_glazba_category_id(transport)
 
     # === 1. POKUŠAJ PREKO API-JA ===
     print("\n=== KORAK 1: POKREĆEM EZOP API SKENIRANJE ===", flush=True)
@@ -331,12 +496,12 @@ def scrape_ezop():
         res = None
         for base_url, sep in API_ENDPOINTS:
             url = f"{base_url}{sep}category={cat_id}&page={page}&per_page={per_page}" if cat_id else f"{base_url}{sep}page={page}&per_page={per_page}"
-            res = fetcher.dohvati(url, is_json=True, timeout=30)
+            res = transport.get(url, timeout=30)
             if res and res.status_code in [200, 400, 404]:
                 break
 
         if res is None or res.status_code not in [200, 400, 404]:
-            print("-> API blokiran ili nedostupan. Prelazim na HTML skeniranje!", flush=True)
+            print("-> API nedostupan. Prelazim na HTML skeniranje!", flush=True)
             break
 
         if res.status_code in [400, 404]:
@@ -351,13 +516,10 @@ def scrape_ezop():
             print("-> Neispravan JSON. Prelazim na HTML skeniranje!", flush=True)
             break
 
-        # Ako API preko proxyja vrati dict s greškom (npr. {"code": "rest_post_invalid_page_number"}), to je kraj arhive!
         if isinstance(data, dict):
             if 'code' in data and api_uspio:
                 print(f"-> Kraj API arhive ({data.get('code')}).", flush=True)
                 uspjesno_skenirano = True
-            else:
-                print("-> Neočekivan JSON objekt. Prelazim na HTML!", flush=True)
             break
 
         if not data or not isinstance(data, list):
@@ -450,9 +612,9 @@ def scrape_ezop():
 
         print(f"-> Pronađeno ploča: {broj_ploca_u_paketu}", flush=True)
         page += 1
-        time.sleep(0.6)
+        time.sleep(0.5)
 
-    # === 2. HTML FALLBACK AKO JE API BLOKIRAN ILI VRATIO PREMALO PLOČA ===
+    # === 2. HTML FALLBACK AKO JE API VRATIO PREMALO PLOČA ===
     if not uspjesno_skenirano or len(vidjeni_linkovi) < 20:
         print("\n=== KORAK 2: POKREĆEM HTML SKENIRANJE EZOP ARHIVE ===", flush=True)
         for base_url in HTML_ARCHIVES:
@@ -462,9 +624,9 @@ def scrape_ezop():
                 url = base_url if page == 1 else f"{base_url.rstrip('/')}/page/{page}/"
                 print(f"📄 HTML Stranica {page}...", end=" ", flush=True)
 
-                res = fetcher.dohvati(url, is_json=False, timeout=25)
+                res = transport.get(url, timeout=25)
                 if not res:
-                    print("-> Greška spajanja na svim kanalima.", flush=True)
+                    print("-> Greška spajanja.", flush=True)
                     break
                 if res.status_code == 404:
                     print("-> Kraj arhive (404).", flush=True)
@@ -552,7 +714,7 @@ def scrape_ezop():
                     print(f"-> Pronađeno {dodano_str} vinila (Sa slikom: {sa_slikom}/{dodano_str}).", flush=True)
 
                 page += 1
-                time.sleep(0.8)
+                time.sleep(0.6)
 
     if uspjesno_skenirano and len(vidjeni_linkovi) > 50:
         pocetni_broj = len(sve_ploce)
