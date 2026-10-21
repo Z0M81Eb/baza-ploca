@@ -1,18 +1,19 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 21.10.2026. 07:22:10
+Vrijeme pokretanja (UTC): 21.10.2026. 08:51:08
 ----------------------------------------
 📦 Učitano 10333 postojećih ploča iz memorije.
-📡 Status naslovnice Ezop: 403 (Server: cloudflare)
 🔍 Tražim ID kategorije 'Glazba'...
+📡 [Direktni curl_cffi] HTTP 403 | Server: cloudflare | cf-mitigated: nema | Title: 'Attention Required! | Cloudflare'
+📄 [Direktni curl_cffi] Uzorak odgovora: <!DOCTYPE html> <!--[if lt IE 7]> <html class="no-js ie6 oldie" lang="en-US"> <![endif]--> <!--[if IE 7]> <html class="no-js ie7 oldie" lang="en-US"> <![endif]--> <!--[if IE 8]> <html class="no-js ie8 oldie" lang="
 ⚠️ ID kategorije nije dohvaćen preko API-ja, nastavljam...
 
 === KORAK 1: POKREĆEM EZOP API SKENIRANJE ===
 Preuzimam API paket 1... -> API blokiran ili nedostupan. Prelazim na HTML skeniranje!
 
 === KORAK 2: POKREĆEM HTML SKENIRANJE EZOP ARHIVE ===
-📄 HTML Stranica 1... -> Greška spajanja.
+📄 HTML Stranica 1... -> Greška spajanja na svim kanalima.
 
 ⚠️ UPOZORENJE: Pronađeno 0 ploča. Preskačem brisanje starih ploča radi sigurnosti baze.
 🎉 Završeno. U bazi je sada ukupno 10333 ažurnih ploča (Sa slikom: 10333).
 ----------------------------------------
-Vrijeme završetka (UTC): 21.10.2026. 07:22:13 | Kod izlaza: 0
+Vrijeme završetka (UTC): 21.10.2026. 08:54:36 | Kod izlaza: 0
