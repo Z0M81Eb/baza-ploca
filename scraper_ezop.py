@@ -6,20 +6,15 @@ import os
 import re
 import time
 import html
-from urllib.parse import urljoin
+from urllib.parse import urljoin, quote
 
 SITE_URL = "https://ezop-antikvarijat.hr"
+TRANSLATE_HOST = "ezop--antikvarijat-hr.translate.goog"
 CSV_FILENAME = "ezop_ploce.csv"
 
 HTML_ARCHIVES = [
     "https://ezop-antikvarijat.hr/kategorija/glazba/"
 ]
-
-HEADERS = {
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/json,image/avif,image/webp,*/*;q=0.8",
-    "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Referer": "https://ezop-antikvarijat.hr/"
-}
 
 API_ENDPOINTS = [
     ("https://ezop-antikvarijat.hr/wp-json/wc/store/products", "?"),
@@ -27,10 +22,18 @@ API_ENDPOINTS = [
     ("https://ezop-antikvarijat.hr/?rest_route=/wc/store/products", "&")
 ]
 
+# Vanjski proxy relayi za zaobilaženje blokade GitHub (Microsoft Azure) IP adresa
+PROXY_RELAYS = [
+    ("CodeTabs", lambda u: f"https://api.codetabs.com/v1/proxy?quest={quote(u, safe='')}"),
+    ("AllOrigins", lambda u: f"https://api.allorigins.win/raw?url={quote(u, safe='')}"),
+    ("CorsProxy", lambda u: f"https://corsproxy.io/?url={quote(u, safe='')}")
+]
+
 def normaliziraj_link_proizvoda(href):
     if not href:
         return ""
-    puni = urljoin(SITE_URL, href.strip())
+    cisti = str(href).strip().replace(TRANSLATE_HOST, "ezop-antikvarijat.hr")
+    puni = urljoin(SITE_URL, cisti)
     return puni.split('?')[0].rstrip('/') + '/'
 
 def pretvori_ocjenu(ocjena_str):
@@ -53,6 +56,7 @@ def ocisti_url_slike(raw_url, is_srcset=False):
     if not raw_url:
         return ""
     val = html.unescape(str(raw_url)).strip()
+    val = val.replace(TRANSLATE_HOST, "ezop-antikvarijat.hr")
     val_lower = val.lower()
 
     if val_lower.startswith('data:image') or any(x in val_lower for x in ['placeholder', 'blank.', 'spinner', 'loader', '.svg', '1x1', 'emoji', 'gravatar']):
@@ -74,6 +78,9 @@ def ocisti_url_slike(raw_url, is_srcset=False):
 
     if not val.startswith('http'):
         return ""
+
+    if '?_x_tr_' in val:
+        val = val.split('?_x_tr_')[0]
 
     return val.replace(' ', '%20')
 
@@ -169,53 +176,121 @@ def izvuci_cijenu(tekst):
                 pass
     return "0.00"
 
-def kreiraj_sesije():
-    cffi_s = cffi_requests.Session(impersonate="chrome120")
-    cffi_s.headers.update(HEADERS)
-    cloud_s = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'desktop': True})
-    cloud_s.headers.update(HEADERS)
-    try:
-        r = cffi_s.get(SITE_URL, timeout=20)
-        print(f"📡 Status naslovnice Ezop: {r.status_code} (Server: {r.headers.get('Server', 'Nepoznat')})", flush=True)
-        time.sleep(1)
-    except Exception as e:
-        print(f"⚠️ Upozorenje pri otvaranju naslovnice: {e}", flush=True)
-    return cffi_s, cloud_s
+def ispisi_dijagnostiku_403(res, izvor="Direktno"):
+    if res is None:
+        print(f"⚠️ [{izvor}] Nema odgovora sa servera.", flush=True)
+        return
+    cf_mit = res.headers.get('cf-mitigated', 'nema')
+    server = res.headers.get('Server', 'Nepoznat')
+    title_m = re.search(r'<title[^>]*>(.*?)</title>', res.text, re.IGNORECASE | re.DOTALL)
+    title = title_m.group(1).strip() if title_m else "Bez naslova"
+    uzorak = re.sub(r'\s+', ' ', res.text[:220]).strip()
+    print(f"📡 [{izvor}] HTTP {res.status_code} | Server: {server} | cf-mitigated: {cf_mit} | Title: '{title}'", flush=True)
+    if res.status_code != 200:
+        print(f"📄 [{izvor}] Uzorak odgovora: {uzorak}", flush=True)
 
-def pametni_get(url, cffi_s, cloud_s, timeout=25):
-    for profil in ["chrome120", "chrome116", "safari15_5"]:
-        try:
-            if profil != "chrome120":
-                cffi_s = cffi_requests.Session(impersonate=profil)
-                cffi_s.headers.update(HEADERS)
-            res = cffi_s.get(url, timeout=timeout)
-            if res.status_code in [200, 400, 404]:
-                return res
-        except Exception:
-            pass
-    try:
-        res = cloud_s.get(url, timeout=timeout)
-        if res.status_code in [200, 400, 404]:
-            return res
-    except Exception:
-        pass
-    return None
+class EzopFetcher:
+    def __init__(self):
+        # VAŽNO: Ne gazimo defaultne headere u curl_cffi kako ne bismo srušili Chrome TLS/HTTP2 fingerprint!
+        self.cffi_sessions = {}
+        for p in ["chrome120", "chrome116", "safari15_5"]:
+            try:
+                self.cffi_sessions[p] = cffi_requests.Session(impersonate=p)
+            except Exception:
+                pass
+        self.cloud_s = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'desktop': True})
+        self.aktivni_api_relay = None
+        self.koristi_translate_html = False
+        self.dijagnostika_ispisana = False
 
-def get_glazba_category_id(cffi_s, cloud_s):
+    def dohvati(self, url, is_json=False, timeout=25):
+        # 1. Ako smo već otkrili da samo proxy relay radi za JSON, koristi njega prvo
+        if is_json and self.aktivni_api_relay is not None:
+            ime_relaya, fn_relaya = PROXY_RELAYS[self.aktivni_api_relay]
+            try:
+                p_url = fn_relaya(url)
+                s = next(iter(self.cffi_sessions.values()))
+                r = s.get(p_url, timeout=timeout)
+                if r.status_code in [200, 400, 404]:
+                    return r
+            except Exception:
+                self.aktivni_api_relay = None
+
+        # 2. Pokušaj direktno s čistim curl_cffi profilima (bez custom HEADERS)
+        zadnji_res = None
+        for profil, sess in self.cffi_sessions.items():
+            try:
+                res = sess.get(url, timeout=timeout)
+                zadnji_res = res
+                if res.status_code == 200:
+                    if is_json and not (res.text.strip().startswith('[') or res.text.strip().startswith('{')):
+                        continue
+                    return res
+                elif res.status_code in [400, 404]:
+                    return res
+            except Exception:
+                continue
+
+        if not self.dijagnostika_ispisana and zadnji_res is not None:
+            ispisi_dijagnostiku_403(zadnji_res, "Direktni curl_cffi")
+            self.dijagnostika_ispisana = True
+
+        # 3. Pokušaj kroz proxy relaye (zaobilazi blokadu GitHub Azure IP adresa)
+        for idx, (ime_relaya, fn_relaya) in enumerate(PROXY_RELAYS):
+            try:
+                p_url = fn_relaya(url)
+                s = next(iter(self.cffi_sessions.values()))
+                res = s.get(p_url, timeout=timeout)
+                if res.status_code == 200:
+                    tekst = res.text.strip()
+                    if is_json and (tekst.startswith('[') or tekst.startswith('{')):
+                        if self.aktivni_api_relay != idx:
+                            print(f"\n🔓 Probijena blokada preko [{ime_relaya}] proxyja!", flush=True)
+                            self.aktivni_api_relay = idx
+                        return res
+                    elif not is_json and ('/proizvod/' in tekst or 'woocommerce' in tekst.lower()):
+                        print(f"\n🔓 HTML dohvaćen preko [{ime_relaya}] proxyja!", flush=True)
+                        return res
+            except Exception:
+                continue
+
+        # 4. Ako tražimo HTML, pokušaj preko Google Translate proxy mosta (Google IP adrese)
+        if not is_json:
+            try:
+                putanja = url.replace(SITE_URL, "")
+                sep = "&" if "?" in putanja else "?"
+                g_url = f"https://{TRANSLATE_HOST}{putanja}{sep}_x_tr_sl=en&_x_tr_tl=hr&_x_tr_hl=hr"
+                s = next(iter(self.cffi_sessions.values()))
+                res = s.get(g_url, timeout=timeout)
+                if res.status_code == 200 and ('/proizvod/' in res.text or 'product' in res.text.lower()):
+                    if not self.koristi_translate_html:
+                        print("\n🔓 HTML probijen preko Google Translate Proxyja!", flush=True)
+                        self.koristi_translate_html = True
+                    return res
+                elif res.status_code == 404:
+                    return res
+            except Exception:
+                pass
+
+        return None
+
+def get_glazba_category_id(fetcher):
     print("🔍 Tražim ID kategorije 'Glazba'...", flush=True)
     for url in [
         "https://ezop-antikvarijat.hr/wp-json/wc/store/products/categories?per_page=100",
         "https://ezop-antikvarijat.hr/?rest_route=/wc/store/products/categories&per_page=100"
     ]:
-        res = pametni_get(url, cffi_s, cloud_s, timeout=20)
+        res = fetcher.dohvati(url, is_json=True, timeout=25)
         if res and res.status_code == 200:
             try:
-                for cat in res.json():
-                    slug = cat.get('slug', '').lower()
-                    link = cat.get('link', '').lower()
-                    if slug == 'glazba' or '/kategorija/glazba' in link:
-                        print(f"✅ Pronađena kategorija Glazba (ID: {cat['id']})", flush=True)
-                        return cat['id']
+                podaci = res.json()
+                if isinstance(podaci, list):
+                    for cat in podaci:
+                        slug = cat.get('slug', '').lower()
+                        link = cat.get('link', '').lower()
+                        if slug == 'glazba' or '/kategorija/glazba' in link:
+                            print(f"✅ Pronađena kategorija Glazba (ID: {cat['id']})", flush=True)
+                            return cat['id']
             except Exception:
                 continue
     print("⚠️ ID kategorije nije dohvaćen preko API-ja, nastavljam...", flush=True)
@@ -242,13 +317,13 @@ def scrape_ezop():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih ploča iz memorije.", flush=True)
 
-    cffi_s, cloud_s = kreiraj_sesije()
-    cat_id = get_glazba_category_id(cffi_s, cloud_s)
+    fetcher = EzopFetcher()
+    cat_id = get_glazba_category_id(fetcher)
 
     # === 1. POKUŠAJ PREKO API-JA ===
     print("\n=== KORAK 1: POKREĆEM EZOP API SKENIRANJE ===", flush=True)
     page = 1
-    per_page = 50
+    per_page = 100
     api_uspio = False
 
     while True:
@@ -256,7 +331,7 @@ def scrape_ezop():
         res = None
         for base_url, sep in API_ENDPOINTS:
             url = f"{base_url}{sep}category={cat_id}&page={page}&per_page={per_page}" if cat_id else f"{base_url}{sep}page={page}&per_page={per_page}"
-            res = pametni_get(url, cffi_s, cloud_s, timeout=30)
+            res = fetcher.dohvati(url, is_json=True, timeout=30)
             if res and res.status_code in [200, 400, 404]:
                 break
 
@@ -276,7 +351,16 @@ def scrape_ezop():
             print("-> Neispravan JSON. Prelazim na HTML skeniranje!", flush=True)
             break
 
-        if not data:
+        # Ako API preko proxyja vrati dict s greškom (npr. {"code": "rest_post_invalid_page_number"}), to je kraj arhive!
+        if isinstance(data, dict):
+            if 'code' in data and api_uspio:
+                print(f"-> Kraj API arhive ({data.get('code')}).", flush=True)
+                uspjesno_skenirano = True
+            else:
+                print("-> Neočekivan JSON objekt. Prelazim na HTML!", flush=True)
+            break
+
+        if not data or not isinstance(data, list):
             print("-> Prazan paket. Kraj API arhive.", flush=True)
             if api_uspio:
                 uspjesno_skenirano = True
@@ -294,7 +378,6 @@ def scrape_ezop():
             if not naslov or not link:
                 continue
 
-            # Ako već povlačimo iz kategorije Glazba (cat_id postoji), is_vinyl je automatski True!
             is_vinyl = True if cat_id else False
             nije_vinil_medij = je_li_nevinil(naslov)
             s_omot = ""
@@ -367,7 +450,7 @@ def scrape_ezop():
 
         print(f"-> Pronađeno ploča: {broj_ploca_u_paketu}", flush=True)
         page += 1
-        time.sleep(0.5)
+        time.sleep(0.6)
 
     # === 2. HTML FALLBACK AKO JE API BLOKIRAN ILI VRATIO PREMALO PLOČA ===
     if not uspjesno_skenirano or len(vidjeni_linkovi) < 20:
@@ -379,9 +462,9 @@ def scrape_ezop():
                 url = base_url if page == 1 else f"{base_url.rstrip('/')}/page/{page}/"
                 print(f"📄 HTML Stranica {page}...", end=" ", flush=True)
 
-                res = pametni_get(url, cffi_s, cloud_s, timeout=25)
+                res = fetcher.dohvati(url, is_json=False, timeout=25)
                 if not res:
-                    print("-> Greška spajanja.", flush=True)
+                    print("-> Greška spajanja na svim kanalima.", flush=True)
                     break
                 if res.status_code == 404:
                     print("-> Kraj arhive (404).", flush=True)
@@ -444,7 +527,6 @@ def scrape_ezop():
                     if not slika_url and link in sve_ploce and len(sve_ploce[link]) >= 4:
                         slika_url = ocisti_url_slike(sve_ploce[link][3], is_srcset=False)
 
-                    # Zadrži postojeće ocjene stanja ako već imamo ploču u CSV-u
                     s_medij = "VG+"
                     s_omot = "VG+"
                     if link in sve_ploce and len(sve_ploce[link]) >= 6:
@@ -470,7 +552,7 @@ def scrape_ezop():
                     print(f"-> Pronađeno {dodano_str} vinila (Sa slikom: {sa_slikom}/{dodano_str}).", flush=True)
 
                 page += 1
-                time.sleep(0.6)
+                time.sleep(0.8)
 
     if uspjesno_skenirano and len(vidjeni_linkovi) > 50:
         pocetni_broj = len(sve_ploce)
