@@ -2,14 +2,12 @@ import requests as std_requests
 from bs4 import BeautifulSoup
 import urllib3
 import socket
-import json
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 DOMAIN = "ezop-antikvarijat.hr"
 ORIGIN_IP = "116.202.174.206"
 
-# Direktno spajanje na Ezopov server (zaobilazi Cloudflare u 0.1s)
 _ORIG_GETADDRINFO = socket.getaddrinfo
 def _patched_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
     if host in (DOMAIN, f"www.{DOMAIN}"):
@@ -21,52 +19,33 @@ socket.getaddrinfo = _patched_getaddrinfo
 session = std_requests.Session()
 session.verify = False
 session.headers.update({
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/json,*/*;q=0.8",
-    "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7"
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
 })
 
-print("=== 1. TRAŽENJE KATEGORIJE GLAZBA I PODKATEGORIJA ===", flush=True)
-r_wp_cat = session.get("https://ezop-antikvarijat.hr/wp-json/wp/v2/product_cat?slug=glazba", timeout=15)
-print(f"WP v2 product_cat?slug=glazba (Status {r_wp_cat.status_code}):", flush=True)
-glazba_id = None
-try:
-    cat_data = r_wp_cat.json()
-    for c in cat_data:
-        glazba_id = c.get("id")
-        print(f" -> ID: {glazba_id} | Ime: {c.get('name')} | Count: {c.get('count')}", flush=True)
-except Exception as e:
-    print(f"Greška: {e} | Tekst: {r_wp_cat.text[:300]}", flush=True)
-
-if glazba_id:
-    r_sub = session.get(f"https://ezop-antikvarijat.hr/wp-json/wp/v2/product_cat?parent={glazba_id}&per_page=100", timeout=15)
-    print(f"\nPodkategorije od Glazba (parent={glazba_id}):", flush=True)
-    try:
-        for sc in r_sub.json():
-            print(f" -> Sub-ID: {sc.get('id')} | Slug: {sc.get('slug')} | Ime: {sc.get('name')} | Count: {sc.get('count')}", flush=True)
-    except Exception:
-        pass
-
-print("\n=== 2. USPOREDBA API JSON-A: 181787 (NEMA NA STANJU) vs 207847 (IMA NA STANJU) ===", flush=True)
-for pid, opis in [("181787", "NEMA NA STANJU"), ("207847", "IMA NA STANJU")]:
-    url_api = f"https://ezop-antikvarijat.hr/wp-json/wc/store/products/{pid}"
-    r_p = session.get(url_api, timeout=15)
-    print(f"\n--- Store API za {pid} ({opis}) [Status: {r_p.status_code}] ---", flush=True)
-    try:
-        podaci = r_p.json()
-        print(json.dumps(podaci, indent=2, ensure_ascii=False), flush=True)
-    except Exception:
-        print(r_p.text[:1000], flush=True)
-
-print("\n=== 3. PROVJERA HTML ARHIVE (/kategorija/glazba/) ===", flush=True)
 r_kat = session.get("https://ezop-antikvarijat.hr/kategorija/glazba/", timeout=15)
-soup_kat = BeautifulSoup(r_kat.text, "lxml")
-broj_stranica_el = soup_kat.select(".page-numbers")
-zadnja_str = [el.get_text(strip=True) for el in broj_stranica_el]
-print(f"Paginacija na /kategorija/glazba/: {zadnja_str}", flush=True)
+soup = BeautifulSoup(r_kat.text, "lxml")
 
-kartice = soup_kat.select("li.product, div.product, article.product, .type-product")
-print(f"Ukupno kartica na 1. stranici: {len(kartice)}", flush=True)
+print("=== 1. FILTERI U SIDEBARU (<aside id='secondary'>) ===", flush=True)
+aside = soup.select_one("#secondary")
+if aside:
+    for a in aside.find_all("a", href=True):
+        print(f"Filter link: {a.get_text(' ', strip=True)} -> {a['href']}", flush=True)
+    for inp in aside.find_all(["input", "select", "option"]):
+        print(f"Filter polje: <{inp.name}> name={inp.get('name')} value={inp.get('value')} text={inp.get_text(strip=True)}", flush=True)
+
+print("\n=== 2. CIJELI HTML PRVIH 3 KARTICA NA ARHIVI (BEZ REZANJA) ===", flush=True)
+kartice = soup.select("div.product, li.product")
 for i, k in enumerate(kartice[:3], 1):
-    print(f"\n--- Kartica #{i} HTML ---", flush=True)
-    print(str(k)[:700], flush=True)
+    print(f"\n================ KARTICA #{i} ================", flush=True)
+    print(str(k), flush=True)
+
+print("\n=== 3. PROVJERA KARTICE ZA RASPRODANI (181787) I DOSTUPNI (207847) NA PRETRAZI ===", flush=True)
+for pojam in ["U 02650 L", "LSY 62160"]:
+    r_s = session.get(f"https://ezop-antikvarijat.hr/?s={pojam}&post_type=product", timeout=15)
+    s_soup = BeautifulSoup(r_s.text, "lxml")
+    k_s = s_soup.select_one("div.product, li.product")
+    print(f"\n--- Rezultat pretrage za '{pojam}' ---", flush=True)
+    if k_s:
+        print(str(k_s), flush=True)
+    else:
+        print("Nije pronađena kartica u pretrazi, naslov stranice:", s_soup.title.string if s_soup.title else "Nema", flush=True)
