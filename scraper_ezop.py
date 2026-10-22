@@ -2,16 +2,13 @@ import requests as std_requests
 from bs4 import BeautifulSoup
 import urllib3
 import socket
-import subprocess
 import json
-import time
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 DOMAIN = "ezop-antikvarijat.hr"
 ORIGIN_IP = "116.202.174.206"
 
-# Lokalno preusmjeravanje domene na stvarni Origin IP (zaobilazi Cloudflare)
 _ORIG_GETADDRINFO = socket.getaddrinfo
 def _patched_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
     if host in (DOMAIN, f"www.{DOMAIN}"):
@@ -20,89 +17,63 @@ def _patched_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
 
 socket.getaddrinfo = _patched_getaddrinfo
 
-def kreiraj_sesiju(koristi_tor=False):
-    s = std_requests.Session()
-    s.verify = False
-    s.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/json,*/*;q=0.8",
-        "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7"
-    })
-    if koristi_tor:
-        # socks5:// (bez 'h') koristi naš _patched_getaddrinfo i spaja se preko Tora direktno na 116.202.174.206!
-        s.proxies = {
-            "http": "socks5://127.0.0.1:9050",
-            "https": "socks5://127.0.0.1:9050"
-        }
-    return s
+session = std_requests.Session()
+session.verify = False
+session.headers.update({
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36"
+})
 
-def podigni_tor():
-    print("⚠️ Direktni IP vraća 522/timeout — palim Tor tunel direktno prema Origin IP-u (116.202.174.206)...", flush=True)
-    subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
-    subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
-    subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
-    time.sleep(6)
+print("=== 1. KRAJ JSON-A ZA VARIJACIJE 315415 (NEMA) vs 306668 (IMA) ===", flush=True)
+for var_id, opis in [("315415", "NEMA NA STANJU"), ("306668", "IMA NA STANJU")]:
+    r_v = session.get(f"https://ezop-antikvarijat.hr/wp-json/wc/store/products/{var_id}", timeout=15)
+    if r_v.status_code == 200:
+        d = r_v.json()
+        d.pop("description", None)
+        d.pop("short_description", None)
+        d.pop("images", None)
+        print(f"\n--- Varijacija {var_id} ({opis}) ---", flush=True)
+        print(json.dumps(d, indent=2, ensure_ascii=False), flush=True)
 
-session = kreiraj_sesiju(koristi_tor=False)
+print("\n=== 2. SVI WIDGETI U SIDEBARU (OSIM KATEGORIJA) + LP KARTICE ===", flush=True)
+r_lp = session.get("https://ezop-antikvarijat.hr/kategorija/glazba/erotski-omoti-glazba/", timeout=20)
+soup = BeautifulSoup(r_lp.text, "lxml")
 
-# Brzi test na laganom JSON endpointu (kategorija 418 ima samo 84 artikla)
-test_url = "https://ezop-antikvarijat.hr/wp-json/wp/v2/product_cat/418"
-try:
-    r_test = session.get(test_url, timeout=10)
-    if r_test.status_code != 200:
-        raise Exception(f"HTTP {r_test.status_code}")
-    print("✅ Direktni spoj na 116.202.174.206 radi trenutno!", flush=True)
-except Exception as e:
-    print(f"ℹ️ Direktni test ({e}). Prebacujem na Tor -> Origin IP...", flush=True)
-    podigni_tor()
-    session = kreiraj_sesiju(koristi_tor=True)
+aside = soup.select_one("#secondary")
+if aside:
+    for sec in aside.select("section.widget"):
+        sec_id = sec.get("id", "")
+        if "product_categories" in sec_id:
+            continue
+        print(f"\n--- Widget: {sec_id} ---", flush=True)
+        print(str(sec)[:1500], flush=True)
 
-def brzi_get(url, timeout=18):
-    try:
-        t0 = time.time()
-        r = session.get(url, timeout=timeout)
-        print(f"[GET {r.status_code} za {time.time()-t0:.1f}s] {url}", flush=True)
-        return r
-    except Exception as e:
-        print(f"[Greška za {url}: {e}]", flush=True)
-        return None
+kartice = soup.select("div.product")
+print(f"\nUkupno kartica u erotski-omoti-glazba: {len(kartice)}", flush=True)
 
-print("\n=== 1. PROVJERA VARIJACIJA U STORE API-JU: 315415 (NEMA) vs 306668 (IMA) ===", flush=True)
-for var_id, opis in [("315415", "Varijacija od 181787 - NEMA NA STANJU"), ("306668", "Varijacija od 207847 - IMA NA STANJU")]:
-    r_v = brzi_get(f"https://ezop-antikvarijat.hr/wp-json/wc/store/products/{var_id}")
-    if r_v and r_v.status_code == 200:
-        print(f"--- {opis} ---", flush=True)
-        print(r_v.text[:1200], flush=True)
+ispisano_dostupnih = 0
+ispisano_nedostupnih = 0
 
-print("\n=== 2. PROVJERA WP V2 API-JA ZA PROIZVODE (181787 vs 207847) ===", flush=True)
-for pid, opis in [("181787", "NEMA NA STANJU"), ("207847", "IMA NA STANJU")]:
-    r_wp = brzi_get(f"https://ezop-antikvarijat.hr/wp-json/wp/v2/product/{pid}")
-    if r_wp and r_wp.status_code == 200:
-        data = r_wp.json()
-        # Ispisujemo sve ključeve osim dugog opisa da vidimo meta polja, class_list i taksonomije
-        data.pop("content", None)
-        data.pop("excerpt", None)
-        data.pop("yoast_head", None)
-        data.pop("yoast_head_json", None)
-        print(f"\n--- WP v2 za {pid} ({opis}) ---", flush=True)
-        print(json.dumps(data, indent=2, ensure_ascii=False), flush=True)
+for k in kartice:
+    je_lp = bool(k.select_one(".cat_music_lp"))
+    ima_kupi = bool(k.select_one("a.kupi, a.add_to_cart_button"))
+    ima_nedostupno = ("nedostupno" in str(k).lower()) or ("nema na stanju" in k.get_text(" ", strip=True).lower())
 
-print("\n=== 3. PROVJERA SVIH TAKSONOMIJA NA EZOPU ===", flush=True)
-r_tax = brzi_get("https://ezop-antikvarijat.hr/wp-json/wp/v2/taxonomies")
-if r_tax and r_tax.status_code == 200:
-    print(r_tax.text[:1500], flush=True)
-
-print("\n=== 4. CIJELI HTML KARTICE U MALOJ PODKATEGORIJI (slusaj-najglasnije - samo 84 artikla!) ===", flush=True)
-r_mala = brzi_get("https://ezop-antikvarijat.hr/kategorija/glazba/slusaj-najglasnije/", timeout=25)
-if r_mala and r_mala.status_code == 200:
-    soup = BeautifulSoup(r_mala.text, "lxml")
-    kartice = soup.select("div.product, li.product")
-    print(f"Pronađeno kartica: {len(kartice)}", flush=True)
-    for i, k in enumerate(kartice[:3], 1):
-        print(f"\n================ KARTICA #{i} ================", flush=True)
+    if je_lp and ima_kupi and ispisano_dostupnih < 2:
+        ispisano_dostupnih += 1
+        print(f"\n================ DOSTUPNA LP KARTICA #{ispisano_dostupnih} ================", flush=True)
+        print(str(k), flush=True)
+    elif je_lp and (not ima_kupi or ima_nedostupno) and ispisano_nedostupnih < 2:
+        ispisano_nedostupnih += 1
+        print(f"\n================ NEDOSTUPNA LP KARTICA #{ispisano_nedostupnih} ================", flush=True)
         print(str(k), flush=True)
 
-    aside = soup.select_one("#secondary")
-    if aside:
-        print("\n================ SIDEBAR FILTERI ================", flush=True)
-        print(str(aside)[:2500], flush=True)
+print("\n=== 3. PROVJERA POJEDINAČNE STRANICE 181787 vs 207847 ===", flush=True)
+for opis, url in [
+    ("NEMA NA STANJU (181787)", "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/"),
+    ("IMA NA STANJU (207847)", "https://ezop-antikvarijat.hr/parni-valjak-emc-2/")
+]:
+    r_p = session.get(url, timeout=20)
+    sp = BeautifulSoup(r_p.text, "lxml")
+    blok = sp.select_one(".price-cart-block")
+    print(f"\n--- {opis} (.price-cart-block) ---", flush=True)
+    print(str(blok) if blok else "Nema bloka", flush=True)
