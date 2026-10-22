@@ -1,18 +1,263 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 22.10.2026. 09:35:06
+Vrijeme pokretanja (UTC): 22.10.2026. 10:18:26
 ----------------------------------------
-=== 1. BRZI TEST POJEDINAČNIH STRANICA (RASPRODANO vs DOSTUPNO) ===
-[GET 522 za 19.7s] https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/
-[GET 522 za 19.8s] https://ezop-antikvarijat.hr/parni-valjak-emc-2/
+✅ Direktni spoj na 116.202.174.206 radi trenutno!
 
-=== 2. PROVJERA MANJE PODKATEGORIJE (/kategorija/glazba/kompilacije/) ===
-[GET 522 za 21.7s] https://ezop-antikvarijat.hr/kategorija/glazba/kompilacije/
-[GET 522 za 19.9s] https://ezop-antikvarijat.hr/kategorija/glazba/
+=== 1. PROVJERA VARIJACIJA U STORE API-JU: 315415 (NEMA) vs 306668 (IMA) ===
+[GET 200 za 2.5s] https://ezop-antikvarijat.hr/wp-json/wc/store/products/315415
+--- Varijacija od 181787 - NEMA NA STANJU ---
+{"id":315415,"name":"Prljavo Kazali\u0161te \/ Film \/ Azra \/ Parni Valjak&#8230;","parent":181787,"type":"variation","variation":"Godina: 1990, Br Labela: LP 580, Omot: 6, Medij: 7, Dr\u017eava: Biv\u0161a Jugoslavija, Izdava\u010dka ku\u0107a: Suzy","permalink":"https:\/\/ezop-antikvarijat.hr\/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2\/?attribute_godina=1990&attribute_br-labela=LP+580&attribute_pa_omot=6&attribute_pa_medij=7&attribute_pa_drzava=jugoslavija&attribute_pa_izdavacka-kuca=suzy","sku":"E22315415","short_description":"","description":"","on_sale":false,"prices":{"price":"380","regular_price":"380","sale_price":"380","price_range":null,"currency_code":"EUR","currency_symbol":"\u20ac","currency_minor_unit":2,"currency_decimal_separator":",","currency_thousand_separator":".","currency_prefix":"","currency_suffix":" \u20ac"},"price_html":"<span class=\"woocommerce-Price-amount amount\">3,80&nbsp;<span class=\"woocommerce-Price-currencySymbol\">&euro;<\/span><\/span>","average_rating":"0","review_count":0,"images":[{"id":315416,"src":"https:\/\/ezop-antikvarijat.hr\/wp-content\/uploads\/2019\/11\/IMG_20220404_122321.jpg","thumbnail":"https:\/\/ezop-antikvarijat.hr\/wp-c
+[GET 200 za 2.9s] https://ezop-antikvarijat.hr/wp-json/wc/store/products/306668
+--- Varijacija od 207847 - IMA NA STANJU ---
+{"id":306668,"name":"E=MC\u00b2","parent":207847,"type":"variation","variation":"Godina: 1986, Br Labela: LSY 62160, Omot: 9, Medij: 10, Dr\u017eava: Biv\u0161a Jugoslavija, Izdava\u010dka ku\u0107a: JUGOTON","permalink":"https:\/\/ezop-antikvarijat.hr\/parni-valjak-emc-2\/?attribute_godina=1986&attribute_br-labela=LSY+62160&attribute_pa_omot=9&attribute_pa_medij=10&attribute_pa_drzava=jugoslavija&attribute_pa_izdavacka-kuca=jugoton","sku":"E22306668","short_description":"","description":"<p>A1 \tAjde Igraj \tA2 \tKao Prije \tA3 \tUhvati Ritam \tA4 \tStojim Ve\u0107 Satima \tA5 \tPokreni Se \tB1 \tHajde Ka\u017ei Po\u0161teno \tB2 \tPusti Nek Traje \tB3 \tOstani S Njim \tB4 \tUgasi Me \tB5 \tSamo Ona Zna \tCredits    Design, Photography \u2013 Sven Pepeonik    Executive Producer \u2013 Milan \u0160krnjug    Guitar [Guest] \u2013 Zoran Cvetkovi\u0107    Keyboards [Guest] \u2013 Toni Ostoji\u0107    Mixed By [Remix] \u2013 Dragan \u010ca\u010dinovi\u0107*, Vladimir Smolec    Recorded By \u2013 Mladen \u0160kalec    Written-By, Producer \u2013 Husein Hasanefendi\u0107NotesRecorded live at Dom Sportova Zagreb, 24 February 1986.Barcode and Other Identifiers    Other (Rights Society): SO
 
-=== 3. PROVJERA WP REST API-JA ZA PROIZVODE (IMA LI META POLJA ZA STANJE/MEDIJ) ===
-[GET 522 za 19.7s] https://ezop-antikvarijat.hr/wp-json/wp/v2/product/181787
-[Pokušaj 1 nije uspio: HTTPSConnectionPool(host='ezop-antikvarijat.hr', port=443): Read timed out. (read timeout=20)]
-[Pokušaj 2 nije uspio: HTTPSConnectionPool(host='ezop-antikvarijat.hr', port=443): Read timed out. (read timeout=20)]
-[GET 522 za 19.8s] https://ezop-antikvarijat.hr/wp-json/wp/v2/product/207847
+=== 2. PROVJERA WP V2 API-JA ZA PROIZVODE (181787 vs 207847) ===
+[GET 200 za 1.5s] https://ezop-antikvarijat.hr/wp-json/wp/v2/product/181787
+
+--- WP v2 za 181787 (NEMA NA STANJU) ---
+{
+  "id": 181787,
+  "date": "2019-11-01T00:00:00",
+  "date_gmt": "2019-10-31T23:00:00",
+  "guid": {
+    "rendered": "https://zoltan.braco.does-it.net/ezopdev/proizvod/rocknroll-zg-1979-89-2/"
+  },
+  "modified": "2026-10-05T16:22:23",
+  "modified_gmt": "2026-10-05T14:22:23",
+  "slug": "rocknroll-zg-1979-89-2",
+  "status": "publish",
+  "type": "product",
+  "link": "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/",
+  "title": {
+    "rendered": "Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;"
+  },
+  "featured_media": 315416,
+  "template": "",
+  "meta": [],
+  "product_cat": [
+    93
+  ],
+  "product_tag": [],
+  "acf": [],
+  "_links": {
+    "self": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product/181787"
+      }
+    ],
+    "collection": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product"
+      }
+    ],
+    "about": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/types/product"
+      }
+    ],
+    "wp:featuredmedia": [
+      {
+        "embeddable": true,
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/media/315416"
+      }
+    ],
+    "wp:attachment": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/media?parent=181787"
+      }
+    ],
+    "wp:term": [
+      {
+        "taxonomy": "product_cat",
+        "embeddable": true,
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product_cat?post=181787"
+      },
+      {
+        "taxonomy": "product_tag",
+        "embeddable": true,
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product_tag?post=181787"
+      }
+    ],
+    "curies": [
+      {
+        "name": "wp",
+        "href": "https://api.w.org/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}
+[GET 200 za 3.8s] https://ezop-antikvarijat.hr/wp-json/wp/v2/product/207847
+
+--- WP v2 za 207847 (IMA NA STANJU) ---
+{
+  "id": 207847,
+  "date": "2019-11-01T00:00:00",
+  "date_gmt": "2019-10-31T23:00:00",
+  "guid": {
+    "rendered": "https://zoltan.braco.does-it.net/ezopdev/proizvod/emc-2/"
+  },
+  "modified": "2026-10-14T00:40:27",
+  "modified_gmt": "2026-10-13T22:40:27",
+  "slug": "emc-2",
+  "status": "publish",
+  "type": "product",
+  "link": "https://ezop-antikvarijat.hr/parni-valjak-emc-2/",
+  "title": {
+    "rendered": "E=MC²"
+  },
+  "featured_media": 117671,
+  "template": "",
+  "meta": [],
+  "product_cat": [
+    91,
+    394
+  ],
+  "product_tag": [],
+  "acf": [],
+  "_links": {
+    "self": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product/207847"
+      }
+    ],
+    "collection": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product"
+      }
+    ],
+    "about": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/types/product"
+      }
+    ],
+    "wp:featuredmedia": [
+      {
+        "embeddable": true,
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/media/117671"
+      }
+    ],
+    "wp:attachment": [
+      {
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/media?parent=207847"
+      }
+    ],
+    "wp:term": [
+      {
+        "taxonomy": "product_cat",
+        "embeddable": true,
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product_cat?post=207847"
+      },
+      {
+        "taxonomy": "product_tag",
+        "embeddable": true,
+        "href": "https://ezop-antikvarijat.hr/wp-json/wp/v2/product_tag?post=207847"
+      }
+    ],
+    "curies": [
+      {
+        "name": "wp",
+        "href": "https://api.w.org/{rel}",
+        "templated": true
+      }
+    ]
+  }
+}
+
+=== 3. PROVJERA SVIH TAKSONOMIJA NA EZOPU ===
+[GET 200 za 3.5s] https://ezop-antikvarijat.hr/wp-json/wp/v2/taxonomies
+{"category":{"name":"Kategorije","slug":"category","description":"","types":["post"],"hierarchical":true,"rest_base":"categories","rest_namespace":"wp\/v2","_links":{"collection":[{"href":"https:\/\/ezop-antikvarijat.hr\/wp-json\/wp\/v2\/taxonomies"}],"wp:items":[{"href":"https:\/\/ezop-antikvarijat.hr\/wp-json\/wp\/v2\/categories"}],"curies":[{"name":"wp","href":"https:\/\/api.w.org\/{rel}","templated":true}]}},"post_tag":{"name":"Oznake","slug":"post_tag","description":"","types":["post"],"hierarchical":false,"rest_base":"tags","rest_namespace":"wp\/v2","_links":{"collection":[{"href":"https:\/\/ezop-antikvarijat.hr\/wp-json\/wp\/v2\/taxonomies"}],"wp:items":[{"href":"https:\/\/ezop-antikvarijat.hr\/wp-json\/wp\/v2\/tags"}],"curies":[{"name":"wp","href":"https:\/\/api.w.org\/{rel}","templated":true}]}},"nav_menu":{"name":"Navigacijski izbornici","slug":"nav_menu","description":"","types":["nav_menu_item"],"hierarchical":false,"rest_base":"menus","rest_namespace":"wp\/v2","_links":{"collection":[{"href":"https:\/\/ezop-antikvarijat.hr\/wp-json\/wp\/v2\/taxonomies"}],"wp:items":[{"href":"https:\/\/ezop-antikvarijat.hr\/wp-json\/wp\/v2\/menus"}],"curies":[{"name":"wp","href":"https:\/\/api.w.org\/{rel}","templated":true}]}},"product_cat":{"name":"Kategorije proizvoda","slug":"product_cat","description":"","types":["product"],"hierarchical":true,"rest_base":"product_cat","rest_namespace":"wp\/v2","_links":{"collection":[{"href":"https:\/\/ezop-antikvarijat.hr\/wp-json\/wp\/v2\/
+
+=== 4. CIJELI HTML KARTICE U MALOJ PODKATEGORIJI (slusaj-najglasnije - samo 84 artikla!) ===
+[GET 200 za 4.7s] https://ezop-antikvarijat.hr/kategorija/glazba/slusaj-najglasnije/
+Pronađeno kartica: 25
+
+================ KARTICA #1 ================
+<div class="inline row product type-product post-273678 status-publish first instock product_cat-alternative-rock product_cat-glazba-izvodaci product_cat-rock-glazba-zanr product_cat-slusaj-najglasnije product_cat-world has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/al-perry-live-at-club-congress/" title="Live at Club Congress">
+<img alt="Novo stanje" class="arhiva-pecat" height="523" src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/04/novo-1.png" title="Novo" width="563"/><img alt="CD" class="glazba-bg cat_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/> <img alt="Omot koncertnog albuma „Live at Club Congress” – Al Perry" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg-330x462.jpg" height="462" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20330%20462'%3E%3C/svg%3E" width="330"/><noscript><img alt="Omot koncertnog albuma „Live at Club Congress” – Al Perry" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="462" src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg-330x462.jpg" width="330"/></noscript> </a>
+</div>
+<div class="col-12 col-md-9 prod_infos glazba">
+<div class="arhiva-all-info">
+<div class="top">
+<a href="https://ezop-antikvarijat.hr/al-perry-live-at-club-congress/" title="Live at Club Congress">
+<h2 class="woocommerce-loop-product__title">Al Perry</h2>
+</a>
+<p class="product_author_black">Live at Club Congress</p>
+</div>
+<div class="bottom"><div class="home-product-internal-container d-md-none">
+<div class="aspect-ratio-box"><img alt="Novo stanje" class="arhiva-pecat" height="523" src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/04/novo-1.png" title="Novo" width="563"/><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/al-perry-live-at-club-congress/"><img alt="CD" class="glazba-bg home_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/><img alt="Omot koncertnog albuma „Live at Club Congress” – Al Perry" class="attachment-home_product_cd shop-thumbnail size-home_product_cd shop-thumbnail wp-post-image" height="500" sizes="(max-width: 500px) 100vw, 500px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg.jpg 500w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg-462x462.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-8559739-1464033751-5467.jpeg-300x300.jpg 300w" width="500"/></a>
+</div>
+</div><ul class="arhiva-cf"><li><span class="info">Stanje: </span>Novo</li><li class="hide-on-phone"><span class="info">Medij: </span>Audio CD</li></ul> <div class="arhiva-dolje otkup-0"><div class="my-custom-field-knjizara price"><span class="black price-label">Cijena: </span><span class="big">9</span>,<span class="small_price">90</span> €</div> <a aria-label="Dodaj “Live at Club Congress” u Vašu košaricu." class="button kupi add_to_cart_button ajax_add_to_cart" data-product_id="273678" data-product_sku="" data-quantity="1" href="?add-to-cart=273680&amp;attribute_pa_stanje=novo" rel="nofollow">Dodaj u košaricu</a>
+</div> </div> <!-- /bottom -->
+</div>
+</div>
+</div>
+
+================ KARTICA #2 ================
+<div class="inline row product type-product post-273675 status-publish instock product_cat-alternative-rock product_cat-glazba-izvodaci product_cat-slusaj-najglasnije has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/ana-never-ana-never-remastered/" title="Ana Never (Remastered)">
+<img alt="Novo stanje" class="arhiva-pecat" height="523" src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/04/novo-1.png" title="Novo" width="563"/><img alt="CD" class="glazba-bg cat_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/> <img alt="Omot albuma „Ana Never (Remastered)” – Ana Never" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg-330x462.jpg" height="462" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20330%20462'%3E%3C/svg%3E" width="330"/><noscript><img alt="Omot albuma „Ana Never (Remastered)” – Ana Never" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="462" src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg-330x462.jpg" width="330"/></noscript> </a>
+</div>
+<div class="col-12 col-md-9 prod_infos glazba">
+<div class="arhiva-all-info">
+<div class="top">
+<a href="https://ezop-antikvarijat.hr/ana-never-ana-never-remastered/" title="Ana Never (Remastered)">
+<h2 class="woocommerce-loop-product__title">Ana Never</h2>
+</a>
+<p class="product_author_black">Ana Never (Remastered)</p>
+</div>
+<div class="bottom"><div class="home-product-internal-container d-md-none">
+<div class="aspect-ratio-box"><img alt="Novo stanje" class="arhiva-pecat" height="523" src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/04/novo-1.png" title="Novo" width="563"/><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/ana-never-ana-never-remastered/"><img alt="CD" class="glazba-bg home_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/><img alt="Omot albuma „Ana Never (Remastered)” – Ana Never" class="attachment-home_product_cd shop-thumbnail size-home_product_cd shop-thumbnail wp-post-image" height="600" sizes="(max-width: 600px) 100vw, 600px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg.jpg 600w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg-462x462.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/05/R-4093536-1355052753-7118.jpeg-300x300.jpg 300w" width="600"/></a>
+</div>
+</div><ul class="arhiva-cf"><li><span class="info">Stanje: </span>Novo</li><li class="hide-on-phone"><span class="info">Medij: </span>Audio CD</li></ul> <div class="arhiva-dolje otkup-0"><div class="my-custom-field-knjizara price"><span class="black price-label">Cijena: </span><span class="big">9</span>,<span class="small_price">90</span> €</div> <a aria-label="Dodaj “Ana Never (Remastered)” u Vašu košaricu." class="button kupi add_to_cart_button ajax_add_to_cart" data-product_id="273675" data-product_sku="" data-quantity="1" href="?add-to-cart=273677&amp;attribute_pa_stanje=novo" rel="nofollow">Dodaj u košaricu</a>
+</div> </div> <!-- /bottom -->
+</div>
+</div>
+</div>
+
+================ KARTICA #3 ================
+<div class="inline row product type-product post-271237 status-publish last instock product_cat-alternative-rock product_cat-glazba-izvodaci product_cat-slusaj-najglasnije has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/andrija-tri-albuma/" title="Tri albuma">
+<img alt="Novo stanje" class="arhiva-pecat" height="523" src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/04/novo-1.png" title="Novo" width="563"/><img alt="CD" class="glazba-bg cat_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/> <img alt="Omot albuma „Tri albuma” – Andrija" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-330x462.jpg" height="462" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20330%20462'%3E%3C/svg%3E" width="330"/><noscript><img alt="Omot albuma „Tri albuma” – Andrija" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="462" src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-330x462.jpg" width="330"/></noscript> </a>
+</div>
+<div class="col-12 col-md-9 prod_infos glazba">
+<div class="arhiva-all-info">
+<div class="top">
+<a href="https://ezop-antikvarijat.hr/andrija-tri-albuma/" title="Tri albuma">
+<h2 class="woocommerce-loop-product__title">Andrija</h2>
+</a>
+<p class="product_author_black">Tri albuma</p>
+</div>
+<div class="bottom"><div class="home-product-internal-container d-md-none">
+<div class="aspect-ratio-box"><img alt="Novo stanje" class="arhiva-pecat" height="523" src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/04/novo-1.png" title="Novo" width="563"/><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/andrija-tri-albuma/"><img alt="CD" class="glazba-bg home_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/><img alt="Omot albuma „Tri albuma” – Andrija" class="attachment-home_product_cd shop-thumbnail size-home_product_cd shop-thumbnail wp-post-image" height="1442" sizes="(max-width: 1427px) 100vw, 1427px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316.jpg 1427w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-462x467.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-64x65.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-297x300.jpg 297w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-768x776.jpg 768w, https://ezop-antikvarijat.hr/wp-content/uploads/2021/04/img316-1013x1024.jpg 1013w" width="1427"/></a>
+</div>
+</div><ul class="arhiva-cf"><li><span class="info">Stanje: </span>Novo</li><li class="hide-on-phone"><span class="info">Medij: </span>Audio CD</li></ul> <div class="arhiva-dolje otkup-0"><div class="my-custom-field-knjizara price"><span class="black price-label">Cijena: </span><span class="big">9</span>,<span class="small_price">90</span> €</div> <a aria-label="Dodaj “Tri albuma” u Vašu košaricu." class="button kupi add_to_cart_button ajax_add_to_cart" data-product_id="271237" data-product_sku="" data-quantity="1" href="?add-to-cart=271239&amp;attribute_pa_stanje=novo" rel="nofollow">Dodaj u košaricu</a>
+</div> </div> <!-- /bottom -->
+</div>
+</div>
+</div>
+
+================ SIDEBAR FILTERI ================
+<aside class="widget-area col-sm-12 col-lg-4 order-2 order-lg-0" id="secondary" role="complementary">
+<section class="widget woocommerce widget_product_categories" id="woocommerce_product_categories-9"><h3 class="widget-title">Kategorije proizvoda</h3><ul class="product-categories"><li class="cat-item cat-item-78 cat-parent"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/">Knjige</a> <span class="count">(106)</span><ul class="children">
+<li class="cat-item cat-item-127 cat-parent"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/alternativa/">Alternativa</a> <span class="count">(1192)</span> <ul class="children">
+<li class="cat-item cat-item-596"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/alternativa-knjige/prorocanstva-numerologija/">Astrologija, Proročanstva, numerologija</a> <span class="count">(124)</span></li>
+<li class="cat-item cat-item-129"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/alternativa-knjige/alternativna-medicina/">Alternativna medicina</a> <span class="count">(172)</span></li>
+<li class="cat-item cat-item-128"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/alternativa-knjige/alternativa-ostalo/">alternativa ostalo</a> <span class="count">(924)</span></li>
+<li class="cat-item cat-item-130"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/alternativa-knjige/ljekovito-bilje/">Ljekovito bilje</a> <span class="count">(74)</span></li>
+</ul>
+</li>
+<li class="cat-item cat-item-136 cat-parent"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/filozofija/">Filozofija</a> <span class="count">(1054)</span> <ul class="children">
+<li class="cat-item cat-item-158"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/filozofija/antika-i-srednji-vijek/">Antika i srednji vijek filozofija</a> <span class="count">(71)</span></li>
+<li class="cat-item cat-item-160"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/filozofija/filozofija-ostalo/">Filozofija-ostalo</a> <span class="count">(355)</span></li>
+<li class="cat-item cat-item-159"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/filozofija/novovjekovlje/">Novovjekovlje</a> <span class="count">(85)</span></li>
+<li class="cat-item cat-item-157"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/filozofija/suvremena-filozofija/">Suvremena filozofija</a> <span class="count">(442)</span></li>
+</ul>
+</li>
+<li class="cat-item cat-item-131"><a href="https://ezop-antikvarijat.hr/kategorija/knjige/astronomija/">Astronomija</a> <s
 ----------------------------------------
-Vrijeme završetka (UTC): 22.10.2026. 09:37:51 | Kod izlaza: 0
+Vrijeme završetka (UTC): 22.10.2026. 10:18:46 | Kod izlaza: 0
