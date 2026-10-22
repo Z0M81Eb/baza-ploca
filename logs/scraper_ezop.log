@@ -1,7 +1,7 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 21.10.2026. 09:09:53
+Vrijeme pokretanja (UTC): 22.10.2026. 07:22:57
 ----------------------------------------
-📦 Učitano 10333 postojećih ploča iz memorije.
+📦 Učitano 25705 postojećih ploča iz memorije.
 🕵️ Tražim stvarni Origin IP servera (SPF / MX / Poddomene)...
    📍 Pronađen ne-Cloudflare IP kandidat [178.218.162.238] (Izvor: SPF ip4)
    📍 Pronađen ne-Cloudflare IP kandidat [116.202.174.206] (Izvor: SPF ip4)
@@ -1121,7 +1121,7 @@ Preuzimam API paket 1105... -> Pronađeno ploča: 32
 Preuzimam API paket 1106... -> Pronađeno ploča: 25
 Preuzimam API paket 1107... -> Prazan paket. Kraj API arhive.
 
-🧹 Analiza završena. Obrisano 130 prodanih ploča.
+🧹 Analiza završena. Obrisano 0 prodanih ploča.
 🎉 Završeno. U bazi je sada ukupno 25705 ažurnih ploča (Sa slikom: 25702).
 ----------------------------------------
-Vrijeme završetka (UTC): 21.10.2026. 10:06:44 | Kod izlaza: 0
+Vrijeme završetka (UTC): 22.10.2026. 08:14:00 | Kod izlaza: 0
