@@ -1,238 +1,57 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 22.10.2026. 09:26:27
+Vrijeme pokretanja (UTC): 22.10.2026. 09:30:12
 ----------------------------------------
-=== 1. TRAŽENJE KATEGORIJE GLAZBA I PODKATEGORIJA ===
-WP v2 product_cat?slug=glazba (Status 200):
- -> ID: 80 | Ime: Glazba | Count: 23271
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 540, in _make_request
+    response = conn.getresponse()
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connection.py", line 638, in getresponse
+    httplib_response = super().getresponse()
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/http/client.py", line 1423, in getresponse
+    response.begin()
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/http/client.py", line 330, in begin
+    version, status, reason = self._read_status()
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/http/client.py", line 291, in _read_status
+    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/socket.py", line 717, in readinto
+    return self._sock.recv_into(b)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/ssl.py", line 1320, in recv_into
+    return self.read(nbytes, buffer)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/ssl.py", line 1176, in read
+    return self._sslobj.read(len, buffer)
+TimeoutError: The read operation timed out
 
-Podkategorije od Glazba (parent=80):
- -> Sub-ID: 96 | Slug: erotski-omoti-glazba | Ime: Erotski omoti | Count: 86
- -> Sub-ID: 91 | Slug: glazba-izvodaci | Ime: Izvođači | Count: 18783
- -> Sub-ID: 92 | Slug: klasicna-glazba | Ime: Klasična glazba | Count: 961
- -> Sub-ID: 93 | Slug: kompilacije | Ime: Kompilacije | Count: 2089
- -> Sub-ID: 418 | Slug: slusaj-najglasnije | Ime: Slušaj najglasnije | Count: 84
- -> Sub-ID: 95 | Slug: soundtrack | Ime: Soundtrack | Count: 447
- -> Sub-ID: 383 | Slug: zanrovi | Ime: Žanrovi | Count: 11626
+The above exception was the direct cause of the following exception:
 
-=== 2. USPOREDBA API JSON-A: 181787 (NEMA NA STANJU) vs 207847 (IMA NA STANJU) ===
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/adapters.py", line 696, in send
+    resp = conn.urlopen(
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 847, in urlopen
+    retries = retries.increment(
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/util/retry.py", line 510, in increment
+    raise reraise(type(error), error, _stacktrace)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/util/util.py", line 39, in reraise
+    raise value
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 793, in urlopen
+    response = self._make_request(
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 542, in _make_request
+    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 373, in _raise_timeout
+    raise ReadTimeoutError(
+urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='ezop-antikvarijat.hr', port=443): Read timed out. (read timeout=15)
 
---- Store API za 181787 (NEMA NA STANJU) [Status: 200] ---
-{
-  "id": 181787,
-  "name": "Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;",
-  "parent": 0,
-  "type": "variable",
-  "variation": "",
-  "permalink": "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/",
-  "sku": "",
-  "short_description": "<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” – Rock&#8217; N&#8217; Roll ZG 1979-89. Glazbena kompilacija s izborom različitih pjesama i izvođača. Popis pjesama i detalji izdanja nalaze se u punom opisu.</p>",
-  "description": "<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” je album izvođača Rock&#8217; N&#8217; Roll ZG 1979-89. Među uvrštenim skladbama su „A1 Prljavo Kazalište &#8211; Mi Plešemo”, „A2 Film &#8211; Kad Si Mlad”, „A3 Azra &#8211; A Šta Da Radim” i „A4 Parni Valjak &#8211; Ulične Tuče”.</p>\n<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” je album izvođača Rock&#8217; N&#8217; Roll ZG 1979-89. Među uvrštenim skladbama su „A1 Prljavo Kazalište &#8211; Mi Plešemo”, „A2 Film &#8211; Kad Si Mlad”, „A3 Azra &#8211; A Šta Da Radim”.</p>\n<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” je album izvođača Rock&#8217; N&#8217; Roll ZG 1979-89. Prema kataloškim oznakama pripada stilu Kompilacije. Među uvrštenim skladbama su „A1 Prljavo Kazalište &#8211; Mi Plešemo”, „A2 Film &#8211; Kad Si Mlad”, „A3 Azra &#8211; A Šta Da Radim” i „A4 Parni Valjak &#8211; Ulične Tuče”.</p>\n<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” – Rock&#8217; N&#8217; Roll ZG 1979-89. Glazbena kompilacija s izborom različitih pjesama i izvođača.</p>\n<p>A1 Prljavo Kazalište &#8211; Mi Plešemo 4:34<br />\nA2 Film &#8211; Kad Si Mlad 2:58<br />\nA3 Azra &#8211; A Šta Da Radim 3:05<br />\nA4 Parni Valjak &#8211; Ulične Tuče 1:52<br />\nA5 Drugi Način &#8211; Najbolje Bi Bilo Da Promijenim Grad 2:50<br />\nA6 Prljavo Kazalište &#8211; Marina 3:52<br />\nA7 ITD Band &#8211; Rođen U Zagrebu 3:38<br />\nB1 Parni Valjak &#8211; Stranica Dnevnika 4:33<br />\nB2 Azra &#8211; Balkan 4:15<br />\nB3 Film &#8211; Zajedno 2:30<br />\nB4 Drugi Način &#8211; Piši Mi 3:10<br />\nB5 ITD Band &#8211; Elena 5:33<br />\nB6 Prljavo Kazalište Slaži Mi 4:50</p>\n<p>Companies etc<br />\nPressed By – Jugoton – U 02650 L</p>\n<p>Barcode and Other Identifiers<br />\nMatrix / Runout: U 02650 L A 24 01 90 SB<br />\nMatrix / Runout: U 02650 L B 24 01 90 SB</p>",
-  "on_sale": false,
-  "prices": {
-    "price": "250",
-    "regular_price": "380",
-    "sale_price": "380",
-    "price_range": null,
-    "currency_code": "EUR",
-    "currency_symbol": "€",
-    "currency_minor_unit": 2,
-    "currency_decimal_separator": ",",
-    "currency_thousand_separator": ".",
-    "currency_prefix": "",
-    "currency_suffix": " €"
-  },
-  "price_html": "<span class=\"woocommerce-Price-amount amount\">3,80&nbsp;<span class=\"woocommerce-Price-currencySymbol\">&euro;</span></span>",
-  "average_rating": "0",
-  "review_count": 0,
-  "images": [
-    {
-      "id": 315416,
-      "src": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321.jpg",
-      "thumbnail": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-330x462.jpg",
-      "srcset": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321.jpg 804w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-462x455.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-64x63.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-300x295.jpg 300w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-768x756.jpg 768w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-520x512.jpg 520w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-600x590.jpg 600w",
-      "sizes": "(max-width: 804px) 100vw, 804px",
-      "name": "Rock’ N’ Roll ZG 1979-89 – Prljavo Kazalište / Film / Azra / Parni Valjak… | omot albuma",
-      "alt": "Omot albuma „Prljavo Kazalište / Film / Azra / Parni Valjak...” – Rock' N' Roll ZG 1979-89"
-    }
-  ],
-  "categories": [
-    {
-      "id": 93,
-      "name": "Kompilacije",
-      "slug": "kompilacije",
-      "link": "https://ezop-antikvarijat.hr/kategorija/glazba/kompilacije/"
-    }
-  ],
-  "tags": [],
-  "attributes": [],
-  "variations": [
-    {
-      "id": 315415,
-      "attributes": [
-        {
-          "name": "Godina",
-          "value": "1990"
-        },
-        {
-          "name": "Br Labela",
-          "value": "LP 580"
-        },
-        {
-          "name": "Omot",
-          "value": "6"
-        },
-        {
-          "name": "Medij",
-          "value": "7"
-        },
-        {
-          "name": "Država",
-          "value": "jugoslavija"
-        },
-        {
-          "name": "Izdavačka kuća",
-          "value": "suzy"
-        }
-      ]
-    }
-  ],
-  "has_options": true,
-  "is_purchasable": true,
-  "is_in_stock": true,
-  "is_on_backorder": false,
-  "low_stock_remaining": null,
-  "sold_individually": true,
-  "add_to_cart": {
-    "text": "Odaberi opcije",
-    "description": "Odaberi opcije za &ldquo;Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;&rdquo;",
-    "url": "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/",
-    "minimum": 1,
-    "maximum": 1,
-    "multiple_of": 1
-  }
-}
+During handling of the above exception, another exception occurred:
 
---- Store API za 207847 (IMA NA STANJU) [Status: 200] ---
-{
-  "id": 207847,
-  "name": "E=MC²",
-  "parent": 0,
-  "type": "variable",
-  "variation": "",
-  "permalink": "https://ezop-antikvarijat.hr/parni-valjak-emc-2/",
-  "sku": "",
-  "short_description": "<p>„E=MC²” – Parni Valjak. Glazbeno izdanje iz područja pop-rock glazbe. Popis pjesama i detalji izdanja nalaze se u punom opisu.</p>",
-  "description": "<p>„E=MC²” je album izvođača Parni Valjak. Prema kataloškim oznakama pripada stilu pop-rock. Među uvrštenim skladbama su „A1 Ajde Igraj”, „A2 Kao Prije”, „A3 Uhvati Ritam” i „A4 Stojim Već Satima”.</p>\n<p>„E=MC²” je album izvođača Parni Valjak. Među uvrštenim skladbama su „A1 Ajde Igraj”, „A2 Kao Prije”, „A3 Uhvati Ritam”.</p>\n<p>„E=MC²” je album izvođača Parni Valjak. Prema kataloškim oznakama pripada stilu pop-rock. Među uvrštenim skladbama su „A1 Ajde Igraj”, „A2 Kao Prije”, „A3 Uhvati Ritam” i „A4 Stojim Već Satima”.</p>\n<p>A1 Ajde Igraj<br />\nA2 Kao Prije<br />\nA3 Uhvati Ritam<br />\nA4 Stojim Već Satima<br />\nA5 Pokreni Se<br />\nB1 Hajde Kaži Pošteno<br />\nB2 Pusti Nek Traje<br />\nB3 Ostani S Njim<br />\nB4 Ugasi Me<br />\nB5 Samo Ona Zna </p>\n<p>Credits<br />\nDesign, Photography – Sven Pepeonik<br />\nExecutive Producer – Milan Škrnjug<br />\nGuitar [Guest] – Zoran Cvetković<br />\nKeyboards [Guest] – Toni Ostojić<br />\nMixed By [Remix] – Dragan Čačinović*, Vladimir Smolec<br />\nRecorded By – Mladen Škalec<br />\nWritten-By, Producer – Husein Hasanefendić</p>\n<p>Notes<br />\nRecorded live at Dom Sportova Zagreb, 24 February 1986.</p>\n<p>Barcode and Other Identifiers<br />\nOther (Rights Society): SOKOJ</p>",
-  "on_sale": false,
-  "prices": {
-    "price": "3790",
-    "regular_price": "5450",
-    "sale_price": "5450",
-    "price_range": null,
-    "currency_code": "EUR",
-    "currency_symbol": "€",
-    "currency_minor_unit": 2,
-    "currency_decimal_separator": ",",
-    "currency_thousand_separator": ".",
-    "currency_prefix": "",
-    "currency_suffix": " €"
-  },
-  "price_html": "<span class=\"woocommerce-Price-amount amount\">54,50&nbsp;<span class=\"woocommerce-Price-currencySymbol\">&euro;</span></span>",
-  "average_rating": "0",
-  "review_count": 0,
-  "images": [
-    {
-      "id": 117671,
-      "src": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891.jpg",
-      "thumbnail": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891.jpg",
-      "srcset": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891.jpg 200w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891-150x150.jpg 150w",
-      "sizes": "(max-width: 200px) 100vw, 200px",
-      "name": "Parni Valjak – E=MC² | omot albuma",
-      "alt": "Omot albuma „E=MC²” – Parni Valjak"
-    }
-  ],
-  "categories": [
-    {
-      "id": 91,
-      "name": "Izvođači",
-      "slug": "glazba-izvodaci",
-      "link": "https://ezop-antikvarijat.hr/kategorija/glazba/izvodaci/"
-    },
-    {
-      "id": 394,
-      "name": "pop-rock",
-      "slug": "pop-rock",
-      "link": "https://ezop-antikvarijat.hr/kategorija/glazba/zanrovi/pop-rock/"
-    }
-  ],
-  "tags": [],
-  "attributes": [],
-  "variations": [
-    {
-      "id": 306668,
-      "attributes": [
-        {
-          "name": "Godina",
-          "value": "1986"
-        },
-        {
-          "name": "Br Labela",
-          "value": "LSY 62160"
-        },
-        {
-          "name": "Omot",
-          "value": "9"
-        },
-        {
-          "name": "Medij",
-          "value": "10"
-        },
-        {
-          "name": "Država",
-          "value": "jugoslavija"
-        },
-        {
-          "name": "Izdavačka kuća",
-          "value": "jugoton"
-        }
-      ]
-    }
-  ],
-  "has_options": true,
-  "is_purchasable": true,
-  "is_in_stock": true,
-  "is_on_backorder": false,
-  "low_stock_remaining": null,
-  "sold_individually": true,
-  "add_to_cart": {
-    "text": "Odaberi opcije",
-    "description": "Odaberi opcije za &ldquo;E=MC²&rdquo;",
-    "url": "https://ezop-antikvarijat.hr/parni-valjak-emc-2/",
-    "minimum": 1,
-    "maximum": 1,
-    "multiple_of": 1
-  }
-}
-
-=== 3. PROVJERA HTML ARHIVE (/kategorija/glazba/) ===
-Paginacija na /kategorija/glazba/: ['1234…445446447→', '1', '2', '3', '4', '…', '445', '446', '447', '→']
-Ukupno kartica na 1. stranici: 25
-
---- Kartica #1 HTML ---
-<div class="inline row product type-product post-256924 status-publish first instock product_cat-glazba-izvodaci product_cat-rock-glazba-zanr has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
-<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
-<a class="prod_link" href="https://ezop-antikvarijat.hr/4-of-us-man-alive/" title="Man Alive">
-<img alt="CD" class="glazba-bg cat_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/> <img alt="Omot koncertnog albuma „Man Alive” – 4 Of Us" class="attachment-woocommerce_thumbnail size-woocommerc
-
---- Kartica #2 HTML ---
-<div class="inline row product type-product post-453515 status-publish instock product_cat-glazba-izvodaci product_cat-world has-post-thumbnail sold-individually taxable shipping-taxable product-type-variable has-default-attributes">
-<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
-<a class="prod_link" href="https://ezop-antikvarijat.hr/a-l-lloyd-martyn-wyndham-reade-and-trevor-lucas-the-great-australian-legend-a-panorama-of-bush-balladry-and-song/" title="The Great Australian Legend - A Panorama Of Bush Balladry And Song">
-<img alt="LP" class="glazba-bg cat_music_lp LP" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" height="
-
---- Kartica #3 HTML ---
-<div class="inline row product type-product post-456864 status-publish last instock product_cat-klasicna-glazba has-post-thumbnail sold-individually taxable shipping-taxable product-type-variable has-default-attributes">
-<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
-<a class="prod_link" href="https://ezop-antikvarijat.hr/ad-%D0%91%D0%B0%D1%85-%D0%9C%D0%B5%D0%BD%D0%B4%D0%B5%D0%BB%D1%8C%D1%81%D0%BE%D0%BD-%D0%A8%D1%83%D0%BC%D0%B0%D0%BD-%D0%91%D0%B5%D1%82%D1%85%D0%BE%D0%B2%D0%B5%D0%BD-%D0%91%D1%80%D0%B0%D0%BC%D1%81-%D1%85%D0%BE%D1%80-%D0%BB%D0%B5%D0%BD%D0%B8%D0%BD%D0%B3%D1%80%D0%B0%D0%B4%D1%81%D0%BA%D0%BE%D0%B3%D0%BE-%D1%80%D0%B0%D0%B4%D0%B8%D0%BE-%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5
+Traceback (most recent call last):
+  File "/home/runner/work/baza-ploca/baza-ploca/scraper_ezop.py", line 25, in <module>
+    r_kat = session.get("https://ezop-antikvarijat.hr/kategorija/glazba/", timeout=15)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/sessions.py", line 671, in get
+    return self.request("GET", url, params=params, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/sessions.py", line 651, in request
+    resp = self.send(prep, **send_kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/sessions.py", line 784, in send
+    r = adapter.send(request, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/adapters.py", line 742, in send
+    raise ReadTimeout(e, request=request)
+requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='ezop-antikvarijat.hr', port=443): Read timed out. (read timeout=15)
 ----------------------------------------
-Vrijeme završetka (UTC): 22.10.2026. 09:26:35 | Kod izlaza: 0
+Vrijeme završetka (UTC): 22.10.2026. 09:30:27 | Kod izlaza: 1
