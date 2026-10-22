@@ -1,58 +1,171 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 22.10.2026. 10:23:17
+Vrijeme pokretanja (UTC): 22.10.2026. 10:27:44
 ----------------------------------------
 === 1. KRAJ JSON-A ZA VARIJACIJE 315415 (NEMA) vs 306668 (IMA) ===
-Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 540, in _make_request
-    response = conn.getresponse()
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connection.py", line 638, in getresponse
-    httplib_response = super().getresponse()
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/http/client.py", line 1423, in getresponse
-    response.begin()
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/http/client.py", line 330, in begin
-    version, status, reason = self._read_status()
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/http/client.py", line 291, in _read_status
-    line = str(self.fp.readline(_MAXLINE + 1), "iso-8859-1")
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/socket.py", line 717, in readinto
-    return self._sock.recv_into(b)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/ssl.py", line 1320, in recv_into
-    return self.read(nbytes, buffer)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/ssl.py", line 1176, in read
-    return self._sslobj.read(len, buffer)
-TimeoutError: The read operation timed out
+[GET 200 za 0.7s] https://ezop-antikvarijat.hr/wp-json/wc/store/products/315415
 
-The above exception was the direct cause of the following exception:
+--- Varijacija 315415 (NEMA NA STANJU - parent 181787) ---
+{
+  "id": 315415,
+  "name": "Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;",
+  "parent": 181787,
+  "type": "variation",
+  "variation": "Godina: 1990, Br Labela: LP 580, Omot: 6, Medij: 7, Država: Bivša Jugoslavija, Izdavačka kuća: Suzy",
+  "permalink": "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/?attribute_godina=1990&attribute_br-labela=LP+580&attribute_pa_omot=6&attribute_pa_medij=7&attribute_pa_drzava=jugoslavija&attribute_pa_izdavacka-kuca=suzy",
+  "sku": "E22315415",
+  "on_sale": false,
+  "prices": {
+    "price": "380",
+    "regular_price": "380",
+    "sale_price": "380",
+    "price_range": null,
+    "currency_code": "EUR",
+    "currency_symbol": "€",
+    "currency_minor_unit": 2,
+    "currency_decimal_separator": ",",
+    "currency_thousand_separator": ".",
+    "currency_prefix": "",
+    "currency_suffix": " €"
+  },
+  "price_html": "<span class=\"woocommerce-Price-amount amount\">3,80&nbsp;<span class=\"woocommerce-Price-currencySymbol\">&euro;</span></span>",
+  "average_rating": "0",
+  "review_count": 0,
+  "categories": [],
+  "tags": [],
+  "attributes": [],
+  "variations": [],
+  "has_options": false,
+  "is_purchasable": true,
+  "is_in_stock": true,
+  "is_on_backorder": false,
+  "low_stock_remaining": null,
+  "sold_individually": true,
+  "add_to_cart": {
+    "text": "Dodaj u košaricu",
+    "description": "Add &ldquo;Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;&rdquo; to your cart",
+    "url": "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/?attribute_godina=1990&#038;attribute_br-labela=LP+580&#038;attribute_pa_omot=6&#038;attribute_pa_medij=7&#038;attribute_pa_drzava=jugoslavija&#038;attribute_pa_izdavacka-kuca=suzy&#038;variation_id=315415&#038;add-to-cart=181787",
+    "minimum": 1,
+    "maximum": 1,
+    "multiple_of": 1
+  }
+}
+[GET 200 za 1.5s] https://ezop-antikvarijat.hr/wp-json/wc/store/products/306668
 
-Traceback (most recent call last):
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/adapters.py", line 696, in send
-    resp = conn.urlopen(
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 847, in urlopen
-    retries = retries.increment(
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/util/retry.py", line 510, in increment
-    raise reraise(type(error), error, _stacktrace)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/util/util.py", line 39, in reraise
-    raise value
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 793, in urlopen
-    response = self._make_request(
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 542, in _make_request
-    self._raise_timeout(err=e, url=url, timeout_value=read_timeout)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/urllib3/connectionpool.py", line 373, in _raise_timeout
-    raise ReadTimeoutError(
-urllib3.exceptions.ReadTimeoutError: HTTPSConnectionPool(host='ezop-antikvarijat.hr', port=443): Read timed out. (read timeout=15)
+--- Varijacija 306668 (IMA NA STANJU - parent 207847) ---
+{
+  "id": 306668,
+  "name": "E=MC²",
+  "parent": 207847,
+  "type": "variation",
+  "variation": "Godina: 1986, Br Labela: LSY 62160, Omot: 9, Medij: 10, Država: Bivša Jugoslavija, Izdavačka kuća: JUGOTON",
+  "permalink": "https://ezop-antikvarijat.hr/parni-valjak-emc-2/?attribute_godina=1986&attribute_br-labela=LSY+62160&attribute_pa_omot=9&attribute_pa_medij=10&attribute_pa_drzava=jugoslavija&attribute_pa_izdavacka-kuca=jugoton",
+  "sku": "E22306668",
+  "on_sale": false,
+  "prices": {
+    "price": "5450",
+    "regular_price": "5450",
+    "sale_price": "5450",
+    "price_range": null,
+    "currency_code": "EUR",
+    "currency_symbol": "€",
+    "currency_minor_unit": 2,
+    "currency_decimal_separator": ",",
+    "currency_thousand_separator": ".",
+    "currency_prefix": "",
+    "currency_suffix": " €"
+  },
+  "price_html": "<span class=\"woocommerce-Price-amount amount\">54,50&nbsp;<span class=\"woocommerce-Price-currencySymbol\">&euro;</span></span>",
+  "average_rating": "0",
+  "review_count": 0,
+  "categories": [],
+  "tags": [],
+  "attributes": [],
+  "variations": [],
+  "has_options": false,
+  "is_purchasable": true,
+  "is_in_stock": true,
+  "is_on_backorder": false,
+  "low_stock_remaining": null,
+  "sold_individually": true,
+  "add_to_cart": {
+    "text": "Dodaj u košaricu",
+    "description": "Add &ldquo;E=MC²&rdquo; to your cart",
+    "url": "https://ezop-antikvarijat.hr/parni-valjak-emc-2/?attribute_godina=1986&#038;attribute_br-labela=LSY+62160&#038;attribute_pa_omot=9&#038;attribute_pa_medij=10&#038;attribute_pa_drzava=jugoslavija&#038;attribute_pa_izdavacka-kuca=jugoton&#038;variation_id=306668&#038;add-to-cart=207847",
+    "minimum": 1,
+    "maximum": 1,
+    "multiple_of": 1
+  }
+}
 
-During handling of the above exception, another exception occurred:
+=== 2. SIDEBAR FILTERI I LP KARTICE (erotski-omoti-glazba) ===
+[GET 200 za 4.3s] https://ezop-antikvarijat.hr/kategorija/glazba/erotski-omoti-glazba/
 
-Traceback (most recent call last):
-  File "/home/runner/work/baza-ploca/baza-ploca/scraper_ezop.py", line 28, in <module>
-    r_v = session.get(f"https://ezop-antikvarijat.hr/wp-json/wc/store/products/{var_id}", timeout=15)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/sessions.py", line 671, in get
-    return self.request("GET", url, params=params, **kwargs)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/sessions.py", line 651, in request
-    resp = self.send(prep, **send_kwargs)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/sessions.py", line 784, in send
-    r = adapter.send(request, **kwargs)
-  File "/opt/hostedtoolcache/Python/3.10.22/x64/lib/python3.10/site-packages/requests/adapters.py", line 742, in send
-    raise ReadTimeout(e, request=request)
-requests.exceptions.ReadTimeout: HTTPSConnectionPool(host='ezop-antikvarijat.hr', port=443): Read timed out. (read timeout=15)
+Ukupno kartica na 1. stranici: 25
+
+================ DOSTUPNA LP KARTICA #1 ================
+<div class="inline row product type-product post-152795 status-publish first instock product_cat-erotski-omoti-glazba product_cat-kompilacije product_cat-pop-rock has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/" title="16 Top-10 Hits! Vol. 2">
+<img alt="LP" class="glazba-bg cat_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/> <img alt="Omot albuma „16 Top-10 Hits! Vol. 2” – 16 Top-10 Hits! Vol. 2" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="462" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-330x462.jpg" width="330"/> </a>
+</div>
+<div class="col-12 col-md-9 prod_infos glazba">
+<div class="arhiva-all-info">
+<div class="top">
+<a href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/" title="16 Top-10 Hits! Vol. 2">
+<h2 class="woocommerce-loop-product__title">16 Top-10 Hits! Vol. 2</h2>
+</a>
+<p class="product_author_black">16 Top-10 Hits! Vol. 2</p>
+</div>
+<div class="bottom"><div class="home-product-internal-container d-md-none">
+<div class="aspect-ratio-box"><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/"><img alt="Omot albuma „16 Top-10 Hits! Vol. 2” – 16 Top-10 Hits! Vol. 2" class="attachment-home_product_lp shop-thumbnail size-home_product_lp shop-thumbnail wp-post-image" height="600" sizes="(max-width: 598px) 100vw, 598px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339.jpg 598w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-462x464.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-300x300.jpg 300w" width="598"/><img alt="LP" class="glazba-bg home_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></a>
+</div>
+</div><ul class="arhiva-cf"><li class="hide-on-phone"><span class="info">Medij: </span>Gramofonska ploča</li></ul> <div class="arhiva-dolje otkup-0"><div class="my-custom-field-knjizara price"><span class="black price-label">Cijena: </span><span class="big">3</span>,<span class="small_price">90</span> - <span class="big"> 5</span>,<span class="small_price">90</span> €</div> <a aria-label="Izaberi “16 Top-10 Hits! Vol. 2”." class="button izaberi add_to_cart_button" href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/" rel="nofollow">Izaberi</a>
+</div> </div> <!-- /bottom -->
+</div>
+</div>
+</div>
+
+================ DOSTUPNA LP KARTICA #2 ================
+<div class="inline row product type-product post-174551 status-publish instock product_cat-erotski-omoti-glazba product_cat-glazba-izvodaci product_cat-pop-glazba-zanr has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/alma-ekmecic-seks-bomba-2/" title="Seks Bomba">
+<img alt="LP" class="glazba-bg cat_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/> <img alt="Gramofonska ploča Alma Ekmečić Seks Bomba LPD 0101, stanje ploče je 10/10" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="201" sizes="(max-width: 200px) 100vw, 200px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg 200w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-150x150.jpg 150w" width="200"/> </a>
+</div>
+<div class="col-12 col-md-9 prod_infos glazba">
+<div class="arhiva-all-info">
+<div class="top">
+<a href="https://ezop-antikvarijat.hr/alma-ekmecic-seks-bomba-2/" title="Seks Bomba">
+<h2 class="woocommerce-loop-product__title">Alma Ekmečić</h2>
+</a>
+<p class="product_author_black">Seks Bomba</p>
+</div>
+<div class="bottom"><div class="home-product-internal-container d-md-none">
+<div class="aspect-ratio-box"><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/alma-ekmecic-seks-bomba-2/"><img alt="Omot albuma „Seks Bomba” – Alma Ekmečić" class="attachment-home_product_lp shop-thumbnail size-home_product_lp shop-thumbnail wp-post-image" height="600" sizes="(max-width: 600px) 100vw, 600px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4.jpg 600w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-462x462.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-300x300.jpg 300w" width="600"/><img alt="LP" class="glazba-bg home_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></a>
+</div>
+</div><ul class="arhiva-cf"><li class="hide-on-phone"><span class="info">Medij: </span>Gramofonska ploča</li><li class="info-sm-mus"><span class="info">Stanje omota: </span><span class="red">9</span></li><li class="info-sm-mus"><span class="info">Stanje medija: </span><span class="red">10</span></li><li class="info-sm hide-on-phone"><span class="info">Država: </span>YU</li><li class="info-sm-book hide-on-phone"><span class="info">Godina: </span>1983.</li></ul> <div class="arhiva-dolje otkup-0"><div class="my-custom-field-knjizara price"><span class="black price-label">Cijena: </span><span class="big">28</span>,<span class="small_price">50</span> €</div> <a aria-label="Dodaj “Seks Bomba” u Vašu košaricu." class="button kupi add_to_cart_button ajax_add_to_cart" data-product_id="174551" data-product_sku="" data-quantity="1" href="?add-to-cart=299209&amp;attribute_godina=1983&amp;attribute_br-labela=LPD 0101&amp;attribute_pa_omot=9&amp;attribute_pa_medij=10&amp;attribute_pa_drzava=jugoslavija&amp;attribute_pa_izdavacka-kuca=jugodisk" rel="nofollow">Dodaj u košaricu</a>
+</div> </div> <!-- /bottom -->
+</div>
+</div>
+</div>
+
+=== 3. PROVJERA POJEDINAČNE STRANICE 181787 (NEMA) vs 207847 (IMA) ===
+[GET 200 za 1.7s] https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/
+
+--- NEMA NA STANJU (181787) (.price-cart-block) ---
+<div class="col-6 price-cart-block order-2">
+<h1 class="product_title"><a href="/?s=Rock' N' Roll ZG 1979-89&amp;post_type=product" title="Pretraži autora">Rock' N' Roll ZG 1979-89</a></h1><h2 class="single-product-autor">Prljavo Kazalište / Film / Azra / Parni Valjak…</h2><div class="single-product-cf"><p class="info"><span>Država: </span>Bivša Jugoslavija</p><p class="info"><span>Medij: </span>Gramofonska ploča</p><p class="info"><span>Broj labela: </span>LP 580</p><p class="info"><span>Stanje omota: </span><span class="red">9</span></p><p class="info"><span>Stanje medija: </span><span class="red">9</span></p></div><hr/><div class="single-product-price-block">
+<p class="single-product-page-cijena info">
+<span class="sp-info price-label">Cijena: </span><span class="big">3,</span><span class="small_price">80                         €</span>
+<br/> </p>
+</div><span class="nedostupno">Trenutno nema na stanju!</span> </div>
+[GET 200 za 3.4s] https://ezop-antikvarijat.hr/parni-valjak-emc-2/
+
+--- IMA NA STANJU (207847) (.price-cart-block) ---
+<div class="col-6 price-cart-block order-2">
+<h1 class="product_title"><a href="/?s=Parni Valjak&amp;post_type=product" title="Pretraži autora">Parni Valjak</a></h1><h2 class="single-product-autor">E=MC²</h2><div class="single-product-cf"><p class="info"><span>Država: </span>Bivša Jugoslavija</p><p class="info"><span>Godina: </span>1986.</p><p class="info"><span>Medij: </span>Gramofonska ploča</p><p class="info"><span>Broj labela: </span>LSY 62160</p><p class="info"><span>Izdavačka kuća: </span>Jugoton</p><img alt="" class="zastava" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/02/jugoton.png" height="70" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20100%2070'%3E%3C/svg%3E" width="100"/><noscript><img alt="" class="zastava" height="70" src="https://ezop-antikvarijat.hr/wp-content/uploads/2020/02/jugoton.png" width="100"/></noscript><p class="info"><span>Stanje omota: </span><span class="red">9</span></p><p class="info"><span>Stanje medija: </span><span class="red">10</span></p></div><hr/><div class="single-product-price-block">
+<p class="single-product-page-cijena info">
+<span class="sp-info price-label">Cijena: </span><span class="big">54,</span><span class="small_price">50                         €</span>
+<br/> </p>
+</div><div class="product_bot_part"><div class="product_price_cont"><a class="product_cho_link" data-product_id="207847" data-variation_id="306668" href="?add-to-cart=306668&amp;attribute_godina=1986&amp;attribute_br-labela=LSY 62160&amp;attribute_pa_omot=9&amp;attribute_pa_medij=10&amp;attribute_pa_drzava=jugoslavija&amp;attribute_pa_izdavacka-kuca=jugoton"><img alt="Dodaj u košaricu" class="img-fluid product_buy_icon" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/cart_kupi.png" height="60" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20230%2060'%3E%3C/svg%3E" title="Dodaj u košaricu" width="230"/><noscript><img alt="Dodaj u košaricu" class="img-fluid product_buy_icon" height="60" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/cart_kupi.png" title="Dodaj u košaricu" width="230"/></noscript></a></div></div> </div>
 ----------------------------------------
-Vrijeme završetka (UTC): 22.10.2026. 10:23:32 | Kod izlaza: 1
+Vrijeme završetka (UTC): 22.10.2026. 10:27:56 | Kod izlaza: 0
