@@ -1,1127 +1,238 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 22.10.2026. 07:22:57
+Vrijeme pokretanja (UTC): 22.10.2026. 09:26:27
 ----------------------------------------
-📦 Učitano 25705 postojećih ploča iz memorije.
-🕵️ Tražim stvarni Origin IP servera (SPF / MX / Poddomene)...
-   📍 Pronađen ne-Cloudflare IP kandidat [178.218.162.238] (Izvor: SPF ip4)
-   📍 Pronađen ne-Cloudflare IP kandidat [116.202.174.206] (Izvor: SPF ip4)
-   📍 Pronađen ne-Cloudflare IP kandidat [144.76.118.138] (Izvor: SPF ip4)
-   📍 Pronađen ne-Cloudflare IP kandidat [144.76.95.178] (Izvor: SPF ip4)
-   📍 Pronađen ne-Cloudflare IP kandidat [144.76.37.175] (Izvor: SPF ip4)
-   📍 Pronađen ne-Cloudflare IP kandidat [178.218.162.30] (Izvor: SPF host (smtp-cluster.plusvps.com))
-🔓 BINGO! Cloudflare zaobiđen direktno preko Origin IP servera: 116.202.174.206 (API radi!)
-🔍 Tražim ID kategorije 'Glazba'...
+=== 1. TRAŽENJE KATEGORIJE GLAZBA I PODKATEGORIJA ===
+WP v2 product_cat?slug=glazba (Status 200):
+ -> ID: 80 | Ime: Glazba | Count: 23271
 
-=== KORAK 1: POKREĆEM EZOP API SKENIRANJE ===
-Preuzimam API paket 1... -> Pronađeno ploča: 1
-Preuzimam API paket 2... -> Pronađeno ploča: 0
-Preuzimam API paket 3... -> Pronađeno ploča: 0
-Preuzimam API paket 4... -> Pronađeno ploča: 0
-Preuzimam API paket 5... -> Pronađeno ploča: 0
-Preuzimam API paket 6... -> Pronađeno ploča: 0
-Preuzimam API paket 7... -> Pronađeno ploča: 0
-Preuzimam API paket 8... -> Pronađeno ploča: 0
-Preuzimam API paket 9... -> Pronađeno ploča: 0
-Preuzimam API paket 10... -> Pronađeno ploča: 0
-Preuzimam API paket 11... -> Pronađeno ploča: 0
-Preuzimam API paket 12... -> Pronađeno ploča: 0
-Preuzimam API paket 13... -> Pronađeno ploča: 0
-Preuzimam API paket 14... -> Pronađeno ploča: 0
-Preuzimam API paket 15... -> Pronađeno ploča: 0
-Preuzimam API paket 16... -> Pronađeno ploča: 0
-Preuzimam API paket 17... -> Pronađeno ploča: 0
-Preuzimam API paket 18... -> Pronađeno ploča: 0
-Preuzimam API paket 19... -> Pronađeno ploča: 0
-Preuzimam API paket 20... -> Pronađeno ploča: 0
-Preuzimam API paket 21... -> Pronađeno ploča: 0
-Preuzimam API paket 22... -> Pronađeno ploča: 0
-Preuzimam API paket 23... -> Pronađeno ploča: 0
-Preuzimam API paket 24... -> Pronađeno ploča: 0
-Preuzimam API paket 25... -> Pronađeno ploča: 0
-Preuzimam API paket 26... -> Pronađeno ploča: 0
-Preuzimam API paket 27... -> Pronađeno ploča: 0
-Preuzimam API paket 28... -> Pronađeno ploča: 0
-Preuzimam API paket 29... -> Pronađeno ploča: 0
-Preuzimam API paket 30... -> Pronađeno ploča: 0
-Preuzimam API paket 31... -> Pronađeno ploča: 0
-Preuzimam API paket 32... -> Pronađeno ploča: 0
-Preuzimam API paket 33... -> Pronađeno ploča: 0
-Preuzimam API paket 34... -> Pronađeno ploča: 0
-Preuzimam API paket 35... -> Pronađeno ploča: 0
-Preuzimam API paket 36... -> Pronađeno ploča: 0
-Preuzimam API paket 37... -> Pronađeno ploča: 0
-Preuzimam API paket 38... -> Pronađeno ploča: 0
-Preuzimam API paket 39... -> Pronađeno ploča: 0
-Preuzimam API paket 40... -> Pronađeno ploča: 0
-Preuzimam API paket 41... -> Pronađeno ploča: 0
-Preuzimam API paket 42... -> Pronađeno ploča: 0
-Preuzimam API paket 43... -> Pronađeno ploča: 0
-Preuzimam API paket 44... -> Pronađeno ploča: 0
-Preuzimam API paket 45... -> Pronađeno ploča: 0
-Preuzimam API paket 46... -> Pronađeno ploča: 0
-Preuzimam API paket 47... -> Pronađeno ploča: 0
-Preuzimam API paket 48... -> Pronađeno ploča: 0
-Preuzimam API paket 49... -> Pronađeno ploča: 0
-Preuzimam API paket 50... -> Pronađeno ploča: 0
-Preuzimam API paket 51... -> Pronađeno ploča: 0
-Preuzimam API paket 52... -> Pronađeno ploča: 0
-Preuzimam API paket 53... -> Pronađeno ploča: 0
-Preuzimam API paket 54... -> Pronađeno ploča: 0
-Preuzimam API paket 55... -> Pronađeno ploča: 0
-Preuzimam API paket 56... -> Pronađeno ploča: 0
-Preuzimam API paket 57... -> Pronađeno ploča: 0
-Preuzimam API paket 58... -> Pronađeno ploča: 0
-Preuzimam API paket 59... -> Pronađeno ploča: 0
-Preuzimam API paket 60... -> Pronađeno ploča: 0
-Preuzimam API paket 61... -> Pronađeno ploča: 0
-Preuzimam API paket 62... -> Pronađeno ploča: 0
-Preuzimam API paket 63... -> Pronađeno ploča: 0
-Preuzimam API paket 64... -> Pronađeno ploča: 0
-Preuzimam API paket 65... -> Pronađeno ploča: 0
-Preuzimam API paket 66... -> Pronađeno ploča: 0
-Preuzimam API paket 67... -> Pronađeno ploča: 0
-Preuzimam API paket 68... -> Pronađeno ploča: 0
-Preuzimam API paket 69... -> Pronađeno ploča: 0
-Preuzimam API paket 70... -> Pronađeno ploča: 0
-Preuzimam API paket 71... -> Pronađeno ploča: 0
-Preuzimam API paket 72... -> Pronađeno ploča: 0
-Preuzimam API paket 73... -> Pronađeno ploča: 0
-Preuzimam API paket 74... -> Pronađeno ploča: 0
-Preuzimam API paket 75... -> Pronađeno ploča: 0
-Preuzimam API paket 76... -> Pronađeno ploča: 0
-Preuzimam API paket 77... -> Pronađeno ploča: 0
-Preuzimam API paket 78... -> Pronađeno ploča: 0
-Preuzimam API paket 79... -> Pronađeno ploča: 0
-Preuzimam API paket 80... -> Pronađeno ploča: 0
-Preuzimam API paket 81... -> Pronađeno ploča: 0
-Preuzimam API paket 82... -> Pronađeno ploča: 0
-Preuzimam API paket 83... -> Pronađeno ploča: 0
-Preuzimam API paket 84... -> Pronađeno ploča: 0
-Preuzimam API paket 85... -> Pronađeno ploča: 0
-Preuzimam API paket 86... -> Pronađeno ploča: 0
-Preuzimam API paket 87... -> Pronađeno ploča: 0
-Preuzimam API paket 88... -> Pronađeno ploča: 0
-Preuzimam API paket 89... -> Pronađeno ploča: 0
-Preuzimam API paket 90... -> Pronađeno ploča: 0
-Preuzimam API paket 91... -> Pronađeno ploča: 0
-Preuzimam API paket 92... -> Pronađeno ploča: 0
-Preuzimam API paket 93... -> Pronađeno ploča: 0
-Preuzimam API paket 94... -> Pronađeno ploča: 0
-Preuzimam API paket 95... -> Pronađeno ploča: 0
-Preuzimam API paket 96... -> Pronađeno ploča: 0
-Preuzimam API paket 97... -> Pronađeno ploča: 0
-Preuzimam API paket 98... -> Pronađeno ploča: 0
-Preuzimam API paket 99... -> Pronađeno ploča: 0
-Preuzimam API paket 100... -> Pronađeno ploča: 0
-Preuzimam API paket 101... -> Pronađeno ploča: 0
-Preuzimam API paket 102... -> Pronađeno ploča: 0
-Preuzimam API paket 103... -> Pronađeno ploča: 0
-Preuzimam API paket 104... -> Pronađeno ploča: 0
-Preuzimam API paket 105... -> Pronađeno ploča: 0
-Preuzimam API paket 106... -> Pronađeno ploča: 0
-Preuzimam API paket 107... -> Pronađeno ploča: 0
-Preuzimam API paket 108... -> Pronađeno ploča: 0
-Preuzimam API paket 109... -> Pronađeno ploča: 0
-Preuzimam API paket 110... -> Pronađeno ploča: 0
-Preuzimam API paket 111... -> Pronađeno ploča: 0
-Preuzimam API paket 112... -> Pronađeno ploča: 0
-Preuzimam API paket 113... -> Pronađeno ploča: 0
-Preuzimam API paket 114... -> Pronađeno ploča: 0
-Preuzimam API paket 115... -> Pronađeno ploča: 0
-Preuzimam API paket 116... -> Pronađeno ploča: 0
-Preuzimam API paket 117... -> Pronađeno ploča: 0
-Preuzimam API paket 118... -> Pronađeno ploča: 0
-Preuzimam API paket 119... -> Pronađeno ploča: 0
-Preuzimam API paket 120... -> Pronađeno ploča: 0
-Preuzimam API paket 121... -> Pronađeno ploča: 0
-Preuzimam API paket 122... -> Pronađeno ploča: 0
-Preuzimam API paket 123... -> Pronađeno ploča: 0
-Preuzimam API paket 124... -> Pronađeno ploča: 0
-Preuzimam API paket 125... -> Pronađeno ploča: 0
-Preuzimam API paket 126... -> Pronađeno ploča: 0
-Preuzimam API paket 127... -> Pronađeno ploča: 0
-Preuzimam API paket 128... -> Pronađeno ploča: 0
-Preuzimam API paket 129... -> Pronađeno ploča: 0
-Preuzimam API paket 130... -> Pronađeno ploča: 0
-Preuzimam API paket 131... -> Pronađeno ploča: 0
-Preuzimam API paket 132... -> Pronađeno ploča: 0
-Preuzimam API paket 133... -> Pronađeno ploča: 0
-Preuzimam API paket 134... -> Pronađeno ploča: 0
-Preuzimam API paket 135... -> Pronađeno ploča: 0
-Preuzimam API paket 136... -> Pronađeno ploča: 0
-Preuzimam API paket 137... -> Pronađeno ploča: 1
-Preuzimam API paket 138... -> Pronađeno ploča: 0
-Preuzimam API paket 139... -> Pronađeno ploča: 0
-Preuzimam API paket 140... -> Pronađeno ploča: 0
-Preuzimam API paket 141... -> Pronađeno ploča: 0
-Preuzimam API paket 142... -> Pronađeno ploča: 0
-Preuzimam API paket 143... -> Pronađeno ploča: 0
-Preuzimam API paket 144... -> Pronađeno ploča: 0
-Preuzimam API paket 145... -> Pronađeno ploča: 0
-Preuzimam API paket 146... -> Pronađeno ploča: 0
-Preuzimam API paket 147... -> Pronađeno ploča: 0
-Preuzimam API paket 148... -> Pronađeno ploča: 0
-Preuzimam API paket 149... -> Pronađeno ploča: 0
-Preuzimam API paket 150... -> Pronađeno ploča: 0
-Preuzimam API paket 151... -> Pronađeno ploča: 1
-Preuzimam API paket 152... -> Pronađeno ploča: 0
-Preuzimam API paket 153... -> Pronađeno ploča: 0
-Preuzimam API paket 154... -> Pronađeno ploča: 0
-Preuzimam API paket 155... -> Pronađeno ploča: 0
-Preuzimam API paket 156... -> Pronađeno ploča: 5
-Preuzimam API paket 157... -> Pronađeno ploča: 0
-Preuzimam API paket 158... -> Pronađeno ploča: 0
-Preuzimam API paket 159... -> Pronađeno ploča: 0
-Preuzimam API paket 160... -> Pronađeno ploča: 0
-Preuzimam API paket 161... -> Pronađeno ploča: 0
-Preuzimam API paket 162... -> Pronađeno ploča: 0
-Preuzimam API paket 163... -> Pronađeno ploča: 0
-Preuzimam API paket 164... -> Pronađeno ploča: 0
-Preuzimam API paket 165... -> Pronađeno ploča: 0
-Preuzimam API paket 166... -> Pronađeno ploča: 0
-Preuzimam API paket 167... -> Pronađeno ploča: 0
-Preuzimam API paket 168... -> Pronađeno ploča: 0
-Preuzimam API paket 169... -> Pronađeno ploča: 0
-Preuzimam API paket 170... -> Pronađeno ploča: 0
-Preuzimam API paket 171... -> Pronađeno ploča: 11
-Preuzimam API paket 172... -> Pronađeno ploča: 21
-Preuzimam API paket 173... -> Pronađeno ploča: 12
-Preuzimam API paket 174... -> Pronađeno ploča: 0
-Preuzimam API paket 175... -> Pronađeno ploča: 0
-Preuzimam API paket 176... -> Pronađeno ploča: 0
-Preuzimam API paket 177... -> Pronađeno ploča: 0
-Preuzimam API paket 178... -> Pronađeno ploča: 0
-Preuzimam API paket 179... -> Pronađeno ploča: 0
-Preuzimam API paket 180... -> Pronađeno ploča: 0
-Preuzimam API paket 181... -> Pronađeno ploča: 0
-Preuzimam API paket 182... -> Pronađeno ploča: 0
-Preuzimam API paket 183... -> Pronađeno ploča: 0
-Preuzimam API paket 184... -> Pronađeno ploča: 3
-Preuzimam API paket 185... -> Pronađeno ploča: 3
-Preuzimam API paket 186... -> Pronađeno ploča: 0
-Preuzimam API paket 187... -> Pronađeno ploča: 7
-Preuzimam API paket 188... -> Pronađeno ploča: 26
-Preuzimam API paket 189... -> Pronađeno ploča: 4
-Preuzimam API paket 190... -> Pronađeno ploča: 0
-Preuzimam API paket 191... -> Pronađeno ploča: 11
-Preuzimam API paket 192... -> Pronađeno ploča: 2
-Preuzimam API paket 193... -> Pronađeno ploča: 0
-Preuzimam API paket 194... -> Pronađeno ploča: 2
-Preuzimam API paket 195... -> Pronađeno ploča: 2
-Preuzimam API paket 196... -> Pronađeno ploča: 2
-Preuzimam API paket 197... -> Pronađeno ploča: 10
-Preuzimam API paket 198... -> Pronađeno ploča: 1
-Preuzimam API paket 199... -> Pronađeno ploča: 1
-Preuzimam API paket 200... -> Pronađeno ploča: 1
-Preuzimam API paket 201... -> Pronađeno ploča: 0
-Preuzimam API paket 202... -> Pronađeno ploča: 1
-Preuzimam API paket 203... -> Pronađeno ploča: 1
-Preuzimam API paket 204... -> Pronađeno ploča: 3
-Preuzimam API paket 205... -> Pronađeno ploča: 3
-Preuzimam API paket 206... -> Pronađeno ploča: 0
-Preuzimam API paket 207... -> Pronađeno ploča: 4
-Preuzimam API paket 208... -> Pronađeno ploča: 4
-Preuzimam API paket 209... -> Pronađeno ploča: 12
-Preuzimam API paket 210... -> Pronađeno ploča: 5
-Preuzimam API paket 211... -> Pronađeno ploča: 1
-Preuzimam API paket 212... -> Pronađeno ploča: 2
-Preuzimam API paket 213... -> Pronađeno ploča: 5
-Preuzimam API paket 214... -> Pronađeno ploča: 2
-Preuzimam API paket 215... -> Pronađeno ploča: 4
-Preuzimam API paket 216... -> Pronađeno ploča: 11
-Preuzimam API paket 217... -> Pronađeno ploča: 4
-Preuzimam API paket 218... -> Pronađeno ploča: 14
-Preuzimam API paket 219... -> Pronađeno ploča: 13
-Preuzimam API paket 220... -> Pronađeno ploča: 12
-Preuzimam API paket 221... -> Pronađeno ploča: 11
-Preuzimam API paket 222... -> Pronađeno ploča: 9
-Preuzimam API paket 223... -> Pronađeno ploča: 11
-Preuzimam API paket 224... -> Pronađeno ploča: 16
-Preuzimam API paket 225... -> Pronađeno ploča: 13
-Preuzimam API paket 226... -> Pronađeno ploča: 20
-Preuzimam API paket 227... -> Pronađeno ploča: 19
-Preuzimam API paket 228... -> Pronađeno ploča: 13
-Preuzimam API paket 229... -> Pronađeno ploča: 50
-Preuzimam API paket 230... -> Pronađeno ploča: 27
-Preuzimam API paket 231... -> Pronađeno ploča: 14
-Preuzimam API paket 232... -> Pronađeno ploča: 4
-Preuzimam API paket 233... -> Pronađeno ploča: 0
-Preuzimam API paket 234... -> Pronađeno ploča: 0
-Preuzimam API paket 235... -> Pronađeno ploča: 13
-Preuzimam API paket 236... -> Pronađeno ploča: 51
-Preuzimam API paket 237... -> Pronađeno ploča: 6
-Preuzimam API paket 238... -> Pronađeno ploča: 0
-Preuzimam API paket 239... -> Pronađeno ploča: 0
-Preuzimam API paket 240... -> Pronađeno ploča: 1
-Preuzimam API paket 241... -> Pronađeno ploča: 1
-Preuzimam API paket 242... -> Pronađeno ploča: 1
-Preuzimam API paket 243... -> Pronađeno ploča: 2
-Preuzimam API paket 244... -> Pronađeno ploča: 0
-Preuzimam API paket 245... -> Pronađeno ploča: 0
-Preuzimam API paket 246... -> Pronađeno ploča: 0
-Preuzimam API paket 247... -> Pronađeno ploča: 1
-Preuzimam API paket 248... -> Pronađeno ploča: 13
-Preuzimam API paket 249... -> Pronađeno ploča: 0
-Preuzimam API paket 250... -> Pronađeno ploča: 1
-Preuzimam API paket 251... -> Pronađeno ploča: 0
-Preuzimam API paket 252... -> Pronađeno ploča: 0
-Preuzimam API paket 253... -> Pronađeno ploča: 4
-Preuzimam API paket 254... -> Pronađeno ploča: 2
-Preuzimam API paket 255... -> Pronađeno ploča: 0
-Preuzimam API paket 256... -> Pronađeno ploča: 2
-Preuzimam API paket 257... -> Pronađeno ploča: 1
-Preuzimam API paket 258... -> Pronađeno ploča: 2
-Preuzimam API paket 259... -> Pronađeno ploča: 1
-Preuzimam API paket 260... -> Pronađeno ploča: 0
-Preuzimam API paket 261... -> Pronađeno ploča: 2
-Preuzimam API paket 262... -> Pronađeno ploča: 0
-Preuzimam API paket 263... -> Pronađeno ploča: 6
-Preuzimam API paket 264... -> Pronađeno ploča: 2
-Preuzimam API paket 265... -> Pronađeno ploča: 0
-Preuzimam API paket 266... -> Pronađeno ploča: 4
-Preuzimam API paket 267... -> Pronađeno ploča: 3
-Preuzimam API paket 268... -> Pronađeno ploča: 3
-Preuzimam API paket 269... -> Pronađeno ploča: 0
-Preuzimam API paket 270... -> Pronađeno ploča: 0
-Preuzimam API paket 271... -> Pronađeno ploča: 0
-Preuzimam API paket 272... -> Pronađeno ploča: 0
-Preuzimam API paket 273... -> Pronađeno ploča: 5
-Preuzimam API paket 274... -> Pronađeno ploča: 1
-Preuzimam API paket 275... -> Pronađeno ploča: 6
-Preuzimam API paket 276... -> Pronađeno ploča: 3
-Preuzimam API paket 277... -> Pronađeno ploča: 3
-Preuzimam API paket 278... -> Pronađeno ploča: 3
-Preuzimam API paket 279... -> Pronađeno ploča: 1
-Preuzimam API paket 280... -> Pronađeno ploča: 2
-Preuzimam API paket 281... -> Pronađeno ploča: 1
-Preuzimam API paket 282... -> Pronađeno ploča: 6
-Preuzimam API paket 283... -> Pronađeno ploča: 8
-Preuzimam API paket 284... -> Pronađeno ploča: 6
-Preuzimam API paket 285... -> Pronađeno ploča: 3
-Preuzimam API paket 286... -> Pronađeno ploča: 2
-Preuzimam API paket 287... -> Pronađeno ploča: 0
-Preuzimam API paket 288... -> Pronađeno ploča: 3
-Preuzimam API paket 289... -> Pronađeno ploča: 6
-Preuzimam API paket 290... -> Pronađeno ploča: 2
-Preuzimam API paket 291... -> Pronađeno ploča: 6
-Preuzimam API paket 292... -> Pronađeno ploča: 11
-Preuzimam API paket 293... -> Pronađeno ploča: 2
-Preuzimam API paket 294... -> Pronađeno ploča: 2
-Preuzimam API paket 295... -> Pronađeno ploča: 1
-Preuzimam API paket 296... -> Pronađeno ploča: 2
-Preuzimam API paket 297... -> Pronađeno ploča: 6
-Preuzimam API paket 298... -> Pronađeno ploča: 4
-Preuzimam API paket 299... -> Pronađeno ploča: 9
-Preuzimam API paket 300... -> Pronađeno ploča: 8
-Preuzimam API paket 301... -> Pronađeno ploča: 24
-Preuzimam API paket 302... -> Pronađeno ploča: 13
-Preuzimam API paket 303... -> Pronađeno ploča: 20
-Preuzimam API paket 304... -> Pronađeno ploča: 19
-Preuzimam API paket 305... -> Pronađeno ploča: 23
-Preuzimam API paket 306... -> Pronađeno ploča: 27
-Preuzimam API paket 307... -> Pronađeno ploča: 25
-Preuzimam API paket 308... -> Pronađeno ploča: 15
-Preuzimam API paket 309... -> Pronađeno ploča: 6
-Preuzimam API paket 310... -> Pronađeno ploča: 9
-Preuzimam API paket 311... -> Pronađeno ploča: 5
-Preuzimam API paket 312... -> Pronađeno ploča: 3
-Preuzimam API paket 313... -> Pronađeno ploča: 3
-Preuzimam API paket 314... -> Pronađeno ploča: 6
-Preuzimam API paket 315... -> Pronađeno ploča: 2
-Preuzimam API paket 316... -> Pronađeno ploča: 2
-Preuzimam API paket 317... -> Pronađeno ploča: 0
-Preuzimam API paket 318... -> Pronađeno ploča: 0
-Preuzimam API paket 319... -> Pronađeno ploča: 3
-Preuzimam API paket 320... -> Pronađeno ploča: 0
-Preuzimam API paket 321... -> Pronađeno ploča: 3
-Preuzimam API paket 322... -> Pronađeno ploča: 2
-Preuzimam API paket 323... -> Pronađeno ploča: 2
-Preuzimam API paket 324... -> Pronađeno ploča: 0
-Preuzimam API paket 325... -> Pronađeno ploča: 1
-Preuzimam API paket 326... -> Pronađeno ploča: 0
-Preuzimam API paket 327... -> Pronađeno ploča: 0
-Preuzimam API paket 328... -> Pronađeno ploča: 0
-Preuzimam API paket 329... -> Pronađeno ploča: 1
-Preuzimam API paket 330... -> Pronađeno ploča: 4
-Preuzimam API paket 331... -> Pronađeno ploča: 0
-Preuzimam API paket 332... -> Pronađeno ploča: 1
-Preuzimam API paket 333... -> Pronađeno ploča: 1
-Preuzimam API paket 334... -> Pronađeno ploča: 1
-Preuzimam API paket 335... -> Pronađeno ploča: 11
-Preuzimam API paket 336... -> Pronađeno ploča: 2
-Preuzimam API paket 337... -> Pronađeno ploča: 1
-Preuzimam API paket 338... -> Pronađeno ploča: 7
-Preuzimam API paket 339... -> Pronađeno ploča: 6
-Preuzimam API paket 340... -> Pronađeno ploča: 6
-Preuzimam API paket 341... -> Pronađeno ploča: 11
-Preuzimam API paket 342... -> Pronađeno ploča: 4
-Preuzimam API paket 343... -> Pronađeno ploča: 0
-Preuzimam API paket 344... -> Pronađeno ploča: 1
-Preuzimam API paket 345... -> Pronađeno ploča: 1
-Preuzimam API paket 346... -> Pronađeno ploča: 3
-Preuzimam API paket 347... -> Pronađeno ploča: 3
-Preuzimam API paket 348... -> Pronađeno ploča: 5
-Preuzimam API paket 349... -> Pronađeno ploča: 1
-Preuzimam API paket 350... -> Pronađeno ploča: 5
-Preuzimam API paket 351... -> Pronađeno ploča: 8
-Preuzimam API paket 352... -> Pronađeno ploča: 8
-Preuzimam API paket 353... -> Pronađeno ploča: 11
-Preuzimam API paket 354... -> Pronađeno ploča: 14
-Preuzimam API paket 355... -> Pronađeno ploča: 53
-Preuzimam API paket 356... -> Pronađeno ploča: 29
-Preuzimam API paket 357... -> Pronađeno ploča: 6
-Preuzimam API paket 358... -> Pronađeno ploča: 31
-Preuzimam API paket 359... -> Pronađeno ploča: 9
-Preuzimam API paket 360... -> Pronađeno ploča: 6
-Preuzimam API paket 361... -> Pronađeno ploča: 5
-Preuzimam API paket 362... -> Pronađeno ploča: 7
-Preuzimam API paket 363... -> Pronađeno ploča: 3
-Preuzimam API paket 364... -> Pronađeno ploča: 4
-Preuzimam API paket 365... -> Pronađeno ploča: 1
-Preuzimam API paket 366... -> Pronađeno ploča: 2
-Preuzimam API paket 367... -> Pronađeno ploča: 11
-Preuzimam API paket 368... -> Pronađeno ploča: 10
-Preuzimam API paket 369... -> Pronađeno ploča: 5
-Preuzimam API paket 370... -> Pronađeno ploča: 10
-Preuzimam API paket 371... -> Pronađeno ploča: 9
-Preuzimam API paket 372... -> Pronađeno ploča: 2
-Preuzimam API paket 373... -> Pronađeno ploča: 11
-Preuzimam API paket 374... -> Pronađeno ploča: 37
-Preuzimam API paket 375... -> Pronađeno ploča: 15
-Preuzimam API paket 376... -> Pronađeno ploča: 1
-Preuzimam API paket 377... -> Pronađeno ploča: 4
-Preuzimam API paket 378... -> Pronađeno ploča: 4
-Preuzimam API paket 379... -> Pronađeno ploča: 2
-Preuzimam API paket 380... -> Pronađeno ploča: 1
-Preuzimam API paket 381... -> Pronađeno ploča: 5
-Preuzimam API paket 382... -> Pronađeno ploča: 3
-Preuzimam API paket 383... -> Pronađeno ploča: 16
-Preuzimam API paket 384... -> Pronađeno ploča: 12
-Preuzimam API paket 385... -> Pronađeno ploča: 18
-Preuzimam API paket 386... -> Pronađeno ploča: 10
-Preuzimam API paket 387... -> Pronađeno ploča: 8
-Preuzimam API paket 388... -> Pronađeno ploča: 3
-Preuzimam API paket 389... -> Pronađeno ploča: 14
-Preuzimam API paket 390... -> Pronađeno ploča: 10
-Preuzimam API paket 391... -> Pronađeno ploča: 17
-Preuzimam API paket 392... -> Pronađeno ploča: 17
-Preuzimam API paket 393... -> Pronađeno ploča: 18
-Preuzimam API paket 394... -> Pronađeno ploča: 42
-Preuzimam API paket 395... -> Pronađeno ploča: 17
-Preuzimam API paket 396... -> Pronađeno ploča: 7
-Preuzimam API paket 397... -> Pronađeno ploča: 9
-Preuzimam API paket 398... -> Pronađeno ploča: 8
-Preuzimam API paket 399... -> Pronađeno ploča: 25
-Preuzimam API paket 400... -> Pronađeno ploča: 22
-Preuzimam API paket 401... -> Pronađeno ploča: 6
-Preuzimam API paket 402... -> Pronađeno ploča: 12
-Preuzimam API paket 403... -> Pronađeno ploča: 6
-Preuzimam API paket 404... -> Pronađeno ploča: 6
-Preuzimam API paket 405... -> Pronađeno ploča: 5
-Preuzimam API paket 406... -> Pronađeno ploča: 3
-Preuzimam API paket 407... -> Pronađeno ploča: 4
-Preuzimam API paket 408... -> Pronađeno ploča: 29
-Preuzimam API paket 409... -> Pronađeno ploča: 10
-Preuzimam API paket 410... -> Pronađeno ploča: 47
-Preuzimam API paket 411... -> Pronađeno ploča: 50
-Preuzimam API paket 412... -> Pronađeno ploča: 39
-Preuzimam API paket 413... -> Pronađeno ploča: 25
-Preuzimam API paket 414... -> Pronađeno ploča: 32
-Preuzimam API paket 415... -> Pronađeno ploča: 84
-Preuzimam API paket 416... -> Pronađeno ploča: 41
-Preuzimam API paket 417... -> Pronađeno ploča: 25
-Preuzimam API paket 418... -> Pronađeno ploča: 14
-Preuzimam API paket 419... -> Pronađeno ploča: 13
-Preuzimam API paket 420... -> Pronađeno ploča: 3
-Preuzimam API paket 421... -> Pronađeno ploča: 10
-Preuzimam API paket 422... -> Pronađeno ploča: 7
-Preuzimam API paket 423... -> Pronađeno ploča: 11
-Preuzimam API paket 424... -> Pronađeno ploča: 67
-Preuzimam API paket 425... -> Pronađeno ploča: 40
-Preuzimam API paket 426... -> Pronađeno ploča: 8
-Preuzimam API paket 427... -> Pronađeno ploča: 1
-Preuzimam API paket 428... -> Pronađeno ploča: 46
-Preuzimam API paket 429... -> Pronađeno ploča: 38
-Preuzimam API paket 430... -> Pronađeno ploča: 7
-Preuzimam API paket 431... -> Pronađeno ploča: 7
-Preuzimam API paket 432... -> Pronađeno ploča: 11
-Preuzimam API paket 433... -> Pronađeno ploča: 0
-Preuzimam API paket 434... -> Pronađeno ploča: 0
-Preuzimam API paket 435... -> Pronađeno ploča: 0
-Preuzimam API paket 436... -> Pronađeno ploča: 0
-Preuzimam API paket 437... -> Pronađeno ploča: 0
-Preuzimam API paket 438... -> Pronađeno ploča: 0
-Preuzimam API paket 439... -> Pronađeno ploča: 0
-Preuzimam API paket 440... -> Pronađeno ploča: 0
-Preuzimam API paket 441... -> Pronađeno ploča: 0
-Preuzimam API paket 442... -> Pronađeno ploča: 0
-Preuzimam API paket 443... -> Pronađeno ploča: 1
-Preuzimam API paket 444... -> Pronađeno ploča: 6
-Preuzimam API paket 445... -> Pronađeno ploča: 9
-Preuzimam API paket 446... -> Pronađeno ploča: 44
-Preuzimam API paket 447... -> Pronađeno ploča: 20
-Preuzimam API paket 448... -> Pronađeno ploča: 8
-Preuzimam API paket 449... -> Pronađeno ploča: 7
-Preuzimam API paket 450... -> Pronađeno ploča: 7
-Preuzimam API paket 451... -> Pronađeno ploča: 30
-Preuzimam API paket 452... -> Pronađeno ploča: 64
-Preuzimam API paket 453... -> Pronađeno ploča: 29
-Preuzimam API paket 454... -> Pronađeno ploča: 5
-Preuzimam API paket 455... -> Pronađeno ploča: 34
-Preuzimam API paket 456... -> Pronađeno ploča: 88
-Preuzimam API paket 457... -> Pronađeno ploča: 95
-Preuzimam API paket 458... -> Pronađeno ploča: 99
-Preuzimam API paket 459... -> Pronađeno ploča: 94
-Preuzimam API paket 460... -> Pronađeno ploča: 99
-Preuzimam API paket 461... -> Pronađeno ploča: 91
-Preuzimam API paket 462... -> Pronađeno ploča: 95
-Preuzimam API paket 463... -> Pronađeno ploča: 98
-Preuzimam API paket 464... -> Pronađeno ploča: 93
-Preuzimam API paket 465... -> Pronađeno ploča: 93
-Preuzimam API paket 466... -> Pronađeno ploča: 98
-Preuzimam API paket 467... -> Pronađeno ploča: 98
-Preuzimam API paket 468... -> Pronađeno ploča: 95
-Preuzimam API paket 469... -> Pronađeno ploča: 96
-Preuzimam API paket 470... -> Pronađeno ploča: 84
-Preuzimam API paket 471... -> Pronađeno ploča: 27
-Preuzimam API paket 472... -> Pronađeno ploča: 21
-Preuzimam API paket 473... -> Pronađeno ploča: 11
-Preuzimam API paket 474... -> Pronađeno ploča: 8
-Preuzimam API paket 475... -> Pronađeno ploča: 15
-Preuzimam API paket 476... -> Pronađeno ploča: 13
-Preuzimam API paket 477... -> Pronađeno ploča: 15
-Preuzimam API paket 478... -> Pronađeno ploča: 94
-Preuzimam API paket 479... -> Pronađeno ploča: 73
-Preuzimam API paket 480... -> Pronađeno ploča: 47
-Preuzimam API paket 481... -> Pronađeno ploča: 87
-Preuzimam API paket 482... -> Pronađeno ploča: 45
-Preuzimam API paket 483... -> Pronađeno ploča: 94
-Preuzimam API paket 484... -> Pronađeno ploča: 33
-Preuzimam API paket 485... -> Pronađeno ploča: 48
-Preuzimam API paket 486... -> Pronađeno ploča: 67
-Preuzimam API paket 487... -> Pronađeno ploča: 56
-Preuzimam API paket 488... -> Pronađeno ploča: 65
-Preuzimam API paket 489... -> Pronađeno ploča: 94
-Preuzimam API paket 490... -> Pronađeno ploča: 73
-Preuzimam API paket 491... -> Pronađeno ploča: 90
-Preuzimam API paket 492... -> Pronađeno ploča: 92
-Preuzimam API paket 493... -> Pronađeno ploča: 87
-Preuzimam API paket 494... -> Pronađeno ploča: 91
-Preuzimam API paket 495... -> Pronađeno ploča: 88
-Preuzimam API paket 496... -> Pronađeno ploča: 93
-Preuzimam API paket 497... -> Pronađeno ploča: 87
-Preuzimam API paket 498... -> Pronađeno ploča: 76
-Preuzimam API paket 499... -> Pronađeno ploča: 86
-Preuzimam API paket 500... -> Pronađeno ploča: 95
-Preuzimam API paket 501... -> Pronađeno ploča: 39
-Preuzimam API paket 502... -> Pronađeno ploča: 83
-Preuzimam API paket 503... -> Pronađeno ploča: 85
-Preuzimam API paket 504... -> Pronađeno ploča: 46
-Preuzimam API paket 505... -> Pronađeno ploča: 73
-Preuzimam API paket 506... -> Pronađeno ploča: 84
-Preuzimam API paket 507... -> Pronađeno ploča: 81
-Preuzimam API paket 508... -> Pronađeno ploča: 47
-Preuzimam API paket 509... -> Pronađeno ploča: 76
-Preuzimam API paket 510... -> Pronađeno ploča: 55
-Preuzimam API paket 511... -> Pronađeno ploča: 74
-Preuzimam API paket 512... -> Pronađeno ploča: 55
-Preuzimam API paket 513... -> Pronađeno ploča: 48
-Preuzimam API paket 514... -> Pronađeno ploča: 54
-Preuzimam API paket 515... -> Pronađeno ploča: 52
-Preuzimam API paket 516... -> Pronađeno ploča: 30
-Preuzimam API paket 517... -> Pronađeno ploča: 3
-Preuzimam API paket 518... -> Pronađeno ploča: 5
-Preuzimam API paket 519... -> Pronađeno ploča: 15
-Preuzimam API paket 520... -> Pronađeno ploča: 15
-Preuzimam API paket 521... -> Pronađeno ploča: 11
-Preuzimam API paket 522... -> Pronađeno ploča: 14
-Preuzimam API paket 523... -> Pronađeno ploča: 0
-Preuzimam API paket 524... -> Pronađeno ploča: 18
-Preuzimam API paket 525... -> Pronađeno ploča: 25
-Preuzimam API paket 526... -> Pronađeno ploča: 3
-Preuzimam API paket 527... -> Pronađeno ploča: 2
-Preuzimam API paket 528... -> Pronađeno ploča: 18
-Preuzimam API paket 529... -> Pronađeno ploča: 51
-Preuzimam API paket 530... -> Pronađeno ploča: 32
-Preuzimam API paket 531... -> Pronađeno ploča: 19
-Preuzimam API paket 532... -> Pronađeno ploča: 29
-Preuzimam API paket 533... -> Pronađeno ploča: 21
-Preuzimam API paket 534... -> Pronađeno ploča: 4
-Preuzimam API paket 535... -> Pronađeno ploča: 17
-Preuzimam API paket 536... -> Pronađeno ploča: 8
-Preuzimam API paket 537... -> Pronađeno ploča: 8
-Preuzimam API paket 538... -> Pronađeno ploča: 35
-Preuzimam API paket 539... -> Pronađeno ploča: 15
-Preuzimam API paket 540... -> Pronađeno ploča: 0
-Preuzimam API paket 541... -> Pronađeno ploča: 4
-Preuzimam API paket 542... -> Pronađeno ploča: 10
-Preuzimam API paket 543... -> Pronađeno ploča: 25
-Preuzimam API paket 544... -> Pronađeno ploča: 34
-Preuzimam API paket 545... -> Pronađeno ploča: 77
-Preuzimam API paket 546... -> Pronađeno ploča: 51
-Preuzimam API paket 547... -> Pronađeno ploča: 68
-Preuzimam API paket 548... -> Pronađeno ploča: 2
-Preuzimam API paket 549... -> Pronađeno ploča: 16
-Preuzimam API paket 550... -> Pronađeno ploča: 61
-Preuzimam API paket 551... -> Pronađeno ploča: 23
-Preuzimam API paket 552... -> Pronađeno ploča: 52
-Preuzimam API paket 553... -> Pronađeno ploča: 90
-Preuzimam API paket 554... -> Pronađeno ploča: 7
-Preuzimam API paket 555... -> Pronađeno ploča: 9
-Preuzimam API paket 556... -> Pronađeno ploča: 9
-Preuzimam API paket 557... -> Pronađeno ploča: 57
-Preuzimam API paket 558... -> Pronađeno ploča: 92
-Preuzimam API paket 559... -> Pronađeno ploča: 3
-Preuzimam API paket 560... -> Pronađeno ploča: 11
-Preuzimam API paket 561... -> Pronađeno ploča: 25
-Preuzimam API paket 562... -> Pronađeno ploča: 18
-Preuzimam API paket 563... -> Pronađeno ploča: 21
-Preuzimam API paket 564... -> Pronađeno ploča: 14
-Preuzimam API paket 565... -> Pronađeno ploča: 6
-Preuzimam API paket 566... -> Pronađeno ploča: 23
-Preuzimam API paket 567... -> Pronađeno ploča: 4
-Preuzimam API paket 568... -> Pronađeno ploča: 10
-Preuzimam API paket 569... -> Pronađeno ploča: 2
-Preuzimam API paket 570... -> Pronađeno ploča: 1
-Preuzimam API paket 571... -> Pronađeno ploča: 3
-Preuzimam API paket 572... -> Pronađeno ploča: 12
-Preuzimam API paket 573... -> Pronađeno ploča: 3
-Preuzimam API paket 574... -> Pronađeno ploča: 5
-Preuzimam API paket 575... -> Pronađeno ploča: 3
-Preuzimam API paket 576... -> Pronađeno ploča: 1
-Preuzimam API paket 577... -> Pronađeno ploča: 3
-Preuzimam API paket 578... -> Pronađeno ploča: 2
-Preuzimam API paket 579... -> Pronađeno ploča: 1
-Preuzimam API paket 580... -> Pronađeno ploča: 4
-Preuzimam API paket 581... -> Pronađeno ploča: 11
-Preuzimam API paket 582... -> Pronađeno ploča: 16
-Preuzimam API paket 583... -> Pronađeno ploča: 18
-Preuzimam API paket 584... -> Pronađeno ploča: 2
-Preuzimam API paket 585... -> Pronađeno ploča: 19
-Preuzimam API paket 586... -> Pronađeno ploča: 35
-Preuzimam API paket 587... -> Pronađeno ploča: 16
-Preuzimam API paket 588... -> Pronađeno ploča: 39
-Preuzimam API paket 589... -> Pronađeno ploča: 54
-Preuzimam API paket 590... -> Pronađeno ploča: 14
-Preuzimam API paket 591... -> Pronađeno ploča: 28
-Preuzimam API paket 592... -> Pronađeno ploča: 23
-Preuzimam API paket 593... -> Pronađeno ploča: 24
-Preuzimam API paket 594... -> Pronađeno ploča: 6
-Preuzimam API paket 595... -> Pronađeno ploča: 19
-Preuzimam API paket 596... -> Pronađeno ploča: 5
-Preuzimam API paket 597... -> Pronađeno ploča: 1
-Preuzimam API paket 598... -> Pronađeno ploča: 1
-Preuzimam API paket 599... -> Pronađeno ploča: 1
-Preuzimam API paket 600... -> Pronađeno ploča: 1
-Preuzimam API paket 601... -> Pronađeno ploča: 8
-Preuzimam API paket 602... -> Pronađeno ploča: 3
-Preuzimam API paket 603... -> Pronađeno ploča: 2
-Preuzimam API paket 604... -> Pronađeno ploča: 6
-Preuzimam API paket 605... -> Pronađeno ploča: 4
-Preuzimam API paket 606... -> Pronađeno ploča: 7
-Preuzimam API paket 607... -> Pronađeno ploča: 53
-Preuzimam API paket 608... -> Pronađeno ploča: 68
-Preuzimam API paket 609... -> Pronađeno ploča: 0
-Preuzimam API paket 610... -> Pronađeno ploča: 14
-Preuzimam API paket 611... -> Pronađeno ploča: 4
-Preuzimam API paket 612... -> Pronađeno ploča: 1
-Preuzimam API paket 613... -> Pronađeno ploča: 3
-Preuzimam API paket 614... -> Pronađeno ploča: 4
-Preuzimam API paket 615... -> Pronađeno ploča: 2
-Preuzimam API paket 616... -> Pronađeno ploča: 2
-Preuzimam API paket 617... -> Pronađeno ploča: 6
-Preuzimam API paket 618... -> Pronađeno ploča: 17
-Preuzimam API paket 619... -> Pronađeno ploča: 9
-Preuzimam API paket 620... -> Pronađeno ploča: 4
-Preuzimam API paket 621... -> Pronađeno ploča: 5
-Preuzimam API paket 622... -> Pronađeno ploča: 10
-Preuzimam API paket 623... -> Pronađeno ploča: 4
-Preuzimam API paket 624... -> Pronađeno ploča: 1
-Preuzimam API paket 625... -> Pronađeno ploča: 3
-Preuzimam API paket 626... -> Pronađeno ploča: 36
-Preuzimam API paket 627... -> Pronađeno ploča: 14
-Preuzimam API paket 628... -> Pronađeno ploča: 25
-Preuzimam API paket 629... -> Pronađeno ploča: 4
-Preuzimam API paket 630... -> Pronađeno ploča: 5
-Preuzimam API paket 631... -> Pronađeno ploča: 3
-Preuzimam API paket 632... -> Pronađeno ploča: 36
-Preuzimam API paket 633... -> Pronađeno ploča: 41
-Preuzimam API paket 634... -> Pronađeno ploča: 52
-Preuzimam API paket 635... -> Pronađeno ploča: 64
-Preuzimam API paket 636... -> Pronađeno ploča: 62
-Preuzimam API paket 637... -> Pronađeno ploča: 74
-Preuzimam API paket 638... -> Pronađeno ploča: 82
-Preuzimam API paket 639... -> Pronađeno ploča: 51
-Preuzimam API paket 640... -> Pronađeno ploča: 57
-Preuzimam API paket 641... -> Pronađeno ploča: 69
-Preuzimam API paket 642... -> Pronađeno ploča: 46
-Preuzimam API paket 643... -> Pronađeno ploča: 88
-Preuzimam API paket 644... -> Pronađeno ploča: 89
-Preuzimam API paket 645... -> Pronađeno ploča: 91
-Preuzimam API paket 646... -> Pronađeno ploča: 95
-Preuzimam API paket 647... -> Pronađeno ploča: 89
-Preuzimam API paket 648... -> Pronađeno ploča: 67
-Preuzimam API paket 649... -> Pronađeno ploča: 92
-Preuzimam API paket 650... -> Pronađeno ploča: 94
-Preuzimam API paket 651... -> Pronađeno ploča: 91
-Preuzimam API paket 652... -> Pronađeno ploča: 98
-Preuzimam API paket 653... -> Pronađeno ploča: 96
-Preuzimam API paket 654... -> Pronađeno ploča: 91
-Preuzimam API paket 655... -> Pronađeno ploča: 90
-Preuzimam API paket 656... -> Pronađeno ploča: 84
-Preuzimam API paket 657... -> Pronađeno ploča: 74
-Preuzimam API paket 658... -> Pronađeno ploča: 96
-Preuzimam API paket 659... -> Pronađeno ploča: 92
-Preuzimam API paket 660... -> Pronađeno ploča: 68
-Preuzimam API paket 661... -> Pronađeno ploča: 69
-Preuzimam API paket 662... -> Pronađeno ploča: 67
-Preuzimam API paket 663... -> Pronađeno ploča: 50
-Preuzimam API paket 664... -> Pronađeno ploča: 40
-Preuzimam API paket 665... -> Pronađeno ploča: 62
-Preuzimam API paket 666... -> Pronađeno ploča: 63
-Preuzimam API paket 667... -> Pronađeno ploča: 90
-Preuzimam API paket 668... -> Pronađeno ploča: 59
-Preuzimam API paket 669... -> Pronađeno ploča: 8
-Preuzimam API paket 670... -> Pronađeno ploča: 86
-Preuzimam API paket 671... -> Pronađeno ploča: 51
-Preuzimam API paket 672... -> Pronađeno ploča: 41
-Preuzimam API paket 673... -> Pronađeno ploča: 53
-Preuzimam API paket 674... -> Pronađeno ploča: 63
-Preuzimam API paket 675... -> Pronađeno ploča: 72
-Preuzimam API paket 676... -> Pronađeno ploča: 56
-Preuzimam API paket 677... -> Pronađeno ploča: 52
-Preuzimam API paket 678... -> Pronađeno ploča: 83
-Preuzimam API paket 679... -> Pronađeno ploča: 63
-Preuzimam API paket 680... -> Pronađeno ploča: 32
-Preuzimam API paket 681... -> Pronađeno ploča: 27
-Preuzimam API paket 682... -> Pronađeno ploča: 63
-Preuzimam API paket 683... -> Pronađeno ploča: 17
-Preuzimam API paket 684... -> Pronađeno ploča: 6
-Preuzimam API paket 685... -> Pronađeno ploča: 16
-Preuzimam API paket 686... -> Pronađeno ploča: 48
-Preuzimam API paket 687... -> Pronađeno ploča: 34
-Preuzimam API paket 688... -> Pronađeno ploča: 49
-Preuzimam API paket 689... -> Pronađeno ploča: 36
-Preuzimam API paket 690... -> Pronađeno ploča: 39
-Preuzimam API paket 691... -> Pronađeno ploča: 66
-Preuzimam API paket 692... -> Pronađeno ploča: 34
-Preuzimam API paket 693... -> Pronađeno ploča: 66
-Preuzimam API paket 694... -> Pronađeno ploča: 55
-Preuzimam API paket 695... -> Pronađeno ploča: 61
-Preuzimam API paket 696... -> Pronađeno ploča: 61
-Preuzimam API paket 697... -> Pronađeno ploča: 12
-Preuzimam API paket 698... -> Pronađeno ploča: 42
-Preuzimam API paket 699... -> Pronađeno ploča: 55
-Preuzimam API paket 700... -> Pronađeno ploča: 27
-Preuzimam API paket 701... -> Pronađeno ploča: 6
-Preuzimam API paket 702... -> Pronađeno ploča: 32
-Preuzimam API paket 703... -> Pronađeno ploča: 19
-Preuzimam API paket 704... -> Pronađeno ploča: 20
-Preuzimam API paket 705... -> Pronađeno ploča: 17
-Preuzimam API paket 706... -> Pronađeno ploča: 14
-Preuzimam API paket 707... -> Pronađeno ploča: 20
-Preuzimam API paket 708... -> Pronađeno ploča: 31
-Preuzimam API paket 709... -> Pronađeno ploča: 44
-Preuzimam API paket 710... -> Pronađeno ploča: 44
-Preuzimam API paket 711... -> Pronađeno ploča: 67
-Preuzimam API paket 712... -> Pronađeno ploča: 65
-Preuzimam API paket 713... -> Pronađeno ploča: 22
-Preuzimam API paket 714... -> Pronađeno ploča: 20
-Preuzimam API paket 715... -> Pronađeno ploča: 12
-Preuzimam API paket 716... -> Pronađeno ploča: 18
-Preuzimam API paket 717... -> Pronađeno ploča: 25
-Preuzimam API paket 718... -> Pronađeno ploča: 21
-Preuzimam API paket 719... -> Pronađeno ploča: 34
-Preuzimam API paket 720... -> Pronađeno ploča: 23
-Preuzimam API paket 721... -> Pronađeno ploča: 27
-Preuzimam API paket 722... -> Pronađeno ploča: 55
-Preuzimam API paket 723... -> Pronađeno ploča: 40
-Preuzimam API paket 724... -> Pronađeno ploča: 24
-Preuzimam API paket 725... -> Pronađeno ploča: 28
-Preuzimam API paket 726... -> Pronađeno ploča: 66
-Preuzimam API paket 727... -> Pronađeno ploča: 36
-Preuzimam API paket 728... -> Pronađeno ploča: 29
-Preuzimam API paket 729... -> Pronađeno ploča: 24
-Preuzimam API paket 730... -> Pronađeno ploča: 15
-Preuzimam API paket 731... -> Pronađeno ploča: 23
-Preuzimam API paket 732... -> Pronađeno ploča: 37
-Preuzimam API paket 733... -> Pronađeno ploča: 71
-Preuzimam API paket 734... -> Pronađeno ploča: 34
-Preuzimam API paket 735... -> Pronađeno ploča: 31
-Preuzimam API paket 736... -> Pronađeno ploča: 70
-Preuzimam API paket 737... -> Pronađeno ploča: 59
-Preuzimam API paket 738... -> Pronađeno ploča: 39
-Preuzimam API paket 739... -> Pronađeno ploča: 48
-Preuzimam API paket 740... -> Pronađeno ploča: 39
-Preuzimam API paket 741... -> Pronađeno ploča: 70
-Preuzimam API paket 742... -> Pronađeno ploča: 40
-Preuzimam API paket 743... -> Pronađeno ploča: 68
-Preuzimam API paket 744... -> Pronađeno ploča: 51
-Preuzimam API paket 745... -> Pronađeno ploča: 49
-Preuzimam API paket 746... -> Pronađeno ploča: 23
-Preuzimam API paket 747... -> Pronađeno ploča: 24
-Preuzimam API paket 748... -> Pronađeno ploča: 50
-Preuzimam API paket 749... -> Pronađeno ploča: 47
-Preuzimam API paket 750... -> Pronađeno ploča: 51
-Preuzimam API paket 751... -> Pronađeno ploča: 31
-Preuzimam API paket 752... -> Pronađeno ploča: 34
-Preuzimam API paket 753... -> Pronađeno ploča: 49
-Preuzimam API paket 754... -> Pronađeno ploča: 64
-Preuzimam API paket 755... -> Pronađeno ploča: 53
-Preuzimam API paket 756... -> Pronađeno ploča: 84
-Preuzimam API paket 757... -> Pronađeno ploča: 24
-Preuzimam API paket 758... -> Pronađeno ploča: 69
-Preuzimam API paket 759... -> Pronađeno ploča: 70
-Preuzimam API paket 760... -> Pronađeno ploča: 48
-Preuzimam API paket 761... -> Pronađeno ploča: 46
-Preuzimam API paket 762... -> Pronađeno ploča: 61
-Preuzimam API paket 763... -> Pronađeno ploča: 60
-Preuzimam API paket 764... -> Pronađeno ploča: 27
-Preuzimam API paket 765... -> Pronađeno ploča: 32
-Preuzimam API paket 766... -> Pronađeno ploča: 24
-Preuzimam API paket 767... -> Pronađeno ploča: 24
-Preuzimam API paket 768... -> Pronađeno ploča: 57
-Preuzimam API paket 769... -> Pronađeno ploča: 40
-Preuzimam API paket 770... -> Pronađeno ploča: 27
-Preuzimam API paket 771... -> Pronađeno ploča: 25
-Preuzimam API paket 772... -> Pronađeno ploča: 38
-Preuzimam API paket 773... -> Pronađeno ploča: 24
-Preuzimam API paket 774... -> Pronađeno ploča: 22
-Preuzimam API paket 775... -> Pronađeno ploča: 25
-Preuzimam API paket 776... -> Pronađeno ploča: 68
-Preuzimam API paket 777... -> Pronađeno ploča: 35
-Preuzimam API paket 778... -> Pronađeno ploča: 37
-Preuzimam API paket 779... -> Pronađeno ploča: 15
-Preuzimam API paket 780... -> Pronađeno ploča: 16
-Preuzimam API paket 781... -> Pronađeno ploča: 52
-Preuzimam API paket 782... -> Pronađeno ploča: 28
-Preuzimam API paket 783... -> Pronađeno ploča: 43
-Preuzimam API paket 784... -> Pronađeno ploča: 24
-Preuzimam API paket 785... -> Pronađeno ploča: 28
-Preuzimam API paket 786... -> Pronađeno ploča: 30
-Preuzimam API paket 787... -> Pronađeno ploča: 31
-Preuzimam API paket 788... -> Pronađeno ploča: 39
-Preuzimam API paket 789... -> Pronađeno ploča: 25
-Preuzimam API paket 790... -> Pronađeno ploča: 81
-Preuzimam API paket 791... -> Pronađeno ploča: 73
-Preuzimam API paket 792... -> Pronađeno ploča: 56
-Preuzimam API paket 793... -> Pronađeno ploča: 72
-Preuzimam API paket 794... -> Pronađeno ploča: 54
-Preuzimam API paket 795... -> Pronađeno ploča: 87
-Preuzimam API paket 796... -> Pronađeno ploča: 77
-Preuzimam API paket 797... -> Pronađeno ploča: 75
-Preuzimam API paket 798... -> Pronađeno ploča: 61
-Preuzimam API paket 799... -> Pronađeno ploča: 67
-Preuzimam API paket 800... -> Pronađeno ploča: 83
-Preuzimam API paket 801... -> Pronađeno ploča: 81
-Preuzimam API paket 802... -> Pronađeno ploča: 53
-Preuzimam API paket 803... -> Pronađeno ploča: 48
-Preuzimam API paket 804... -> Pronađeno ploča: 61
-Preuzimam API paket 805... -> Pronađeno ploča: 55
-Preuzimam API paket 806... -> Pronađeno ploča: 50
-Preuzimam API paket 807... -> Pronađeno ploča: 46
-Preuzimam API paket 808... -> Pronađeno ploča: 60
-Preuzimam API paket 809... -> Pronađeno ploča: 33
-Preuzimam API paket 810... -> Pronađeno ploča: 24
-Preuzimam API paket 811... -> Pronađeno ploča: 94
-Preuzimam API paket 812... -> Pronađeno ploča: 24
-Preuzimam API paket 813... -> Pronađeno ploča: 0
-Preuzimam API paket 814... -> Pronađeno ploča: 0
-Preuzimam API paket 815... -> Pronađeno ploča: 10
-Preuzimam API paket 816... -> Pronađeno ploča: 0
-Preuzimam API paket 817... -> Pronađeno ploča: 0
-Preuzimam API paket 818... -> Pronađeno ploča: 0
-Preuzimam API paket 819... -> Pronađeno ploča: 5
-Preuzimam API paket 820... -> Pronađeno ploča: 42
-Preuzimam API paket 821... -> Pronađeno ploča: 58
-Preuzimam API paket 822... -> Pronađeno ploča: 64
-Preuzimam API paket 823... -> Pronađeno ploča: 7
-Preuzimam API paket 824... -> Pronađeno ploča: 9
-Preuzimam API paket 825... -> Pronađeno ploča: 7
-Preuzimam API paket 826... -> Pronađeno ploča: 15
-Preuzimam API paket 827... -> Pronađeno ploča: 2
-Preuzimam API paket 828... -> Pronađeno ploča: 0
-Preuzimam API paket 829... -> Pronađeno ploča: 29
-Preuzimam API paket 830... -> Pronađeno ploča: 43
-Preuzimam API paket 831... -> Pronađeno ploča: 62
-Preuzimam API paket 832... -> Pronađeno ploča: 8
-Preuzimam API paket 833... -> Pronađeno ploča: 11
-Preuzimam API paket 834... -> Pronađeno ploča: 3
-Preuzimam API paket 835... -> Pronađeno ploča: 4
-Preuzimam API paket 836... -> Pronađeno ploča: 2
-Preuzimam API paket 837... -> Pronađeno ploča: 20
-Preuzimam API paket 838... -> Pronađeno ploča: 11
-Preuzimam API paket 839... -> Pronađeno ploča: 68
-Preuzimam API paket 840... -> Pronađeno ploča: 34
-Preuzimam API paket 841... -> Pronađeno ploča: 83
-Preuzimam API paket 842... -> Pronađeno ploča: 47
-Preuzimam API paket 843... -> Pronađeno ploča: 39
-Preuzimam API paket 844... -> Pronađeno ploča: 20
-Preuzimam API paket 845... -> Pronađeno ploča: 33
-Preuzimam API paket 846... -> Pronađeno ploča: 48
-Preuzimam API paket 847... -> Pronađeno ploča: 46
-Preuzimam API paket 848... -> Pronađeno ploča: 26
-Preuzimam API paket 849... -> Pronađeno ploča: 50
-Preuzimam API paket 850... -> Pronađeno ploča: 5
-Preuzimam API paket 851... -> Pronađeno ploča: 19
-Preuzimam API paket 852... -> Pronađeno ploča: 44
-Preuzimam API paket 853... -> Pronađeno ploča: 32
-Preuzimam API paket 854... -> Pronađeno ploča: 3
-Preuzimam API paket 855... -> Pronađeno ploča: 29
-Preuzimam API paket 856... -> Pronađeno ploča: 16
-Preuzimam API paket 857... -> Pronađeno ploča: 35
-Preuzimam API paket 858... -> Pronađeno ploča: 54
-Preuzimam API paket 859... -> Pronađeno ploča: 44
-Preuzimam API paket 860... -> Pronađeno ploča: 44
-Preuzimam API paket 861... -> Pronađeno ploča: 18
-Preuzimam API paket 862... -> Pronađeno ploča: 6
-Preuzimam API paket 863... -> Pronađeno ploča: 3
-Preuzimam API paket 864... -> Pronađeno ploča: 5
-Preuzimam API paket 865... -> Pronađeno ploča: 40
-Preuzimam API paket 866... -> Pronađeno ploča: 42
-Preuzimam API paket 867... -> Pronađeno ploča: 12
-Preuzimam API paket 868... -> Pronađeno ploča: 40
-Preuzimam API paket 869... -> Pronađeno ploča: 27
-Preuzimam API paket 870... -> Pronađeno ploča: 4
-Preuzimam API paket 871... -> Pronađeno ploča: 42
-Preuzimam API paket 872... -> Pronađeno ploča: 21
-Preuzimam API paket 873... -> Pronađeno ploča: 5
-Preuzimam API paket 874... -> Pronađeno ploča: 13
-Preuzimam API paket 875... -> Pronađeno ploča: 7
-Preuzimam API paket 876... -> Pronađeno ploča: 6
-Preuzimam API paket 877... -> Pronađeno ploča: 10
-Preuzimam API paket 878... -> Pronađeno ploča: 2
-Preuzimam API paket 879... -> Pronađeno ploča: 9
-Preuzimam API paket 880... -> Pronađeno ploča: 5
-Preuzimam API paket 881... -> Pronađeno ploča: 1
-Preuzimam API paket 882... -> Pronađeno ploča: 13
-Preuzimam API paket 883... -> Pronađeno ploča: 26
-Preuzimam API paket 884... -> Pronađeno ploča: 1
-Preuzimam API paket 885... -> Pronađeno ploča: 17
-Preuzimam API paket 886... -> Pronađeno ploča: 6
-Preuzimam API paket 887... -> Pronađeno ploča: 5
-Preuzimam API paket 888... -> Pronađeno ploča: 26
-Preuzimam API paket 889... -> Pronađeno ploča: 28
-Preuzimam API paket 890... -> Pronađeno ploča: 9
-Preuzimam API paket 891... -> Pronađeno ploča: 50
-Preuzimam API paket 892... -> Pronađeno ploča: 43
-Preuzimam API paket 893... -> Pronađeno ploča: 17
-Preuzimam API paket 894... -> Pronađeno ploča: 6
-Preuzimam API paket 895... -> Pronađeno ploča: 4
-Preuzimam API paket 896... -> Pronađeno ploča: 6
-Preuzimam API paket 897... -> Pronađeno ploča: 10
-Preuzimam API paket 898... -> Pronađeno ploča: 8
-Preuzimam API paket 899... -> Pronađeno ploča: 76
-Preuzimam API paket 900... -> Pronađeno ploča: 21
-Preuzimam API paket 901... -> Pronađeno ploča: 40
-Preuzimam API paket 902... -> Pronađeno ploča: 17
-Preuzimam API paket 903... -> Pronađeno ploča: 7
-Preuzimam API paket 904... -> Pronađeno ploča: 62
-Preuzimam API paket 905... -> Pronađeno ploča: 65
-Preuzimam API paket 906... -> Pronađeno ploča: 61
-Preuzimam API paket 907... -> Pronađeno ploča: 12
-Preuzimam API paket 908... -> Pronađeno ploča: 5
-Preuzimam API paket 909... -> Pronađeno ploča: 13
-Preuzimam API paket 910... -> Pronađeno ploča: 34
-Preuzimam API paket 911... -> Pronađeno ploča: 45
-Preuzimam API paket 912... -> Pronađeno ploča: 3
-Preuzimam API paket 913... -> Pronađeno ploča: 24
-Preuzimam API paket 914... -> Pronađeno ploča: 92
-Preuzimam API paket 915... -> Pronađeno ploča: 23
-Preuzimam API paket 916... -> Pronađeno ploča: 11
-Preuzimam API paket 917... -> Pronađeno ploča: 15
-Preuzimam API paket 918... -> Pronađeno ploča: 23
-Preuzimam API paket 919... -> Pronađeno ploča: 4
-Preuzimam API paket 920... -> Pronađeno ploča: 4
-Preuzimam API paket 921... -> Pronađeno ploča: 13
-Preuzimam API paket 922... -> Pronađeno ploča: 7
-Preuzimam API paket 923... -> Pronađeno ploča: 21
-Preuzimam API paket 924... -> Pronađeno ploča: 63
-Preuzimam API paket 925... -> Pronađeno ploča: 15
-Preuzimam API paket 926... -> Pronađeno ploča: 49
-Preuzimam API paket 927... -> Pronađeno ploča: 64
-Preuzimam API paket 928... -> Pronađeno ploča: 44
-Preuzimam API paket 929... -> Pronađeno ploča: 16
-Preuzimam API paket 930... -> Pronađeno ploča: 12
-Preuzimam API paket 931... -> Pronađeno ploča: 6
-Preuzimam API paket 932... -> Pronađeno ploča: 10
-Preuzimam API paket 933... -> Pronađeno ploča: 29
-Preuzimam API paket 934... -> Pronađeno ploča: 7
-Preuzimam API paket 935... -> Pronađeno ploča: 10
-Preuzimam API paket 936... -> Pronađeno ploča: 9
-Preuzimam API paket 937... -> Pronađeno ploča: 33
-Preuzimam API paket 938... -> Pronađeno ploča: 39
-Preuzimam API paket 939... -> Pronađeno ploča: 74
-Preuzimam API paket 940... -> Pronađeno ploča: 50
-Preuzimam API paket 941... -> Pronađeno ploča: 8
-Preuzimam API paket 942... -> Pronađeno ploča: 7
-Preuzimam API paket 943... -> Pronađeno ploča: 12
-Preuzimam API paket 944... -> Pronađeno ploča: 6
-Preuzimam API paket 945... -> Pronađeno ploča: 6
-Preuzimam API paket 946... -> Pronađeno ploča: 14
-Preuzimam API paket 947... -> Pronađeno ploča: 17
-Preuzimam API paket 948... -> Pronađeno ploča: 22
-Preuzimam API paket 949... -> Pronađeno ploča: 65
-Preuzimam API paket 950... -> Pronađeno ploča: 31
-Preuzimam API paket 951... -> Pronađeno ploča: 12
-Preuzimam API paket 952... -> Pronađeno ploča: 26
-Preuzimam API paket 953... -> Pronađeno ploča: 49
-Preuzimam API paket 954... -> Pronađeno ploča: 41
-Preuzimam API paket 955... -> Pronađeno ploča: 3
-Preuzimam API paket 956... -> Pronađeno ploča: 7
-Preuzimam API paket 957... -> Pronađeno ploča: 4
-Preuzimam API paket 958... -> Pronađeno ploča: 7
-Preuzimam API paket 959... -> Pronađeno ploča: 8
-Preuzimam API paket 960... -> Pronađeno ploča: 21
-Preuzimam API paket 961... -> Pronađeno ploča: 68
-Preuzimam API paket 962... -> Pronađeno ploča: 97
-Preuzimam API paket 963... -> Pronađeno ploča: 66
-Preuzimam API paket 964... -> Pronađeno ploča: 21
-Preuzimam API paket 965... -> Pronađeno ploča: 60
-Preuzimam API paket 966... -> Pronađeno ploča: 24
-Preuzimam API paket 967... -> Pronađeno ploča: 16
-Preuzimam API paket 968... -> Pronađeno ploča: 44
-Preuzimam API paket 969... -> Pronađeno ploča: 72
-Preuzimam API paket 970... -> Pronađeno ploča: 50
-Preuzimam API paket 971... -> Pronađeno ploča: 23
-Preuzimam API paket 972... -> Pronađeno ploča: 11
-Preuzimam API paket 973... -> Pronađeno ploča: 4
-Preuzimam API paket 974... -> Pronađeno ploča: 12
-Preuzimam API paket 975... -> Pronađeno ploča: 32
-Preuzimam API paket 976... -> Pronađeno ploča: 21
-Preuzimam API paket 977... -> Pronađeno ploča: 21
-Preuzimam API paket 978... -> Pronađeno ploča: 29
-Preuzimam API paket 979... -> Pronađeno ploča: 39
-Preuzimam API paket 980... -> Pronađeno ploča: 5
-Preuzimam API paket 981... -> Pronađeno ploča: 57
-Preuzimam API paket 982... -> Pronađeno ploča: 73
-Preuzimam API paket 983... -> Pronađeno ploča: 87
-Preuzimam API paket 984... -> Pronađeno ploča: 9
-Preuzimam API paket 985... -> Pronađeno ploča: 5
-Preuzimam API paket 986... -> Pronađeno ploča: 73
-Preuzimam API paket 987... -> Pronađeno ploča: 60
-Preuzimam API paket 988... -> Pronađeno ploča: 99
-Preuzimam API paket 989... -> Pronađeno ploča: 92
-Preuzimam API paket 990... -> Pronađeno ploča: 63
-Preuzimam API paket 991... -> Pronađeno ploča: 76
-Preuzimam API paket 992... -> Pronađeno ploča: 39
-Preuzimam API paket 993... -> Pronađeno ploča: 78
-Preuzimam API paket 994... -> Pronađeno ploča: 71
-Preuzimam API paket 995... -> Pronađeno ploča: 71
-Preuzimam API paket 996... -> Pronađeno ploča: 76
-Preuzimam API paket 997... -> Pronađeno ploča: 67
-Preuzimam API paket 998... -> Pronađeno ploča: 100
-Preuzimam API paket 999... -> Pronađeno ploča: 99
-Preuzimam API paket 1000... -> Pronađeno ploča: 89
-Preuzimam API paket 1001... -> Pronađeno ploča: 81
-Preuzimam API paket 1002... -> Pronađeno ploča: 79
-Preuzimam API paket 1003... -> Pronađeno ploča: 73
-Preuzimam API paket 1004... -> Pronađeno ploča: 83
-Preuzimam API paket 1005... -> Pronađeno ploča: 25
-Preuzimam API paket 1006... -> Pronađeno ploča: 74
-Preuzimam API paket 1007... -> Pronađeno ploča: 85
-Preuzimam API paket 1008... -> Pronađeno ploča: 100
-Preuzimam API paket 1009... -> Pronađeno ploča: 66
-Preuzimam API paket 1010... -> Pronađeno ploča: 37
-Preuzimam API paket 1011... -> Pronađeno ploča: 15
-Preuzimam API paket 1012... -> Pronađeno ploča: 9
-Preuzimam API paket 1013... -> Pronađeno ploča: 17
-Preuzimam API paket 1014... -> Pronađeno ploča: 0
-Preuzimam API paket 1015... -> Pronađeno ploča: 1
-Preuzimam API paket 1016... -> Pronađeno ploča: 0
-Preuzimam API paket 1017... -> Pronađeno ploča: 1
-Preuzimam API paket 1018... -> Pronađeno ploča: 1
-Preuzimam API paket 1019... -> Pronađeno ploča: 0
-Preuzimam API paket 1020... -> Pronađeno ploča: 1
-Preuzimam API paket 1021... -> Pronađeno ploča: 1
-Preuzimam API paket 1022... -> Pronađeno ploča: 1
-Preuzimam API paket 1023... -> Pronađeno ploča: 0
-Preuzimam API paket 1024... -> Pronađeno ploča: 0
-Preuzimam API paket 1025... -> Pronađeno ploča: 0
-Preuzimam API paket 1026... -> Pronađeno ploča: 1
-Preuzimam API paket 1027... -> Pronađeno ploča: 1
-Preuzimam API paket 1028... -> Pronađeno ploča: 5
-Preuzimam API paket 1029... -> Pronađeno ploča: 2
-Preuzimam API paket 1030... -> Pronađeno ploča: 11
-Preuzimam API paket 1031... -> Pronađeno ploča: 25
-Preuzimam API paket 1032... -> Pronađeno ploča: 12
-Preuzimam API paket 1033... -> Pronađeno ploča: 19
-Preuzimam API paket 1034... -> Pronađeno ploča: 13
-Preuzimam API paket 1035... -> Pronađeno ploča: 2
-Preuzimam API paket 1036... -> Pronađeno ploča: 1
-Preuzimam API paket 1037... -> Pronađeno ploča: 24
-Preuzimam API paket 1038... -> Pronađeno ploča: 55
-Preuzimam API paket 1039... -> Pronađeno ploča: 19
-Preuzimam API paket 1040... -> Pronađeno ploča: 8
-Preuzimam API paket 1041... -> Pronađeno ploča: 10
-Preuzimam API paket 1042... -> Pronađeno ploča: 14
-Preuzimam API paket 1043... -> Pronađeno ploča: 0
-Preuzimam API paket 1044... -> Pronađeno ploča: 6
-Preuzimam API paket 1045... -> Pronađeno ploča: 2
-Preuzimam API paket 1046... -> Pronađeno ploča: 0
-Preuzimam API paket 1047... -> Pronađeno ploča: 9
-Preuzimam API paket 1048... -> Pronađeno ploča: 1
-Preuzimam API paket 1049... -> Pronađeno ploča: 3
-Preuzimam API paket 1050... -> Pronađeno ploča: 27
-Preuzimam API paket 1051... -> Pronađeno ploča: 48
-Preuzimam API paket 1052... -> Pronađeno ploča: 21
-Preuzimam API paket 1053... -> Pronađeno ploča: 24
-Preuzimam API paket 1054... -> Pronađeno ploča: 30
-Preuzimam API paket 1055... -> Pronađeno ploča: 12
-Preuzimam API paket 1056... -> Pronađeno ploča: 39
-Preuzimam API paket 1057... -> Pronađeno ploča: 29
-Preuzimam API paket 1058... -> Pronađeno ploča: 35
-Preuzimam API paket 1059... -> Pronađeno ploča: 35
-Preuzimam API paket 1060... -> Pronađeno ploča: 64
-Preuzimam API paket 1061... -> Pronađeno ploča: 33
-Preuzimam API paket 1062... -> Pronađeno ploča: 30
-Preuzimam API paket 1063... -> Pronađeno ploča: 67
-Preuzimam API paket 1064... -> Pronađeno ploča: 55
-Preuzimam API paket 1065... -> Pronađeno ploča: 14
-Preuzimam API paket 1066... -> Pronađeno ploča: 19
-Preuzimam API paket 1067... -> Pronađeno ploča: 6
-Preuzimam API paket 1068... -> Pronađeno ploča: 5
-Preuzimam API paket 1069... -> Pronađeno ploča: 10
-Preuzimam API paket 1070... -> Pronađeno ploča: 0
-Preuzimam API paket 1071... -> Pronađeno ploča: 2
-Preuzimam API paket 1072... -> Pronađeno ploča: 2
-Preuzimam API paket 1073... -> Pronađeno ploča: 3
-Preuzimam API paket 1074... -> Pronađeno ploča: 0
-Preuzimam API paket 1075... -> Pronađeno ploča: 2
-Preuzimam API paket 1076... -> Pronađeno ploča: 7
-Preuzimam API paket 1077... -> Pronađeno ploča: 6
-Preuzimam API paket 1078... -> Pronađeno ploča: 7
-Preuzimam API paket 1079... -> Pronađeno ploča: 13
-Preuzimam API paket 1080... -> Pronađeno ploča: 3
-Preuzimam API paket 1081... -> Pronađeno ploča: 2
-Preuzimam API paket 1082... -> Pronađeno ploča: 4
-Preuzimam API paket 1083... -> Pronađeno ploča: 3
-Preuzimam API paket 1084... -> Pronađeno ploča: 5
-Preuzimam API paket 1085... -> Pronađeno ploča: 7
-Preuzimam API paket 1086... -> Pronađeno ploča: 7
-Preuzimam API paket 1087... -> Pronađeno ploča: 79
-Preuzimam API paket 1088... -> Pronađeno ploča: 100
-Preuzimam API paket 1089... -> Pronađeno ploča: 99
-Preuzimam API paket 1090... -> Pronađeno ploča: 61
-Preuzimam API paket 1091... -> Pronađeno ploča: 85
-Preuzimam API paket 1092... -> Pronađeno ploča: 69
-Preuzimam API paket 1093... -> Pronađeno ploča: 98
-Preuzimam API paket 1094... -> Pronađeno ploča: 57
-Preuzimam API paket 1095... -> Pronađeno ploča: 48
-Preuzimam API paket 1096... -> Pronađeno ploča: 9
-Preuzimam API paket 1097... -> Pronađeno ploča: 7
-Preuzimam API paket 1098... -> Pronađeno ploča: 18
-Preuzimam API paket 1099... -> Pronađeno ploča: 9
-Preuzimam API paket 1100... -> Pronađeno ploča: 19
-Preuzimam API paket 1101... -> Pronađeno ploča: 10
-Preuzimam API paket 1102... -> Pronađeno ploča: 3
-Preuzimam API paket 1103... -> Pronađeno ploča: 7
-Preuzimam API paket 1104... -> Pronađeno ploča: 39
-Preuzimam API paket 1105... -> Pronađeno ploča: 32
-Preuzimam API paket 1106... -> Pronađeno ploča: 25
-Preuzimam API paket 1107... -> Prazan paket. Kraj API arhive.
+Podkategorije od Glazba (parent=80):
+ -> Sub-ID: 96 | Slug: erotski-omoti-glazba | Ime: Erotski omoti | Count: 86
+ -> Sub-ID: 91 | Slug: glazba-izvodaci | Ime: Izvođači | Count: 18783
+ -> Sub-ID: 92 | Slug: klasicna-glazba | Ime: Klasična glazba | Count: 961
+ -> Sub-ID: 93 | Slug: kompilacije | Ime: Kompilacije | Count: 2089
+ -> Sub-ID: 418 | Slug: slusaj-najglasnije | Ime: Slušaj najglasnije | Count: 84
+ -> Sub-ID: 95 | Slug: soundtrack | Ime: Soundtrack | Count: 447
+ -> Sub-ID: 383 | Slug: zanrovi | Ime: Žanrovi | Count: 11626
 
-🧹 Analiza završena. Obrisano 0 prodanih ploča.
-🎉 Završeno. U bazi je sada ukupno 25705 ažurnih ploča (Sa slikom: 25702).
+=== 2. USPOREDBA API JSON-A: 181787 (NEMA NA STANJU) vs 207847 (IMA NA STANJU) ===
+
+--- Store API za 181787 (NEMA NA STANJU) [Status: 200] ---
+{
+  "id": 181787,
+  "name": "Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;",
+  "parent": 0,
+  "type": "variable",
+  "variation": "",
+  "permalink": "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/",
+  "sku": "",
+  "short_description": "<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” – Rock&#8217; N&#8217; Roll ZG 1979-89. Glazbena kompilacija s izborom različitih pjesama i izvođača. Popis pjesama i detalji izdanja nalaze se u punom opisu.</p>",
+  "description": "<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” je album izvođača Rock&#8217; N&#8217; Roll ZG 1979-89. Među uvrštenim skladbama su „A1 Prljavo Kazalište &#8211; Mi Plešemo”, „A2 Film &#8211; Kad Si Mlad”, „A3 Azra &#8211; A Šta Da Radim” i „A4 Parni Valjak &#8211; Ulične Tuče”.</p>\n<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” je album izvođača Rock&#8217; N&#8217; Roll ZG 1979-89. Među uvrštenim skladbama su „A1 Prljavo Kazalište &#8211; Mi Plešemo”, „A2 Film &#8211; Kad Si Mlad”, „A3 Azra &#8211; A Šta Da Radim”.</p>\n<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” je album izvođača Rock&#8217; N&#8217; Roll ZG 1979-89. Prema kataloškim oznakama pripada stilu Kompilacije. Među uvrštenim skladbama su „A1 Prljavo Kazalište &#8211; Mi Plešemo”, „A2 Film &#8211; Kad Si Mlad”, „A3 Azra &#8211; A Šta Da Radim” i „A4 Parni Valjak &#8211; Ulične Tuče”.</p>\n<p>„Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;” – Rock&#8217; N&#8217; Roll ZG 1979-89. Glazbena kompilacija s izborom različitih pjesama i izvođača.</p>\n<p>A1 Prljavo Kazalište &#8211; Mi Plešemo 4:34<br />\nA2 Film &#8211; Kad Si Mlad 2:58<br />\nA3 Azra &#8211; A Šta Da Radim 3:05<br />\nA4 Parni Valjak &#8211; Ulične Tuče 1:52<br />\nA5 Drugi Način &#8211; Najbolje Bi Bilo Da Promijenim Grad 2:50<br />\nA6 Prljavo Kazalište &#8211; Marina 3:52<br />\nA7 ITD Band &#8211; Rođen U Zagrebu 3:38<br />\nB1 Parni Valjak &#8211; Stranica Dnevnika 4:33<br />\nB2 Azra &#8211; Balkan 4:15<br />\nB3 Film &#8211; Zajedno 2:30<br />\nB4 Drugi Način &#8211; Piši Mi 3:10<br />\nB5 ITD Band &#8211; Elena 5:33<br />\nB6 Prljavo Kazalište Slaži Mi 4:50</p>\n<p>Companies etc<br />\nPressed By – Jugoton – U 02650 L</p>\n<p>Barcode and Other Identifiers<br />\nMatrix / Runout: U 02650 L A 24 01 90 SB<br />\nMatrix / Runout: U 02650 L B 24 01 90 SB</p>",
+  "on_sale": false,
+  "prices": {
+    "price": "250",
+    "regular_price": "380",
+    "sale_price": "380",
+    "price_range": null,
+    "currency_code": "EUR",
+    "currency_symbol": "€",
+    "currency_minor_unit": 2,
+    "currency_decimal_separator": ",",
+    "currency_thousand_separator": ".",
+    "currency_prefix": "",
+    "currency_suffix": " €"
+  },
+  "price_html": "<span class=\"woocommerce-Price-amount amount\">3,80&nbsp;<span class=\"woocommerce-Price-currencySymbol\">&euro;</span></span>",
+  "average_rating": "0",
+  "review_count": 0,
+  "images": [
+    {
+      "id": 315416,
+      "src": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321.jpg",
+      "thumbnail": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-330x462.jpg",
+      "srcset": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321.jpg 804w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-462x455.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-64x63.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-300x295.jpg 300w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-768x756.jpg 768w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-520x512.jpg 520w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/IMG_20220404_122321-600x590.jpg 600w",
+      "sizes": "(max-width: 804px) 100vw, 804px",
+      "name": "Rock’ N’ Roll ZG 1979-89 – Prljavo Kazalište / Film / Azra / Parni Valjak… | omot albuma",
+      "alt": "Omot albuma „Prljavo Kazalište / Film / Azra / Parni Valjak...” – Rock' N' Roll ZG 1979-89"
+    }
+  ],
+  "categories": [
+    {
+      "id": 93,
+      "name": "Kompilacije",
+      "slug": "kompilacije",
+      "link": "https://ezop-antikvarijat.hr/kategorija/glazba/kompilacije/"
+    }
+  ],
+  "tags": [],
+  "attributes": [],
+  "variations": [
+    {
+      "id": 315415,
+      "attributes": [
+        {
+          "name": "Godina",
+          "value": "1990"
+        },
+        {
+          "name": "Br Labela",
+          "value": "LP 580"
+        },
+        {
+          "name": "Omot",
+          "value": "6"
+        },
+        {
+          "name": "Medij",
+          "value": "7"
+        },
+        {
+          "name": "Država",
+          "value": "jugoslavija"
+        },
+        {
+          "name": "Izdavačka kuća",
+          "value": "suzy"
+        }
+      ]
+    }
+  ],
+  "has_options": true,
+  "is_purchasable": true,
+  "is_in_stock": true,
+  "is_on_backorder": false,
+  "low_stock_remaining": null,
+  "sold_individually": true,
+  "add_to_cart": {
+    "text": "Odaberi opcije",
+    "description": "Odaberi opcije za &ldquo;Prljavo Kazalište / Film / Azra / Parni Valjak&#8230;&rdquo;",
+    "url": "https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/",
+    "minimum": 1,
+    "maximum": 1,
+    "multiple_of": 1
+  }
+}
+
+--- Store API za 207847 (IMA NA STANJU) [Status: 200] ---
+{
+  "id": 207847,
+  "name": "E=MC²",
+  "parent": 0,
+  "type": "variable",
+  "variation": "",
+  "permalink": "https://ezop-antikvarijat.hr/parni-valjak-emc-2/",
+  "sku": "",
+  "short_description": "<p>„E=MC²” – Parni Valjak. Glazbeno izdanje iz područja pop-rock glazbe. Popis pjesama i detalji izdanja nalaze se u punom opisu.</p>",
+  "description": "<p>„E=MC²” je album izvođača Parni Valjak. Prema kataloškim oznakama pripada stilu pop-rock. Među uvrštenim skladbama su „A1 Ajde Igraj”, „A2 Kao Prije”, „A3 Uhvati Ritam” i „A4 Stojim Već Satima”.</p>\n<p>„E=MC²” je album izvođača Parni Valjak. Među uvrštenim skladbama su „A1 Ajde Igraj”, „A2 Kao Prije”, „A3 Uhvati Ritam”.</p>\n<p>„E=MC²” je album izvođača Parni Valjak. Prema kataloškim oznakama pripada stilu pop-rock. Među uvrštenim skladbama su „A1 Ajde Igraj”, „A2 Kao Prije”, „A3 Uhvati Ritam” i „A4 Stojim Već Satima”.</p>\n<p>A1 Ajde Igraj<br />\nA2 Kao Prije<br />\nA3 Uhvati Ritam<br />\nA4 Stojim Već Satima<br />\nA5 Pokreni Se<br />\nB1 Hajde Kaži Pošteno<br />\nB2 Pusti Nek Traje<br />\nB3 Ostani S Njim<br />\nB4 Ugasi Me<br />\nB5 Samo Ona Zna </p>\n<p>Credits<br />\nDesign, Photography – Sven Pepeonik<br />\nExecutive Producer – Milan Škrnjug<br />\nGuitar [Guest] – Zoran Cvetković<br />\nKeyboards [Guest] – Toni Ostojić<br />\nMixed By [Remix] – Dragan Čačinović*, Vladimir Smolec<br />\nRecorded By – Mladen Škalec<br />\nWritten-By, Producer – Husein Hasanefendić</p>\n<p>Notes<br />\nRecorded live at Dom Sportova Zagreb, 24 February 1986.</p>\n<p>Barcode and Other Identifiers<br />\nOther (Rights Society): SOKOJ</p>",
+  "on_sale": false,
+  "prices": {
+    "price": "3790",
+    "regular_price": "5450",
+    "sale_price": "5450",
+    "price_range": null,
+    "currency_code": "EUR",
+    "currency_symbol": "€",
+    "currency_minor_unit": 2,
+    "currency_decimal_separator": ",",
+    "currency_thousand_separator": ".",
+    "currency_prefix": "",
+    "currency_suffix": " €"
+  },
+  "price_html": "<span class=\"woocommerce-Price-amount amount\">54,50&nbsp;<span class=\"woocommerce-Price-currencySymbol\">&euro;</span></span>",
+  "average_rating": "0",
+  "review_count": 0,
+  "images": [
+    {
+      "id": 117671,
+      "src": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891.jpg",
+      "thumbnail": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891.jpg",
+      "srcset": "https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891.jpg 200w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/23891-150x150.jpg 150w",
+      "sizes": "(max-width: 200px) 100vw, 200px",
+      "name": "Parni Valjak – E=MC² | omot albuma",
+      "alt": "Omot albuma „E=MC²” – Parni Valjak"
+    }
+  ],
+  "categories": [
+    {
+      "id": 91,
+      "name": "Izvođači",
+      "slug": "glazba-izvodaci",
+      "link": "https://ezop-antikvarijat.hr/kategorija/glazba/izvodaci/"
+    },
+    {
+      "id": 394,
+      "name": "pop-rock",
+      "slug": "pop-rock",
+      "link": "https://ezop-antikvarijat.hr/kategorija/glazba/zanrovi/pop-rock/"
+    }
+  ],
+  "tags": [],
+  "attributes": [],
+  "variations": [
+    {
+      "id": 306668,
+      "attributes": [
+        {
+          "name": "Godina",
+          "value": "1986"
+        },
+        {
+          "name": "Br Labela",
+          "value": "LSY 62160"
+        },
+        {
+          "name": "Omot",
+          "value": "9"
+        },
+        {
+          "name": "Medij",
+          "value": "10"
+        },
+        {
+          "name": "Država",
+          "value": "jugoslavija"
+        },
+        {
+          "name": "Izdavačka kuća",
+          "value": "jugoton"
+        }
+      ]
+    }
+  ],
+  "has_options": true,
+  "is_purchasable": true,
+  "is_in_stock": true,
+  "is_on_backorder": false,
+  "low_stock_remaining": null,
+  "sold_individually": true,
+  "add_to_cart": {
+    "text": "Odaberi opcije",
+    "description": "Odaberi opcije za &ldquo;E=MC²&rdquo;",
+    "url": "https://ezop-antikvarijat.hr/parni-valjak-emc-2/",
+    "minimum": 1,
+    "maximum": 1,
+    "multiple_of": 1
+  }
+}
+
+=== 3. PROVJERA HTML ARHIVE (/kategorija/glazba/) ===
+Paginacija na /kategorija/glazba/: ['1234…445446447→', '1', '2', '3', '4', '…', '445', '446', '447', '→']
+Ukupno kartica na 1. stranici: 25
+
+--- Kartica #1 HTML ---
+<div class="inline row product type-product post-256924 status-publish first instock product_cat-glazba-izvodaci product_cat-rock-glazba-zanr has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/4-of-us-man-alive/" title="Man Alive">
+<img alt="CD" class="glazba-bg cat_music_cd cd CD" height="290" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-cd.png" width="308"/> <img alt="Omot koncertnog albuma „Man Alive” – 4 Of Us" class="attachment-woocommerce_thumbnail size-woocommerc
+
+--- Kartica #2 HTML ---
+<div class="inline row product type-product post-453515 status-publish instock product_cat-glazba-izvodaci product_cat-world has-post-thumbnail sold-individually taxable shipping-taxable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/a-l-lloyd-martyn-wyndham-reade-and-trevor-lucas-the-great-australian-legend-a-panorama-of-bush-balladry-and-song/" title="The Great Australian Legend - A Panorama Of Bush Balladry And Song">
+<img alt="LP" class="glazba-bg cat_music_lp LP" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" height="
+
+--- Kartica #3 HTML ---
+<div class="inline row product type-product post-456864 status-publish last instock product_cat-klasicna-glazba has-post-thumbnail sold-individually taxable shipping-taxable product-type-variable has-default-attributes">
+<div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
+<a class="prod_link" href="https://ezop-antikvarijat.hr/ad-%D0%91%D0%B0%D1%85-%D0%9C%D0%B5%D0%BD%D0%B4%D0%B5%D0%BB%D1%8C%D1%81%D0%BE%D0%BD-%D0%A8%D1%83%D0%BC%D0%B0%D0%BD-%D0%91%D0%B5%D1%82%D1%85%D0%BE%D0%B2%D0%B5%D0%BD-%D0%91%D1%80%D0%B0%D0%BC%D1%81-%D1%85%D0%BE%D1%80-%D0%BB%D0%B5%D0%BD%D0%B8%D0%BD%D0%B3%D1%80%D0%B0%D0%B4%D1%81%D0%BA%D0%BE%D0%B3%D0%BE-%D1%80%D0%B0%D0%B4%D0%B8%D0%BE-%D0%B8-%D1%82%D0%B5%D0%BB%D0%B5
 ----------------------------------------
-Vrijeme završetka (UTC): 22.10.2026. 08:14:00 | Kod izlaza: 0
+Vrijeme završetka (UTC): 22.10.2026. 09:26:35 | Kod izlaza: 0
