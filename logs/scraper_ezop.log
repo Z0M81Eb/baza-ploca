@@ -1,14 +1,49 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 23.10.2026. 16:47:35
+Vrijeme pokretanja (UTC): 23.10.2026. 16:54:57
 ----------------------------------------
-=== 1. ŠTA JE NA STRANICI PROIZVODA KOJI IMA GUMB 'IZABERI' (152795) I BEZ PURCHASABLE (453515)? ===
+[GET 200 za 0.8s | IP: 116.202.174.206] https://ezop-antikvarijat.hr/wp-json/wc/store/products/315415
 
---- Gumb IZABERI (152795) [Status 522] ---
-Nema .price-cart-block
+=== 1. PROVJERA KARTICA NA ARHIVI (erotski-omoti-glazba) ===
+[GET 200 za 0.5s | IP: 116.202.174.206] https://ezop-antikvarijat.hr/kategorija/glazba/erotski-omoti-glazba/
+Ukupno kartica na stranici: 25
+#01 | LP:True CD:False | kupi:False izaberi:True | CF: Medij: | Gramofonska ploča | Dolje: Cijena: 3 , 90 - 5 , 90 € Izaberi
+#02 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1983. | Dolje: Cijena: 28 , 50 € Dodaj u košaricu
+#03 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 7 | Stanje medija: | 9 | Država: | YU | Godina: | 1982. | Dolje: Cijena: 42 , 80 € Dodaj u košaricu
+#04 | LP:True CD:False | kupi:False izaberi:True | CF: Medij: | Gramofonska ploča | Dolje: Cijena: 37 , 10 - 63 , 60 € Izaberi
+#05 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 10 | Stanje medija: | 10 | Država: | YU | Godina: | 1985. | Dolje: Cijena: 185 , 80 € Dodaj u košaricu
+#06 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 10 | Stanje medija: | 10 | Država: | GR | Godina: | 1977. | Dolje: Cijena: 65 , 00 € Dodaj u košaricu
+#07 | LP:False CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonski singl 7" | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1977. | Dolje: Cijena: 13 , 50 € Dodaj u košaricu
+#08 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1978. | Dolje: Cijena: 6 , 40 € Dodaj u košaricu
+#09 | LP:True CD:False | kupi:False izaberi:True | CF: Medij: | Gramofonska ploča | Dolje: Cijena: 2 , 90 - 3 , 90 € Izaberi
+#10 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1977. | Dolje: Cijena: 11 , 90 € Dodaj u košaricu
+#11 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1978. | Dolje: Cijena: 105 , 30 € Dodaj u košaricu
+#12 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 8 | Stanje medija: | 8 | Država: | YU | Godina: | 1977. | Dolje: Cijena: 24 , 60 € Dodaj u košaricu
+#13 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 8 | Stanje medija: | 9 | Država: | YU | Godina: | 1983. | Dolje: Cijena: 5 , 70 € Dodaj u košaricu
+#14 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 8 | Stanje medija: | 7 | Država: | YU | Godina: | 1975. | Dolje: Cijena: 3 , 90 € Dodaj u košaricu
+#15 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1983. | Dolje: Cijena: 45 , 40 € Dodaj u košaricu
+#16 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 8 | Stanje medija: | 10 | Država: | YU | Godina: | 1980. | Dolje: Cijena: 48 , 00 € Dodaj u košaricu
+#17 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 8 | Država: | UK | Godina: | 1973. | Dolje: Cijena: 185 , 80 € Dodaj u košaricu
+#18 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 8 | Stanje medija: | 9 | Država: | YU | Godina: | 1983. | Dolje: Cijena: 144 , 20 € Dodaj u košaricu
+#19 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 9 | Država: | IT | Godina: | 1978. | Dolje: Cijena: 29 , 80 € Dodaj u košaricu
+#20 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1984. | Dolje: Cijena: 54 , 50 € Dodaj u košaricu
+#21 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 10 | Stanje medija: | 9 | Država: | YU | Godina: | 1982. | Dolje: Cijena: 14 , 00 € Dodaj u košaricu
+#22 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 10 | Država: | US | Godina: | 1974. | Dolje: Cijena: 54 , 50 € Dodaj u košaricu
+#23 | LP:False CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonski singl 7" | Stanje omota: | 9 | Stanje medija: | 10 | Država: | YU | Godina: | 1978. | Dolje: Cijena: 18 , 00 € Dodaj u košaricu
+#24 | LP:True CD:False | kupi:True izaberi:False | CF: Medij: | Gramofonska ploča | Stanje omota: | 9 | Stanje medija: | 9 | Država: | US | Godina: | 1976. | Dolje: Cijena: 23 , 30 € Dodaj u košaricu
+#25 | LP:True CD:False | kupi:False izaberi:True | CF: Medij: | Gramofonska ploča | Dolje: Cijena: 35 , 10 - 39 , 00 € Izaberi
 
---- Bez purchasable (453515) [Status 522] ---
-Nema .price-cart-block
+=== 2. ŠTA PIŠE UNUTRA KADA SE OTVORI LP KARTICA S GUMBOM 'IZABERI'? ===
+[GET 200 za 1.4s | IP: 116.202.174.206] https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/
 
-=== 2. ANALIZA SVIH 25 KARTICA NA 1. STRANICI (erotski-omoti-glazba) ===
+Link: https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/
+ -> Nema na stanju (.nedostupno): False | Ima gumb za kupovinu (.product_cho_link): True
+[GET 200 za 1.5s | IP: 116.202.174.206] https://ezop-antikvarijat.hr/bijelo-dugme-dozivjeti-stotu-4/
+
+Link: https://ezop-antikvarijat.hr/bijelo-dugme-dozivjeti-stotu-4/
+ -> Nema na stanju (.nedostupno): False | Ima gumb za kupovinu (.product_cho_link): True
+[GET 200 za 1.8s | IP: 116.202.174.206] https://ezop-antikvarijat.hr/da-da-da-178082/
+
+Link: https://ezop-antikvarijat.hr/da-da-da-178082/
+ -> Nema na stanju (.nedostupno): False | Ima gumb za kupovinu (.product_cho_link): True
 ----------------------------------------
-Vrijeme završetka (UTC): 23.10.2026. 16:48:35 | Kod izlaza: 0
+Vrijeme završetka (UTC): 23.10.2026. 16:55:04 | Kod izlaza: 0
