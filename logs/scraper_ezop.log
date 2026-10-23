@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 22.10.2026. 10:27:44
+Vrijeme pokretanja (UTC): 23.10.2026. 07:16:28
 ----------------------------------------
 === 1. KRAJ JSON-A ZA VARIJACIJE 315415 (NEMA) vs 306668 (IMA) ===
 [GET 200 za 0.7s] https://ezop-antikvarijat.hr/wp-json/wc/store/products/315415
@@ -49,7 +49,7 @@ Vrijeme pokretanja (UTC): 22.10.2026. 10:27:44
     "multiple_of": 1
   }
 }
-[GET 200 za 1.5s] https://ezop-antikvarijat.hr/wp-json/wc/store/products/306668
+[GET 200 za 1.6s] https://ezop-antikvarijat.hr/wp-json/wc/store/products/306668
 
 --- Varijacija 306668 (IMA NA STANJU - parent 207847) ---
 {
@@ -98,7 +98,7 @@ Vrijeme pokretanja (UTC): 22.10.2026. 10:27:44
 }
 
 === 2. SIDEBAR FILTERI I LP KARTICE (erotski-omoti-glazba) ===
-[GET 200 za 4.3s] https://ezop-antikvarijat.hr/kategorija/glazba/erotski-omoti-glazba/
+[GET 200 za 3.3s] https://ezop-antikvarijat.hr/kategorija/glazba/erotski-omoti-glazba/
 
 Ukupno kartica na 1. stranici: 25
 
@@ -106,7 +106,7 @@ Ukupno kartica na 1. stranici: 25
 <div class="inline row product type-product post-152795 status-publish first instock product_cat-erotski-omoti-glazba product_cat-kompilacije product_cat-pop-rock has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
 <div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
 <a class="prod_link" href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/" title="16 Top-10 Hits! Vol. 2">
-<img alt="LP" class="glazba-bg cat_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/> <img alt="Omot albuma „16 Top-10 Hits! Vol. 2” – 16 Top-10 Hits! Vol. 2" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="462" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-330x462.jpg" width="330"/> </a>
+<img alt="LP" class="glazba-bg cat_music_lp LP" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" height="120" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20120%20120'%3E%3C/svg%3E" width="120"/><noscript><img alt="LP" class="glazba-bg cat_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></noscript> <img alt="Omot albuma „16 Top-10 Hits! Vol. 2” – 16 Top-10 Hits! Vol. 2" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-330x462.jpg" height="462" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20330%20462'%3E%3C/svg%3E" width="330"/><noscript><img alt="Omot albuma „16 Top-10 Hits! Vol. 2” – 16 Top-10 Hits! Vol. 2" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="462" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-330x462.jpg" width="330"/></noscript> </a>
 </div>
 <div class="col-12 col-md-9 prod_infos glazba">
 <div class="arhiva-all-info">
@@ -117,7 +117,7 @@ Ukupno kartica na 1. stranici: 25
 <p class="product_author_black">16 Top-10 Hits! Vol. 2</p>
 </div>
 <div class="bottom"><div class="home-product-internal-container d-md-none">
-<div class="aspect-ratio-box"><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/"><img alt="Omot albuma „16 Top-10 Hits! Vol. 2” – 16 Top-10 Hits! Vol. 2" class="attachment-home_product_lp shop-thumbnail size-home_product_lp shop-thumbnail wp-post-image" height="600" sizes="(max-width: 598px) 100vw, 598px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339.jpg 598w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-462x464.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-300x300.jpg 300w" width="598"/><img alt="LP" class="glazba-bg home_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></a>
+<div class="aspect-ratio-box"><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/"><img alt="Omot albuma „16 Top-10 Hits! Vol. 2” – 16 Top-10 Hits! Vol. 2" class="attachment-home_product_lp shop-thumbnail size-home_product_lp shop-thumbnail wp-post-image" height="600" sizes="(max-width: 598px) 100vw, 598px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339.jpg 598w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-462x464.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/R-2610213-1333369339-300x300.jpg 300w" width="598"/><img alt="LP" class="glazba-bg home_music_lp LP" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" height="120" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20120%20120'%3E%3C/svg%3E" width="120"/><noscript><img alt="LP" class="glazba-bg home_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></noscript></a>
 </div>
 </div><ul class="arhiva-cf"><li class="hide-on-phone"><span class="info">Medij: </span>Gramofonska ploča</li></ul> <div class="arhiva-dolje otkup-0"><div class="my-custom-field-knjizara price"><span class="black price-label">Cijena: </span><span class="big">3</span>,<span class="small_price">90</span> - <span class="big"> 5</span>,<span class="small_price">90</span> €</div> <a aria-label="Izaberi “16 Top-10 Hits! Vol. 2”." class="button izaberi add_to_cart_button" href="https://ezop-antikvarijat.hr/16-top-10-hits-vol-2-16-top-10-hits-vol-2-2/" rel="nofollow">Izaberi</a>
 </div> </div> <!-- /bottom -->
@@ -129,7 +129,7 @@ Ukupno kartica na 1. stranici: 25
 <div class="inline row product type-product post-174551 status-publish instock product_cat-erotski-omoti-glazba product_cat-glazba-izvodaci product_cat-pop-glazba-zanr has-post-thumbnail sold-individually taxable shipping-taxable purchasable product-type-variable has-default-attributes">
 <div class="d-none d-md-block col-2 col-md-3 prod-img glazba">
 <a class="prod_link" href="https://ezop-antikvarijat.hr/alma-ekmecic-seks-bomba-2/" title="Seks Bomba">
-<img alt="LP" class="glazba-bg cat_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/> <img alt="Gramofonska ploča Alma Ekmečić Seks Bomba LPD 0101, stanje ploče je 10/10" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="201" sizes="(max-width: 200px) 100vw, 200px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg 200w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-150x150.jpg 150w" width="200"/> </a>
+<img alt="LP" class="glazba-bg cat_music_lp LP" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" height="120" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20120%20120'%3E%3C/svg%3E" width="120"/><noscript><img alt="LP" class="glazba-bg cat_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></noscript> <img alt="Gramofonska ploča Alma Ekmečić Seks Bomba LPD 0101, stanje ploče je 10/10" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" data-lazy-sizes="(max-width: 200px) 100vw, 200px" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg" data-lazy-srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg 200w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-150x150.jpg 150w" height="201" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20200%20201'%3E%3C/svg%3E" width="200"/><noscript><img alt="Gramofonska ploča Alma Ekmečić Seks Bomba LPD 0101, stanje ploče je 10/10" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" height="201" sizes="(max-width: 200px) 100vw, 200px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436.jpg 200w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/05/60436-150x150.jpg 150w" width="200"/></noscript> </a>
 </div>
 <div class="col-12 col-md-9 prod_infos glazba">
 <div class="arhiva-all-info">
@@ -140,7 +140,7 @@ Ukupno kartica na 1. stranici: 25
 <p class="product_author_black">Seks Bomba</p>
 </div>
 <div class="bottom"><div class="home-product-internal-container d-md-none">
-<div class="aspect-ratio-box"><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/alma-ekmecic-seks-bomba-2/"><img alt="Omot albuma „Seks Bomba” – Alma Ekmečić" class="attachment-home_product_lp shop-thumbnail size-home_product_lp shop-thumbnail wp-post-image" height="600" sizes="(max-width: 600px) 100vw, 600px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4.jpg 600w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-462x462.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-300x300.jpg 300w" width="600"/><img alt="LP" class="glazba-bg home_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></a>
+<div class="aspect-ratio-box"><a class="home_img_wrapp" href="https://ezop-antikvarijat.hr/alma-ekmecic-seks-bomba-2/"><img alt="Omot albuma „Seks Bomba” – Alma Ekmečić" class="attachment-home_product_lp shop-thumbnail size-home_product_lp shop-thumbnail wp-post-image" height="600" sizes="(max-width: 600px) 100vw, 600px" src="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4.jpg" srcset="https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4.jpg 600w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-100x100.jpg 100w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-462x462.jpg 462w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-64x64.jpg 64w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-150x150.jpg 150w, https://ezop-antikvarijat.hr/wp-content/uploads/2019/11/ab67616d0000b27350a637324e08c8b0fa91c5d4-300x300.jpg 300w" width="600"/><img alt="LP" class="glazba-bg home_music_lp LP" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" height="120" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20120%20120'%3E%3C/svg%3E" width="120"/><noscript><img alt="LP" class="glazba-bg home_music_lp LP" height="120" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/glazba-lp.png" width="120"/></noscript></a>
 </div>
 </div><ul class="arhiva-cf"><li class="hide-on-phone"><span class="info">Medij: </span>Gramofonska ploča</li><li class="info-sm-mus"><span class="info">Stanje omota: </span><span class="red">9</span></li><li class="info-sm-mus"><span class="info">Stanje medija: </span><span class="red">10</span></li><li class="info-sm hide-on-phone"><span class="info">Država: </span>YU</li><li class="info-sm-book hide-on-phone"><span class="info">Godina: </span>1983.</li></ul> <div class="arhiva-dolje otkup-0"><div class="my-custom-field-knjizara price"><span class="black price-label">Cijena: </span><span class="big">28</span>,<span class="small_price">50</span> €</div> <a aria-label="Dodaj “Seks Bomba” u Vašu košaricu." class="button kupi add_to_cart_button ajax_add_to_cart" data-product_id="174551" data-product_sku="" data-quantity="1" href="?add-to-cart=299209&amp;attribute_godina=1983&amp;attribute_br-labela=LPD 0101&amp;attribute_pa_omot=9&amp;attribute_pa_medij=10&amp;attribute_pa_drzava=jugoslavija&amp;attribute_pa_izdavacka-kuca=jugodisk" rel="nofollow">Dodaj u košaricu</a>
 </div> </div> <!-- /bottom -->
@@ -149,7 +149,7 @@ Ukupno kartica na 1. stranici: 25
 </div>
 
 === 3. PROVJERA POJEDINAČNE STRANICE 181787 (NEMA) vs 207847 (IMA) ===
-[GET 200 za 1.7s] https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/
+[GET 200 za 0.3s] https://ezop-antikvarijat.hr/rock-n-roll-zg-1979-89-rocknroll-zg-1979-89-2/
 
 --- NEMA NA STANJU (181787) (.price-cart-block) ---
 <div class="col-6 price-cart-block order-2">
@@ -158,7 +158,7 @@ Ukupno kartica na 1. stranici: 25
 <span class="sp-info price-label">Cijena: </span><span class="big">3,</span><span class="small_price">80                         €</span>
 <br/> </p>
 </div><span class="nedostupno">Trenutno nema na stanju!</span> </div>
-[GET 200 za 3.4s] https://ezop-antikvarijat.hr/parni-valjak-emc-2/
+[GET 200 za 1.4s] https://ezop-antikvarijat.hr/parni-valjak-emc-2/
 
 --- IMA NA STANJU (207847) (.price-cart-block) ---
 <div class="col-6 price-cart-block order-2">
@@ -168,4 +168,4 @@ Ukupno kartica na 1. stranici: 25
 <br/> </p>
 </div><div class="product_bot_part"><div class="product_price_cont"><a class="product_cho_link" data-product_id="207847" data-variation_id="306668" href="?add-to-cart=306668&amp;attribute_godina=1986&amp;attribute_br-labela=LSY 62160&amp;attribute_pa_omot=9&amp;attribute_pa_medij=10&amp;attribute_pa_drzava=jugoslavija&amp;attribute_pa_izdavacka-kuca=jugoton"><img alt="Dodaj u košaricu" class="img-fluid product_buy_icon" data-lazy-src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/cart_kupi.png" height="60" src="data:image/svg+xml,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20230%2060'%3E%3C/svg%3E" title="Dodaj u košaricu" width="230"/><noscript><img alt="Dodaj u košaricu" class="img-fluid product_buy_icon" height="60" src="https://ezop-antikvarijat.hr/wp-content/themes/ezop/inc/assets/images/cart_kupi.png" title="Dodaj u košaricu" width="230"/></noscript></a></div></div> </div>
 ----------------------------------------
-Vrijeme završetka (UTC): 22.10.2026. 10:27:56 | Kod izlaza: 0
+Vrijeme završetka (UTC): 23.10.2026. 07:16:36 | Kod izlaza: 0
