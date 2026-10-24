@@ -1,23 +1,14 @@
-import requests as std_requests
-from requests.adapters import HTTPAdapter
+import cloudscraper
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import urllib3
-import subprocess
 import threading
 import csv
 import os
 import re
 import time
 import html
-import sys
 from urllib.parse import urljoin
-
-try:
-    from curl_cffi import requests as cffi_requests
-    IMA_CURL_CFFI = True
-except ImportError:
-    IMA_CURL_CFFI = False
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -27,81 +18,50 @@ CSV_FILENAME = "cedeterija_ploce.csv"
 BROJ_NITI = 6
 
 _thread_local = threading.local()
-_tor_lock = threading.Lock()
-tor_aktivan = False
 
-HEADERS = {
-    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-    "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
-    "Referer": "https://cedeterijanova.hr/glazba/glazba-lp",
-    "Connection": "keep-alive"
-}
-
-def kreiraj_sesiju(koristi_tor=False):
-    proxies = {"http": "socks5://127.0.0.1:9050", "https": "socks5://127.0.0.1:9050"} if koristi_tor else None
-
-    if IMA_CURL_CFFI and not koristi_tor:
-        s = cffi_requests.Session(impersonate="chrome120", verify=False)
-        s.headers.update(HEADERS)
-        return s
-
-    s = std_requests.Session()
+def kreiraj_sesiju():
+    # Cloudscraper automatski oponaša preglednik i rješava Cloudflare/Anti-bot zaštite
+    s = cloudscraper.create_scraper(
+        browser={
+            'browser': 'chrome',
+            'platform': 'windows',
+            'desktop': True
+        }
+    )
     s.verify = False
-    adapter = HTTPAdapter(pool_connections=BROJ_NITI + 4, pool_maxsize=BROJ_NITI + 4)
-    s.mount("https://", adapter)
-    s.mount("http://", adapter)
-    s.headers.update(HEADERS)
-    if proxies:
-        s.proxies = proxies
+    s.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Referer": "https://cedeterijanova.hr/glazba/glazba-lp",
+        "Connection": "keep-alive"
+    })
     return s
 
 def dohvati_sesiju():
-    global tor_aktivan
     s = getattr(_thread_local, "session", None)
-    sesija_tor = getattr(_thread_local, "koristi_tor", False)
-    if s is None or sesija_tor != tor_aktivan:
-        s = kreiraj_sesiju(koristi_tor=tor_aktivan)
+    if s is None:
+        s = kreiraj_sesiju()
         _thread_local.session = s
-        _thread_local.koristi_tor = tor_aktivan
     return s
 
-def podigni_tor():
-    global tor_aktivan
-    with _tor_lock:
-        if tor_aktivan:
-            return
-        print("\n⚠️ Pokrećem Tor tunel i instaliram zavisnosti...", flush=True)
-        subprocess.run([sys.executable, "-m", "pip", "install", "pysocks"], check=False, timeout=30)
-        subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
-        subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
-        subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
-        time.sleep(5)
-        tor_aktivan = True
-
-def sigurni_get(url, timeout=25):
+def sigurni_get(url, timeout=30):
     for pokusaj in range(1, 4):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
+            print(f"   🔎 [Pokušaj {pokusaj}] HTTP {r.status_code} | Veličina: {len(r.text)} znakova | URL: {url}", flush=True)
             if r.status_code == 200 and len(r.text) > 1000:
                 return r
-            if r.status_code in [403, 503, 429]:
-                if not tor_aktivan:
-                    podigni_tor()
-                else:
-                    time.sleep(2 * pokusaj)
-            else:
-                time.sleep(1.5 * pokusaj)
+            time.sleep(2 * pokusaj)
         except Exception as e:
-            print(f"   ⚠️ [Pokušaj {pokusaj}] Greška: {e}", flush=True)
-            if not tor_aktivan:
-                podigni_tor()
-            else:
-                time.sleep(2 * pokusaj)
+            print(f"   ⚠️ [Pokušaj {pokusaj}] Greška spajanja: {e}", flush=True)
+            time.sleep(2 * pokusaj)
     return None
 
 def sastavi_url_stranice(page):
+    if page == 1:
+        return BASE_CATEGORY_URL
     return f"{BASE_CATEGORY_URL}?page_size=28&sort=3&page_number={page}&f=1&min_price=5&max_price=445"
 
 def normaliziraj_link_proizvoda(href):
@@ -146,10 +106,15 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    # Precizno gađamo kartice proizvoda prema tvojoj HTML strukturi
     kartice = soup.select("div.product-display-grid.item")
     if not kartice:
-        kartice = soup.select("div.product-display-grid")
+        kartice = soup.select("div.product-display-grid, div.product-card, li.product")
+
+    # Dijagnostika ako kartice nisu pronađene
+    if not kartice:
+        naslov_str = soup.title.get_text(strip=True) if soup.title else "Bez naslova"
+        print(f"   ⚠️ Dijagnostika - Naslov stranice: '{naslov_str}'", flush=True)
+        print(f"   ⚠️ Prvih 300 znakova tijela: {soup.get_text(' ', strip=True)[:300]}", flush=True)
 
     vidjeni_na_stranici = set()
 
@@ -228,7 +193,7 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...", flush=True)
+    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga preko cloudscrapera...", flush=True)
     _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1)
     if not ok1 or br_kartica1 == 0:
         print("❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.", flush=True)
