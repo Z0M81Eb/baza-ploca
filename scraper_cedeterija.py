@@ -3,6 +3,7 @@ from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import urllib3
+import subprocess
 import threading
 import csv
 import os
@@ -10,6 +11,12 @@ import re
 import time
 import html
 from urllib.parse import urljoin
+
+try:
+    from curl_cffi import requests as cffi_requests
+    IMA_CURL_CFFI = True
+except ImportError:
+    IMA_CURL_CFFI = False
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
@@ -19,36 +26,83 @@ CSV_FILENAME = "cedeterija_ploce.csv"
 BROJ_NITI = 6
 
 _thread_local = threading.local()
+_tor_lock = threading.Lock()
+tor_aktivan = False
 
-def dohvati_sesiju():
-    s = getattr(_thread_local, "session", None)
-    if s is None:
-        s = std_requests.Session()
-        s.verify = False
-        adapter = HTTPAdapter(pool_connections=BROJ_NITI + 4, pool_maxsize=BROJ_NITI + 4)
-        s.mount("https://", adapter)
-        s.mount("http://", adapter)
-        s.headers.update({
-            "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
-            "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
-            "Referer": BASE_CATEGORY_URL,
-            "Connection": "keep-alive"
-        })
-        _thread_local.session = s
+HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+    "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+    "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
+    "Referer": "https://cedeterijanova.hr/glazba/glazba-lp",
+    "Connection": "keep-alive"
+}
+
+def kreiraj_sesiju(koristi_tor=False):
+    proxies = {"http": "socks5://127.0.0.1:9050", "https": "socks5://127.0.0.1:9050"} if koristi_tor else None
+
+    if IMA_CURL_CFFI:
+        s = cffi_requests.Session(impersonate="chrome120", proxies=proxies, verify=False)
+        s.headers.update(HEADERS)
+        return s
+
+    s = std_requests.Session()
+    s.verify = False
+    adapter = HTTPAdapter(pool_connections=BROJ_NITI + 4, pool_maxsize=BROJ_NITI + 4)
+    s.mount("https://", adapter)
+    s.mount("http://", adapter)
+    s.headers.update(HEADERS)
+    if proxies:
+        s.proxies = proxies
     return s
 
-def sigurni_get(url, timeout=25):
+def dohvati_sesiju():
+    global tor_aktivan
+    s = getattr(_thread_local, "session", None)
+    sesija_tor = getattr(_thread_local, "koristi_tor", False)
+    if s is None or sesija_tor != tor_aktivan:
+        s = kreiraj_sesiju(koristi_tor=tor_aktivan)
+        _thread_local.session = s
+        _thread_local.koristi_tor = tor_aktivan
+    return s
+
+def podigni_tor():
+    global tor_aktivan
+    with _tor_lock:
+        if tor_aktivan:
+            return
+        print("\n⚠️ Pokrećem Tor tunel zbog blokade IP adrese...", flush=True)
+        subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
+        subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
+        subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
+        time.sleep(5)
+        tor_aktivan = True
+
+def sigurni_get(url, timeout=25, ispisi_dijagnostiku=False):
+    zadnja_greska = ""
     for pokusaj in range(1, 4):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
-            if r.status_code in [200, 404]:
+            if ispisi_dijagnostiku:
+                print(f"   🔎 [Pokušaj {pokusaj}] HTTP {r.status_code} | Veličina: {len(r.text)} znakova | URL: {url}", flush=True)
+            if r.status_code == 200 and len(r.text) > 500:
                 return r
-            time.sleep(1.5 * pokusaj)
-        except Exception:
-            time.sleep(1.5 * pokusaj)
+            if r.status_code in [403, 503, 429] and not tor_aktivan:
+                podigni_tor()
+            else:
+                time.sleep(1.5 * pokusaj)
+        except Exception as e:
+            zadnja_greska = str(e)
+            if ispisi_dijagnostiku:
+                print(f"   ⚠️ [Pokušaj {pokusaj}] Greška spajanja: {zadnja_greska}", flush=True)
+            if pokusaj == 2 and not tor_aktivan:
+                podigni_tor()
+            else:
+                time.sleep(1.5 * pokusaj)
     return None
+
+def sastavi_url_stranice(page):
+    return f"{BASE_CATEGORY_URL}?page_size=28&sort=3&page_number={page}&f=1&min_price=5&max_price=445"
 
 def normaliziraj_link_proizvoda(href):
     if not href:
@@ -94,7 +148,7 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    kartice = soup.select("div.product-display-grid.item")
+    kartice = soup.select("div.product-display-grid.item, div.product-display-grid")
     vidjeni_na_stranici = set()
 
     for k in kartice:
@@ -108,9 +162,7 @@ def parsiraj_cedeterija_stranicu(soup):
             continue
 
         # 2. Link i slika proizvoda
-        a_img = k.select_one("a.product-display-grid-image")
-        if not a_img or not a_img.get("href"):
-            a_img = k.select_one("div.product-info a[href]")
+        a_img = k.select_one("a.product-display-grid-image") or k.select_one("a[href]")
         if not a_img or not a_img.get("href"):
             continue
 
@@ -135,7 +187,7 @@ def parsiraj_cedeterija_stranicu(soup):
         naslov = naslov_iz_slike
         if not naslov:
             performer_el = k.select_one(".product-performer-wrapper")
-            title_el = k.select_one(".product-info h3")
+            title_el = k.select_one(".product-info h3, h3")
             izvodjac = html.unescape(performer_el.get_text(" ", strip=True)).strip() if performer_el else ""
             album = html.unescape(title_el.get_text(" ", strip=True)).strip() if title_el else ""
             if izvodjac and album and izvodjac.lower() not in album.lower():
@@ -147,7 +199,7 @@ def parsiraj_cedeterija_stranicu(soup):
             continue
 
         # 4. Cijena
-        price_el = k.select_one("span.price-current, .product-card-current-price")
+        price_el = k.select_one("span.price-current, .product-card-current-price, .product-card-prices")
         cijena = izvuci_cijenu(price_el)
         if cijena == "0.00":
             continue
@@ -166,18 +218,32 @@ def parsiraj_cedeterija_stranicu(soup):
     max_str = izvuci_max_stranicu(soup)
     return stavke, len(kartice), max_str
 
-def dohvati_i_obradi_stranicu(page):
-    if page == 1:
-        url = BASE_CATEGORY_URL
-    else:
-        url = f"{BASE_CATEGORY_URL}?page_size=28&sort=3&page_number={page}&f=1"
+def dohvati_i_obradi_stranicu(page, dijagnostika=False):
+    url = sastavi_url_stranice(page)
+    res = sigurni_get(url, timeout=25, ispisi_dijagnostiku=dijagnostika)
 
-    res = sigurni_get(url, timeout=25)
     if not res or res.status_code != 200:
         return page, False, [], 0, 1
 
     soup = BeautifulSoup(res.text, "lxml")
     stavke, ukupno_kartica, max_str = parsiraj_cedeterija_stranicu(soup)
+
+    # Ako 1. stranica s parametrima ne vrati kartice, probaj čisti URL ili podigni Tor
+    if page == 1 and ukupno_kartica == 0:
+        naslov_str = soup.title.get_text(strip=True) if soup.title else "Bez naslova"
+        print(f"   ⚠️ Na URL-u s parametrima pronađeno 0 kartica (Naslov HTML-a: '{naslov_str}'). Pokušavam osnovni URL...", flush=True)
+        res_alt = sigurni_get(BASE_CATEGORY_URL, timeout=25, ispisi_dijagnostiku=True)
+        if res_alt and res_alt.status_code == 200:
+            soup_alt = BeautifulSoup(res_alt.text, "lxml")
+            stavke, ukupno_kartica, max_str = parsiraj_cedeterija_stranicu(soup_alt)
+
+        if ukupno_kartica == 0 and not tor_aktivan:
+            podigni_tor()
+            res_tor = sigurni_get(url, timeout=30, ispisi_dijagnostiku=True)
+            if res_tor and res_tor.status_code == 200:
+                soup_tor = BeautifulSoup(res_tor.text, "lxml")
+                stavke, ukupno_kartica, max_str = parsiraj_cedeterija_stranicu(soup_tor)
+
     return page, True, stavke, ukupno_kartica, max_str
 
 def scrape_cedeterija():
@@ -196,8 +262,8 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...", flush=True)
-    _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1)
+    print(f"📄 Dohvaćam 1. stranicu Cedeterija LP kataloga (curl_cffi={'DA' if IMA_CURL_CFFI else 'NE'})...", flush=True)
+    _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1, dijagnostika=True)
     if not ok1 or br_kartica1 == 0:
         print("❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.", flush=True)
         return
@@ -207,7 +273,7 @@ def scrape_cedeterija():
         vidjeni_linkovi.add(link)
 
     print(
-        f"✅ Stranica 1 obrađena: +{len(stavke1)} ploča (Otkriveno stranica u navigaciji: {max_pages})",
+        f"✅ Stranica 1 obrađena: +{len(stavke1)} dostupnih od {br_kartica1} kartica (Max stranica u navigaciji: {max_pages})",
         flush=True
     )
 
@@ -217,12 +283,7 @@ def scrape_cedeterija():
 
     with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
         while not kraj_kataloga:
-            # Ako paginacija prikazuje samo dio stranica (npr. 1..5), idemo u blokovima dok god ima novih artikala
-            gornja_granica = max(max_pages, trenutna_stranica + BROJ_NITI - 1)
-            blok = list(range(trenutna_stranica, min(gornja_granica, trenutna_stranica + BROJ_NITI * 2 - 1) + 1))
-            if not blok:
-                break
-
+            blok = list(range(trenutna_stranica, trenutna_stranica + BROJ_NITI))
             t_blok = time.time()
             rezultati = list(executor.map(dohvati_i_obradi_stranicu, blok))
 
@@ -250,7 +311,7 @@ def scrape_cedeterija():
                     sve_ploce[link] = red
                     vidjeni_linkovi.add(link)
 
-                # Ako stranica vrati isključivo već viđene ploče (vraćanje na zadnju stranicu), stajemo
+                # Ako smo prešli zadnju stranicu u navigaciji i stranica ne donosi nijedan novi artikl, stajemo
                 if novih_na_stranici == 0 and page >= max_pages:
                     kraj_kataloga = True
 
@@ -260,13 +321,11 @@ def scrape_cedeterija():
                 flush=True
             )
 
-            if novih_u_bloku == 0 or blok[-1] >= max_pages:
-                if blok[-1] >= max_pages:
-                    kraj_kataloga = True
+            if novih_u_bloku == 0 and blok[-1] >= max_pages:
+                kraj_kataloga = True
 
             trenutna_stranica = blok[-1] + 1
 
-        # Popravni krug ako je neka stranica imala privremeni timeout
         if neuspjesne_stranice:
             print(f"\n🔄 Ponavljam dohvat za {len(neuspjesne_stranice)} stranica...", flush=True)
             popravni_rez = list(executor.map(dohvati_i_obradi_stranicu, neuspjesne_stranice))
