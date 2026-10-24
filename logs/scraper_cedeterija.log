@@ -1,8 +1,8 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 10:35:06
+Vrijeme pokretanja (UTC): 24.10.2026. 10:36:00
 ----------------------------------------
 🗺️ Čitam XML sitemape i sakupljam sve proizvode...
 ✅ Iz sitemapa učitano 0 ukupnih stavki.
 ❌ Nema pronađenih stavki u sitemapu. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 10:35:08 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 10:36:03 | Kod izlaza: 0
