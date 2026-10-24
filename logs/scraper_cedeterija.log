@@ -1,9 +1,14 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 09:59:17
+Vrijeme pokretanja (UTC): 24.10.2026. 10:01:31
 ----------------------------------------
-📄 Dohvaćam 1. stranicu Cedeterija LP kataloga preko curl_cffi...
-   🔎 [Pokušaj 1] HTTP 200 | Veličina: 7967 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
-   ⚠️ DIJAGNOSTIKA - Nema kartica! Početak teksta stranice: Security check required WE'RE SO SORRY... Your browsing looks a bit unusual. To continue please complete this simple security check. Confirm Completing this check proves you are a human and gives you immediate access to the website.
-❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.
+📄 Dohvaćam 1. stranicu Cedeterija LP kataloga kroz Tor...
+
+⚠️ Pokrećem Tor tunel za zaobilaženje WAF/Cloudflare zaštite...
+E: Unable to locate package pysocks
+Failed to restart tor.service: Unit tor.service not found.
+   ⚠️ [Pokušaj 1] Greška spajanja kroz Tor: Failed to perform, curl: (7) Failed to connect to cedeterijanova.hr:443 over proxy 127.0.0.1 after 0 ms: Could not connect to server. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+   ⚠️ [Pokušaj 2] Greška spajanja kroz Tor: Failed to perform, curl: (7) Failed to connect to cedeterijanova.hr:443 over proxy 127.0.0.1 after 0 ms: Could not connect to server. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+   ⚠️ [Pokušaj 3] Greška spajanja kroz Tor: Failed to perform, curl: (7) Failed to connect to cedeterijanova.hr:443 over proxy 127.0.0.1 after 0 ms: Could not connect to server. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
+❌ Neuspješno dohvaćanje 1. stranice ili blokada. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 09:59:18 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 10:02:05 | Kod izlaza: 0
