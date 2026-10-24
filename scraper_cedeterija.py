@@ -23,7 +23,6 @@ _thread_local = threading.local()
 
 def kreiraj_sesiju():
     try:
-        # Pokušaj s cloudscraperom bez zadiranja u verify_mode
         s = cloudscraper.create_scraper(
             browser={
                 'browser': 'chrome',
@@ -32,7 +31,6 @@ def kreiraj_sesiju():
             }
         )
     except Exception:
-        # Ako cloudscraper pukne, vraćamo se na običnu pouzdanu requests sesiju
         s = std_requests.Session()
         s.verify = False
 
@@ -63,7 +61,6 @@ def sigurni_get(url, timeout=30):
             time.sleep(2 * pokusaj)
         except Exception as e:
             print(f"   ⚠️ [Pokušaj {pokusaj}] Greška spajanja: {e}", flush=True)
-            # Ako je sesija pukla, resetiramo je
             _thread_local.session = kreiraj_sesiju()
             time.sleep(2 * pokusaj)
     return None
@@ -115,17 +112,16 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    kartice = soup.select("div.product-display-grid.item")
+    # Prošireni i robusniji selektori za kartice proizvoda
+    kartice = soup.select("div.product-display-grid")
     if not kartice:
-        kartice = soup.select("div.product-display-grid, div.product-card, li.product")
+        kartice = soup.select("div[data-product-code]")
+    if not kartice:
+        kartice = soup.select(".product-card, li.product, div.item")
 
     vidjeni_na_stranici = set()
 
     for k in kartice:
-        forma_kosarica = k.select_one('form.item-cart, form[action*="add_to_cart"]')
-        if not forma_kosarica and not k.select_one('a.product-display-grid-image'):
-            continue
-
         a_img = k.select_one("a.product-display-grid-image") or k.select_one("a[href]")
         if not a_img or not a_img.get("href"):
             continue
@@ -159,7 +155,7 @@ def parsiraj_cedeterija_stranicu(soup):
         if not naslov:
             continue
 
-        price_el = k.select_one("span.price-current, .product-card-current-price")
+        price_el = k.select_one("span.price-current, .product-card-current-price, .price")
         cijena = izvuci_cijenu(price_el)
         if cijena == "0.00":
             continue
