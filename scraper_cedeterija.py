@@ -13,7 +13,6 @@ from urllib.parse import urljoin
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 SITE_URL = "https://cedeterijanova.hr"
-BASE_CATEGORY_URL = "https://cedeterijanova.hr/glazba/glazba-lp"
 CSV_FILENAME = "cedeterija_ploce.csv"
 BROJ_NITI = 6
 
@@ -52,7 +51,7 @@ def sigurni_get(url, timeout=25):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
-            if r.status_code == 200 and len(r.text) > 500:
+            if r.status_code == 200 and len(r.text) > 200:
                 return r
             time.sleep(1.5 * pokusaj)
         except Exception:
@@ -60,7 +59,7 @@ def sigurni_get(url, timeout=25):
             _thread_local.session = kreiraj_sesiju()
     return None
 
-def dohvati_urlstove_iz_sitemapa():
+def dohvati_podatke_iz_sitemapa():
     glavni_sitemap = "https://cedeterijanova.hr/xml/sitemap_3.xml"
     res = sigurni_get(glavni_sitemap)
     
@@ -72,7 +71,7 @@ def dohvati_urlstove_iz_sitemapa():
             if loc and loc.text:
                 sitemap_datoteke.append(loc.text.strip())
 
-    # Fallback ako sitemap index ne vrati ništa
+    # Fallback ako index zakataji
     if not sitemap_datoteke:
         sitemap_datoteke = [
             "https://cedeterijanova.hr/xml/sitemap_3_1.xml",
@@ -81,8 +80,7 @@ def dohvati_urlstove_iz_sitemapa():
             "https://cedeterijanova.hr/xml/sitemap_3_3_images.xml"
         ]
 
-    proizvodi_urljevi = set()
-    url_slika_mapa = {}
+    proizvodi = {} # ključ: link, vrijednost: {slika, naslov_iz_sitemapa}
 
     for sm in sitemap_datoteke:
         res_sm = sigurni_get(sm)
@@ -96,50 +94,68 @@ def dohvati_urlstove_iz_sitemapa():
                 continue
             puni_link = loc.text.strip().split("?")[0].rstrip("/")
             
-            # Traženje slike ako postoji u sitemapu
-            for tag in url_tag.find_all():
-                if "image" in tag.name.lower() and tag.text and tag.text.startswith("http"):
-                    url_slika_mapa[puni_link] = tag.text.strip()
-                    break
+            if puni_link == SITE_URL or any(x in puni_link for x in ["/kosarica", "/korpa", "/prijava", "/registracija", "/checkout", "/cart", "/kontakt", "/o-nama"]):
+                continue
 
-            # Filtriramo nepotrebne stranice, uzimamo sve artikle i proizvode
-            if puni_link != SITE_URL and not any(x in puni_link for x in ["/kosarica", "/korpa", "/prijava", "/registracija", "/checkout", "/cart", "/kontakt", "/o-nama"]):
-                proizvodi_urljevi.add(puni_link)
+            # Provjera ima li sliku i naslov unutar image sitemapa
+            img_url = ""
+            img_title = ""
+            image_tag = url_tag.find("image:image")
+            if image_tag:
+                il = image_tag.find("image:loc")
+                it = image_tag.find("image:title")
+                if il and il.text:
+                    img_url = il.text.strip()
+                if it and it.text:
+                    img_title = html.unescape(it.text.strip())
 
-    return list(proizvodi_urljevi), url_slika_mapa
+            if puni_link not in proizvodi:
+                proizvodi[puni_link] = {"slika": img_url, "naslov": img_title}
+            else:
+                if img_url and not proizvodi[puni_link]["slika"]:
+                    proizvodi[puni_link]["slika"] = img_url
+                if img_title and not proizvodi[puni_link]["naslov"]:
+                    proizvodi[puni_link]["naslov"] = img_title
 
-def parsiraj_pojedinacni_proizvod(args):
-    link, sitemap_slika = args
-    res = sigurni_get(link, timeout=25)
+    return proizvodi
+
+def parsiraj_proizvod(item):
+    link, meta = item
+    res = sigurni_get(link, timeout=20)
     if not res or res.status_code != 200:
         return None
 
     soup = BeautifulSoup(res.text, "lxml")
 
+    # Provjera je li artikal LP ili singl (preskačemo CD-ove i Blu-Ray izdanja ako nas zanimaju samo ploče)
+    # Možeš prilagoditi uvjet ako želiš i CD-ove, ali prema prethodnom kodu tražimo LP/vinile.
+    naslov = meta["naslov"]
+    if not naslov:
+        performer_el = soup.select_one(".product-performer-wrapper")
+        title_el = soup.select_one("h1.product-title, h1, .product-info h3")
+        izvodjac = html.unescape(performer_el.get_text(" ", strip=True)).strip() if performer_el else ""
+        album = html.unescape(title_el.get_text(" ", strip=True)).strip() if title_el else ""
+        if izvodjac and album and izvodjac.lower() not in album.lower():
+            naslov = f"{izvodjac} - {album}"
+        else:
+            naslov = album or izvodjac
+            if not naslov and soup.title:
+                naslov = soup.title.get_text(strip=True)
+
+    if not naslov:
+        return None
+
+    # Filtriramo da uzmemo samo LP i singl ploče (ako u nazivu ili linku piše CD, Blu-ray i sl., preskačemo)
+    link_lower = link.lower()
+    naslov_lower = naslov.lower()
+    if "-cd" in link_lower or " cd" in naslov_lower or "blu-ray" in link_lower or "dvd" in link_lower:
+        return None
+
     # Provjera je li proizvod dostupan za kupovinu
     forma_kosarica = soup.select_one('form.item-cart, form[action*="add_to_cart"]')
     if not forma_kosarica:
         return None
-
-    gumb_disabled = forma_kosarica.select_one("button[disabled], input[disabled]")
-    if gumb_disabled:
-        return None
-
-    # Naziv i izvođač
-    performer_el = soup.select_one(".product-performer-wrapper, .artist")
-    title_el = soup.select_one("h1.product-title, h1, .product-info h3")
-
-    izvodjac = html.unescape(performer_el.get_text(" ", strip=True)).strip() if performer_el else ""
-    album = html.unescape(title_el.get_text(" ", strip=True)).strip() if title_el else ""
-
-    if izvodjac and album and izvodjac.lower() not in album.lower():
-        naslov = f"{izvodjac} - {album}"
-    else:
-        naslov = album or izvodjac
-        if not naslov and soup.title:
-            naslov = soup.title.get_text(strip=True)
-
-    if not naslov:
+    if forma_kosarica.select_one("button[disabled], input[disabled]"):
         return None
 
     # Cijena
@@ -159,8 +175,7 @@ def parsiraj_pojedinacni_proizvod(args):
     if cijena == "0.00":
         return None
 
-    # Slika
-    slika_url = sitemap_slika
+    slika_url = meta["slika"]
     if not slika_url:
         img_el = soup.select_one("div.product-image img, .gallery img, img")
         if img_el:
@@ -170,9 +185,7 @@ def parsiraj_pojedinacni_proizvod(args):
                     slika_url = urljoin(SITE_URL, raw_s)
                     break
 
-    tip_artikla = "LP"
-    if '7"' in naslov.lower() or "singl" in naslov.lower():
-        tip_artikla = 'Singl 7"'
+    tip_artikla = 'Singl 7"' if ('7"' in naslov_lower or "singl" in naslov_lower) else "LP"
 
     return (link, [naslov, cijena, link, slika_url, "Novo", "Novo", tip_artikla])
 
@@ -191,21 +204,21 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("🗺️ Čitam XML sitemap index i dohvaćam popis svih proizvoda...", flush=True)
-    urljevi_proizvoda, url_slika_mapa = dohvati_urlstove_iz_sitemapa()
-    print(f"✅ Iz sitemapa učitano {len(urljevi_proizvoda)} jedinstvenih URL-ova.", flush=True)
+    print("🗺️ Čitam XML sitemape i sakupljam sve proizvode...", flush=True)
+    proizvodi_dict = dohvati_podatke_iz_sitemapa()
+    print(f"✅ Iz sitemapa učitano {len(proizvodi_dict)} ukupnih stavki.", flush=True)
 
-    if not urljevi_proizvoda:
-        print("❌ Nema pronađenih URL-ova u sitemapu. Prekidam.", flush=True)
+    if not proizvodi_dict:
+        print("❌ Nema pronađenih stavki u sitemapu. Prekidam.", flush=True)
         return
 
-    zadaci = [(link, url_slika_mapa.get(link, "")) for link in urljevi_proizvoda]
+    zadaci = list(proizvodi_dict.items())
     novi_zisi = {}
     uspjesno = 0
 
-    print(f"⚡ Paralelno obrađujem {len(zadaci)} proizvoda s {BROJ_NITI} niti...", flush=True)
+    print(f"⚡ Provjeravam dostupnost i cijene za {len(zadaci)} artikala s {BROJ_NITI} niti...", flush=True)
     with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
-        rezultati = list(executor.map(parsiraj_pojedinacni_proizvod, zadaci))
+        rezultati = list(executor.map(parsiraj_proizvod, zadaci))
         for res in rezultati:
             if res:
                 link, red = res
@@ -213,10 +226,10 @@ def scrape_cedeterija():
                 sve_ploce[link] = red
                 uspjesno += 1
 
-    print(f"✅ Obrada završena! Pronađeno dostupnih ploča: {uspjesno}", flush=True)
+    print(f"✅ Obrada završena! Pronađeno dostupnih LP ploča: {uspjesno}", flush=True)
 
     aktivni_linkovi = set(novi_zisi.keys())
-    if len(aktivni_linkovi) > 20:
+    if len(aktivni_linkovi) > 10:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
         obrisano = pocetni_broj - len(sve_ploce)
