@@ -2,6 +2,7 @@ from curl_cffi import requests as cffi_requests
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import urllib3
+import subprocess
 import threading
 import csv
 import os
@@ -18,16 +19,34 @@ CSV_FILENAME = "cedeterija_ploce.csv"
 BROJ_NITI = 6
 
 _thread_local = threading.local()
+_tor_inicijaliziran = False
+_tor_lock = threading.Lock()
+
+def podigni_tor():
+    global _tor_inicijaliziran
+    with _tor_lock:
+        if _tor_inicijaliziran:
+            return
+        print("\n⚠️ Pokrećem Tor tunel za zaobilaženje WAF/Cloudflare zaštite...", flush=True)
+        subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
+        subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor", "pysocks"], check=False, timeout=60)
+        subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
+        time.sleep(5)
+        _tor_inicijaliziran = True
 
 def kreiraj_sesiju():
-    s = cffi_requests.Session(impersonate="chrome120", verify=False)
+    podigni_tor()
+    proxies = {
+        "http": "socks5://127.0.0.1:9050",
+        "https": "socks5://127.0.0.1:9050"
+    }
+    s = cffi_requests.Session(impersonate="chrome120", proxies=proxies, verify=False)
     s.headers.update({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
         "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
         "Referer": "https://cedeterijanova.hr/glazba/glazba-lp",
-        "Connection": "keep-alive",
-        "Cache-Control": "max-age=0"
+        "Connection": "keep-alive"
     })
     return s
 
@@ -38,19 +57,19 @@ def dohvati_sesiju():
         _thread_local.session = s
     return s
 
-def sigurni_get(url, timeout=30):
+def sigurni_get(url, timeout=45):
     for pokusaj in range(1, 4):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
             print(f"   🔎 [Pokušaj {pokusaj}] HTTP {r.status_code} | Veličina: {len(r.text)} znakova | URL: {url}", flush=True)
-            if r.status_code == 200 and len(r.text) > 1000:
+            if r.status_code == 200 and len(r.text) > 1000 and "security check" not in r.text.lower():
                 return r
-            time.sleep(2 * pokusaj)
+            time.sleep(3 * pokusaj)
         except Exception as e:
-            print(f"   ⚠️ [Pokušaj {pokusaj}] Greška spajanja: {e}", flush=True)
+            print(f"   ⚠️ [Pokušaj {pokusaj}] Greška spajanja kroz Tor: {e}", flush=True)
             _thread_local.session = kreiraj_sesiju()
-            time.sleep(2 * pokusaj)
+            time.sleep(3 * pokusaj)
     return None
 
 def sastavi_url_stranice(page):
@@ -98,13 +117,9 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    # Sve moguće varijante klasa za kartice proizvoda
     kartice = soup.select("div.product-display-grid, div.product-display-grid.item")
     if not kartice:
         kartice = soup.select("div[data-product-code], div.product-card, li.product, div.item")
-
-    if not kartice:
-        print(f"   ⚠️ DIJAGNOSTIKA - Nema kartica! Početak teksta stranice: {soup.get_text(' ', strip=True)[:400]}", flush=True)
 
     vidjeni_na_stranici = set()
 
@@ -155,7 +170,7 @@ def parsiraj_cedeterija_stranicu(soup):
 
 def dohvati_i_obradi_stranicu(page):
     url = sastavi_url_stranice(page)
-    res = sigurni_get(url, timeout=30)
+    res = sigurni_get(url, timeout=45)
     if not res or res.status_code != 200:
         return page, False, [], 0, 1
 
@@ -179,10 +194,10 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga preko curl_cffi...", flush=True)
+    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga kroz Tor...", flush=True)
     _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1)
     if not ok1 or br_kartica1 == 0:
-        print("❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.", flush=True)
+        print("❌ Neuspješno dohvaćanje 1. stranice ili blokada. Prekidam.", flush=True)
         return
 
     for link, red in stavke1:
@@ -249,3 +264,4 @@ def scrape_cedeterija():
 
 if __name__ == "__main__":
     scrape_cedeterija()
+    
