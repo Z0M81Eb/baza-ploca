@@ -1,47 +1,18 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 10:04:18
+Vrijeme pokretanja (UTC): 24.10.2026. 10:17:01
 ----------------------------------------
-📄 Dohvaćam 1. stranicu Cedeterija LP kataloga kroz Tor...
-
-⚠️ Pokrećem Tor tunel za zaobilaženje WAF/Cloudflare zaštite...
-Selecting previously unselected package libevent-2.1-7t64:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 203540 files and directories currently installed.)
-Preparing to unpack .../libevent-2.1-7t64_2.1.12-stable-9ubuntu2.2_amd64.deb ...
-Unpacking libevent-2.1-7t64:amd64 (2.1.12-stable-9ubuntu2.2) ...
-Selecting previously unselected package tor.
-Preparing to unpack .../tor_0.4.9.11-0ubuntu0.24.04.1_amd64.deb ...
-Unpacking tor (0.4.9.11-0ubuntu0.24.04.1) ...
-Selecting previously unselected package torsocks.
-Preparing to unpack .../torsocks_2.4.0-1_amd64.deb ...
-Unpacking torsocks (2.4.0-1) ...
-Selecting previously unselected package tor-geoipdb.
-Preparing to unpack .../tor-geoipdb_0.4.9.11-0ubuntu0.24.04.1_all.deb ...
-Unpacking tor-geoipdb (0.4.9.11-0ubuntu0.24.04.1) ...
-Setting up libevent-2.1-7t64:amd64 (2.1.12-stable-9ubuntu2.2) ...
-Setting up tor (0.4.9.11-0ubuntu0.24.04.1) ...
-Something or somebody made /var/lib/tor disappear.
-Creating one for you again.
-Something or somebody made /var/log/tor disappear.
-Creating one for you again.
-Created symlink /etc/systemd/system/multi-user.target.wants/tor.service → /usr/lib/systemd/system/tor.service.
-Setting up torsocks (2.4.0-1) ...
-Setting up tor-geoipdb (0.4.9.11-0ubuntu0.24.04.1) ...
-Processing triggers for man-db (2.12.0-4build2) ...
-Not building database; man-db/auto-update is not 'true'.
-Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
-
-Running kernel seems to be up-to-date.
-
-No services need to be restarted.
-
-No containers need to be restarted.
-
-No user sessions are running outdated binaries.
-
-No VM guests are running outdated hypervisor (qemu) binaries on this host.
-   🔎 [Pokušaj 1] HTTP 200 | Veličina: 7967 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
-   🔎 [Pokušaj 2] HTTP 200 | Veličina: 7967 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
-   🔎 [Pokušaj 3] HTTP 200 | Veličina: 7967 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
-❌ Neuspješno dohvaćanje 1. stranice ili blokada. Prekidam.
+📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...
+🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
+   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   ⚠️ [Pokušaj 1] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
+   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   ⚠️ [Pokušaj 2] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
+   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   ⚠️ [Pokušaj 3] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
+   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 10:04:56 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 10:17:15 | Kod izlaza: 0
