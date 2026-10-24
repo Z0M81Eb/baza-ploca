@@ -20,7 +20,7 @@ BROJ_NITI = 6
 _thread_local = threading.local()
 
 def kreiraj_i_inicijaliziraj_sesiju():
-    # Cloudscraper oponaša pravi preglednik i rješava Cloudflare izazov
+    # Kreiramo cloudscraper bez diranja .verify atributa koji je uzrokovao grešku
     s = cloudscraper.create_scraper(
         browser={
             'browser': 'chrome',
@@ -28,7 +28,6 @@ def kreiraj_i_inicijaliziraj_sesiju():
             'desktop': True
         }
     )
-    s.verify = False
     s.headers.update({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -38,7 +37,6 @@ def kreiraj_i_inicijaliziraj_sesiju():
     })
     
     try:
-        # KLJUČNI KORAK: Prvo posjećujemo naslovnu stranicu da pokupimo Cloudflare clearance kolačić
         print("🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...", flush=True)
         r_home = s.get(SITE_URL, timeout=30)
         print(f"   🔎 Naslovna stranica HTTP status: {r_home.status_code} (Duljina: {len(r_home.text)})", flush=True)
@@ -63,7 +61,6 @@ def sigurni_get(url, timeout=30):
             print(f"   🔎 [Pokušaj {pokusaj}] HTTP {r.status_code} | Veličina: {len(r.text)} znakova | URL: {url}", flush=True)
             if r.status_code == 200 and len(r.text) > 1000 and "security check" not in r.text.lower():
                 return r
-            # Ako naiđemo na blokadu, resetiramo sesiju i ponovno probamo naslovnu
             time.sleep(2 * pokusaj)
             _thread_local.session = kreiraj_i_inicijaliziraj_sesiju()
         except Exception as e:
