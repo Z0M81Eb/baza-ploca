@@ -1,7 +1,10 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 09:42:43
+Vrijeme pokretanja (UTC): 24.10.2026. 09:46:27
 ----------------------------------------
-📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...
+📄 Dohvaćam 1. stranicu Cedeterija LP kataloga preko cloudscrapera...
+   ⚠️ [Pokušaj 1] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   ⚠️ [Pokušaj 2] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   ⚠️ [Pokušaj 3] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
 ❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 09:42:44 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 09:46:40 | Kod izlaza: 0
