@@ -1,10 +1,11 @@
 import requests as std_requests
 from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
-from concurrent.futures import ThreadPoolExecutor
+from concurrent.futures import ThreadPoolExecutor, as_completed
 import urllib3
 import socket
 import subprocess
+import threading
 import csv
 import os
 import re
@@ -18,22 +19,81 @@ SITE_URL = "https://ezop-antikvarijat.hr"
 DOMAIN = "ezop-antikvarijat.hr"
 CSV_FILENAME = "ezop_ploce.csv"
 
-ORIGIN_IPS = [
-    "116.202.174.206",
-    "178.218.162.238",
-    "144.76.118.138",
-    "144.76.95.178",
-    "144.76.37.175"
-]
-AKTIVNI_IP = ORIGIN_IPS[0]
+ORIGIN_IP = "116.202.174.206"
+BROJ_NITI = 6  # Optimalan broj paralelnih konekcija bez izazivanja HTTP 522
 
 _ORIG_GETADDRINFO = socket.getaddrinfo
 def _patched_getaddrinfo(host, port, family=0, type=0, proto=0, flags=0):
     if host in (DOMAIN, f"www.{DOMAIN}"):
-        return _ORIG_GETADDRINFO(AKTIVNI_IP, port, socket.AF_INET, type, proto, flags)
+        return _ORIG_GETADDRINFO(ORIGIN_IP, port, socket.AF_INET, type, proto, flags)
     return _ORIG_GETADDRINFO(host, port, family, type, proto, flags)
 
 socket.getaddrinfo = _patched_getaddrinfo
+
+_thread_local = threading.local()
+_tor_lock = threading.Lock()
+tor_aktivan = False
+
+def kreiraj_sesiju(koristi_tor=False):
+    s = std_requests.Session()
+    s.verify = False
+    adapter = HTTPAdapter(pool_connections=BROJ_NITI + 4, pool_maxsize=BROJ_NITI + 4)
+    s.mount("https://", adapter)
+    s.mount("http://", adapter)
+    s.headers.update({
+        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/json,*/*;q=0.8",
+        "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Referer": "https://ezop-antikvarijat.hr/",
+        "Connection": "keep-alive"
+    })
+    if koristi_tor:
+        s.proxies = {
+            "http": "socks5://127.0.0.1:9050",
+            "https": "socks5://127.0.0.1:9050"
+        }
+    return s
+
+def dohvati_sesiju():
+    global tor_aktivan
+    s = getattr(_thread_local, "session", None)
+    sesija_tor = getattr(_thread_local, "koristi_tor", False)
+    if s is None or sesija_tor != tor_aktivan:
+        s = kreiraj_sesiju(koristi_tor=tor_aktivan)
+        _thread_local.session = s
+        _thread_local.koristi_tor = tor_aktivan
+    return s
+
+def podigni_tor():
+    global tor_aktivan
+    with _tor_lock:
+        if tor_aktivan:
+            return
+        print("\n⚠️ Palim Tor tunel prema Origin IP-u...", flush=True)
+        subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
+        subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
+        subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
+        time.sleep(5)
+        tor_aktivan = True
+
+def sigurni_get(url, timeout=30):
+    for pokusaj in range(1, 4):
+        try:
+            s = dohvati_sesiju()
+            r = s.get(url, timeout=timeout)
+            if r.status_code in [200, 404]:
+                return r
+            if r.status_code in [522, 403, 503]:
+                if pokusaj == 2 and not tor_aktivan:
+                    podigni_tor()
+                else:
+                    time.sleep(1.5 * pokusaj)
+        except Exception:
+            if pokusaj == 2 and not tor_aktivan:
+                podigni_tor()
+            else:
+                time.sleep(1.5 * pokusaj)
+    return None
 
 def normaliziraj_link_proizvoda(href):
     if not href:
@@ -54,7 +114,6 @@ def pretvori_ocjenu(ocjena_str):
     if "RABLJENO" in tekst_upper:
         return "Rabljeno"
 
-    # Ako piše npr. "9/10" ili samo broj "9"
     m_broj = re.search(r'\b(10|[1-9])\b', tekst)
     if m_broj:
         ocjena = int(m_broj.group(1))
@@ -75,7 +134,6 @@ def pretvori_ocjenu(ocjena_str):
     return ""
 
 def izvuci_tekstualnu_ocjenu_kosa_crta(tekst):
-    """Prepoznaje tekstualni zapis tipa VG/G, VG+/VG, NM/EX ispod naslova ili u opisu."""
     if not tekst:
         return "", ""
     m = re.search(
@@ -83,9 +141,7 @@ def izvuci_tekstualnu_ocjenu_kosa_crta(tekst):
         tekst.upper()
     )
     if m:
-        s_med = pretvori_ocjenu(m.group(1))
-        s_om = pretvori_ocjenu(m.group(2))
-        return s_med, s_om
+        return pretvori_ocjenu(m.group(1)), pretvori_ocjenu(m.group(2))
     return "", ""
 
 def ocisti_url_slike(raw_url, is_srcset=False):
@@ -94,7 +150,6 @@ def ocisti_url_slike(raw_url, is_srcset=False):
     val = html.unescape(str(raw_url)).strip()
     val_lower = val.lower()
 
-    # Ignoriraj Ezopove sistemske ikonice, okvire za LP/CD i placeholdere
     zabranjene_slike = [
         'data:image', 'placeholder', 'blank.', 'spinner', 'loader', '.svg',
         '1x1', 'emoji', 'gravatar', 'glazba-lp', 'glazba-cd', 'novo-1',
@@ -126,7 +181,6 @@ def izvuci_sliku_iz_ezop_kartice(k):
     if not k:
         return ""
 
-    # 1. Prvo tražimo punu rezoluciju omota (wp-post-image) ili woocommerce_thumbnail
     prioritetne = k.select('img.wp-post-image, img.attachment-woocommerce_thumbnail')
     ostale = [img for img in k.find_all('img') if img not in prioritetne]
 
@@ -144,7 +198,6 @@ def izvuci_sliku_iz_ezop_kartice(k):
             if url:
                 return url
 
-    # 2. Provjera <noscript> oznaka u sirovom HTML-u kartice
     raw_html = str(k)
     for m in re.finditer(r'<img[^>]+src=["\']([^"\']+)["\']', raw_html, re.IGNORECASE):
         url = ocisti_url_slike(m.group(1), is_srcset=False)
@@ -156,11 +209,9 @@ def izvuci_sliku_iz_ezop_kartice(k):
 def izvuci_cijenu_iz_elementa(price_el):
     if not price_el:
         return "0.00"
-    # Spajamo bez razmaka jer Ezop piše <span class="big">28</span>,<span class="small_price">50</span>
     tekst_spojeno = price_el.get_text("", strip=True).replace(".", "")
     parovi = re.findall(r'(\d{1,4}),(\d{2})', tekst_spojeno)
     if parovi:
-        # Uzimamo prvu cijenu (ili jedinu cijenu)
         try:
             val = float(f"{parovi[0][0]}.{parovi[0][1]}")
             if val > 0:
@@ -169,69 +220,17 @@ def izvuci_cijenu_iz_elementa(price_el):
             pass
     return "0.00"
 
-def kreiraj_sesiju(koristi_tor=False):
-    s = std_requests.Session()
-    s.verify = False
-    adapter = HTTPAdapter(pool_connections=10, pool_maxsize=10)
-    s.mount("https://", adapter)
-    s.mount("http://", adapter)
-    s.headers.update({
-        "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,application/json,*/*;q=0.8",
-        "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
-        "Referer": "https://ezop-antikvarijat.hr/",
-        "Connection": "keep-alive"
-    })
-    if koristi_tor:
-        s.proxies = {
-            "http": "socks5://127.0.0.1:9050",
-            "https": "socks5://127.0.0.1:9050"
-        }
-    return s
-
-def podigni_tor():
-    print("⚠️ Palim Tor tunel prema Origin IP-u...", flush=True)
-    subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
-    subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
-    subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
-    time.sleep(6)
-
-session = kreiraj_sesiju(koristi_tor=False)
-tor_aktivan = False
-
-def sigurni_get(url, timeout=30):
-    global session, tor_aktivan
-    for pokusaj in range(1, 4):
-        try:
-            r = session.get(url, timeout=timeout)
-            if r.status_code in [200, 404]:
-                return r
-            if r.status_code in [522, 403, 503]:
-                if not tor_aktivan:
-                    podigni_tor()
-                    session = kreiraj_sesiju(koristi_tor=True)
-                    tor_aktivan = True
-                else:
-                    time.sleep(3)
-        except Exception:
-            if pokusaj == 2 and not tor_aktivan:
-                podigni_tor()
-                session = kreiraj_sesiju(koristi_tor=True)
-                tor_aktivan = True
-            time.sleep(2)
-    return None
-
 def provjeri_izaberi_proizvod(stavka):
-    """Otvara pojedinačnu stranicu za kartice s gumbom 'Izaberi' i provjerava stanje/ocjene."""
+    """Otvara pojedinačnu stranicu samo za NOVE 'Izaberi' artikle kojih još nema u CSV-u."""
     link, naslov, cijena, slika_url, tip_artikla = stavka
     r = sigurni_get(link, timeout=25)
     if not r or r.status_code != 200:
-        return None
+        # Ako je stranica trenutno nedostupna, zadrži artikl s oznakom Rabljeno
+        return (link, [naslov, cijena, link, slika_url, "Rabljeno", "Rabljeno", tip_artikla])
 
     sp = BeautifulSoup(r.text, "lxml")
     blok = sp.select_one(".price-cart-block") or sp
 
-    # 1. Sigurnosna provjera je li stvarno na stanju
     ima_nedostupno = bool(blok.select_one(".nedostupno")) or ("trenutno nema na stanju" in blok.get_text(" ", strip=True).lower())
     cho_link = blok.select_one("a.product_cho_link")
     if ima_nedostupno and not cho_link:
@@ -240,7 +239,6 @@ def provjeri_izaberi_proizvod(stavka):
     s_medij = ""
     s_omot = ""
 
-    # 2. Provjera <div class="product_mid_part"><ul class="product_small_info"> (Slika 3)
     for li in blok.select(".product_small_info li"):
         t = li.get_text(" ", strip=True)
         t_low = t.lower()
@@ -251,7 +249,6 @@ def provjeri_izaberi_proizvod(stavka):
         elif "stanje:" in t_low and not s_medij:
             s_medij = pretvori_ocjenu(t.split(":", 1)[1])
 
-    # 3. Provjera <div class="single-product-cf"><p class="info"> (Slika 1 i 2)
     for p_info in blok.select(".single-product-cf p.info"):
         t = p_info.get_text(" ", strip=True)
         t_low = t.lower()
@@ -262,7 +259,6 @@ def provjeri_izaberi_proizvod(stavka):
         elif "stanje:" in t_low and not s_medij:
             s_medij = pretvori_ocjenu(t.split(":", 1)[1])
 
-    # 4. Provjera URL parametara u gumbu za kupovinu (attribute_pa_omot / attribute_pa_medij)
     if cho_link and cho_link.get("href"):
         href_dec = unquote(cho_link["href"])
         m_om = re.search(r'attribute_pa_omot=([^&#]+)', href_dec)
@@ -275,12 +271,10 @@ def provjeri_izaberi_proizvod(stavka):
         if m_st and not s_medij:
             s_medij = pretvori_ocjenu(m_st.group(1))
 
-    # 5. Provjera tekstualne ocjene s kosom crtom (npr. VG/G) ispod naslova
     if not s_medij and not s_omot:
         m_med, m_om = izvuci_tekstualnu_ocjenu_kosa_crta(blok.get_text(" ", strip=True))
         if m_med:
-            s_medij = m_med
-            s_omot = m_om
+            s_medij, s_omot = m_med, m_om
 
     if not s_medij and s_omot:
         s_medij = s_omot
@@ -290,7 +284,6 @@ def provjeri_izaberi_proizvod(stavka):
         s_medij = "Rabljeno"
         s_omot = "Rabljeno"
 
-    # Ako na arhivi nije bila slika, izvuci sa stranice proizvoda
     if not slika_url:
         gal = sp.select_one(".woocommerce-product-gallery")
         if gal:
@@ -300,17 +293,15 @@ def provjeri_izaberi_proizvod(stavka):
 
 def parsiraj_ezop_stranicu(soup, sve_ploce):
     direktne_stavke = []
-    izaberi_za_provjeru = []
+    novi_izaberi = []
 
     kartice = soup.select("div.product, li.product")
     vidjeni_na_str = set()
 
     for k in kartice:
-        # 1. Preskoči CD-ove po klasi ikone
         if k.select_one(".cat_music_cd, .home_music_cd"):
             continue
 
-        # 2. Provjeri polja u <ul class="arhiva-cf">
         medij_vrsta = ""
         s_omot = ""
         s_medij = ""
@@ -329,7 +320,6 @@ def parsiraj_ezop_stranicu(soup, sve_ploce):
                 s_omot = s_medij
 
         medij_low = medij_vrsta.lower()
-        # Strogi filter: propuštamo SAMO gramofonske ploče (LP) i gramofonske singlice (7")
         if any(z in medij_low for z in ["cd", "kazet", "kaset", "dvd", "vhs", "knjig", "strip"]):
             continue
 
@@ -341,7 +331,6 @@ def parsiraj_ezop_stranicu(soup, sve_ploce):
         else:
             continue
 
-        # 3. Provjera dostupnosti (mora imati gumb 'kupi' ili 'izaberi', bez oznake '.nedostupno')
         if k.select_one(".nedostupno"):
             continue
         a_kupi = k.select_one("a.kupi")
@@ -349,7 +338,6 @@ def parsiraj_ezop_stranicu(soup, sve_ploce):
         if not a_kupi and not a_izaberi:
             continue
 
-        # 4. Izvlačenje linka
         a_link = k.select_one("a.prod_link, .top a") or a_izaberi
         if not a_link or not a_link.get("href"):
             continue
@@ -357,7 +345,6 @@ def parsiraj_ezop_stranicu(soup, sve_ploce):
         if not link or link in vidjeni_na_str:
             continue
 
-        # 5. Izvlačenje punog naslova (Izvođač - Naslov albuma)
         izvodjac_el = k.select_one("h2.woocommerce-loop-product__title")
         album_el = k.select_one("p.product_author_black")
         izvodjac = html.unescape(izvodjac_el.get_text(" ", strip=True)).strip() if izvodjac_el else ""
@@ -370,25 +357,21 @@ def parsiraj_ezop_stranicu(soup, sve_ploce):
         if not naslov:
             continue
 
-        # 6. Cijena
         price_el = k.select_one(".my-custom-field-knjizara.price, .price")
         cijena = izvuci_cijenu_iz_elementa(price_el)
         if cijena == "0.00":
             continue
 
-        # 7. Slika omota
         slika_url = izvuci_sliku_iz_ezop_kartice(k)
         if not slika_url and link in sve_ploce and len(sve_ploce[link]) >= 4:
             slika_url = ocisti_url_slike(sve_ploce[link][3], is_srcset=False)
 
-        # 8. Provjera pečata 'Novo'
         if k.select_one('img.arhiva-pecat[title*="Novo"], img.arhiva-pecat[alt*="Novo"]'):
             s_medij = "Novo"
             s_omot = "Novo"
 
         vidjeni_na_str.add(link)
 
-        # Ako kartica ima direktni gumb 'Dodaj u košaricu' (a.kupi), 100% je na stanju i sve imamo odmah!
         if a_kupi:
             if (not s_omot or not s_medij) and a_kupi.get("href"):
                 href_dec = unquote(a_kupi["href"])
@@ -414,28 +397,30 @@ def parsiraj_ezop_stranicu(soup, sve_ploce):
 
             direktne_stavke.append((link, [naslov, cijena, link, slika_url, s_medij, s_omot, tip_artikla]))
         else:
-            # Za 'Izaberi' kartice: ako smo je već ranije provjerili kroz HTML scraper (Tip je 'LP' ili 'Singl 7"'), zadrži ocjene
-            if link in sve_ploce and len(sve_ploce[link]) >= 7 and sve_ploce[link][6] in ['LP', 'Singl 7"']:
-                stari_medij = sve_ploce[link][4] or "Rabljeno"
-                stari_omot = sve_ploce[link][5] or "Rabljeno"
+            # Ako je 'Izaberi' artikl već u našoj bazi s provjerenim stanjem, ne otvaramo ponovno stranicu
+            if link in sve_ploce and len(sve_ploce[link]) >= 7 and sve_ploce[link][6] in ['LP', 'Singl 7"'] and sve_ploce[link][4]:
+                stari_medij = sve_ploce[link][4]
+                stari_omot = sve_ploce[link][5] or stari_medij
                 direktne_stavke.append((link, [naslov, cijena, link, slika_url, stari_medij, stari_omot, tip_artikla]))
             else:
-                izaberi_za_provjeru.append((link, naslov, cijena, slika_url, tip_artikla))
+                novi_izaberi.append((link, naslov, cijena, slika_url, tip_artikla))
 
-    # Paralelno provjeri 'Izaberi' proizvode na ovoj stranici (4 niti)
-    if izaberi_za_provjeru:
-        with ThreadPoolExecutor(max_workers=4) as executor:
-            rezultati = list(executor.map(provjeri_izaberi_proizvod, izaberi_za_provjeru))
-        for r_item in rezultati:
-            if r_item is not None:
-                direktne_stavke.append(r_item)
+    return direktne_stavke, novi_izaberi, len(kartice)
 
-    return direktne_stavke, len(kartice)
+def obradi_jednu_stranicu(args):
+    page, base_url, sve_ploce = args
+    url = base_url if page == 1 else f"{base_url}page/{page}/"
+    res = sigurni_get(url, timeout=35)
+    if not res or res.status_code != 200:
+        return page, False, [], [], 0
+    soup = BeautifulSoup(res.text, "lxml")
+    direktne, izaberi, br_kartica = parsiraj_ezop_stranicu(soup, sve_ploce)
+    return page, True, direktne, izaberi, br_kartica
 
 def scrape_ezop_html():
+    t_start = time.time()
     sve_ploce = {}
     vidjeni_linkovi = set()
-    uspjesno_skenirano = False
 
     if os.path.exists(CSV_FILENAME):
         with open(CSV_FILENAME, 'r', encoding='utf-8') as f:
@@ -448,73 +433,105 @@ def scrape_ezop_html():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz CSV-a.", flush=True)
 
-    print("⚡ Zagrijavam direktnu konekciju prema Ezop serveru (116.202.174.206)...", flush=True)
+    print(f"⚡ Zagrijavam direktnu konekciju prema Ezop serveru ({ORIGIN_IP})...", flush=True)
     sigurni_get("https://ezop-antikvarijat.hr/wp-json/wc/store/products/315415", timeout=15)
 
     base_url = "https://ezop-antikvarijat.hr/kategorija/glazba/"
-    page = 1
-    max_pages = 500
+    print("📄 Dohvaćam 1. stranicu i ukupan broj stranica arhive...", flush=True)
 
-    print("\n🚀 Pokrećem brzo HTML skeniranje dostupnih vinila na Ezopu...", flush=True)
+    res1 = sigurni_get(base_url, timeout=35)
+    if not res1 or res1.status_code != 200:
+        print("❌ Neuspješno dohvaćanje 1. stranice arhive. Prekidam.", flush=True)
+        return
 
-    while page <= max_pages:
-        url = base_url if page == 1 else f"{base_url}page/{page}/"
-        t0 = time.time()
-        print(f"📄 Stranica {page}...", end=" ", flush=True)
+    soup1 = BeautifulSoup(res1.text, "lxml")
+    brojevi_str = [int(el.get_text(strip=True)) for el in soup1.select(".page-numbers") if el.get_text(strip=True).isdigit()]
+    max_pages = max(brojevi_str) if brojevi_str else 447
 
-        res = sigurni_get(url, timeout=40)
-        if not res:
-            print("-> ❌ Prekid veze na stranici. Zaustavljam radi sigurnosti baze.", flush=True)
-            break
+    direktne1, izaberi1, _ = parsiraj_ezop_stranicu(soup1, sve_ploce)
+    svi_novi_izaberi = {}
 
-        if res.status_code == 404:
-            print("-> Kraj arhive (404).", flush=True)
-            if page > 50:
-                uspjesno_skenirano = True
-            break
+    for link, red in direktne1:
+        sve_ploce[link] = red
+        vidjeni_linkovi.add(link)
+    for st in izaberi1:
+        svi_novi_izaberi[st[0]] = st
 
-        soup = BeautifulSoup(res.text, "lxml")
+    print(f"🚀 Pokrećem paralelno skeniranje {max_pages} stranica ({BROJ_NITI} niti istovremeno)...", flush=True)
 
-        if page == 1:
-            brojevi_str = [int(el.get_text(strip=True)) for el in soup.select(".page-numbers") if el.get_text(strip=True).isdigit()]
-            if brojevi_str:
-                max_pages = max(brojevi_str)
-                print(f"[Ukupno stranica u arhivi: {max_pages}]", end=" ", flush=True)
+    neuspjesne_stranice = []
+    preostale_stranice = list(range(2, max_pages + 1))
+    velicina_bloka = BROJ_NITI * 3  # Ispis napretka svakih 18 stranica
 
-        stavke, ukupno_kartica = parsiraj_ezop_stranicu(soup, sve_ploce)
+    with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
+        for i in range(0, len(preostale_stranice), velicina_bloka):
+            blok = preostale_stranice[i:i + velicina_bloka]
+            t_blok = time.time()
+            zadaci = [(p, base_url, sve_ploce) for p in blok]
+            rezultati = list(executor.map(obradi_jednu_stranicu, zadaci))
 
-        if ukupno_kartica == 0:
-            print("-> Nema više kartica. Kraj arhive.", flush=True)
-            if page > 50:
-                uspjesno_skenirano = True
-            break
+            dodano_u_bloku = 0
+            uspjesno_u_bloku = 0
 
-        sa_slikom = 0
-        for link, red_podataka in stavke:
-            if red_podataka[3]:
-                sa_slikom += 1
-            sve_ploce[link] = red_podataka
-            vidjeni_linkovi.add(link)
+            for page, ok, direktne, izaberi, br_kartica in rezultati:
+                if not ok or br_kartica == 0:
+                    neuspjesne_stranice.append(page)
+                    continue
+                uspjesno_u_bloku += 1
+                for link, red in direktne:
+                    sve_ploce[link] = red
+                    vidjeni_linkovi.add(link)
+                    dodano_u_bloku += 1
+                for st in izaberi:
+                    svi_novi_izaberi[st[0]] = st
 
-        trajanje = time.time() - t0
-        print(f"-> +{len(stavke)} vinila (Slika: {sa_slikom}/{len(stavke)}) za {trajanje:.1f}s | Ukupno vinila: {len(vidjeni_linkovi)}", flush=True)
+            print(
+                f"⚡ Stranice {blok[0]:03d}-{blok[-1]:03d} ({uspjesno_u_bloku}/{len(blok)} OK) "
+                f"za {time.time() - t_blok:.1f}s | +{dodano_u_bloku} izravnih | "
+                f"Ukupno u bazi: {len(vidjeni_linkovi)} (+{len(svi_novi_izaberi)} novih Izaberi)",
+                flush=True
+            )
 
-        if page >= max_pages:
-            print("-> Dosegnuta zadnja stranica arhive!", flush=True)
-            uspjesno_skenirano = True
-            break
+        # Popravni krug za eventualne stranice koje su prvi put imale timeout
+        if neuspjesne_stranice:
+            print(f"\n🔄 Ponavljam dohvat za {len(neuspjesne_stranice)} stranica koje su imale timeout...", flush=True)
+            popravni_zadaci = [(p, base_url, sve_ploce) for p in neuspjesne_stranice]
+            popravni_rezultati = list(executor.map(obradi_jednu_stranicu, popravni_zadaci))
+            jos_uvijek_neuspjesne = []
 
-        page += 1
-        time.sleep(0.15)
+            for page, ok, direktne, izaberi, br_kartica in popravni_rezultati:
+                if not ok or br_kartica == 0:
+                    jos_uvijek_neuspjesne.append(page)
+                    continue
+                for link, red in direktne:
+                    sve_ploce[link] = red
+                    vidjeni_linkovi.add(link)
+                for st in izaberi:
+                    svi_novi_izaberi[st[0]] = st
+            neuspjesne_stranice = jos_uvijek_neuspjesne
 
-    # Čišćenje starih rasprodanih ploča, knjiga i CD-ova iz CSV-a
-    if uspjesno_skenirano and len(vidjeni_linkovi) > 500:
+        # Paralelna provjera samo NOVIH 'Izaberi' artikala
+        if svi_novi_izaberi:
+            lista_izaberi = list(svi_novi_izaberi.values())
+            print(f"\n🔍 Provjeravam ocjene za {len(lista_izaberi)} novih 'Izaberi' artikala ({BROJ_NITI} niti)...", flush=True)
+            rez_izaberi = list(executor.map(provjeri_izaberi_proizvod, lista_izaberi))
+            potvrdjeno = 0
+            for r_item in rez_izaberi:
+                if r_item is not None:
+                    link, red = r_item
+                    sve_ploce[link] = red
+                    vidjeni_linkovi.add(link)
+                    potvrdjeno += 1
+            print(f"✅ Potvrđeno {potvrdjeno}/{len(lista_izaberi)} novih 'Izaberi' vinila.", flush=True)
+
+    udio_uspjeha = (max_pages - len(neuspjesne_stranice)) / float(max_pages)
+    if udio_uspjeha >= 0.96 and len(vidjeni_linkovi) > 1000:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in vidjeni_linkovi}
         obrisano = pocetni_broj - len(sve_ploce)
-        print(f"\n🧹 Sinkronizacija završena! Iz CSV-a uklonjeno {obrisano} rasprodanih artikala/knjiga/CD-ova.", flush=True)
+        print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} prodanih artikala.", flush=True)
     else:
-        print(f"\n⚠️ Skeniranje nije došlo do samog kraja (Pronađeno vinila: {len(vidjeni_linkovi)}). Preskačem brisanje starih zapisa.", flush=True)
+        print(f"\n⚠️ Preskočeno {len(neuspjesne_stranice)} stranica — zadržavam postojeće zapise radi sigurnosti.", flush=True)
 
     if sve_ploce:
         with open(CSV_FILENAME, 'w', newline='', encoding='utf-8') as f:
@@ -522,7 +539,8 @@ def scrape_ezop_html():
             writer.writerow(['Naslov', 'Cijena', 'URL_Proizvoda', 'URL_Slike', 'Stanje_Medija', 'Stanje_Omota', 'Tip_Artikla'])
             writer.writerows(sve_ploce.values())
         ukupno_slika = sum(1 for v in sve_ploce.values() if len(v) >= 4 and v[3])
-        print(f"🎉 GOTOVO! U bazi je sada {len(sve_ploce)} stvarno dostupnih Ezop vinila (Sa slikom: {ukupno_slika}).", flush=True)
+        ukupno_min = (time.time() - t_start) / 60.0
+        print(f"🎉 GOTOVO za {ukupno_min:.1f} min! U bazi je {len(sve_ploce)} dostupnih Ezop vinila (Sa slikom: {ukupno_slika}).", flush=True)
 
 if __name__ == "__main__":
     scrape_ezop_html()
