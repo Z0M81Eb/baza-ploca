@@ -40,8 +40,8 @@ HEADERS = {
 def kreiraj_sesiju(koristi_tor=False):
     proxies = {"http": "socks5://127.0.0.1:9050", "https": "socks5://127.0.0.1:9050"} if koristi_tor else None
 
-    if IMA_CURL_CFFI:
-        s = cffi_requests.Session(impersonate="chrome120", proxies=proxies, verify=False)
+    if IMA_CURL_CFFI and not koristi_tor:
+        s = cffi_requests.Session(impersonate="chrome120", verify=False)
         s.headers.update(HEADERS)
         return s
 
@@ -70,35 +70,34 @@ def podigni_tor():
     with _tor_lock:
         if tor_aktivan:
             return
-        print("\n⚠️ Pokrećem Tor tunel zbog blokade IP adrese...", flush=True)
+        print("\n⚠️ Pokrećem Tor tunel za zaobilaženje restrikcija...", flush=True)
         subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
         subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
         subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
         time.sleep(5)
         tor_aktivan = True
 
-def sigurni_get(url, timeout=25, ispisi_dijagnostiku=False):
-    zadnja_greska = ""
+def sigurni_get(url, timeout=25):
     for pokusaj in range(1, 4):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
-            if ispisi_dijagnostiku:
-                print(f"   🔎 [Pokušaj {pokusaj}] HTTP {r.status_code} | Veličina: {len(r.text)} znakova | URL: {url}", flush=True)
-            if r.status_code == 200 and len(r.text) > 500:
+            print(f"   🔎 [Pokušaj {pokusaj}] HTTP {r.status_code} | Veličina: {len(r.text)} znakova | Tor: {tor_aktivan}", flush=True)
+            if r.status_code == 200 and len(r.text) > 15000:
                 return r
-            if r.status_code in [403, 503, 429] and not tor_aktivan:
-                podigni_tor()
+            if r.status_code in [403, 503, 429] or (r.status_code == 200 and len(r.text) <= 15000):
+                if not tor_aktivan:
+                    podigni_tor()
+                else:
+                    time.sleep(2 * pokusaj)
             else:
                 time.sleep(1.5 * pokusaj)
         except Exception as e:
-            zadnja_greska = str(e)
-            if ispisi_dijagnostiku:
-                print(f"   ⚠️ [Pokušaj {pokusaj}] Greška spajanja: {zadnja_greska}", flush=True)
-            if pokusaj == 2 and not tor_aktivan:
+            print(f"   ⚠️ [Pokušaj {pokusaj}] Greška: {e}", flush=True)
+            if not tor_aktivan:
                 podigni_tor()
             else:
-                time.sleep(1.5 * pokusaj)
+                time.sleep(2 * pokusaj)
     return None
 
 def sastavi_url_stranice(page):
@@ -115,10 +114,8 @@ def ocisti_url_slike(raw_url):
         return ""
     val = html.unescape(str(raw_url)).strip()
     val_lower = val.lower()
-
     if any(z in val_lower for z in ["data:image", "placeholder", "no-image", "default", ".svg"]):
         return ""
-
     puni_url = urljoin(SITE_URL, val)
     if not puni_url.startswith("http"):
         return ""
@@ -148,20 +145,21 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    kartice = soup.select("div.product-display-grid.item, div.product-display-grid")
+    kartice = soup.select("div.product-display-grid.item, div.product-display-grid, div.product-card, li.product")
+    
+    # Ako nismo našli kartice s primarnim selektorom, ispiši uzorak HTML-a radi dijagnostike
+    if not kartice:
+        naslov_str = soup.title.get_text(strip=True) if soup.title else "Bez naslova"
+        print(f"   ⚠️ HTML Dijagnostika - Naslov stranice: '{naslov_str}'", flush=True)
+        print(f"   ⚠️ Prvih 300 znakova tijela stranice: {soup.get_text(' ', strip=True)[:300]}", flush=True)
+
     vidjeni_na_stranici = set()
 
     for k in kartice:
-        # 1. Provjera je li proizvod dostupan za kupovinu (ima formu za košaricu)
-        forma_kosarica = k.select_one('form.item-cart, form[action*="add_to_cart"]')
-        if not forma_kosarica:
+        forma_kosarica = k.select_one('form.item-cart, form[action*="add_to_cart"], button.add-to-cart, .add-to-cart')
+        if not forma_kosarica and not k.select_one('a.product-display-grid-image'):
             continue
 
-        gumb_disabled = forma_kosarica.select_one("button[disabled], input[disabled]")
-        if gumb_disabled:
-            continue
-
-        # 2. Link i slika proizvoda
         a_img = k.select_one("a.product-display-grid-image") or k.select_one("a[href]")
         if not a_img or not a_img.get("href"):
             continue
@@ -170,7 +168,7 @@ def parsiraj_cedeterija_stranicu(soup):
         if not link or link in vidjeni_na_stranici:
             continue
 
-        img_el = k.select_one("a.product-display-grid-image img") or k.select_one("img")
+        img_el = k.select_one("img")
         slika_url = ""
         naslov_iz_slike = ""
 
@@ -179,15 +177,12 @@ def parsiraj_cedeterija_stranicu(soup):
                 slika_url = ocisti_url_slike(img_el.get(attr, ""))
                 if slika_url:
                     break
-            naslov_iz_slike = html.unescape(
-                img_el.get("title") or img_el.get("alt") or ""
-            ).strip()
+            naslov_iz_slike = html.unescape(img_el.get("title") or img_el.get("alt") or "").strip()
 
-        # 3. Naslov proizvoda (primarno iz title/alt slike, rezervno iz .product-info)
         naslov = naslov_iz_slike
         if not naslov:
-            performer_el = k.select_one(".product-performer-wrapper")
-            title_el = k.select_one(".product-info h3, h3")
+            performer_el = k.select_one(".product-performer-wrapper, .artist")
+            title_el = k.select_one(".product-info h3, h3, .title")
             izvodjac = html.unescape(performer_el.get_text(" ", strip=True)).strip() if performer_el else ""
             album = html.unescape(title_el.get_text(" ", strip=True)).strip() if title_el else ""
             if izvodjac and album and izvodjac.lower() not in album.lower():
@@ -198,52 +193,25 @@ def parsiraj_cedeterija_stranicu(soup):
         if not naslov:
             continue
 
-        # 4. Cijena
-        price_el = k.select_one("span.price-current, .product-card-current-price, .product-card-prices")
+        price_el = k.select_one("span.price-current, .product-card-current-price, .price")
         cijena = izvuci_cijenu(price_el)
         if cijena == "0.00":
             continue
 
-        # 5. Tip artikla i stanje (sve ploče u Cedeteriji su nove)
-        tip_el = k.select_one(".product-type")
-        tip_tekst = tip_el.get_text(" ", strip=True).lower() if tip_el else ""
-        if '7"' in naslov.lower() or '7"' in tip_tekst or "singl" in tip_tekst:
-            tip_artikla = 'Singl 7"'
-        else:
-            tip_artikla = "LP"
-
         vidjeni_na_stranici.add(link)
-        stavke.append((link, [naslov, cijena, link, slika_url, "Novo", "Novo", tip_artikla]))
+        stavke.append((link, [naslov, cijena, link, slika_url, "Novo", "Novo", "LP"]))
 
     max_str = izvuci_max_stranicu(soup)
     return stavke, len(kartice), max_str
 
-def dohvati_i_obradi_stranicu(page, dijagnostika=False):
+def dohvati_i_obradi_stranicu(page):
     url = sastavi_url_stranice(page)
-    res = sigurni_get(url, timeout=25, ispisi_dijagnostiku=dijagnostika)
-
+    res = sigurni_get(url, timeout=30)
     if not res or res.status_code != 200:
         return page, False, [], 0, 1
 
     soup = BeautifulSoup(res.text, "lxml")
     stavke, ukupno_kartica, max_str = parsiraj_cedeterija_stranicu(soup)
-
-    # Ako 1. stranica s parametrima ne vrati kartice, probaj čisti URL ili podigni Tor
-    if page == 1 and ukupno_kartica == 0:
-        naslov_str = soup.title.get_text(strip=True) if soup.title else "Bez naslova"
-        print(f"   ⚠️ Na URL-u s parametrima pronađeno 0 kartica (Naslov HTML-a: '{naslov_str}'). Pokušavam osnovni URL...", flush=True)
-        res_alt = sigurni_get(BASE_CATEGORY_URL, timeout=25, ispisi_dijagnostiku=True)
-        if res_alt and res_alt.status_code == 200:
-            soup_alt = BeautifulSoup(res_alt.text, "lxml")
-            stavke, ukupno_kartica, max_str = parsiraj_cedeterija_stranicu(soup_alt)
-
-        if ukupno_kartica == 0 and not tor_aktivan:
-            podigni_tor()
-            res_tor = sigurni_get(url, timeout=30, ispisi_dijagnostiku=True)
-            if res_tor and res_tor.status_code == 200:
-                soup_tor = BeautifulSoup(res_tor.text, "lxml")
-                stavke, ukupno_kartica, max_str = parsiraj_cedeterija_stranicu(soup_tor)
-
     return page, True, stavke, ukupno_kartica, max_str
 
 def scrape_cedeterija():
@@ -262,8 +230,8 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print(f"📄 Dohvaćam 1. stranicu Cedeterija LP kataloga (curl_cffi={'DA' if IMA_CURL_CFFI else 'NE'})...", flush=True)
-    _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1, dijagnostika=True)
+    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...", flush=True)
+    _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1)
     if not ok1 or br_kartica1 == 0:
         print("❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.", flush=True)
         return
@@ -272,14 +240,10 @@ def scrape_cedeterija():
         sve_ploce[link] = red
         vidjeni_linkovi.add(link)
 
-    print(
-        f"✅ Stranica 1 obrađena: +{len(stavke1)} dostupnih od {br_kartica1} kartica (Max stranica u navigaciji: {max_pages})",
-        flush=True
-    )
+    print(f"✅ Stranica 1 obrađena: +{len(stavke1)} ploča (Max stranica: {max_pages})", flush=True)
 
     trenutna_stranica = 2
     kraj_kataloga = False
-    neuspjesne_stranice = []
 
     with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
         while not kraj_kataloga:
@@ -294,12 +258,7 @@ def scrape_cedeterija():
                 if novi_max > max_pages:
                     max_pages = novi_max
 
-                if not ok:
-                    neuspjesne_stranice.append(page)
-                    continue
-
-                if br_kartica == 0:
-                    kraj_kataloga = True
+                if not ok or br_kartica == 0:
                     continue
 
                 uspjesno_u_bloku += 1
@@ -311,7 +270,6 @@ def scrape_cedeterija():
                     sve_ploce[link] = red
                     vidjeni_linkovi.add(link)
 
-                # Ako smo prešli zadnju stranicu u navigaciji i stranica ne donosi nijedan novi artikl, stajemo
                 if novih_na_stranici == 0 and page >= max_pages:
                     kraj_kataloga = True
 
@@ -326,26 +284,11 @@ def scrape_cedeterija():
 
             trenutna_stranica = blok[-1] + 1
 
-        if neuspjesne_stranice:
-            print(f"\n🔄 Ponavljam dohvat za {len(neuspjesne_stranice)} stranica...", flush=True)
-            popravni_rez = list(executor.map(dohvati_i_obradi_stranicu, neuspjesne_stranice))
-            preostale_greske = []
-            for page, ok, stavke, br_kartica, _ in popravni_rez:
-                if not ok:
-                    preostale_greske.append(page)
-                    continue
-                for link, red in stavke:
-                    sve_ploce[link] = red
-                    vidjeni_linkovi.add(link)
-            neuspjesne_stranice = preostale_greske
-
-    if len(neuspjesne_stranice) == 0 and len(vidjeni_linkovi) > 20:
+    if len(vidjeni_linkovi) > 20:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in vidjeni_linkovi}
         obrisano = pocetni_broj - len(sve_ploce)
         print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} rasprodanih artikala.", flush=True)
-    elif neuspjesne_stranice:
-        print(f"\n⚠️ Preskočeno {len(neuspjesne_stranice)} stranica — zadržavam stare zapise radi sigurnosti.", flush=True)
 
     if sve_ploce:
         with open(CSV_FILENAME, "w", newline="", encoding="utf-8") as f:
@@ -353,8 +296,7 @@ def scrape_cedeterija():
             writer.writerow(["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"])
             writer.writerows(sve_ploce.values())
         ukupno_slika = sum(1 for v in sve_ploce.values() if len(v) >= 4 and v[3])
-        ukupno_sek = time.time() - t_start
-        print(f"🎉 GOTOVO za {ukupno_sek:.1f}s! U bazi je {len(sve_ploce)} dostupnih Cedeterija vinila (Sa slikom: {ukupno_slika}).", flush=True)
+        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih Cedeterija vinila (Sa slikom: {ukupno_slika}).", flush=True)
 
 if __name__ == "__main__":
     scrape_cedeterija()
