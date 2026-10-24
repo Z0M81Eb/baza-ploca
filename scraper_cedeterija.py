@@ -1,4 +1,6 @@
 import cloudscraper
+import requests as std_requests
+from requests.adapters import HTTPAdapter
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import urllib3
@@ -20,15 +22,20 @@ BROJ_NITI = 6
 _thread_local = threading.local()
 
 def kreiraj_sesiju():
-    # Cloudscraper automatski oponaša preglednik i rješava Cloudflare/Anti-bot zaštite
-    s = cloudscraper.create_scraper(
-        browser={
-            'browser': 'chrome',
-            'platform': 'windows',
-            'desktop': True
-        }
-    )
-    s.verify = False
+    try:
+        # Pokušaj s cloudscraperom bez zadiranja u verify_mode
+        s = cloudscraper.create_scraper(
+            browser={
+                'browser': 'chrome',
+                'platform': 'windows',
+                'desktop': True
+            }
+        )
+    except Exception:
+        # Ako cloudscraper pukne, vraćamo se na običnu pouzdanu requests sesiju
+        s = std_requests.Session()
+        s.verify = False
+
     s.headers.update({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
@@ -56,6 +63,8 @@ def sigurni_get(url, timeout=30):
             time.sleep(2 * pokusaj)
         except Exception as e:
             print(f"   ⚠️ [Pokušaj {pokusaj}] Greška spajanja: {e}", flush=True)
+            # Ako je sesija pukla, resetiramo je
+            _thread_local.session = kreiraj_sesiju()
             time.sleep(2 * pokusaj)
     return None
 
@@ -109,12 +118,6 @@ def parsiraj_cedeterija_stranicu(soup):
     kartice = soup.select("div.product-display-grid.item")
     if not kartice:
         kartice = soup.select("div.product-display-grid, div.product-card, li.product")
-
-    # Dijagnostika ako kartice nisu pronađene
-    if not kartice:
-        naslov_str = soup.title.get_text(strip=True) if soup.title else "Bez naslova"
-        print(f"   ⚠️ Dijagnostika - Naslov stranice: '{naslov_str}'", flush=True)
-        print(f"   ⚠️ Prvih 300 znakova tijela: {soup.get_text(' ', strip=True)[:300]}", flush=True)
 
     vidjeni_na_stranici = set()
 
@@ -193,7 +196,7 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga preko cloudscrapera...", flush=True)
+    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...", flush=True)
     _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1)
     if not ok1 or br_kartica1 == 0:
         print("❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.", flush=True)
