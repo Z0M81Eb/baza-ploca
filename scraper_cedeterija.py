@@ -61,47 +61,50 @@ def sigurni_get(url, timeout=25):
     return None
 
 def dohvati_urlstove_iz_sitemapa():
-    # Definicija sitemapa koje je korisnik pronašao
-    url_sitemaps = [
-        "https://cedeterijanova.hr/xml/sitemap_3_1.xml"
-    ]
-    image_sitemaps = [
-        "https://cedeterijanova.hr/xml/sitemap_3_1_images.xml",
-        "https://cedeterijanova.hr/xml/sitemap_3_2_images.xml",
-        "https://cedeterijanova.hr/xml/sitemap_3_3_images.xml"
-    ]
+    glavni_sitemap = "https://cedeterijanova.hr/xml/sitemap_3.xml"
+    res = sigurni_get(glavni_sitemap)
+    
+    sitemap_datoteke = []
+    if res and res.status_code == 200:
+        soup = BeautifulSoup(res.text, "xml")
+        for s in soup.find_all("sitemap"):
+            loc = s.find("loc")
+            if loc and loc.text:
+                sitemap_datoteke.append(loc.text.strip())
 
-    # 1. Prikupljanje slika iz image sitemapa
-    url_slika_mapa = {}
-    for img_sm in image_sitemaps:
-        res = sigurni_get(img_sm)
-        if res and res.status_code == 200:
-            soup = BeautifulSoup(res.text, "xml")
-            for url_tag in soup.find_all("url"):
-                loc = url_tag.find("loc")
-                if loc and loc.text:
-                    puni_link = loc.text.strip().split("?")[0].rstrip("/")
-                    img_url = ""
-                    for tag in url_tag.find_all():
-                        if "image" in tag.name.lower() and tag.text and tag.text.startswith("http"):
-                            img_url = tag.text.strip()
-                            break
-                    if puni_link and img_url:
-                        url_slika_mapa[puni_link] = img_url
+    # Fallback ako sitemap index ne vrati ništa
+    if not sitemap_datoteke:
+        sitemap_datoteke = [
+            "https://cedeterijanova.hr/xml/sitemap_3_1.xml",
+            "https://cedeterijanova.hr/xml/sitemap_3_1_images.xml",
+            "https://cedeterijanova.hr/xml/sitemap_3_2_images.xml",
+            "https://cedeterijanova.hr/xml/sitemap_3_3_images.xml"
+        ]
 
-    # 2. Prikupljanje linkova proizvoda iz glavnog sitemapa
     proizvodi_urljevi = set()
-    for sm in url_sitemaps:
-        res = sigurni_get(sm)
-        if res and res.status_code == 200:
-            soup = BeautifulSoup(res.text, "xml")
-            for loc in soup.find_all("loc"):
-                txt = loc.text.strip()
-                # Zanimaju nas isključivo stranice s glazbom / proizvodima
-                if any(k in txt for k in ["/glazba/", "/proizvod/", "-lp", "-singl"]):
-                    puni_link = txt.split("?")[0].rstrip("/")
-                    if puni_link != BASE_CATEGORY_URL and not puni_link.endswith("/glazba"):
-                        proizvodi_urljevi.add(puni_link)
+    url_slika_mapa = {}
+
+    for sm in sitemap_datoteke:
+        res_sm = sigurni_get(sm)
+        if not res_sm or res_sm.status_code != 200:
+            continue
+        soup_sm = BeautifulSoup(res_sm.text, "xml")
+        
+        for url_tag in soup_sm.find_all("url"):
+            loc = url_tag.find("loc")
+            if not loc or not loc.text:
+                continue
+            puni_link = loc.text.strip().split("?")[0].rstrip("/")
+            
+            # Traženje slike ako postoji u sitemapu
+            for tag in url_tag.find_all():
+                if "image" in tag.name.lower() and tag.text and tag.text.startswith("http"):
+                    url_slika_mapa[puni_link] = tag.text.strip()
+                    break
+
+            # Filtriramo nepotrebne stranice, uzimamo sve artikle i proizvode
+            if puni_link != SITE_URL and not any(x in puni_link for x in ["/kosarica", "/korpa", "/prijava", "/registracija", "/checkout", "/cart", "/kontakt", "/o-nama"]):
+                proizvodi_urljevi.add(puni_link)
 
     return list(proizvodi_urljevi), url_slika_mapa
 
@@ -113,7 +116,7 @@ def parsiraj_pojedinacni_proizvod(args):
 
     soup = BeautifulSoup(res.text, "lxml")
 
-    # Provjera je li proizvod dostupan za kupovinu (ima formu za košaricu)
+    # Provjera je li proizvod dostupan za kupovinu
     forma_kosarica = soup.select_one('form.item-cart, form[action*="add_to_cart"]')
     if not forma_kosarica:
         return None
@@ -156,7 +159,7 @@ def parsiraj_pojedinacni_proizvod(args):
     if cijena == "0.00":
         return None
 
-    # Slika (iz sitemapa ili sa stranice)
+    # Slika
     slika_url = sitemap_slika
     if not slika_url:
         img_el = soup.select_one("div.product-image img, .gallery img, img")
@@ -188,7 +191,7 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("🗺️ Čitam XML sitemape i dohvaćam popis svih proizvoda...", flush=True)
+    print("🗺️ Čitam XML sitemap index i dohvaćam popis svih proizvoda...", flush=True)
     urljevi_proizvoda, url_slika_mapa = dohvati_urlstove_iz_sitemapa()
     print(f"✅ Iz sitemapa učitano {len(urljevi_proizvoda)} jedinstvenih URL-ova.", flush=True)
 
@@ -212,7 +215,6 @@ def scrape_cedeterija():
 
     print(f"✅ Obrada završena! Pronađeno dostupnih ploča: {uspjesno}", flush=True)
 
-    # Sinkronizacija: Uklanjamo rasprodane artikle
     aktivni_linkovi = set(novi_zisi.keys())
     if len(aktivni_linkovi) > 20:
         pocetni_broj = len(sve_ploce)
