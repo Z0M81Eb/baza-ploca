@@ -10,6 +10,7 @@ import os
 import re
 import time
 import html
+import sys
 from urllib.parse import urljoin
 
 try:
@@ -70,7 +71,8 @@ def podigni_tor():
     with _tor_lock:
         if tor_aktivan:
             return
-        print("\n⚠️ Pokrećem Tor tunel za zaobilaženje restrikcija...", flush=True)
+        print("\n⚠️ Pokrećem Tor tunel i instaliram zavisnosti...", flush=True)
+        subprocess.run([sys.executable, "-m", "pip", "install", "pysocks"], check=False, timeout=30)
         subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
         subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
         subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
@@ -82,10 +84,9 @@ def sigurni_get(url, timeout=25):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
-            print(f"   🔎 [Pokušaj {pokusaj}] HTTP {r.status_code} | Veličina: {len(r.text)} znakova | Tor: {tor_aktivan}", flush=True)
-            if r.status_code == 200 and len(r.text) > 15000:
+            if r.status_code == 200 and len(r.text) > 1000:
                 return r
-            if r.status_code in [403, 503, 429] or (r.status_code == 200 and len(r.text) <= 15000):
+            if r.status_code in [403, 503, 429]:
                 if not tor_aktivan:
                     podigni_tor()
                 else:
@@ -145,18 +146,15 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    kartice = soup.select("div.product-display-grid.item, div.product-display-grid, div.product-card, li.product")
-    
-    # Ako nismo našli kartice s primarnim selektorom, ispiši uzorak HTML-a radi dijagnostike
+    # Precizno gađamo kartice proizvoda prema tvojoj HTML strukturi
+    kartice = soup.select("div.product-display-grid.item")
     if not kartice:
-        naslov_str = soup.title.get_text(strip=True) if soup.title else "Bez naslova"
-        print(f"   ⚠️ HTML Dijagnostika - Naslov stranice: '{naslov_str}'", flush=True)
-        print(f"   ⚠️ Prvih 300 znakova tijela stranice: {soup.get_text(' ', strip=True)[:300]}", flush=True)
+        kartice = soup.select("div.product-display-grid")
 
     vidjeni_na_stranici = set()
 
     for k in kartice:
-        forma_kosarica = k.select_one('form.item-cart, form[action*="add_to_cart"], button.add-to-cart, .add-to-cart')
+        forma_kosarica = k.select_one('form.item-cart, form[action*="add_to_cart"]')
         if not forma_kosarica and not k.select_one('a.product-display-grid-image'):
             continue
 
@@ -181,8 +179,8 @@ def parsiraj_cedeterija_stranicu(soup):
 
         naslov = naslov_iz_slike
         if not naslov:
-            performer_el = k.select_one(".product-performer-wrapper, .artist")
-            title_el = k.select_one(".product-info h3, h3, .title")
+            performer_el = k.select_one(".product-performer-wrapper")
+            title_el = k.select_one(".product-info h3, h3")
             izvodjac = html.unescape(performer_el.get_text(" ", strip=True)).strip() if performer_el else ""
             album = html.unescape(title_el.get_text(" ", strip=True)).strip() if title_el else ""
             if izvodjac and album and izvodjac.lower() not in album.lower():
@@ -193,7 +191,7 @@ def parsiraj_cedeterija_stranicu(soup):
         if not naslov:
             continue
 
-        price_el = k.select_one("span.price-current, .product-card-current-price, .price")
+        price_el = k.select_one("span.price-current, .product-card-current-price")
         cijena = izvuci_cijenu(price_el)
         if cijena == "0.00":
             continue
