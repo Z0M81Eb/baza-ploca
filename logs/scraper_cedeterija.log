@@ -1,18 +1,18 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 10:17:01
+Vrijeme pokretanja (UTC): 24.10.2026. 10:18:59
 ----------------------------------------
 📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...
 🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
-   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
-   ⚠️ [Pokušaj 1] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   🔎 Naslovna stranica HTTP status: 200 (Duljina: 7861)
+   🔎 [Pokušaj 1] HTTP 200 | Veličina: 7969 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
 🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
-   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
-   ⚠️ [Pokušaj 2] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   🔎 Naslovna stranica HTTP status: 200 (Duljina: 7861)
+   🔎 [Pokušaj 2] HTTP 200 | Veličina: 7969 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
 🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
-   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
-   ⚠️ [Pokušaj 3] Greška spajanja: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   🔎 Naslovna stranica HTTP status: 200 (Duljina: 7861)
+   🔎 [Pokušaj 3] HTTP 200 | Veličina: 7969 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
 🛡️ Rješavam Cloudflare provjeru preko naslovne stranice...
-   ⚠️ Greška pri inicijalizaciji naslovne stranice: Cannot set verify_mode to CERT_NONE when check_hostname is enabled.
+   🔎 Naslovna stranica HTTP status: 200 (Duljina: 7861)
 ❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 10:17:15 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 10:19:22 | Kod izlaza: 0
