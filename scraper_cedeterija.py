@@ -34,7 +34,9 @@ def kreiraj_sesiju():
         "Connection": "keep-alive"
     })
     try:
+        # Prvo posjećujemo naslovnicu da pokupimo kolačiće
         s.get(SITE_URL, timeout=15)
+        time.sleep(1)
     except Exception:
         pass
     return s
@@ -51,44 +53,39 @@ def sigurni_get(url, timeout=25):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
-            if r.status_code == 200 and len(r.text) > 200:
+            print(f"   🔎 [Sitemap] {url} -> HTTP {r.status_code} (Duljina: {len(r.text)})", flush=True)
+            if r.status_code == 200 and len(r.text) > 100 and "security check" not in r.text.lower():
                 return r
-            time.sleep(1.5 * pokusaj)
-        except Exception:
-            time.sleep(1.5 * pokusaj)
+            time.sleep(2 * pokusaj)
+        except Exception as e:
+            print(f"   ⚠️ Greška za {url}: {e}", flush=True)
+            time.sleep(2 * pokusaj)
             _thread_local.session = kreiraj_sesiju()
     return None
 
 def dohvati_podatke_iz_sitemapa():
-    glavni_sitemap = "https://cedeterijanova.hr/xml/sitemap_3.xml"
-    res = sigurni_get(glavni_sitemap)
-    
-    sitemap_datoteke = []
-    if res and res.status_code == 200:
-        soup = BeautifulSoup(res.text, "xml")
-        for s in soup.find_all("sitemap"):
-            loc = s.find("loc")
-            if loc and loc.text:
-                sitemap_datoteke.append(loc.text.strip())
+    # Direktno zadajemo poznate sitemape koje si pronašao
+    sitemap_datoteke = [
+        "https://cedeterijanova.hr/xml/sitemap_3_1.xml",
+        "https://cedeterijanova.hr/xml/sitemap_3_1_images.xml",
+        "https://cedeterijanova.hr/xml/sitemap_3_2_images.xml",
+        "https://cedeterijanova.hr/xml/sitemap_3_3_images.xml"
+    ]
 
-    # Fallback ako index zakataji
-    if not sitemap_datoteke:
-        sitemap_datoteke = [
-            "https://cedeterijanova.hr/xml/sitemap_3_1.xml",
-            "https://cedeterijanova.hr/xml/sitemap_3_1_images.xml",
-            "https://cedeterijanova.hr/xml/sitemap_3_2_images.xml",
-            "https://cedeterijanova.hr/xml/sitemap_3_3_images.xml"
-        ]
-
-    proizvodi = {} # ključ: link, vrijednost: {slika, naslov_iz_sitemapa}
+    proizvodi = {}
 
     for sm in sitemap_datoteke:
+        print(f"🗺️ Dohvaćam: {sm}", flush=True)
         res_sm = sigurni_get(sm)
         if not res_sm or res_sm.status_code != 200:
+            print(f"   ❌ Neuspješno dohvaćanje sitemapa: {sm}", flush=True)
             continue
+            
         soup_sm = BeautifulSoup(res_sm.text, "xml")
+        url_tagovi = soup_sm.find_all("url")
+        print(f"   ✅ Pronađeno {len(url_tagovi)} URL tagova u {sm}", flush=True)
         
-        for url_tag in soup_sm.find_all("url"):
+        for url_tag in url_tagovi:
             loc = url_tag.find("loc")
             if not loc or not loc.text:
                 continue
@@ -97,7 +94,6 @@ def dohvati_podatke_iz_sitemapa():
             if puni_link == SITE_URL or any(x in puni_link for x in ["/kosarica", "/korpa", "/prijava", "/registracija", "/checkout", "/cart", "/kontakt", "/o-nama"]):
                 continue
 
-            # Provjera ima li sliku i naslov unutar image sitemapa
             img_url = ""
             img_title = ""
             image_tag = url_tag.find("image:image")
@@ -127,8 +123,6 @@ def parsiraj_proizvod(item):
 
     soup = BeautifulSoup(res.text, "lxml")
 
-    # Provjera je li artikal LP ili singl (preskačemo CD-ove i Blu-Ray izdanja ako nas zanimaju samo ploče)
-    # Možeš prilagoditi uvjet ako želiš i CD-ove, ali prema prethodnom kodu tražimo LP/vinile.
     naslov = meta["naslov"]
     if not naslov:
         performer_el = soup.select_one(".product-performer-wrapper")
@@ -145,20 +139,17 @@ def parsiraj_proizvod(item):
     if not naslov:
         return None
 
-    # Filtriramo da uzmemo samo LP i singl ploče (ako u nazivu ili linku piše CD, Blu-ray i sl., preskačemo)
     link_lower = link.lower()
     naslov_lower = naslov.lower()
     if "-cd" in link_lower or " cd" in naslov_lower or "blu-ray" in link_lower or "dvd" in link_lower:
         return None
 
-    # Provjera je li proizvod dostupan za kupovinu
     forma_kosarica = soup.select_one('form.item-cart, form[action*="add_to_cart"]')
     if not forma_kosarica:
         return None
     if forma_kosarica.select_one("button[disabled], input[disabled]"):
         return None
 
-    # Cijena
     price_el = soup.select_one("span.price-current, .product-card-current-price, .price")
     cijena = "0.00"
     if price_el:
@@ -204,9 +195,9 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("🗺️ Čitam XML sitemape i sakupljam sve proizvode...", flush=True)
+    print("🗺️ Sakupljam proizvode iz hardkodiranih XML sitemapa...", flush=True)
     proizvodi_dict = dohvati_podatke_iz_sitemapa()
-    print(f"✅ Iz sitemapa učitano {len(proizvodi_dict)} ukupnih stavki.", flush=True)
+    print(f"✅ Iz sitemapa ukupno učitano {len(proizvodi_dict)} stavki.", flush=True)
 
     if not proizvodi_dict:
         print("❌ Nema pronađenih stavki u sitemapu. Prekidam.", flush=True)
