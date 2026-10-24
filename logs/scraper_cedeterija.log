@@ -1,136 +1,44 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 12:44:44
+Vrijeme pokretanja (UTC): 24.10.2026. 16:58:47
 ----------------------------------------
-📦 Učitano 1492 postojećih zapisa iz cedeterija_ploce.csv.
-🗺️ Pokrećem dohvat i parsiranje Cedeterija XML sitemapa...
-   🔎 [Sitemap pokušaj 1] https://cedeterijanova.hr/xml/sitemap_3.xml -> HTTP 200 (Duljina: 7885)
-   🔎 [Sitemap pokušaj 2] https://cedeterijanova.hr/xml/sitemap_3.xml -> HTTP 200 (Duljina: 7885)
-   🔎 [curl_cffi safari15_5] https://cedeterijanova.hr/xml/sitemap_3.xml -> HTTP 200 (Duljina: 7883)
-   🔎 [Sitemap pokušaj 3] https://cedeterijanova.hr/xml/sitemap_3.xml -> HTTP 200 (Duljina: 7885)
-   🔎 [Sitemap pokušaj 4] https://cedeterijanova.hr/xml/sitemap_3.xml -> HTTP 200 (Duljina: 623)
-   🔎 [curl_cffi chrome120] https://cedeterijanova.hr/xml/sitemap_3.xml -> HTTP 200 (Duljina: 623)
-🗺️ Dohvaćam sitemap: https://cedeterijanova.hr/xml/sitemap_3_1.xml
-   🔎 [Sitemap pokušaj 1] https://cedeterijanova.hr/xml/sitemap_3_1.xml -> HTTP 200 (Duljina: 2941283)
-   ✅ Uspješno izvučeno 26487 <url> zapisa iz https://cedeterijanova.hr/xml/sitemap_3_1.xml
-🗺️ Dohvaćam sitemap: https://cedeterijanova.hr/xml/sitemap_3_1_images.xml
-   🔎 [Sitemap pokušaj 1] https://cedeterijanova.hr/xml/sitemap_3_1_images.xml -> HTTP 200 (Duljina: 8421809)
-   ✅ Uspješno izvučeno 9822 <url> zapisa iz https://cedeterijanova.hr/xml/sitemap_3_1_images.xml
-🗺️ Dohvaćam sitemap: https://cedeterijanova.hr/xml/sitemap_3_2_images.xml
-   🔎 [Sitemap pokušaj 1] https://cedeterijanova.hr/xml/sitemap_3_2_images.xml -> HTTP 200 (Duljina: 8744275)
-   ✅ Uspješno izvučeno 11378 <url> zapisa iz https://cedeterijanova.hr/xml/sitemap_3_2_images.xml
-🗺️ Dohvaćam sitemap: https://cedeterijanova.hr/xml/sitemap_3_3_images.xml
-   🔎 [Sitemap pokušaj 1] https://cedeterijanova.hr/xml/sitemap_3_3_images.xml -> HTTP 200 (Duljina: 2314544)
-   ✅ Uspješno izvučeno 1492 <url> zapisa iz https://cedeterijanova.hr/xml/sitemap_3_3_images.xml
-📊 Sitemap statistika: Ukupno URL-ova: 23927 | Odbijeno CD/DVD/Blu-Ray: 8317 | Preostalo za provjeru: 15610 (Od toga potvrđenih LP-a iz XML-a: 5341)
-⚡ Provjeravam dostupnost, format i točne cijene za 15610 artikala (6 niti)...
-   ⏳ Napredak: 150/15610 (134.4s) | +140 dostupnih LP-a | Ukupno LP-a: 140
-   ⏳ Napredak: 300/15610 (117.7s) | +113 dostupnih LP-a | Ukupno LP-a: 253
-   ⏳ Napredak: 450/15610 (73.2s) | +54 dostupnih LP-a | Ukupno LP-a: 307
-   ⏳ Napredak: 600/15610 (88.1s) | +56 dostupnih LP-a | Ukupno LP-a: 363
-   ⏳ Napredak: 750/15610 (121.2s) | +138 dostupnih LP-a | Ukupno LP-a: 501
-   ⏳ Napredak: 900/15610 (69.9s) | +44 dostupnih LP-a | Ukupno LP-a: 545
-   ⏳ Napredak: 1050/15610 (40.4s) | +0 dostupnih LP-a | Ukupno LP-a: 545
-   ⏳ Napredak: 1200/15610 (127.5s) | +118 dostupnih LP-a | Ukupno LP-a: 663
-   ⏳ Napredak: 1350/15610 (83.2s) | +63 dostupnih LP-a | Ukupno LP-a: 726
-   ⏳ Napredak: 1500/15610 (198.2s) | +144 dostupnih LP-a | Ukupno LP-a: 870
-   ⏳ Napredak: 1650/15610 (140.1s) | +145 dostupnih LP-a | Ukupno LP-a: 1015
-   ⏳ Napredak: 1800/15610 (121.5s) | +142 dostupnih LP-a | Ukupno LP-a: 1157
-   ⏳ Napredak: 1950/15610 (125.3s) | +137 dostupnih LP-a | Ukupno LP-a: 1294
-   ⏳ Napredak: 2100/15610 (139.4s) | +135 dostupnih LP-a | Ukupno LP-a: 1429
-   ⏳ Napredak: 2250/15610 (210.7s) | +118 dostupnih LP-a | Ukupno LP-a: 1547
-   ⏳ Napredak: 2400/15610 (86.1s) | +33 dostupnih LP-a | Ukupno LP-a: 1580
-   ⏳ Napredak: 2550/15610 (71.1s) | +53 dostupnih LP-a | Ukupno LP-a: 1633
-   ⏳ Napredak: 2700/15610 (74.2s) | +36 dostupnih LP-a | Ukupno LP-a: 1669
-   ⏳ Napredak: 2850/15610 (82.5s) | +41 dostupnih LP-a | Ukupno LP-a: 1710
-   ⏳ Napredak: 3000/15610 (79.0s) | +56 dostupnih LP-a | Ukupno LP-a: 1766
-   ⏳ Napredak: 3150/15610 (114.2s) | +116 dostupnih LP-a | Ukupno LP-a: 1882
-   ⏳ Napredak: 3300/15610 (103.1s) | +80 dostupnih LP-a | Ukupno LP-a: 1962
-   ⏳ Napredak: 3450/15610 (45.8s) | +9 dostupnih LP-a | Ukupno LP-a: 1971
-   ⏳ Napredak: 3600/15610 (84.5s) | +34 dostupnih LP-a | Ukupno LP-a: 2005
-   ⏳ Napredak: 3750/15610 (68.6s) | +1 dostupnih LP-a | Ukupno LP-a: 2006
-   ⏳ Napredak: 3900/15610 (67.4s) | +8 dostupnih LP-a | Ukupno LP-a: 2014
-   ⏳ Napredak: 4050/15610 (84.7s) | +7 dostupnih LP-a | Ukupno LP-a: 2021
-   ⏳ Napredak: 4200/15610 (83.4s) | +13 dostupnih LP-a | Ukupno LP-a: 2034
-   ⏳ Napredak: 4350/15610 (85.6s) | +13 dostupnih LP-a | Ukupno LP-a: 2047
-   ⏳ Napredak: 4500/15610 (92.1s) | +15 dostupnih LP-a | Ukupno LP-a: 2062
-   ⏳ Napredak: 4650/15610 (82.7s) | +6 dostupnih LP-a | Ukupno LP-a: 2068
-   ⏳ Napredak: 4800/15610 (101.8s) | +44 dostupnih LP-a | Ukupno LP-a: 2112
-   ⏳ Napredak: 4950/15610 (155.1s) | +144 dostupnih LP-a | Ukupno LP-a: 2256
-   ⏳ Napredak: 5100/15610 (131.7s) | +60 dostupnih LP-a | Ukupno LP-a: 2316
-   ⏳ Napredak: 5250/15610 (121.8s) | +3 dostupnih LP-a | Ukupno LP-a: 2319
-   ⏳ Napredak: 5400/15610 (97.7s) | +0 dostupnih LP-a | Ukupno LP-a: 2319
-   ⏳ Napredak: 5550/15610 (107.6s) | +1 dostupnih LP-a | Ukupno LP-a: 2320
-   ⏳ Napredak: 5700/15610 (92.1s) | +0 dostupnih LP-a | Ukupno LP-a: 2320
-   ⏳ Napredak: 5850/15610 (50.9s) | +0 dostupnih LP-a | Ukupno LP-a: 2320
-   ⏳ Napredak: 6000/15610 (82.2s) | +3 dostupnih LP-a | Ukupno LP-a: 2323
-   ⏳ Napredak: 6150/15610 (107.4s) | +0 dostupnih LP-a | Ukupno LP-a: 2323
-   ⏳ Napredak: 6300/15610 (119.9s) | +4 dostupnih LP-a | Ukupno LP-a: 2327
-   ⏳ Napredak: 6450/15610 (116.1s) | +0 dostupnih LP-a | Ukupno LP-a: 2327
-   ⏳ Napredak: 6600/15610 (98.3s) | +0 dostupnih LP-a | Ukupno LP-a: 2327
-   ⏳ Napredak: 6750/15610 (110.8s) | +0 dostupnih LP-a | Ukupno LP-a: 2327
-   ⏳ Napredak: 6900/15610 (75.2s) | +0 dostupnih LP-a | Ukupno LP-a: 2327
-   ⏳ Napredak: 7050/15610 (53.8s) | +1 dostupnih LP-a | Ukupno LP-a: 2328
-   ⏳ Napredak: 7200/15610 (154.2s) | +139 dostupnih LP-a | Ukupno LP-a: 2467
-   ⏳ Napredak: 7350/15610 (164.6s) | +144 dostupnih LP-a | Ukupno LP-a: 2611
-   ⏳ Napredak: 7500/15610 (138.2s) | +142 dostupnih LP-a | Ukupno LP-a: 2753
-   ⏳ Napredak: 7650/15610 (128.8s) | +141 dostupnih LP-a | Ukupno LP-a: 2894
-   ⏳ Napredak: 7800/15610 (129.3s) | +138 dostupnih LP-a | Ukupno LP-a: 3032
-   ⏳ Napredak: 7950/15610 (123.6s) | +139 dostupnih LP-a | Ukupno LP-a: 3171
-   ⏳ Napredak: 8100/15610 (138.3s) | +139 dostupnih LP-a | Ukupno LP-a: 3310
-   ⏳ Napredak: 8250/15610 (129.4s) | +144 dostupnih LP-a | Ukupno LP-a: 3454
-   ⏳ Napredak: 8400/15610 (127.0s) | +137 dostupnih LP-a | Ukupno LP-a: 3591
-   ⏳ Napredak: 8550/15610 (130.6s) | +133 dostupnih LP-a | Ukupno LP-a: 3724
-   ⏳ Napredak: 8700/15610 (133.0s) | +139 dostupnih LP-a | Ukupno LP-a: 3863
-   ⏳ Napredak: 8850/15610 (133.7s) | +135 dostupnih LP-a | Ukupno LP-a: 3998
-   ⏳ Napredak: 9000/15610 (156.5s) | +135 dostupnih LP-a | Ukupno LP-a: 4133
-   ⏳ Napredak: 9150/15610 (152.7s) | +129 dostupnih LP-a | Ukupno LP-a: 4262
-   ⏳ Napredak: 9300/15610 (141.8s) | +117 dostupnih LP-a | Ukupno LP-a: 4379
-   ⏳ Napredak: 9450/15610 (153.3s) | +135 dostupnih LP-a | Ukupno LP-a: 4514
-   ⏳ Napredak: 9600/15610 (149.2s) | +130 dostupnih LP-a | Ukupno LP-a: 4644
-   ⏳ Napredak: 9750/15610 (150.3s) | +128 dostupnih LP-a | Ukupno LP-a: 4772
-   ⏳ Napredak: 9900/15610 (143.9s) | +101 dostupnih LP-a | Ukupno LP-a: 4873
-   ⏳ Napredak: 10050/15610 (182.7s) | +129 dostupnih LP-a | Ukupno LP-a: 5002
-   ⏳ Napredak: 10200/15610 (153.9s) | +130 dostupnih LP-a | Ukupno LP-a: 5132
-   ⏳ Napredak: 10350/15610 (165.8s) | +131 dostupnih LP-a | Ukupno LP-a: 5263
-   ⏳ Napredak: 10500/15610 (154.1s) | +114 dostupnih LP-a | Ukupno LP-a: 5377
-   ⏳ Napredak: 10650/15610 (210.2s) | +111 dostupnih LP-a | Ukupno LP-a: 5488
-   ⏳ Napredak: 10800/15610 (170.3s) | +75 dostupnih LP-a | Ukupno LP-a: 5563
-   ⏳ Napredak: 10950/15610 (136.5s) | +83 dostupnih LP-a | Ukupno LP-a: 5646
-   ⏳ Napredak: 11100/15610 (69.1s) | +40 dostupnih LP-a | Ukupno LP-a: 5686
-   ⏳ Napredak: 11250/15610 (69.7s) | +26 dostupnih LP-a | Ukupno LP-a: 5712
-   ⏳ Napredak: 11400/15610 (83.0s) | +15 dostupnih LP-a | Ukupno LP-a: 5727
-   ⏳ Napredak: 11550/15610 (71.6s) | +9 dostupnih LP-a | Ukupno LP-a: 5736
-   ⏳ Napredak: 11700/15610 (69.1s) | +4 dostupnih LP-a | Ukupno LP-a: 5740
-   ⏳ Napredak: 11850/15610 (69.3s) | +4 dostupnih LP-a | Ukupno LP-a: 5744
-   ⏳ Napredak: 12000/15610 (70.8s) | +2 dostupnih LP-a | Ukupno LP-a: 5746
-   ⏳ Napredak: 12150/15610 (73.9s) | +18 dostupnih LP-a | Ukupno LP-a: 5764
-   ⏳ Napredak: 12300/15610 (72.7s) | +6 dostupnih LP-a | Ukupno LP-a: 5770
-   ⏳ Napredak: 12450/15610 (89.1s) | +2 dostupnih LP-a | Ukupno LP-a: 5772
-   ⏳ Napredak: 12600/15610 (82.5s) | +0 dostupnih LP-a | Ukupno LP-a: 5772
-   ⏳ Napredak: 12750/15610 (72.4s) | +1 dostupnih LP-a | Ukupno LP-a: 5773
-   ⏳ Napredak: 12900/15610 (71.3s) | +4 dostupnih LP-a | Ukupno LP-a: 5777
-   ⏳ Napredak: 13050/15610 (70.4s) | +5 dostupnih LP-a | Ukupno LP-a: 5782
-   ⏳ Napredak: 13200/15610 (69.1s) | +8 dostupnih LP-a | Ukupno LP-a: 5790
-   ⏳ Napredak: 13350/15610 (67.6s) | +4 dostupnih LP-a | Ukupno LP-a: 5794
-   ⏳ Napredak: 13500/15610 (70.1s) | +8 dostupnih LP-a | Ukupno LP-a: 5802
-   ⏳ Napredak: 13650/15610 (75.8s) | +3 dostupnih LP-a | Ukupno LP-a: 5805
-   ⏳ Napredak: 13800/15610 (87.9s) | +4 dostupnih LP-a | Ukupno LP-a: 5809
-   ⏳ Napredak: 13950/15610 (78.6s) | +6 dostupnih LP-a | Ukupno LP-a: 5815
-   ⏳ Napredak: 14100/15610 (84.5s) | +6 dostupnih LP-a | Ukupno LP-a: 5821
-   ⏳ Napredak: 14250/15610 (95.7s) | +5 dostupnih LP-a | Ukupno LP-a: 5826
-   ⏳ Napredak: 14400/15610 (84.6s) | +2 dostupnih LP-a | Ukupno LP-a: 5828
-   ⏳ Napredak: 14550/15610 (80.6s) | +0 dostupnih LP-a | Ukupno LP-a: 5828
-   ⏳ Napredak: 14700/15610 (77.5s) | +3 dostupnih LP-a | Ukupno LP-a: 5831
-   ⏳ Napredak: 14850/15610 (87.5s) | +5 dostupnih LP-a | Ukupno LP-a: 5836
-   ⏳ Napredak: 15000/15610 (78.8s) | +7 dostupnih LP-a | Ukupno LP-a: 5843
-   ⏳ Napredak: 15150/15610 (76.9s) | +2 dostupnih LP-a | Ukupno LP-a: 5845
-   ⏳ Napredak: 15300/15610 (92.3s) | +1 dostupnih LP-a | Ukupno LP-a: 5846
-   ⏳ Napredak: 15450/15610 (57.4s) | +4 dostupnih LP-a | Ukupno LP-a: 5850
-   ⏳ Napredak: 15600/15610 (44.4s) | +1 dostupnih LP-a | Ukupno LP-a: 5851
-   ⏳ Napredak: 15610/15610 (8.3s) | +1 dostupnih LP-a | Ukupno LP-a: 5852
+📦 Učitano 5852 postojećih zapisa iz cedeterija_ploce.csv.
+📄 Dohvaćam 1. stranicu Cedeterija LP kataloga (čista paginacija)...
+✅ Stranica 1 obrađena: 28 kartica (28 dostupnih LP-a) | Detektirano stranica u navigaciji: 190
+⚡ Stranice 002-007 (6/6 OK) za 18.0s | +168 dostupnih | Ukupno aktivnih: 196
+⚡ Stranice 008-013 (6/6 OK) za 13.5s | +168 dostupnih | Ukupno aktivnih: 364
+⚡ Stranice 014-019 (6/6 OK) za 13.2s | +168 dostupnih | Ukupno aktivnih: 532
+⚡ Stranice 020-025 (6/6 OK) za 13.3s | +168 dostupnih | Ukupno aktivnih: 700
+⚡ Stranice 026-031 (6/6 OK) za 16.2s | +168 dostupnih | Ukupno aktivnih: 868
+⚡ Stranice 032-037 (6/6 OK) za 15.8s | +168 dostupnih | Ukupno aktivnih: 1036
+⚡ Stranice 038-043 (6/6 OK) za 15.2s | +168 dostupnih | Ukupno aktivnih: 1204
+⚡ Stranice 044-049 (6/6 OK) za 14.7s | +168 dostupnih | Ukupno aktivnih: 1372
+⚡ Stranice 050-055 (6/6 OK) za 15.2s | +168 dostupnih | Ukupno aktivnih: 1540
+⚡ Stranice 056-061 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 1708
+⚡ Stranice 062-067 (6/6 OK) za 14.6s | +168 dostupnih | Ukupno aktivnih: 1876
+⚡ Stranice 068-073 (6/6 OK) za 13.7s | +168 dostupnih | Ukupno aktivnih: 2044
+⚡ Stranice 074-079 (6/6 OK) za 13.7s | +168 dostupnih | Ukupno aktivnih: 2212
+⚡ Stranice 080-085 (6/6 OK) za 13.5s | +168 dostupnih | Ukupno aktivnih: 2380
+⚡ Stranice 086-091 (6/6 OK) za 13.4s | +168 dostupnih | Ukupno aktivnih: 2548
+⚡ Stranice 092-097 (6/6 OK) za 13.5s | +168 dostupnih | Ukupno aktivnih: 2716
+⚡ Stranice 098-103 (6/6 OK) za 13.1s | +168 dostupnih | Ukupno aktivnih: 2884
+⚡ Stranice 104-109 (6/6 OK) za 13.7s | +168 dostupnih | Ukupno aktivnih: 3052
+⚡ Stranice 110-115 (6/6 OK) za 14.1s | +168 dostupnih | Ukupno aktivnih: 3220
+⚡ Stranice 116-121 (6/6 OK) za 13.5s | +168 dostupnih | Ukupno aktivnih: 3388
+⚡ Stranice 122-127 (6/6 OK) za 13.7s | +168 dostupnih | Ukupno aktivnih: 3556
+⚡ Stranice 128-133 (6/6 OK) za 13.1s | +168 dostupnih | Ukupno aktivnih: 3724
+⚡ Stranice 134-139 (6/6 OK) za 15.6s | +168 dostupnih | Ukupno aktivnih: 3892
+⚡ Stranice 140-145 (6/6 OK) za 14.9s | +168 dostupnih | Ukupno aktivnih: 4060
+⚡ Stranice 146-151 (6/6 OK) za 14.2s | +168 dostupnih | Ukupno aktivnih: 4228
+⚡ Stranice 152-157 (6/6 OK) za 15.7s | +168 dostupnih | Ukupno aktivnih: 4396
+⚡ Stranice 158-163 (6/6 OK) za 14.0s | +168 dostupnih | Ukupno aktivnih: 4564
+⚡ Stranice 164-169 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 4732
+⚡ Stranice 170-175 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 4900
+⚡ Stranice 176-181 (6/6 OK) za 16.0s | +168 dostupnih | Ukupno aktivnih: 5068
+⚡ Stranice 182-187 (6/6 OK) za 14.3s | +168 dostupnih | Ukupno aktivnih: 5236
+⚡ Stranice 188-193 (3/6 OK) za 13.6s | +65 dostupnih | Ukupno aktivnih: 5301
+⚡ Stranice 194-199 (0/6 OK) za 13.6s | +0 dostupnih | Ukupno aktivnih: 5301
 
-✅ Obrada završena! Ukupno pronađeno dostupnih vinila: 5852
-🧹 Sinkronizacija: Uklonjeno 1455 rasprodanih ili ne-vinilnih artikala iz baze.
-🎉 GOTOVO za 10954.4s! U bazi je 5852 dostupnih Cedeterija vinila (Sa slikom: 5846).
+🧹 Sinkronizacija završena! Uklonjeno 606 rasprodanih artikala.
+🎉 GOTOVO za 490.5s! U bazi je 5301 dostupnih Cedeterija vinila (Sa slikom: 5295).
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 15:47:19 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 17:06:59 | Kod izlaza: 0
