@@ -1,12 +1,10 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 09:36:21
+Vrijeme pokretanja (UTC): 24.10.2026. 09:40:18
 ----------------------------------------
-📄 Dohvaćam 1. stranicu Cedeterija LP kataloga (curl_cffi=DA)...
-   🔎 [Pokušaj 1] HTTP 200 | Veličina: 7967 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
-   ⚠️ Na URL-u s parametrima pronađeno 0 kartica (Naslov HTML-a: 'Security check required'). Pokušavam osnovni URL...
-   🔎 [Pokušaj 1] HTTP 200 | Veličina: 7879 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp
+📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...
+   🔎 [Pokušaj 1] HTTP 200 | Veličina: 7967 znakova | Tor: False
 
-⚠️ Pokrećem Tor tunel zbog blokade IP adrese...
+⚠️ Pokrećem Tor tunel za zaobilaženje restrikcija...
 Selecting previously unselected package libevent-2.1-7t64:amd64.
 (Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 203540 files and directories currently installed.)
 Preparing to unpack .../libevent-2.1-7t64_2.1.12-stable-9ubuntu2.2_amd64.deb ...
@@ -42,7 +40,8 @@ No containers need to be restarted.
 No user sessions are running outdated binaries.
 
 No VM guests are running outdated hypervisor (qemu) binaries on this host.
-   🔎 [Pokušaj 1] HTTP 200 | Veličina: 7967 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp?page_size=28&sort=3&page_number=1&f=1&min_price=5&max_price=445
+   ⚠️ [Pokušaj 2] Greška: Missing dependencies for SOCKS support.
+   ⚠️ [Pokušaj 3] Greška: Missing dependencies for SOCKS support.
 ❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 09:36:43 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 09:40:43 | Kod izlaza: 0
