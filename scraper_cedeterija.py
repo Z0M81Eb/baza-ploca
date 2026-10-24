@@ -1,6 +1,4 @@
-import cloudscraper
-import requests as std_requests
-from requests.adapters import HTTPAdapter
+from curl_cffi import requests as cffi_requests
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
 import urllib3
@@ -22,24 +20,14 @@ BROJ_NITI = 6
 _thread_local = threading.local()
 
 def kreiraj_sesiju():
-    try:
-        s = cloudscraper.create_scraper(
-            browser={
-                'browser': 'chrome',
-                'platform': 'windows',
-                'desktop': True
-            }
-        )
-    except Exception:
-        s = std_requests.Session()
-        s.verify = False
-
+    s = cffi_requests.Session(impersonate="chrome120", verify=False)
     s.headers.update({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,image/apng,*/*;q=0.8",
         "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
         "Referer": "https://cedeterijanova.hr/glazba/glazba-lp",
-        "Connection": "keep-alive"
+        "Connection": "keep-alive",
+        "Cache-Control": "max-age=0"
     })
     return s
 
@@ -66,7 +54,6 @@ def sigurni_get(url, timeout=30):
     return None
 
 def sastavi_url_stranice(page):
-    # Cedeterija uvijek zahtijeva parametre za prikaz proizvoda, čak i za 1. stranicu
     return f"{BASE_CATEGORY_URL}?page_size=28&sort=3&page_number={page}&f=1&min_price=5&max_price=445"
 
 def normaliziraj_link_proizvoda(href):
@@ -111,12 +98,13 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    # Tražimo kartice prema strukturama s Cedeterije
-    kartice = soup.select("div.product-display-grid")
+    # Sve moguće varijante klasa za kartice proizvoda
+    kartice = soup.select("div.product-display-grid, div.product-display-grid.item")
     if not kartice:
-        kartice = soup.select("div[data-product-code]")
+        kartice = soup.select("div[data-product-code], div.product-card, li.product, div.item")
+
     if not kartice:
-        kartice = soup.select(".product-card, li.product, div.item")
+        print(f"   ⚠️ DIJAGNOSTIKA - Nema kartica! Početak teksta stranice: {soup.get_text(' ', strip=True)[:400]}", flush=True)
 
     vidjeni_na_stranici = set()
 
@@ -191,7 +179,7 @@ def scrape_cedeterija():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...", flush=True)
+    print("📄 Dohvaćam 1. stranicu Cedeterija LP kataloga preko curl_cffi...", flush=True)
     _, ok1, stavke1, br_kartica1, max_pages = dohvati_i_obradi_stranicu(1)
     if not ok1 or br_kartica1 == 0:
         print("❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.", flush=True)
