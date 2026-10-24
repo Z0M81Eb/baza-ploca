@@ -1,8 +1,8 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 24.10.2026. 09:49:19
+Vrijeme pokretanja (UTC): 24.10.2026. 09:53:18
 ----------------------------------------
 📄 Dohvaćam 1. stranicu Cedeterija LP kataloga...
    🔎 [Pokušaj 1] HTTP 200 | Veličina: 7881 znakova | URL: https://cedeterijanova.hr/glazba/glazba-lp
 ❌ Neuspješno dohvaćanje 1. stranice ili nema pronađenih kartica. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 24.10.2026. 09:49:20 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.10.2026. 09:53:19 | Kod izlaza: 0
