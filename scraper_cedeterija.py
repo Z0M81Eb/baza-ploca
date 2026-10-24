@@ -66,8 +66,7 @@ def sigurni_get(url, timeout=30):
     return None
 
 def sastavi_url_stranice(page):
-    if page == 1:
-        return BASE_CATEGORY_URL
+    # Cedeterija uvijek zahtijeva parametre za prikaz proizvoda, čak i za 1. stranicu
     return f"{BASE_CATEGORY_URL}?page_size=28&sort=3&page_number={page}&f=1&min_price=5&max_price=445"
 
 def normaliziraj_link_proizvoda(href):
@@ -112,7 +111,7 @@ def izvuci_max_stranicu(soup):
 
 def parsiraj_cedeterija_stranicu(soup):
     stavke = []
-    # Prošireni i robusniji selektori za kartice proizvoda
+    # Tražimo kartice prema strukturama s Cedeterije
     kartice = soup.select("div.product-display-grid")
     if not kartice:
         kartice = soup.select("div[data-product-code]")
