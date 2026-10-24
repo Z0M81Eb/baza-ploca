@@ -29,7 +29,7 @@ def podigni_tor():
             return
         print("\n⚠️ Pokrećem Tor tunel za zaobilaženje WAF/Cloudflare zaštite...", flush=True)
         subprocess.run(["sudo", "apt-get", "update", "-qq"], check=False, timeout=45)
-        subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor", "pysocks"], check=False, timeout=60)
+        subprocess.run(["sudo", "apt-get", "install", "-y", "-qq", "tor"], check=False, timeout=60)
         subprocess.run(["sudo", "service", "tor", "restart"], check=False, timeout=15)
         time.sleep(5)
         _tor_inicijaliziran = True
@@ -264,4 +264,3 @@ def scrape_cedeterija():
 
 if __name__ == "__main__":
     scrape_cedeterija()
-    
