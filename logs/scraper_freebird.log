@@ -1,534 +1,106 @@
 === IZVJEŠTAJ RADA: scraper_freebird.py ===
-Vrijeme pokretanja (UTC): 25.10.2026. 08:55:55
+Vrijeme pokretanja (UTC): 25.10.2026. 09:05:23
 ----------------------------------------
-🔎 Otvaram LP kategoriju: https://freebird.hr/index.php?route=product/category&path=225_223
-✅ Status: 200 | Duljina: 2448429
-⚡ Test '&limit=100': pronađeno 216 proizvoda na jednoj stranici!
+🔎 Automatski otkrivam aktivne vinil kategorije s naslovnice...
+✅ Pronađeno 18 aktivnih vinil podkategorija (prazne kategorije s 0 artikala preskočene).
 
-📦 Pronađeno kartica na standardnoj stranici: 40
-=== HTML PRVE KARTICE ===
-<div class="product-layout has-extra-button">
- <div class="product-thumb">
-  <div class="image">
-   <div class="quickview-button">
-    <a class="btn btn-quickview" data-placement="top" data-toggle="tooltip" data-tooltip-class="module-products-213 module-products-grid quickview-tooltip" onclick="quickview('443676')" title="Quickview">
-     <span class="btn-text">
-      Quickview
-     </span>
-    </a>
-   </div>
-   <a class="product-img" href="https://freebird.hr/index.php?route=product/product&amp;product_id=443676">
-    <div>
-     <img alt="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" class="img-responsive img-first" height="250" src="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-250x250h.webp" srcset="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-250x250h.webp 1x, https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-500x500h.webp 2x" title="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" width="250"/>
-    </div>
-   </a>
-   <div class="product-labels">
-    <span class="product-label product-label-233 product-label-default">
-     <b>
-      -40 %
-     </b>
-    </span>
-   </div>
-  </div>
-  <div class="caption">
-   <div class="name">
-    <a href="https://freebird.hr/index.php?route=product/product&amp;product_id=443676">
-     Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi
-    </a>
-   </div>
-   <div class="description">
-    Condition sleeve: VG+Condition records: VG+Edition: Diskos – YU, EDK-5433Genre: FOLK, WORLD &amp; COUNTRYStyle: WORLD/KOSOVO/ALBANIA..
-   </div>
-   <div class="price">
-    <div>
-     <span class="price-new">
-      2.00€
-     </span>
-     <span class="price-old">
-      3.33€
-     </span>
-    </div>
-    <span class="price-tax">
-     Ex Tax:2.00€
-    </span>
-   </div>
-   <div class="rating no-rating rating-hover">
-    <div class="rating-stars">
-     <span class="fa fa-stack">
-      <i class="fa fa-star-o fa-stack-2x">
-      </i>
-     </span>
-     <span class="fa fa-stack">
-      <i class="fa fa-star-o fa-stack-2x">
-      </i>
-     </span>
-     <span class="fa fa-stack">
-      <i class="fa fa-star-o fa-stack-2x">
-      </i>
-     </span>
-     <span class="fa fa-stack">
-      <i class="fa fa-star-o fa-stack-2x">
-      </i>
-     </span>
-     <span class="fa fa-stack">
-      <i class="fa fa-star-o fa-stack-2x">
-      </i>
-     </span>
-    </div>
-   </div>
-   <div class="buttons-wrapper">
-    <div class="button-group">
-     <div class="cart-group">
-      <div class="stepper">
-       <input class="form-control" data-minimum="1" name="quantity" type="text" value="1"/>
-       <input name="product_id" type="hidden" value="443676"/>
-       <span>
-        <i class="fa fa-angle-up">
-        </i>
-        <i class="fa fa-angle-down">
-        </i>
-       </span>
-      </div>
-      <a class="btn btn-cart" data-loading-text="&lt;span class='btn-text'&gt;Add to Cart&lt;/span&gt;" data-placement="top" data-toggle="tooltip" data-tooltip-class="module-products-213 module-products-grid cart-tooltip" onclick="cart.add('443676', $(this).closest('.product-thumb').find('.button-group input[name=\'quantity\']').val());" title="Add to Cart">
-       <span class="btn-text">
-        Add to Cart
-       </span>
-      </a>
-     </div>
-    </div>
-   </div>
-   <div class="extra-group">
-    <div>
-     <a class="btn btn-extra btn-extra-46" data-loading-text="&lt;span class='btn-text'&gt;Buy Now&lt;/span&gt;" onclick="cart.add('443676', $(this).closest('.product-thumb').find('.button-group input[name=\'quantity\']').val(), true);">
-      <span class="btn-text">
-       Buy Now
-      </span>
-     </a>
-     <a class="btn btn-extra btn-extra-93" data-loading-text="&lt;span class='btn-text'&gt;Ask Question&lt;/span&gt;" data-product_id="443676" data-product_url="https://freebird.hr/index.php?route=product/product&amp;product_id=443676" href="javascript:open_popup(22)">
-      <span class="btn-text">
-       Ask Question
-      </span>
-     </a>
-    </div>
-   </div>
-  </div>
- </div>
-</div>
+📂 [1/18] Kategorija '10'"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3212
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 1
+   🏁 Kategorija '10'"' gotova za 0.5s (+1 unikatnih vinila).
 
+📂 [2/18] Kategorija '10''' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_339
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 2
+   🏁 Kategorija '10''' gotova za 0.6s (+1 unikatnih vinila).
 
-🔢 === HTML PAGINACIJE ===
-<div class="row pagination-results">
- <div class="col-sm-6 text-left">
-  <ul class="pagination">
-   <li class="active">
-    <span>
-     1
-    </span>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
-     2
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=3">
-     3
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=4">
-     4
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=5">
-     5
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=6">
-     6
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=7">
-     7
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=8">
-     8
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=9">
-     9
-    </a>
-   </li>
-   <li>
-    <a class="next" href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
-     &gt;
-    </a>
-   </li>
-   <li>
-    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=790">
-     &gt;|
-    </a>
-   </li>
-  </ul>
- </div>
- <div class="col-sm-6 text-right">
-  Showing 1 to 12 of 9475 (790 Pages)
- </div>
-</div>
+📂 [3/18] Kategorija '12" SINGLE' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_301
+   ✅ Stranica 1/5: +100 artikala | Ukupno u bazi: 102
+   ⚡ [12" SINGLE] Stranice 02-05/5 (4/4 OK) za 15.3s | +385 novih | Ukupno: 487
+   🏁 Kategorija '12" SINGLE' gotova za 18.8s (+485 unikatnih vinila).
 
-<ul class="pagination">
- <li class="active">
-  <span>
-   1
-  </span>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
-   2
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=3">
-   3
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=4">
-   4
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=5">
-   5
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=6">
-   6
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=7">
-   7
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=8">
-   8
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=9">
-   9
-  </a>
- </li>
- <li>
-  <a class="next" href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
-   &gt;
-  </a>
- </li>
- <li>
-  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=790">
-   &gt;|
-  </a>
- </li>
-</ul>
+📂 [4/18] Kategorija '12" SINGLE + 7"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3216
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 488
+   🏁 Kategorija '12" SINGLE + 7"' gotova za 0.6s (+1 unikatnih vinila).
 
+📂 [5/18] Kategorija '12" VINYL' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3209
+   ✅ Stranica 1/1: +6 artikala | Ukupno u bazi: 494
+   🏁 Kategorija '12" VINYL' gotova za 0.5s (+6 unikatnih vinila).
 
-💿 === DETALJI PROIZVODA: https://freebird.hr/index.php?route=product/product&product_id=443676 ===
-<div class="description">
- Condition sleeve: VG+Condition records: VG+Edition: Diskos – YU, EDK-5433Genre: FOLK, WORLD &amp; COUNTRYStyle: WORLD/KOSOVO/ALBANIA..
-</div>
+📂 [6/18] Kategorija '12", MiniAlbum' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3217
+   ✅ Stranica 1/1: +2 artikala | Ukupno u bazi: 496
+   🏁 Kategorija '12", MiniAlbum' gotova za 0.6s (+2 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: VGCondition records: VG+Edition: Jugoton, Immediate – YU, SIM-8254Genre: ROCKStyle: BRITISH INVASION..
-</div>
+📂 [7/18] Kategorija 'EP' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_315
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 497
+   🏁 Kategorija 'EP' gotova za 0.5s (+1 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: VG+Condition records: EXEdition: Diskos – YU, EDK 5463Genre: FOLK, WORLD &amp; COUNTRYStyle: EX YU/SERBIAN TRADITIONAL FOLKRemark: EP..
-</div>
+📂 [8/18] Kategorija 'LP & 12" SINGLE' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_328
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 498
+   🏁 Kategorija 'LP & 12" SINGLE' gotova za 0.5s (+1 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: VGCondition records: VG+Edition: NABIPHONE-F, NBP 171Genre: FOLK, WORLD &amp; COUNTRYStyle: WORLD/ARABIC..
-</div>
+📂 [9/18] Kategorija 'LP + 12 MAXI SINGLE' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3203
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 499
+   🏁 Kategorija 'LP + 12 MAXI SINGLE' gotova za 0.5s (+1 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: VG+Condition records: EXEdition: APRELEVSKIYI ZAVOD- USSR, D 04828-29Genre: CLASSICALStyle: CLASSICALRemark: FACTORY SLEEVE..
-</div>
+📂 [10/18] Kategorija 'LP + EP' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_333
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 500
+   🏁 Kategorija 'LP + EP' gotova za 0.5s (+1 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: VGCondition records: VG+Edition: LONDON - I, 45-HL 1421Genre: ROCKStyle: ROCK'N'ROLL..
-</div>
+📂 [11/18] Kategorija 'LP' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_223
+   ✅ Stranica 1/95: +100 artikala | Ukupno u bazi: 600
+   ⚡ [LP] Stranice 02-07/95 (6/6 OK) za 35.2s | +600 novih | Ukupno: 1200
+   ⚡ [LP] Stranice 08-13/95 (6/6 OK) za 36.2s | +600 novih | Ukupno: 1800
+   ⚠️ Greška spajanja (1/4) na https://freebird.hr/index.php?route=product/category&path=225_223&limit=100&page=19: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+   ⚡ [LP] Stranice 14-19/95 (6/6 OK) za 34.6s | +599 novih | Ukupno: 2399
+   ⚡ [LP] Stranice 20-25/95 (6/6 OK) za 36.2s | +600 novih | Ukupno: 2999
+   ⚡ [LP] Stranice 26-31/95 (6/6 OK) za 40.6s | +597 novih | Ukupno: 3596
+   ⚡ [LP] Stranice 32-37/95 (6/6 OK) za 43.9s | +600 novih | Ukupno: 4196
+   ⚡ [LP] Stranice 38-43/95 (6/6 OK) za 34.3s | +600 novih | Ukupno: 4796
+   ⚠️ Greška spajanja (1/4) na https://freebird.hr/index.php?route=product/category&path=225_223&limit=100&page=48: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+   ⚡ [LP] Stranice 44-49/95 (6/6 OK) za 33.6s | +600 novih | Ukupno: 5396
+   ⚡ [LP] Stranice 50-55/95 (6/6 OK) za 44.7s | +599 novih | Ukupno: 5995
+   ⚡ [LP] Stranice 56-61/95 (6/6 OK) za 31.2s | +599 novih | Ukupno: 6594
+   ⚡ [LP] Stranice 62-67/95 (6/6 OK) za 46.0s | +599 novih | Ukupno: 7193
+   ⚡ [LP] Stranice 68-73/95 (6/6 OK) za 28.6s | +600 novih | Ukupno: 7793
+   ⚡ [LP] Stranice 74-79/95 (6/6 OK) za 31.7s | +600 novih | Ukupno: 8393
+   ⚡ [LP] Stranice 80-85/95 (6/6 OK) za 28.7s | +599 novih | Ukupno: 8992
+   ⚡ [LP] Stranice 86-91/95 (6/6 OK) za 35.3s | +600 novih | Ukupno: 9592
+   ⚡ [LP] Stranice 92-95/95 (4/4 OK) za 16.6s | +375 novih | Ukupno: 9967
+   🏁 Kategorija 'LP' gotova za 561.4s (+9467 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: Condition records: VG+Edition: Dot Records – GR, 45-5050Genre: POPStyle: 60'S POP..
-</div>
+📂 [12/18] Kategorija '12"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_236
+   ✅ Stranica 1/1: +2 artikala | Ukupno u bazi: 9969
+   🏁 Kategorija '12"' gotova za 0.9s (+2 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: VG+Condition records: VG+Edition: ITALIA/HARMONIA MUNDI-I, HMI 73072Genre: CLASSICALStyle: CLASSICALRemark: RARE..
-</div>
+📂 [13/18] Kategorija '10"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_235
+   ✅ Stranica 1/2: +100 artikala | Ukupno u bazi: 10069
+   ⚡ [10"] Stranice 02-02/2 (1/1 OK) za 1.9s | +28 novih | Ukupno: 10097
+   🏁 Kategorija '10"' gotova za 3.8s (+128 unikatnih vinila).
 
-<div class="product-info has-extra-button">
- <div class="product-left">
-  <div class="product-image direction-vertical position-left">
-   <div class="swiper main-image" data-options='{"speed":0,"autoplay":false,"pauseOnHover":false,"loop":false}'>
-    <div class="swiper-container">
-     <div class="swiper-wrapper">
-      <div class="swiper-slide" data-gallery=".lightgallery-product-images" data-index="0">
-       <img alt="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" data-largeimg="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-1000x1000h.webp" height="550" src="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-550x550h.webp" srcset="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-550x550h.webp 1x, https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-1100x1100h.webp 2x" title="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" width="550"/>
-      </div>
-     </div>
-    </div>
-    <div class="swiper-controls">
-     <div class="swiper-buttons">
-      <div class="swiper-button-prev">
-      </div>
-      <div class="swiper-button-next">
-      </div>
-     </div>
-     <div class="swiper-pagination">
-     </div>
-    </div>
-    <div class="product-labels">
-     <span class="product-label product-label-233 product-label-default">
-      <b>
-       -40 %
-      </b>
-     </span>
-    </div>
-   </div>
-  </div>
-  <div class="lightgallery lightgallery-product-images" data-images='[{"src":"https:\/\/freebird.hr\/image\/cache\/catalog\/katalog\/R-2891571-1305959662.jpeg-1000x1000h.webp","thumb":"https:\/\/freebird.hr\/image\/cache\/catalog\/katalog\/R-2891571-1305959662.jpeg-80x80h.webp","subHtml":"Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti T\u00eb K\u00ebndojm\u00eb Lavdi"}]' data-options='{"thumbWidth":80,"thumbConHeight":80,"addClass":"lg-product-images","mode":"lg-slide","download":true,"fullScreen":false}'>
-  </div>
-  <div class="product-blocks blocks-image">
-   <div class="product-blocks-image product-blocks-58 grid-rows">
-    <div class="grid-row grid-row-58-1">
-     <div class="grid-cols">
-      <div class="grid-col grid-col-58-1-1">
-       <div class="grid-items">
-        <div class="grid-item grid-item-58-1-1-1">
-         <div class="module module-blocks module-blocks-57 blocks-grid">
-          <div class="module-body">
-           <div class="module-item module-item-1 no-expand">
-            <div class="block-body expand-block">
-    
-<div class="product-details" id="product">
- <div class="title page-title">
-  Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi
- </div>
- <div class="product-stats">
-  <ul class="list-unstyled">
-   <li class="product-stock in-stock">
-    <b>
-     Stock:
-    </b>
-    <span>
-     In Stock
-    </span>
-   </li>
-   <li class="product-model">
-    <b>
-     Model:
-    </b>
-    <span>
-     7"
-    </span>
-   </li>
-   <li class="product-weight">
-    <b>
-     Weight:
-    </b>
-    <span>
-     0.06kg
-    </span>
-   </li>
-   <li class="product-sku">
-    <b>
-     SKU:
-    </b>
-    <span>
-     30000125
-    </span>
-   </li>
-  </ul>
-  <div class="custom-stats">
-   <div class="product-sold">
-    <b>
-     Products Sold: 0
-    </b>
-   </div>
-   <div class="product-views">
-    <b>
-     Product Views: 4459
-    </b>
-   </div>
-  </div>
- </div>
- <div class="product-price-group">
-  <div class="price-wrapper">
-   <div class="price-group">
-    <div class="product-price-new">
-     2.00€
-    </div>
-    <div class="product-price-old">
-     3.33€
-    </div>
-   </div>
-  </div>
- </div>
- <div class="button-group-page">
-  <div class="buttons-wrapper">
-   <div class="stepper-group cart-group">
-    <div class="stepper">
-     <label class="control-label" for="product-quantity">
-      Qty
-     </label>
-     <input class="form-control" data-minimum="1" id="product-quantity" name="quantity" type="text" value="1"/>
-     <input id="product-id" name="product_id" type="hidden" value="443676"/>
-     <span>
-      <i class="fa fa-angle-up">
-      </i>
-      <i class="fa fa-angle-down">
-      </i>
-     </span>
-    </div>
-    <a class="btn btn-cart" data-loading-text="&lt;span class='btn-text'&gt;Add to Cart&lt;/span&gt;" id="button-cart">
-     <span class="btn-text">
-      Add to Cart
-     </span>
-    </a>
-    <div class="extra-group">
-     <a class="btn btn-extra btn-extra-46 btn-1-extra" data-loading-text="&lt;span class='btn-text'&gt;Buy Now&lt;/span&gt;" data-quick-buy="">
-      <span class="btn-text">
-       Buy Now
-      </span>
-     </a>
-     <a class="btn btn-extra btn-extra-93 btn-2-extra" data-loading-text="&lt;span class='btn-text'&gt;Ask Question&lt;/span&gt;" data-product_id="443676" href="javascript:open_popup(22)">
-      <span class="btn-text">
-       Ask Question
-      </span>
-     </a>
-    </div>
-   </div>
-  </div>
- </div>
-</div>
+📂 [14/18] Kategorija '8"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_234
+   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 10098
+   🏁 Kategorija '8"' gotova za 0.6s (+1 unikatnih vinila).
 
-<div class="product-stats">
- <ul class="list-unstyled">
-  <li class="product-stock in-stock">
-   <b>
-    Stock:
-   </b>
-   <span>
-    In Stock
-   </span>
-  </li>
-  <li class="product-model">
-   <b>
-    Model:
-   </b>
-   <span>
-    7"
-   </span>
-  </li>
-  <li class="product-weight">
-   <b>
-    Weight:
-   </b>
-   <span>
-    0.06kg
-   </span>
-  </li>
-  <li class="product-sku">
-   <b>
-    SKU:
-   </b>
-   <span>
-    30000125
-   </span>
-  </li>
- </ul>
- <div class="custom-stats">
-  <div class="product-sold">
-   <b>
-    Products Sold: 0
-   </b>
-  </div>
-  <div class="product-views">
-   <b>
-    Product Views: 4459
-   </b>
-  </div>
- </div>
-</div>
+📂 [15/18] Kategorija '7"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_233
+   ✅ Stranica 1/25: +100 artikala | Ukupno u bazi: 10198
+   ⚡ [7"] Stranice 02-07/25 (6/6 OK) za 13.8s | +600 novih | Ukupno: 10798
+   ⚡ [7"] Stranice 08-13/25 (6/6 OK) za 12.7s | +599 novih | Ukupno: 11397
+   ⚡ [7"] Stranice 14-19/25 (6/6 OK) za 13.2s | +600 novih | Ukupno: 11997
+   ⚡ [7"] Stranice 20-25/25 (6/6 OK) za 10.9s | +527 novih | Ukupno: 12524
+   🏁 Kategorija '7"' gotova za 52.4s (+2426 unikatnih vinila).
 
-<div class="description">
- Naš
-outlet obara sve rekorde po količini ploča, CD-a, DVD-a i ostalog po zaista
-smiješnim cijenama.Artikli koje se tamo prodaju,
-nažalost nisu upis..
-</div>
+📂 [16/18] Kategorija '6"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_232
+   ✅ Stranica 1/1: +13 artikala | Ukupno u bazi: 12537
+   🏁 Kategorija '6"' gotova za 1.4s (+13 unikatnih vinila).
 
-<div class="description">
- Naš
-outlet obara sve rekorde po količini ploča, CD-a, DVD-a i ostalog po zaista
-smiješnim cijenama.Artikli koje se tamo prodaju,
-nažalost nisu upis..
-</div>
+📂 [17/18] Kategorija '5"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_231
+   ✅ Stranica 1/1: +6 artikala | Ukupno u bazi: 12543
+   🏁 Kategorija '5"' gotova za 0.5s (+6 unikatnih vinila).
 
-<div class="description">
- Naš
-outlet obara sve rekorde po količini ploča, CD-a, DVD-a i ostalog po zaista
-smiješnim cijenama.Artikli koje se tamo prodaju,
-nažalost nisu upis..
-</div>
+📂 [18/18] Kategorija 'MINI LP' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_247
+   ✅ Stranica 1/1: +21 artikala | Ukupno u bazi: 12564
+   🏁 Kategorija 'MINI LP' gotova za 0.8s (+21 unikatnih vinila).
 
-<div class="description">
- Condition sleeve: VGCondition records: GEdition: UK Records ‎– D, DL 25 640Genre: ROCKStyle: ART ROCK..
-</div>
-
-<div class="description">
- Condition sleeve: VGCondition records: VGEdition: Mercury – D, 6008 035Genre: ROCKStyle: GLAM ROCK..
-</div>
-
-<div class="description">
- Condition sleeve: Condition records: VGEdition: UK Records, Jugoton, Decca – YU, SDC-88695Genre: ROCKStyle: GLAM ROCK..
-</div>
-
-<div class="description">
- Condition sleeve: Condition records: GEdition: Fontana ‎– D, 270 118 TFGenre: ROCKStyle: ROCK, Doo WopRemark: NO ORIGINAL COVER..
-</div>
-
-<div class="description">
- Condition sleeve: Condition records: GEdition: JUGOTON - YU,  SY-1045Genre: POPStyle: CROATIAN POPULAR..
-</div>
-
-<div class="description">
- Condition sleeve: VGCondition records: GEdition: UK Records ‎– D, DL 25 640Genre: ROCKStyle: ART ROCK..
-</div>
-
-<div class="description">
- Condition sleeve: VGCondition records: VGEdition: Mercury – D, 6008 035Genre: ROCKStyle: GLAM ROCK..
-</div>
-
-<div class="description">
- Condition sleeve: Condition records: VGEdition: UK Records, Jugoton, Decca – YU, SDC-88695Genre: ROCKStyle: GLAM ROCK..
-</div>
-
-<div class="description">
- Condition sleeve: VGCondition records: VG+Edition: Polskie Nagrania Muza ‎– PL, SX 1574Genre: ROCKStyle: ROCK..
-</div>
-
-<div class="description">
- Condition sleeve: Condition records: GEdition: Fontana ‎– D, 270 118 TFGenre: ROCKStyle: ROCK, Doo WopRemark: NO ORIGINAL COVER..
-</div>
-
+🧹 Sinkronizacija završena! Uklonjeno 0 prodanih artikala.
+🎉 GOTOVO za 646.7s! U bazi je 12564 dostupnih Freebird vinila (Sa slikom: 11886).
 ----------------------------------------
-Vrijeme završetka (UTC): 25.10.2026. 08:56:07 | Kod izlaza: 0
+Vrijeme završetka (UTC): 25.10.2026. 09:16:10 | Kod izlaza: 0
