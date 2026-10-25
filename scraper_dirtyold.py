@@ -1,9 +1,7 @@
 import cloudscraper
 from bs4 import BeautifulSoup
-from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urljoin
 import urllib3
-import threading
 import csv
 import os
 import re
@@ -15,9 +13,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 SITE_URL = "https://www.dirtyoldempire.com"
 BASE_VINYL_URL = "https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/"
 CSV_FILENAME = "dirtyold_ploce.csv"
-BROJ_NITI = 4  # Samo 7-8 stranica ukupno, 4 niti su sasvim dovoljne i sigurne
-
-_thread_local = threading.local()
 
 
 def kreiraj_sesiju():
@@ -34,29 +29,34 @@ def kreiraj_sesiju():
     return s
 
 
-def dohvati_sesiju():
-    s = getattr(_thread_local, "session", None)
-    if s is None:
-        s = kreiraj_sesiju()
-        _thread_local.session = s
-    return s
-
-
-def sigurni_get_utf8(url, timeout=45):
-    for pokusaj in range(1, 5):
+def sigurni_get_utf8(sesija, url, max_pokusaja=6, timeout=60):
+    for pokusaj in range(1, max_pokusaja + 1):
         try:
-            s = dohvati_sesiju()
-            r = s.get(url, timeout=timeout)
+            r = sesija.get(url, timeout=timeout)
+
+            # Ako je stranica izvan opsega paginacije, WooCommerce vraća 404
+            if r.status_code == 404:
+                return "STATUS_404", sesija
+
             if r.status_code == 200 and len(r.content) > 5000:
-                # Forsiramo UTF-8 dekodiranje kako bismo izbjegli 'Ä\x8d' i 'â\x80\x93' artefakte
-                return r.content.decode("utf-8", errors="replace")
-            time.sleep(1.5 * pokusaj)
-            _thread_local.session = kreiraj_sesiju()
+                tekst = r.content.decode("utf-8", errors="replace")
+                if "li class=\"product" in tekst or "woocommerce-pagination" in tekst:
+                    return tekst, sesija
+
+            print(
+                f"   ⚠️ Pokušaj {pokusaj}/{max_pokusaja} za {url} vratio HTTP {r.status_code} "
+                f"(duljina: {len(r.content)}B). Čekam {2 * pokusaj}s...",
+                flush=True
+            )
+            time.sleep(2 * pokusaj)
+            sesija = kreiraj_sesiju()
+
         except Exception as e:
-            print(f"   ⚠️ Greška spajanja ({pokusaj}/4) na {url}: {e}", flush=True)
-            time.sleep(1.5 * pokusaj)
-            _thread_local.session = kreiraj_sesiju()
-    return None
+            print(f"   ⚠️ Mrežna greška ({pokusaj}/{max_pokusaja}) na {url}: {e}. Čekam {2 * pokusaj}s...", flush=True)
+            time.sleep(2 * pokusaj)
+            sesija = kreiraj_sesiju()
+
+    return None, sesija
 
 
 def normaliziraj_link(href):
@@ -70,7 +70,6 @@ def izvuci_najbolju_sliku(img_el):
     if not img_el:
         return ""
 
-    # Tražimo 600x600 ili originalnu sliku iz srcseta, a ako nema uzimamo src
     srcset = html.unescape(img_el.get("srcset", "")).strip()
     if srcset:
         kandidati = []
@@ -84,7 +83,6 @@ def izvuci_najbolju_sliku(img_el):
                 if "placeholder" not in url_s.lower():
                     kandidati.append((sirina, url_s))
         if kandidati:
-            # Preferiramo 600w (ili najveću dostupnu)
             for sirina, url_s in sorted(kandidati, key=lambda x: x[0]):
                 if sirina >= 600:
                     return url_s.replace(" ", "%20")
@@ -103,7 +101,6 @@ def izvuci_cijenu(kartica):
     if not price_span:
         return "0.00"
 
-    # Ako je proizvod na akciji, WooCommerce stavlja novu cijenu unutar <ins>, a staru u <del>
     ins_el = price_span.select_one("ins .woocommerce-Price-amount, ins bdi")
     target_el = ins_el if ins_el else price_span.select_one(".woocommerce-Price-amount, bdi")
     if not target_el:
@@ -126,17 +123,26 @@ def odredi_tip_artikla(klase_kartice, naslov):
     klase_str = " ".join(klase_kartice).lower()
     naslov_low = naslov.lower()
 
-    # Provjera klasa kategorija na <li class="product ...">
     if "product_cat-single" in klase_str or "product_cat-7-box-set" in klase_str:
         return 'Singl 7"'
 
-    if any(oznaka in naslov_low for oznaka in [' 7"', ' 7″', ' 7\'\'', ' 7′']):
+    if any(oznaka in naslov_low for oznaka in [' 7"', ' 7″', " 7''", ' 7′']):
         return 'Singl 7"'
 
     return "LP"
 
 
 def izvuci_max_stranicu(soup):
+    # Prvo gledamo točan broj rezultata iz "Prikazujemo 1–1000 od XXXX rezultata"
+    res_count = soup.select_one(".woocommerce-result-count")
+    if res_count:
+        tekst = res_count.get_text(" ", strip=True)
+        m_ukupno = re.search(r"od\s+(\d+)\s+rezultat", tekst, flags=re.IGNORECASE)
+        if m_ukupno:
+            ukupno = int(m_ukupno.group(1))
+            if ukupno > 0:
+                return (ukupno + 999) // 1000
+
     max_str = 1
     for a in soup.select(".woocommerce-pagination a.page-numbers, ul.page-numbers a[href]"):
         tekst = a.get_text(strip=True)
@@ -159,11 +165,9 @@ def parsiraj_stranicu(html_tekst):
         klase = k.get("class", [])
         klase_low = [c.lower() for c in klase]
 
-        # Sigurnosna provjera da ne uđe pribor ili slipmat
         if any(z in klase_low for z in ["product_cat-pribor-accessories", "product_cat-slipmat"]):
             continue
 
-        # Provjera je li na zalihi (klasa 'instock' i gumb 'add_to_cart_button')
         if "outofstock" in klase_low or "instock" not in klase_low:
             continue
         if not k.select_one("a.add_to_cart_button"):
@@ -193,8 +197,6 @@ def parsiraj_stranicu(html_tekst):
         slika_url = izvuci_najbolju_sliku(img_el)
 
         tip_artikla = odredi_tip_artikla(klase_low, naslov)
-
-        # Dirty Old Shop prodaje isključivo nove ploče (osim ako u naslovu izričito piše used/second hand)
         stanje = "Rabljeni" if any(r in naslov.lower() for r in ["second hand", "used", "rabljeno"]) else "Novo"
 
         vidjeni_na_stranici.add(link)
@@ -208,16 +210,6 @@ def sastavi_url_stranice(page):
     if page <= 1:
         return BASE_VINYL_URL
     return f"{BASE_VINYL_URL.rstrip('/')}/page/{page}/"
-
-
-def obradi_stranicu(page):
-    url = sastavi_url_stranice(page)
-    t0 = time.time()
-    html_tekst = sigurni_get_utf8(url)
-    if not html_tekst:
-        return page, False, [], 0, 1, time.time() - t0
-    stavke, br_kartica, max_str = parsiraj_stranicu(html_tekst)
-    return page, True, stavke, br_kartica, max_str, time.time() - t0
 
 
 def scrape_dirtyold():
@@ -236,11 +228,18 @@ def scrape_dirtyold():
                     sve_ploce[norm_k] = row
         print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
+    sesija = kreiraj_sesiju()
     print(f"🔎 Dohvaćam 1. stranicu Dirty Old Shop vinil kataloga ({BASE_VINYL_URL})...", flush=True)
-    _, ok1, stavke1, br_kartica1, max_pages, trajanje1 = obradi_stranicu(1)
 
-    if not ok1 or br_kartica1 == 0:
+    t0 = time.time()
+    html_1, sesija = sigurni_get_utf8(sesija, sastavi_url_stranice(1))
+    if not html_1 or html_1 == "STATUS_404":
         print("❌ Neuspješno dohvaćanje 1. stranice. Prekidam rad.", flush=True)
+        return
+
+    stavke1, br_kartica1, max_pages = parsiraj_stranicu(html_1)
+    if br_kartica1 == 0:
+        print("❌ Na 1. stranici nisu pronađene kartice proizvoda. Prekidam rad.", flush=True)
         return
 
     for link, red in stavke1:
@@ -248,46 +247,83 @@ def scrape_dirtyold():
         aktivni_linkovi.add(link)
 
     print(
-        f"✅ Stranica 1/{max_pages} obrađena za {trajanje1:.1f}s: "
+        f"✅ Stranica 1/{max_pages} obrađena za {time.time() - t0:.1f}s: "
         f"{br_kartica1} kartica ({len(stavke1)} dostupnih na zalihi).",
         flush=True
     )
 
-    if max_pages > 1:
-        preostale = list(range(2, max_pages + 1))
-        with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
-            for i in range(0, len(preostale), BROJ_NITI):
-                blok = preostale[i:i + BROJ_NITI]
-                rezultati = list(executor.map(obradi_stranicu, blok))
+    neuspjele_stranice = []
 
-                for page, ok, stavke, br_kartica, _, trajanje in rezultati:
-                    if not ok:
-                        print(f"   ❌ Stranica {page}/{max_pages} nije uspjela!", flush=True)
-                        continue
+    # Slijedno dohvaćanje preostalih stranica (bez paralelnog udara na bazu od po 1000 artikala)
+    for page in range(2, max_pages + 1):
+        time.sleep(1.2)
+        t_p = time.time()
+        url_p = sastavi_url_stranice(page)
+        html_p, sesija = sigurni_get_utf8(sesija, url_p)
 
-                    novih = 0
-                    for link, red in stavke:
-                        if link not in aktivni_linkovi:
-                            novih += 1
-                        sve_ploce[link] = red
-                        aktivni_linkovi.add(link)
+        if html_p == "STATUS_404":
+            print(f"   ℹ️ Stranica {page}/{max_pages} vratila 404 (kraj kataloga).", flush=True)
+            break
 
-                    print(
-                        f"   ⚡ Stranica {page}/{max_pages} ({trajanje:.1f}s): "
-                        f"{br_kartica} kartica -> +{novih} dostupnih | Ukupno aktivnih: {len(aktivni_linkovi)}",
-                        flush=True
-                    )
+        if not html_p:
+            print(f"   ❌ Stranica {page}/{max_pages} nije uspjela u prvom krugu!", flush=True)
+            neuspjele_stranice.append(page)
+            continue
 
-    # Sinkronizacija: uklanjamo rasprodane artikle ako je katalog uredno pročitan
-    if len(aktivni_linkovi) > 1000:
+        stavke, br_kartica, _ = parsiraj_stranicu(html_p)
+        novih = 0
+        for link, red in stavke:
+            if link not in aktivni_linkovi:
+                novih += 1
+            sve_ploce[link] = red
+            aktivni_linkovi.add(link)
+
+        print(
+            f"   ⚡ Stranica {page}/{max_pages} ({time.time() - t_p:.1f}s): "
+            f"{br_kartica} kartica -> +{novih} dostupnih | Ukupno aktivnih: {len(aktivni_linkovi)}",
+            flush=True
+        )
+
+    # Popravni krug za eventualno neuspjele stranice
+    if neuspjele_stranice:
+        print(f"\n🔄 Ponavljam dohvat za neuspjele stranice: {neuspjele_stranice} nakon 5s pauze...", flush=True)
+        time.sleep(5)
+        sesija = kreiraj_sesiju()
+        jos_uvijek_neuspjele = []
+
+        for page in neuspjele_stranice:
+            t_p = time.time()
+            html_p, sesija = sigurni_get_utf8(sesija, sastavi_url_stranice(page), max_pokusaja=6, timeout=60)
+            if html_p and html_p != "STATUS_404":
+                stavke, br_kartica, _ = parsiraj_stranicu(html_p)
+                novih = 0
+                for link, red in stavke:
+                    if link not in aktivni_linkovi:
+                        novih += 1
+                    sve_ploce[link] = red
+                    aktivni_linkovi.add(link)
+                print(
+                    f"   ✅ [Popravni] Stranica {page}/{max_pages} ({time.time() - t_p:.1f}s): "
+                    f"{br_kartica} kartica -> +{novih} dostupnih | Ukupno aktivnih: {len(aktivni_linkovi)}",
+                    flush=True
+                )
+            elif html_p == "STATUS_404":
+                print(f"   ℹ️ [Popravni] Stranica {page} ne postoji (404).", flush=True)
+            else:
+                jos_uvijek_neuspjele.append(page)
+
+        neuspjele_stranice = jos_uvijek_neuspjele
+
+    # Sinkronizacija: brišemo rasprodane SAMO ako nijedna stranica nije pala!
+    if not neuspjele_stranice and len(aktivni_linkovi) > 1000:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
         obrisano = pocetni_broj - len(sve_ploce)
         print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} rasprodanih artikala.", flush=True)
     else:
         print(
-            f"\n⚠️ Oprez: Pronađeno samo {len(aktivni_linkovi)} artikala. "
-            f"Preskačem brisanje starih zapisa radi sigurnosti.",
+            f"\n⚠️ Oprez: Neke stranice nisu učitane ({neuspjele_stranice}). "
+            f"Zadržavam postojeće artikle u bazi bez brisanja.",
             flush=True
         )
 
