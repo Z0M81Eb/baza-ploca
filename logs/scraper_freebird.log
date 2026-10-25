@@ -1,219 +1,534 @@
 === IZVJEŠTAJ RADA: scraper_freebird.py ===
-Vrijeme pokretanja (UTC): 25.10.2026. 08:51:34
+Vrijeme pokretanja (UTC): 25.10.2026. 08:55:55
 ----------------------------------------
-🔎 [1/3] Spajam se na naslovnicu: https://freebird.hr ...
-✅ Naslovnica dohvaćena! HTTP 200 | Duljina: 523425 znakova
+🔎 Otvaram LP kategoriju: https://freebird.hr/index.php?route=product/category&path=225_223
+✅ Status: 200 | Duljina: 2448429
+⚡ Test '&limit=100': pronađeno 216 proizvoda na jednoj stranici!
 
-📂 === PRONAĐENI LINKOVI U MENIJU (Ukupno filtrirano: 170) ===
-  001. [Home] -> https://freebird.hr/
-  002. [LP katalog (.xlsx ~1 MB)] -> https://freebird.hr/download/LP_katalog.xlsx
-  003. [CD katalog (.xlsx ~0.6 MB)] -> https://freebird.hr/download/CD_katalog.xlsx
-  004. [SINGLICE katalog (.xlsx ~0.9 MB)] -> https://freebird.hr/download/SINGLE_katalog.xlsx
-  005. [KAZETE (.xlsx ~1 MB)] -> https://freebird.hr/download/kazete.xlsx
-  006. [VELIKA RASPRODAJA CDa (.xlsx ~0.6 MB)] -> https://freebird.hr/download/VELIKE_RASPRODAJA_CDa.xlsx
-  007. [RASPRODAJA LPa OD 2 DO 4 EURA (.xlsx ~0.9 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_OD_2_DO_4_EURA.xlsx
-  008. [CD 50 centi (.xlsx ~0.6 MB)] -> https://freebird.hr/download/CD_50cents.xlsx
-  009. [SINGLICE 50 centi (.xlsx ~0.6 MB)] -> https://freebird.hr/download/SINGLE_50cents.xlsx
-  010. [70S POP RASPRODAJA LP (.xlsx ~1 MB)] -> https://freebird.hr/download/70S_POP_RASPRODAJA_LP.xlsx
-  011. [RASPRODAJA LPa PO 4€ (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_PO_4€.xlsx
-  012. [VELIKA RASPRODAJA SINGLOVA (.xlsx ~1 MB)] -> https://freebird.hr/download/VELIKA_RASPRODAJA_SINGLOVA.xlsx
-  013. [80S LP RASPRODAJA (.xlsx ~0.6 MB)] -> https://freebird.hr/download/80S_LP_RASPRODAJA.xlsx
-  014. [RASPRODAJA METAL, HARD i PROG ROCK LPa (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_METAL_HARD_i_PROG_ROCK_LPa.xlsx
-  015. [RASPRODAJA LPa ROCK ANTOLOGIJE (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_ROCK_ANTOLOGIJE.xlsx
-  016. [RASPRODAJA JAZZ BLUES SOUL RnR COUNTRY EASY LISTENING LPa (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_JAZZ_BLUES_SOUL_RnR_COUNTRY_EASY_LISTENING_LPa.xlsx
-  017. [RASPRODAJA LPa KLASIKE (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_KLASIKE.xlsx
-  018. [Blog Zadnje novosti] -> https://freebird.hr/index.php?route=journal3/blog
-  019. [Sve kategorije] -> https://freebird.hr/index.php?route=product/catalog
-  020. [LP] -> https://freebird.hr/index.php?route=product/category&path=223
-  021. [12" SINGLE] -> https://freebird.hr/index.php?route=product/category&path=301
-  022. [10"] -> https://freebird.hr/index.php?route=product/category&path=235
-  023. [8"] -> https://freebird.hr/index.php?route=product/category&path=234
-  024. [7"] -> https://freebird.hr/index.php?route=product/category&path=233
-  025. [6"] -> https://freebird.hr/index.php?route=product/category&path=232
-  026. [5"] -> https://freebird.hr/index.php?route=product/category&path=231
-  027. [CD] -> https://freebird.hr/index.php?route=product/category&path=226
-  028. [SACD] -> https://freebird.hr/index.php?route=product/category&path=228
-  029. [CD+DVD] -> https://freebird.hr/index.php?route=product/category&path=238
-  030. [DVD] -> https://freebird.hr/index.php?route=product/category&path=227
-  031. [Bluray] -> https://freebird.hr/index.php?route=product/category&path=245
-  032. [Vinyl&CD dodaci i oprema] -> https://freebird.hr/index.php?route=product/category&path=248
-  033. [HI-FI] -> https://freebird.hr/index.php?route=product/category&path=249
-  034. [AUDIO SUČELJE] -> https://freebird.hr/index.php?route=product/category&path=249_257
-  035. [Vidi sve] -> https://freebird.hr/index.php?route=product/category&path=249
-  036. [Vidi sve na popustu] -> https://freebird.hr/index.php?route=product/special
-  037. [Adem Seferaj Dhe Rexhep Hajdari - Ty Parti Të Këndojmë Lavdi] -> https://freebird.hr/index.php?route=product/product&product_id=443676
-  038. [AMEN CORNER - Half As Nice] -> https://freebird.hr/index.php?route=product/product&product_id=443767
-  039. [Ansambl Ratka Jovanovića - Narodna Kola] -> https://freebird.hr/index.php?route=product/product&product_id=443883
-  040. [BAHIJA - MA TFEKERNICHE] -> https://freebird.hr/index.php?route=product/product&product_id=444089
-  041. [Beethoven - Concerto No. 2 For Piano And Orchestra/Emil Gilels, Leningrad State Philharmonic Symphony Orchestra] -> https://freebird.hr/index.php?route=product/product&product_id=454638
-  042. [BOONE PAT - SPEEDY GONZALES / THE LOCKET] -> https://freebird.hr/index.php?route=product/product&product_id=444505
-  043. [BOONE PAT - The Exodus Song (This Land Is Mine) / There's A Moon Out Tonight] -> https://freebird.hr/index.php?route=product/product&product_id=444506
-  044. [BRAHMS - EIN DEUTSCHES REQUIEM/DONATH, WIDMER, GONNENWEIN] -> https://freebird.hr/index.php?route=product/product&product_id=455242
-  045. [Svi proizvodi] -> https://freebird.hr/index.php?route=product/catalog
-  046. [Novi naslovi] -> https://freebird.hr/index.php?route=product/catalog&sort=p.date_added&order=DESC
-  047. [Outlet] -> https://freebird.hr/index.php?route=product/category&path=338
-  048. [VINYL] -> https://freebird.hr/index.php?route=product/category&path=225
-  049. [10' 0] -> https://freebird.hr/index.php?route=product/category&path=225_342
-  050. [10'" 1] -> https://freebird.hr/index.php?route=product/category&path=225_3212
-  051. [10'' 1] -> https://freebird.hr/index.php?route=product/category&path=225_339
-  052. [12" SINGLE 485] -> https://freebird.hr/index.php?route=product/category&path=225_301
-  053. [12" SINGLE + 7" 1] -> https://freebird.hr/index.php?route=product/category&path=225_3216
-  054. [12" SINGLE+CD 0] -> https://freebird.hr/index.php?route=product/category&path=225_317
-  055. [12" VINYL 6] -> https://freebird.hr/index.php?route=product/category&path=225_3209
-  056. [12" VINYL, 2 CASSETTES 0] -> https://freebird.hr/index.php?route=product/category&path=225_3214
-  057. [12", MiniAlbum 2] -> https://freebird.hr/index.php?route=product/category&path=225_3217
-  058. [12''' 0] -> https://freebird.hr/index.php?route=product/category&path=225_3211
-  059. [3 0] -> https://freebird.hr/index.php?route=product/category&path=225_3215
-  060. [7 0] -> https://freebird.hr/index.php?route=product/category&path=225_3201
-  061. [7" FLEXI 0] -> https://freebird.hr/index.php?route=product/category&path=225_310
-  062. [9" 0] -> https://freebird.hr/index.php?route=product/category&path=225_3197
-  063. [EP 1] -> https://freebird.hr/index.php?route=product/category&path=225_315
-  064. [JUGOTON - YU, LSPUR 70674 0] -> https://freebird.hr/index.php?route=product/category&path=225_3210
-  065. [Limited Edition LP + 7" SINGLE 0] -> https://freebird.hr/index.php?route=product/category&path=225_3200
-  066. [LP & 12" SINGLE 1] -> https://freebird.hr/index.php?route=product/category&path=225_328
-  067. [LP + 12 MAXI SINGLE 1] -> https://freebird.hr/index.php?route=product/category&path=225_3203
-  068. [LP + EP 1] -> https://freebird.hr/index.php?route=product/category&path=225_333
-  069. [LP CD 0] -> https://freebird.hr/index.php?route=product/category&path=225_332
-  070. [LP VINYL 0] -> https://freebird.hr/index.php?route=product/category&path=225_3218
-  071. [LP+12" SINGLE 0] -> https://freebird.hr/index.php?route=product/category&path=225_324
-  072. [LP+7" 0] -> https://freebird.hr/index.php?route=product/category&path=225_323
-  073. [LP+CD 0] -> https://freebird.hr/index.php?route=product/category&path=225_325
-  074. [LP+EP 0] -> https://freebird.hr/index.php?route=product/category&path=225_326
-  075. [LP, 7" 0] -> https://freebird.hr/index.php?route=product/category&path=225_327
-  076. [LP 9475] -> https://freebird.hr/index.php?route=product/category&path=225_223
-  077. [12" 2] -> https://freebird.hr/index.php?route=product/category&path=225_236
-  078. [10" 128] -> https://freebird.hr/index.php?route=product/category&path=225_235
-  079. [8" 1] -> https://freebird.hr/index.php?route=product/category&path=225_234
-  080. [7" 2427] -> https://freebird.hr/index.php?route=product/category&path=225_233
-  081. [6" 13] -> https://freebird.hr/index.php?route=product/category&path=225_232
-  082. [5" 6] -> https://freebird.hr/index.php?route=product/category&path=225_231
-  083. [MINI LP 21] -> https://freebird.hr/index.php?route=product/category&path=225_247
-  084. [CD/DVD/BLU-RAY] -> https://freebird.hr/index.php?route=product/category&path=224
-  085. [BLUE RAY 0] -> https://freebird.hr/index.php?route=product/category&path=224_3204
-  086. [CD 4213] -> https://freebird.hr/index.php?route=product/category&path=224_226
-  087. [CD + DVD 1] -> https://freebird.hr/index.php?route=product/category&path=224_3199
-  088. [CD EP 0] -> https://freebird.hr/index.php?route=product/category&path=224_298
-  089. [CD MAXI 1] -> https://freebird.hr/index.php?route=product/category&path=224_3219
-  090. [CD SINGLE 119] -> https://freebird.hr/index.php?route=product/category&path=224_296
-  091. [CD SINGLE SINGLE 0] -> https://freebird.hr/index.php?route=product/category&path=224_3198
-  092. [CD SINGLE+DVD 0] -> https://freebird.hr/index.php?route=product/category&path=224_300
-  093. [CD+CD ROM 0] -> https://freebird.hr/index.php?route=product/category&path=224_297
-  094. [CD+DVD 4] -> https://freebird.hr/index.php?route=product/category&path=224_238
-  095. [CD/DVD 20] -> https://freebird.hr/index.php?route=product/category&path=224_336
-  096. [CDR 0] -> https://freebird.hr/index.php?route=product/category&path=224_3213
-  097. [DVD 90] -> https://freebird.hr/index.php?route=product/category&path=224_227
-  098. [DVD+CD 1] -> https://freebird.hr/index.php?route=product/category&path=224_322
-  099. [FUNK/SOUL 0] -> https://freebird.hr/index.php?route=product/category&path=224_3208
-  100. [HYBRID DUALDISC 0] -> https://freebird.hr/index.php?route=product/category&path=224_229
-  101. [SACD 0] -> https://freebird.hr/index.php?route=product/category&path=224_228
-  102. [Bluray 0] -> https://freebird.hr/index.php?route=product/category&path=224_245
-  103. [Vinyl&CD Oprema] -> https://freebird.hr/index.php?route=product/category&path=248
-  104. [AUDIO SUČELJE 0] -> https://freebird.hr/index.php?route=product/category&path=249_257
-  105. [CD PLAYER 12] -> https://freebird.hr/index.php?route=product/category&path=249_269
-  106. [DVD PLAYER 12] -> https://freebird.hr/index.php?route=product/category&path=249_270
-  107. [DVD RECEIVER 0] -> https://freebird.hr/index.php?route=product/category&path=249_3205
-  108. [GRAMOFON 15] -> https://freebird.hr/index.php?route=product/category&path=249_271
-  109. [HIFI LINIJA 21] -> https://freebird.hr/index.php?route=product/category&path=249_272
-  110. [KASETOFON 29] -> https://freebird.hr/index.php?route=product/category&path=249_273
-  111. [KUĆNO KINO 0] -> https://freebird.hr/index.php?route=product/category&path=249_253
-  112. [MAGNETOFON 0] -> https://freebird.hr/index.php?route=product/category&path=249_276
-  113. [MICRO HI-FI SYSTEM 0] -> https://freebird.hr/index.php?route=product/category&path=249_331
-  114. [MIKROFON 0] -> https://freebird.hr/index.php?route=product/category&path=249_262
-  115. [MINIDISC 0] -> https://freebird.hr/index.php?route=product/category&path=249_255
-  116. [POJAČALO 7] -> https://freebird.hr/index.php?route=product/category&path=249_274
-  117. [RECEIVER 8] -> https://freebird.hr/index.php?route=product/category&path=249_275
-  118. [SAT RECEIVER 0] -> https://freebird.hr/index.php?route=product/category&path=249_343
-  119. [SLUŠALICE 0] -> https://freebird.hr/index.php?route=product/category&path=249_265
-  120. [SOUNCARD 0] -> https://freebird.hr/index.php?route=product/category&path=249_3206
+📦 Pronađeno kartica na standardnoj stranici: 40
+=== HTML PRVE KARTICE ===
+<div class="product-layout has-extra-button">
+ <div class="product-thumb">
+  <div class="image">
+   <div class="quickview-button">
+    <a class="btn btn-quickview" data-placement="top" data-toggle="tooltip" data-tooltip-class="module-products-213 module-products-grid quickview-tooltip" onclick="quickview('443676')" title="Quickview">
+     <span class="btn-text">
+      Quickview
+     </span>
+    </a>
+   </div>
+   <a class="product-img" href="https://freebird.hr/index.php?route=product/product&amp;product_id=443676">
+    <div>
+     <img alt="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" class="img-responsive img-first" height="250" src="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-250x250h.webp" srcset="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-250x250h.webp 1x, https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-500x500h.webp 2x" title="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" width="250"/>
+    </div>
+   </a>
+   <div class="product-labels">
+    <span class="product-label product-label-233 product-label-default">
+     <b>
+      -40 %
+     </b>
+    </span>
+   </div>
+  </div>
+  <div class="caption">
+   <div class="name">
+    <a href="https://freebird.hr/index.php?route=product/product&amp;product_id=443676">
+     Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi
+    </a>
+   </div>
+   <div class="description">
+    Condition sleeve: VG+Condition records: VG+Edition: Diskos – YU, EDK-5433Genre: FOLK, WORLD &amp; COUNTRYStyle: WORLD/KOSOVO/ALBANIA..
+   </div>
+   <div class="price">
+    <div>
+     <span class="price-new">
+      2.00€
+     </span>
+     <span class="price-old">
+      3.33€
+     </span>
+    </div>
+    <span class="price-tax">
+     Ex Tax:2.00€
+    </span>
+   </div>
+   <div class="rating no-rating rating-hover">
+    <div class="rating-stars">
+     <span class="fa fa-stack">
+      <i class="fa fa-star-o fa-stack-2x">
+      </i>
+     </span>
+     <span class="fa fa-stack">
+      <i class="fa fa-star-o fa-stack-2x">
+      </i>
+     </span>
+     <span class="fa fa-stack">
+      <i class="fa fa-star-o fa-stack-2x">
+      </i>
+     </span>
+     <span class="fa fa-stack">
+      <i class="fa fa-star-o fa-stack-2x">
+      </i>
+     </span>
+     <span class="fa fa-stack">
+      <i class="fa fa-star-o fa-stack-2x">
+      </i>
+     </span>
+    </div>
+   </div>
+   <div class="buttons-wrapper">
+    <div class="button-group">
+     <div class="cart-group">
+      <div class="stepper">
+       <input class="form-control" data-minimum="1" name="quantity" type="text" value="1"/>
+       <input name="product_id" type="hidden" value="443676"/>
+       <span>
+        <i class="fa fa-angle-up">
+        </i>
+        <i class="fa fa-angle-down">
+        </i>
+       </span>
+      </div>
+      <a class="btn btn-cart" data-loading-text="&lt;span class='btn-text'&gt;Add to Cart&lt;/span&gt;" data-placement="top" data-toggle="tooltip" data-tooltip-class="module-products-213 module-products-grid cart-tooltip" onclick="cart.add('443676', $(this).closest('.product-thumb').find('.button-group input[name=\'quantity\']').val());" title="Add to Cart">
+       <span class="btn-text">
+        Add to Cart
+       </span>
+      </a>
+     </div>
+    </div>
+   </div>
+   <div class="extra-group">
+    <div>
+     <a class="btn btn-extra btn-extra-46" data-loading-text="&lt;span class='btn-text'&gt;Buy Now&lt;/span&gt;" onclick="cart.add('443676', $(this).closest('.product-thumb').find('.button-group input[name=\'quantity\']').val(), true);">
+      <span class="btn-text">
+       Buy Now
+      </span>
+     </a>
+     <a class="btn btn-extra btn-extra-93" data-loading-text="&lt;span class='btn-text'&gt;Ask Question&lt;/span&gt;" data-product_id="443676" data-product_url="https://freebird.hr/index.php?route=product/product&amp;product_id=443676" href="javascript:open_popup(22)">
+      <span class="btn-text">
+       Ask Question
+      </span>
+     </a>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
 
-🎵 === UŽI IZBOR: VINIL / LP KANDIDATI (59) ===
-  * [LP katalog (.xlsx ~1 MB)] -> https://freebird.hr/download/LP_katalog.xlsx
-  * [SINGLICE katalog (.xlsx ~0.9 MB)] -> https://freebird.hr/download/SINGLE_katalog.xlsx
-  * [RASPRODAJA LPa OD 2 DO 4 EURA (.xlsx ~0.9 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_OD_2_DO_4_EURA.xlsx
-  * [SINGLICE 50 centi (.xlsx ~0.6 MB)] -> https://freebird.hr/download/SINGLE_50cents.xlsx
-  * [70S POP RASPRODAJA LP (.xlsx ~1 MB)] -> https://freebird.hr/download/70S_POP_RASPRODAJA_LP.xlsx
-  * [RASPRODAJA LPa PO 4€ (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_PO_4€.xlsx
-  * [VELIKA RASPRODAJA SINGLOVA (.xlsx ~1 MB)] -> https://freebird.hr/download/VELIKA_RASPRODAJA_SINGLOVA.xlsx
-  * [80S LP RASPRODAJA (.xlsx ~0.6 MB)] -> https://freebird.hr/download/80S_LP_RASPRODAJA.xlsx
-  * [RASPRODAJA METAL, HARD i PROG ROCK LPa (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_METAL_HARD_i_PROG_ROCK_LPa.xlsx
-  * [RASPRODAJA LPa ROCK ANTOLOGIJE (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_ROCK_ANTOLOGIJE.xlsx
-  * [RASPRODAJA JAZZ BLUES SOUL RnR COUNTRY EASY LISTENING LPa (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_JAZZ_BLUES_SOUL_RnR_COUNTRY_EASY_LISTENING_LPa.xlsx
-  * [RASPRODAJA LPa KLASIKE (.xlsx ~1 MB)] -> https://freebird.hr/download/RASPRODAJA_LPa_KLASIKE.xlsx
-  * [LP] -> https://freebird.hr/index.php?route=product/category&path=223
-  * [12" SINGLE] -> https://freebird.hr/index.php?route=product/category&path=301
-  * [10"] -> https://freebird.hr/index.php?route=product/category&path=235
-  * [7"] -> https://freebird.hr/index.php?route=product/category&path=233
-  * [Vinyl&CD dodaci i oprema] -> https://freebird.hr/index.php?route=product/category&path=248
-  * [VINYL] -> https://freebird.hr/index.php?route=product/category&path=225
-  * [12" SINGLE 485] -> https://freebird.hr/index.php?route=product/category&path=225_301
-  * [12" SINGLE + 7" 1] -> https://freebird.hr/index.php?route=product/category&path=225_3216
-  * [12" SINGLE+CD 0] -> https://freebird.hr/index.php?route=product/category&path=225_317
-  * [12" VINYL 6] -> https://freebird.hr/index.php?route=product/category&path=225_3209
-  * [12" VINYL, 2 CASSETTES 0] -> https://freebird.hr/index.php?route=product/category&path=225_3214
-  * [12", MiniAlbum 2] -> https://freebird.hr/index.php?route=product/category&path=225_3217
-  * [12''' 0] -> https://freebird.hr/index.php?route=product/category&path=225_3211
-  * [7" FLEXI 0] -> https://freebird.hr/index.php?route=product/category&path=225_310
-  * [Limited Edition LP + 7" SINGLE 0] -> https://freebird.hr/index.php?route=product/category&path=225_3200
-  * [LP & 12" SINGLE 1] -> https://freebird.hr/index.php?route=product/category&path=225_328
-  * [LP + 12 MAXI SINGLE 1] -> https://freebird.hr/index.php?route=product/category&path=225_3203
-  * [LP + EP 1] -> https://freebird.hr/index.php?route=product/category&path=225_333
-  * [LP CD 0] -> https://freebird.hr/index.php?route=product/category&path=225_332
-  * [LP VINYL 0] -> https://freebird.hr/index.php?route=product/category&path=225_3218
-  * [LP+12" SINGLE 0] -> https://freebird.hr/index.php?route=product/category&path=225_324
-  * [LP+7" 0] -> https://freebird.hr/index.php?route=product/category&path=225_323
-  * [LP+CD 0] -> https://freebird.hr/index.php?route=product/category&path=225_325
-  * [LP+EP 0] -> https://freebird.hr/index.php?route=product/category&path=225_326
-  * [LP, 7" 0] -> https://freebird.hr/index.php?route=product/category&path=225_327
-  * [LP 9475] -> https://freebird.hr/index.php?route=product/category&path=225_223
-  * [12" 2] -> https://freebird.hr/index.php?route=product/category&path=225_236
-  * [10" 128] -> https://freebird.hr/index.php?route=product/category&path=225_235
-  * [7" 2427] -> https://freebird.hr/index.php?route=product/category&path=225_233
-  * [MINI LP 21] -> https://freebird.hr/index.php?route=product/category&path=225_247
-  * [CD SINGLE 119] -> https://freebird.hr/index.php?route=product/category&path=224_296
-  * [CD SINGLE SINGLE 0] -> https://freebird.hr/index.php?route=product/category&path=224_3198
-  * [CD SINGLE+DVD 0] -> https://freebird.hr/index.php?route=product/category&path=224_300
-  * [Vinyl&CD Oprema] -> https://freebird.hr/index.php?route=product/category&path=248
-  * [Lotovi Povjerite Free Bird lotove i uštedite pri kupnji ploča, CD-ova i DVD-ova!] -> https://freebird.hr/index.php?route=product/category&path=3202
-  * [12" SINGLE + 7"] -> https://freebird.hr/index.php?route=product/category&path=3216
-  * [12" SINGLE+CD] -> https://freebird.hr/index.php?route=product/category&path=317
-  * [12" VINYL] -> https://freebird.hr/index.php?route=product/category&path=3209
-  * [12" VINYL, 2 CASSETTES] -> https://freebird.hr/index.php?route=product/category&path=3214
-  * [12", MiniAlbum] -> https://freebird.hr/index.php?route=product/category&path=3217
-  * [12'''] -> https://freebird.hr/index.php?route=product/category&path=3211
-  * [- VANJSKI OMOT LP] -> https://freebird.hr/index.php?route=product/product&product_id=411426
-  * [LP Outlet 2€] -> https://freebird.hr/index.php?route=product/product&product_id=421811
-  * [CD Outlet 1€ (Singl, Domaći/Ex Yu, Strani)] -> https://freebird.hr/index.php?route=product/product&product_id=421802
-  * [VIDEOSEX, AZRA…NOVA KOLEKCIJA EX YU i CRO LPa i CDa] -> https://freebird.hr/index.php?route=journal3/blog/post&journal_blog_post_id=1031
-  * [RASPRODAJA JAZZ BLUES I SOUL LPa] -> https://freebird.hr/index.php?route=journal3/blog/post&journal_blog_post_id=1030
-  * [LED ZEPPELIN, AC/DC…JOŠ HARD I HEAVY PLOČA U FREE BIRD PONUDI!!!] -> https://freebird.hr/index.php?route=journal3/blog/post&journal_blog_post_id=1029
 
-🔎 [2/3] Otvaram testnu kategoriju za dubinsku analizu: https://freebird.hr/download/LP_katalog.xlsx
-✅ Kategorija dohvaćena! HTTP 200 | Duljina: 894249 znakova
+🔢 === HTML PAGINACIJE ===
+<div class="row pagination-results">
+ <div class="col-sm-6 text-left">
+  <ul class="pagination">
+   <li class="active">
+    <span>
+     1
+    </span>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
+     2
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=3">
+     3
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=4">
+     4
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=5">
+     5
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=6">
+     6
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=7">
+     7
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=8">
+     8
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=9">
+     9
+    </a>
+   </li>
+   <li>
+    <a class="next" href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
+     &gt;
+    </a>
+   </li>
+   <li>
+    <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=790">
+     &gt;|
+    </a>
+   </li>
+  </ul>
+ </div>
+ <div class="col-sm-6 text-right">
+  Showing 1 to 12 of 9475 (790 Pages)
+ </div>
+</div>
 
-📦 [3/3] === ANALIZA KARTICE PROIZVODA (Selektor: '', Ukupno na stranici: 0) ===
-⚠️ Standardne kartice nisu detektirane. Ispisujem središnji #content blok:
-<body>
- PK�����!��b���������[Content_Types].xml �(�������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������N�0E�H�C�-Jܲ@5���*Q&gt;�ؓƪ_����3v*�4B�&amp;Nb�{�G�Fk��%� ��I���B�YM&gt;���#)BdF0e
-�d����7���A(PmBM������Y���3���E��3�����^�rk"�X��A��gh�B��e���$�R���RTM�N�u�f�I�~��sJrqwti�/�rGU�2�	�t���HH3?��v�w,���	��id�kEW�Ͽ��W�MNPڦ����U����Dh�VU+ͤ�s��ϋ�C�� iٸ�#����#d���7
-µ˞M��[�A|D�������³UB�����3���L�q�G���?�����2���6��o
-I]:4%�éKvHĦp�!�B�D6ͽw�
-�����PK�����!��U0#����L���_rels/.rels �(������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������MO�0��H�����ݐBKwAH�!T~�I����$ݿ'T�G�~����&lt;���!��4��;#�w����qu*&amp;r�Fq���v�����GJy(v��*����K��#F��D��.W	��=��Z�MY�b���BS�����7��ϛז��
-?�9L�ҙ�sbgٮ|�l!��USh9i�b�r:"y_dl��D���|-N��R"4�2�G�%��Z�4�˝y�7	ë��ɂ��������PK�����!�jB"��3
-�����xl/workbook.xml�V�n�6}/�P��*"%�8]�A�E�x7�S@KtDX��c���{���8IQ��6i^txf��Pg�6M�=2�����k�����D�:�
-_�zIے�]�&amp;���O�?�t���b�u
-��~�WR.C�싊5�?햬��y'*a(�~)-��1�Ԧ��k6���!�`t�9/X����r"XM%��+��G��8��b�ZE�,b�k.�P]k������`�;�F�ׅF�X�I���뻹&lt;hsK�����r���C"�`�\�p�J�d���0�~
-������9{n�~~6�5����F��/�Q��u����J.Y9�=vk�jB���װ�1�X7��r�Z��tU�)y����l��NFTK&amp;Z*Yҵt���G57`'U
-�n؟+.$�l��!���TV�J���ڃ���/n��_�ni"�f�,��f\��jYQmA%d�5dK���.-�7Lpǖ���[��s�⼖B���%�&gt;B�@�.�/T&lt;���!�N/r��7P%F��,5H�a'"�o��w0F�a�ѕ�vJP��@��-]�͸�Q����g���ӌkߕ���}�lݿhF
-��o�n=�L���q�����x�KY��&lt;�e�3�0�.TDE�R�&amp;�sn�~����87!�g83�Ա�,!I�x#��P]���k����b(���k"Tg��r�9&gt;��-+U&amp;��hu�����&gt;�*R�Ԍ�L%XA��VT�,��O���鿜D'8&lt;��$��{f �l^�
-Pd���FV�&lt;�6�C	��E���C1Pf;����m	I���4��uC��G��0�&gt;Ų�BN-paްy�Pf�����dcǏ�
-I�$8@F��p��v&lt;�&amp;����U��?X%}sx�Q��
-���0U��f�����.���?�I�!���m�-X_�#7�ߎܘ|��^��2�����n���4:~ts�1�~�0�ѡo�b ;��N�A��3�9�M&lt;�8�A�������msTdr�"�+�*�
-&lt;ܽ�ik*ژ�����	��ý|�MC��8������PK�����!������?���xl/_rels/workbook.xml.rels �(���������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������������j�0E����Ѿq2}P�qf�R�m�~�p�8Lb[}��kR:���n�1H�����w��$gdI
-��veck����#��hKl�%���W�Wj��`�&gt;��b���o��P�!q=�8���c�k٣&gt;bMr����5 ?��R�?�� �����k��j4=;�ё�2���D��&amp;V�['��e�͚��B��X��͖�5��?C�ǩ�8Y��_Fc��6v�9��.r�j(z*����ϳ1o��ȳ��?������PK�����!��y�ͦ���3@����xl/worksheets/sheet1.xml�}ێ$7�����z�:�Aҁ���&gt;�Z�Qc���jI3X쿯g�t�#�8sFS2�3��I�����?�������?��������ë�o?����?~x���������˗7}����������?�����ߟ&gt;������/���Ǘ~����^�~y���7/�~�������&gt;}�������x�����7���&gt;�]�V��޼��0X����~�����㧷~x��e0�����/�������2Z��v��o&gt;���?�y���f�w��}�wo��Շ��]�����7�����Wվy��_���j�O3���N�&gt;�{���˧߾|k�_}��߽޽~�6Z��e�j_~��ݍ�d�^֥����d�Yhl��^����|����mwͶn�o~:�Nߴ���Ͷ:��lw����Y����Ï�����=ի�Ͽ���S��Ӯ������	��w���~���/������/��zxu������?o���ieF_z��蛷_���|x~������������?���у���۹�M��ϯ~y��|����������b����������������������$�������[��ZW��on�~zo6�����΢�^��7������d�~[��պ�^����˧���|hh��oh�=6\�4���t�׃��)�o�����ϟ�~e?@{m/���s�]e������p���X�om~�5���^�_?��������gD�#��sđM�81��gFt9�u����qe�6G&lt;2b�#��K/���)3v2�&amp;���o?�I�j�lwx�{ٮ���߾�\�U��;:(�9&amp;Ԫm�]��-C�������v�f�����&lt;
-��t�Qt O�~�G�&amp;(��ݝ��5�\uU���I�B�#k�x�*���H��p~��^�u��@�G�~+O�H�i#��r2zn������q���  ����v�����"� #��~�d`��zd5���D/
-��ۧ �Kɭ��d�m�7�!��f�#�q@���O��H��"
+<ul class="pagination">
+ <li class="active">
+  <span>
+   1
+  </span>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
+   2
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=3">
+   3
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=4">
+   4
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=5">
+   5
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=6">
+   6
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=7">
+   7
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=8">
+   8
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=9">
+   9
+  </a>
+ </li>
+ <li>
+  <a class="next" href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=2">
+   &gt;
+  </a>
+ </li>
+ <li>
+  <a href="https://freebird.hr/index.php?route=product/category&amp;path=225_223&amp;page=790">
+   &gt;|
+  </a>
+ </li>
+</ul>
 
-🔢 === ANALIZA PAGINACIJE ===
-Linkovi s 'page': []
+
+💿 === DETALJI PROIZVODA: https://freebird.hr/index.php?route=product/product&product_id=443676 ===
+<div class="description">
+ Condition sleeve: VG+Condition records: VG+Edition: Diskos – YU, EDK-5433Genre: FOLK, WORLD &amp; COUNTRYStyle: WORLD/KOSOVO/ALBANIA..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: VG+Edition: Jugoton, Immediate – YU, SIM-8254Genre: ROCKStyle: BRITISH INVASION..
+</div>
+
+<div class="description">
+ Condition sleeve: VG+Condition records: EXEdition: Diskos – YU, EDK 5463Genre: FOLK, WORLD &amp; COUNTRYStyle: EX YU/SERBIAN TRADITIONAL FOLKRemark: EP..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: VG+Edition: NABIPHONE-F, NBP 171Genre: FOLK, WORLD &amp; COUNTRYStyle: WORLD/ARABIC..
+</div>
+
+<div class="description">
+ Condition sleeve: VG+Condition records: EXEdition: APRELEVSKIYI ZAVOD- USSR, D 04828-29Genre: CLASSICALStyle: CLASSICALRemark: FACTORY SLEEVE..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: VG+Edition: LONDON - I, 45-HL 1421Genre: ROCKStyle: ROCK'N'ROLL..
+</div>
+
+<div class="description">
+ Condition sleeve: Condition records: VG+Edition: Dot Records – GR, 45-5050Genre: POPStyle: 60'S POP..
+</div>
+
+<div class="description">
+ Condition sleeve: VG+Condition records: VG+Edition: ITALIA/HARMONIA MUNDI-I, HMI 73072Genre: CLASSICALStyle: CLASSICALRemark: RARE..
+</div>
+
+<div class="product-info has-extra-button">
+ <div class="product-left">
+  <div class="product-image direction-vertical position-left">
+   <div class="swiper main-image" data-options='{"speed":0,"autoplay":false,"pauseOnHover":false,"loop":false}'>
+    <div class="swiper-container">
+     <div class="swiper-wrapper">
+      <div class="swiper-slide" data-gallery=".lightgallery-product-images" data-index="0">
+       <img alt="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" data-largeimg="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-1000x1000h.webp" height="550" src="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-550x550h.webp" srcset="https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-550x550h.webp 1x, https://freebird.hr/image/cache/catalog/katalog/R-2891571-1305959662.jpeg-1100x1100h.webp 2x" title="Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi" width="550"/>
+      </div>
+     </div>
+    </div>
+    <div class="swiper-controls">
+     <div class="swiper-buttons">
+      <div class="swiper-button-prev">
+      </div>
+      <div class="swiper-button-next">
+      </div>
+     </div>
+     <div class="swiper-pagination">
+     </div>
+    </div>
+    <div class="product-labels">
+     <span class="product-label product-label-233 product-label-default">
+      <b>
+       -40 %
+      </b>
+     </span>
+    </div>
+   </div>
+  </div>
+  <div class="lightgallery lightgallery-product-images" data-images='[{"src":"https:\/\/freebird.hr\/image\/cache\/catalog\/katalog\/R-2891571-1305959662.jpeg-1000x1000h.webp","thumb":"https:\/\/freebird.hr\/image\/cache\/catalog\/katalog\/R-2891571-1305959662.jpeg-80x80h.webp","subHtml":"Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti T\u00eb K\u00ebndojm\u00eb Lavdi"}]' data-options='{"thumbWidth":80,"thumbConHeight":80,"addClass":"lg-product-images","mode":"lg-slide","download":true,"fullScreen":false}'>
+  </div>
+  <div class="product-blocks blocks-image">
+   <div class="product-blocks-image product-blocks-58 grid-rows">
+    <div class="grid-row grid-row-58-1">
+     <div class="grid-cols">
+      <div class="grid-col grid-col-58-1-1">
+       <div class="grid-items">
+        <div class="grid-item grid-item-58-1-1-1">
+         <div class="module module-blocks module-blocks-57 blocks-grid">
+          <div class="module-body">
+           <div class="module-item module-item-1 no-expand">
+            <div class="block-body expand-block">
+    
+<div class="product-details" id="product">
+ <div class="title page-title">
+  Adem Seferaj Dhe Rexhep Hajdari    - Ty Parti Të Këndojmë Lavdi
+ </div>
+ <div class="product-stats">
+  <ul class="list-unstyled">
+   <li class="product-stock in-stock">
+    <b>
+     Stock:
+    </b>
+    <span>
+     In Stock
+    </span>
+   </li>
+   <li class="product-model">
+    <b>
+     Model:
+    </b>
+    <span>
+     7"
+    </span>
+   </li>
+   <li class="product-weight">
+    <b>
+     Weight:
+    </b>
+    <span>
+     0.06kg
+    </span>
+   </li>
+   <li class="product-sku">
+    <b>
+     SKU:
+    </b>
+    <span>
+     30000125
+    </span>
+   </li>
+  </ul>
+  <div class="custom-stats">
+   <div class="product-sold">
+    <b>
+     Products Sold: 0
+    </b>
+   </div>
+   <div class="product-views">
+    <b>
+     Product Views: 4459
+    </b>
+   </div>
+  </div>
+ </div>
+ <div class="product-price-group">
+  <div class="price-wrapper">
+   <div class="price-group">
+    <div class="product-price-new">
+     2.00€
+    </div>
+    <div class="product-price-old">
+     3.33€
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="button-group-page">
+  <div class="buttons-wrapper">
+   <div class="stepper-group cart-group">
+    <div class="stepper">
+     <label class="control-label" for="product-quantity">
+      Qty
+     </label>
+     <input class="form-control" data-minimum="1" id="product-quantity" name="quantity" type="text" value="1"/>
+     <input id="product-id" name="product_id" type="hidden" value="443676"/>
+     <span>
+      <i class="fa fa-angle-up">
+      </i>
+      <i class="fa fa-angle-down">
+      </i>
+     </span>
+    </div>
+    <a class="btn btn-cart" data-loading-text="&lt;span class='btn-text'&gt;Add to Cart&lt;/span&gt;" id="button-cart">
+     <span class="btn-text">
+      Add to Cart
+     </span>
+    </a>
+    <div class="extra-group">
+     <a class="btn btn-extra btn-extra-46 btn-1-extra" data-loading-text="&lt;span class='btn-text'&gt;Buy Now&lt;/span&gt;" data-quick-buy="">
+      <span class="btn-text">
+       Buy Now
+      </span>
+     </a>
+     <a class="btn btn-extra btn-extra-93 btn-2-extra" data-loading-text="&lt;span class='btn-text'&gt;Ask Question&lt;/span&gt;" data-product_id="443676" href="javascript:open_popup(22)">
+      <span class="btn-text">
+       Ask Question
+      </span>
+     </a>
+    </div>
+   </div>
+  </div>
+ </div>
+</div>
+
+<div class="product-stats">
+ <ul class="list-unstyled">
+  <li class="product-stock in-stock">
+   <b>
+    Stock:
+   </b>
+   <span>
+    In Stock
+   </span>
+  </li>
+  <li class="product-model">
+   <b>
+    Model:
+   </b>
+   <span>
+    7"
+   </span>
+  </li>
+  <li class="product-weight">
+   <b>
+    Weight:
+   </b>
+   <span>
+    0.06kg
+   </span>
+  </li>
+  <li class="product-sku">
+   <b>
+    SKU:
+   </b>
+   <span>
+    30000125
+   </span>
+  </li>
+ </ul>
+ <div class="custom-stats">
+  <div class="product-sold">
+   <b>
+    Products Sold: 0
+   </b>
+  </div>
+  <div class="product-views">
+   <b>
+    Product Views: 4459
+   </b>
+  </div>
+ </div>
+</div>
+
+<div class="description">
+ Naš
+outlet obara sve rekorde po količini ploča, CD-a, DVD-a i ostalog po zaista
+smiješnim cijenama.Artikli koje se tamo prodaju,
+nažalost nisu upis..
+</div>
+
+<div class="description">
+ Naš
+outlet obara sve rekorde po količini ploča, CD-a, DVD-a i ostalog po zaista
+smiješnim cijenama.Artikli koje se tamo prodaju,
+nažalost nisu upis..
+</div>
+
+<div class="description">
+ Naš
+outlet obara sve rekorde po količini ploča, CD-a, DVD-a i ostalog po zaista
+smiješnim cijenama.Artikli koje se tamo prodaju,
+nažalost nisu upis..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: GEdition: UK Records ‎– D, DL 25 640Genre: ROCKStyle: ART ROCK..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: VGEdition: Mercury – D, 6008 035Genre: ROCKStyle: GLAM ROCK..
+</div>
+
+<div class="description">
+ Condition sleeve: Condition records: VGEdition: UK Records, Jugoton, Decca – YU, SDC-88695Genre: ROCKStyle: GLAM ROCK..
+</div>
+
+<div class="description">
+ Condition sleeve: Condition records: GEdition: Fontana ‎– D, 270 118 TFGenre: ROCKStyle: ROCK, Doo WopRemark: NO ORIGINAL COVER..
+</div>
+
+<div class="description">
+ Condition sleeve: Condition records: GEdition: JUGOTON - YU,  SY-1045Genre: POPStyle: CROATIAN POPULAR..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: GEdition: UK Records ‎– D, DL 25 640Genre: ROCKStyle: ART ROCK..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: VGEdition: Mercury – D, 6008 035Genre: ROCKStyle: GLAM ROCK..
+</div>
+
+<div class="description">
+ Condition sleeve: Condition records: VGEdition: UK Records, Jugoton, Decca – YU, SDC-88695Genre: ROCKStyle: GLAM ROCK..
+</div>
+
+<div class="description">
+ Condition sleeve: VGCondition records: VG+Edition: Polskie Nagrania Muza ‎– PL, SX 1574Genre: ROCKStyle: ROCK..
+</div>
+
+<div class="description">
+ Condition sleeve: Condition records: GEdition: Fontana ‎– D, 270 118 TFGenre: ROCKStyle: ROCK, Doo WopRemark: NO ORIGINAL COVER..
+</div>
+
 ----------------------------------------
-Vrijeme završetka (UTC): 25.10.2026. 08:51:39 | Kod izlaza: 0
+Vrijeme završetka (UTC): 25.10.2026. 08:56:07 | Kod izlaza: 0
