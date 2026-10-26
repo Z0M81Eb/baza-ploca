@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
-Vrijeme pokretanja (UTC): 25.10.2026. 07:28:30
+Vrijeme pokretanja (UTC): 26.10.2026. 07:38:15
 ----------------------------------------
 ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem sa 100% zaštitom slika...
 📦 Učitano 1601 postojećih ploča.
@@ -7,12 +7,24 @@ ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem sa 100% zaštitom slika...
 Probijanje početne zaštite (Naslovnica)...
 
 --- Pokušavam brzi WooCommerce Store API ---
-API nije odgovorio, prelazim na HTML...
+API Paket 1 -> OK (100 ploča, sa slikom: 99/100)
+API Paket 2 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 3 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 4 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 5 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 6 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 7 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 8 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 9 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 10 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 11 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 12 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 13 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 14 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 15 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 16 -> OK (100 ploča, sa slikom: 100/100)
 
---- Pokrećem HTML skeniranje kataloga ---
-Stranica 1... -> Greška spajanja.
-
-⚠️ UPOZORENJE: Pronađeno 0 linkova. Zadržavam postojeću bazu.
-🎉 Gotovo! Ukupno u CSV-u: 1601 (Sa slikom: 1600)
+🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: 1).
+🎉 Gotovo! Ukupno u CSV-u: 1600 (Sa slikom: 1599)
 ----------------------------------------
-Vrijeme završetka (UTC): 25.10.2026. 07:28:35 | Kod izlaza: 0
+Vrijeme završetka (UTC): 26.10.2026. 07:38:48 | Kod izlaza: 0
