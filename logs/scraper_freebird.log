@@ -1,106 +1,105 @@
 === IZVJEŠTAJ RADA: scraper_freebird.py ===
-Vrijeme pokretanja (UTC): 27.10.2026. 07:36:06
+Vrijeme pokretanja (UTC): 27.10.2026. 08:56:18
 ----------------------------------------
 📦 Učitano 12564 postojećih zapisa iz freebird_ploce.csv.
 🔎 Automatski otkrivam aktivne vinil kategorije s naslovnice...
 ✅ Pronađeno 18 aktivnih vinil podkategorija (prazne kategorije s 0 artikala preskočene).
 
 📂 [1/18] Kategorija '10'"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3212
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 1
-   🏁 Kategorija '10'"' gotova za 1.1s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 1
+   🏁 Kategorija '10'"' gotova za 0.6s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [2/18] Kategorija '10''' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_339
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 2
-   🏁 Kategorija '10''' gotova za 0.5s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 2
+   🏁 Kategorija '10''' gotova za 0.6s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [3/18] Kategorija '12" SINGLE' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_301
-   ✅ Stranica 1/5: +100 artikala | Ukupno u bazi: 102
-   ⚡ [12" SINGLE] Stranice 02-05/5 (4/4 OK) za 6.0s | +385 novih | Ukupno: 487
-   🏁 Kategorija '12" SINGLE' gotova za 7.2s (+485 unikatnih vinila).
+   ✅ Stranica 1/5: +99 unikata (duplikata: 1) | Ukupno u bazi: 101
+   ⚡ [12" SINGLE] Stranice 02-05/5 (4/4 OK) za 5.7s | +378 novih (duplih: 2) | Ukupno: 479
+   🏁 Kategorija '12" SINGLE' gotova za 8.5s (+477 unikatnih, filtrirano 3 duplikata).
 
 📂 [4/18] Kategorija '12" SINGLE + 7"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3216
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 488
-   🏁 Kategorija '12" SINGLE + 7"' gotova za 0.7s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 480
+   🏁 Kategorija '12" SINGLE + 7"' gotova za 0.6s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [5/18] Kategorija '12" VINYL' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3209
-   ✅ Stranica 1/1: +6 artikala | Ukupno u bazi: 494
-   🏁 Kategorija '12" VINYL' gotova za 0.7s (+6 unikatnih vinila).
+   ✅ Stranica 1/1: +6 unikata (duplikata: 0) | Ukupno u bazi: 486
+   🏁 Kategorija '12" VINYL' gotova za 0.6s (+6 unikatnih, filtrirano 0 duplikata).
 
 📂 [6/18] Kategorija '12", MiniAlbum' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3217
-   ✅ Stranica 1/1: +2 artikala | Ukupno u bazi: 496
-   🏁 Kategorija '12", MiniAlbum' gotova za 0.6s (+2 unikatnih vinila).
+   ✅ Stranica 1/1: +2 unikata (duplikata: 0) | Ukupno u bazi: 488
+   🏁 Kategorija '12", MiniAlbum' gotova za 0.5s (+2 unikatnih, filtrirano 0 duplikata).
 
 📂 [7/18] Kategorija 'EP' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_315
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 497
-   🏁 Kategorija 'EP' gotova za 0.8s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 489
+   🏁 Kategorija 'EP' gotova za 0.5s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [8/18] Kategorija 'LP & 12" SINGLE' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_328
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 498
-   🏁 Kategorija 'LP & 12" SINGLE' gotova za 0.5s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 490
+   🏁 Kategorija 'LP & 12" SINGLE' gotova za 0.5s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [9/18] Kategorija 'LP + 12 MAXI SINGLE' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_3203
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 499
-   🏁 Kategorija 'LP + 12 MAXI SINGLE' gotova za 0.6s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 491
+   🏁 Kategorija 'LP + 12 MAXI SINGLE' gotova za 0.5s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [10/18] Kategorija 'LP + EP' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_333
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 500
-   🏁 Kategorija 'LP + EP' gotova za 0.5s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 492
+   🏁 Kategorija 'LP + EP' gotova za 0.5s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [11/18] Kategorija 'LP' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_223
-   ✅ Stranica 1/95: +100 artikala | Ukupno u bazi: 600
-   ⚡ [LP] Stranice 02-07/95 (6/6 OK) za 23.7s | +600 novih | Ukupno: 1200
-   ⚡ [LP] Stranice 08-13/95 (6/6 OK) za 23.5s | +600 novih | Ukupno: 1800
-   ⚡ [LP] Stranice 14-19/95 (6/6 OK) za 24.4s | +599 novih | Ukupno: 2399
-   ⚡ [LP] Stranice 20-25/95 (6/6 OK) za 24.6s | +600 novih | Ukupno: 2999
-   ⚡ [LP] Stranice 26-31/95 (6/6 OK) za 23.9s | +597 novih | Ukupno: 3596
-   ⚡ [LP] Stranice 32-37/95 (6/6 OK) za 23.9s | +600 novih | Ukupno: 4196
-   ⚡ [LP] Stranice 38-43/95 (6/6 OK) za 24.8s | +600 novih | Ukupno: 4796
-   ⚡ [LP] Stranice 44-49/95 (6/6 OK) za 22.8s | +600 novih | Ukupno: 5396
-   ⚠️ Greška spajanja (1/4) na https://freebird.hr/index.php?route=product/category&path=225_223&limit=100&page=52: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
-   ⚡ [LP] Stranice 50-55/95 (6/6 OK) za 24.6s | +599 novih | Ukupno: 5995
-   ⚡ [LP] Stranice 56-61/95 (6/6 OK) za 25.4s | +599 novih | Ukupno: 6594
-   ⚡ [LP] Stranice 62-67/95 (6/6 OK) za 24.3s | +599 novih | Ukupno: 7193
-   ⚡ [LP] Stranice 68-73/95 (6/6 OK) za 25.3s | +600 novih | Ukupno: 7793
-   ⚡ [LP] Stranice 74-79/95 (6/6 OK) za 25.4s | +600 novih | Ukupno: 8393
-   ⚡ [LP] Stranice 80-85/95 (6/6 OK) za 24.5s | +599 novih | Ukupno: 8992
-   ⚡ [LP] Stranice 86-91/95 (6/6 OK) za 24.4s | +600 novih | Ukupno: 9592
-   ⚡ [LP] Stranice 92-95/95 (4/4 OK) za 17.5s | +375 novih | Ukupno: 9967
-   🏁 Kategorija 'LP' gotova za 385.4s (+9467 unikatnih vinila).
+   ✅ Stranica 1/94: +97 unikata (duplikata: 3) | Ukupno u bazi: 589
+   ⚡ [LP] Stranice 02-07/94 (6/6 OK) za 19.3s | +581 novih (duplih: 18) | Ukupno: 1170
+   ⚡ [LP] Stranice 08-13/94 (6/6 OK) za 20.4s | +546 novih (duplih: 53) | Ukupno: 1716
+   ⚡ [LP] Stranice 14-19/94 (6/6 OK) za 28.7s | +570 novih (duplih: 29) | Ukupno: 2286
+   ⚡ [LP] Stranice 20-25/94 (6/6 OK) za 37.6s | +589 novih (duplih: 11) | Ukupno: 2875
+   ⚡ [LP] Stranice 26-31/94 (6/6 OK) za 21.7s | +573 novih (duplih: 26) | Ukupno: 3448
+   ⚡ [LP] Stranice 32-37/94 (6/6 OK) za 23.1s | +593 novih (duplih: 7) | Ukupno: 4041
+   ⚡ [LP] Stranice 38-43/94 (6/6 OK) za 23.6s | +573 novih (duplih: 27) | Ukupno: 4614
+   ⚡ [LP] Stranice 44-49/94 (6/6 OK) za 34.8s | +583 novih (duplih: 15) | Ukupno: 5197
+   ⚡ [LP] Stranice 50-55/94 (6/6 OK) za 31.4s | +583 novih (duplih: 16) | Ukupno: 5780
+   ⚡ [LP] Stranice 56-61/94 (6/6 OK) za 18.3s | +591 novih (duplih: 9) | Ukupno: 6371
+   ⚡ [LP] Stranice 62-67/94 (6/6 OK) za 21.7s | +575 novih (duplih: 20) | Ukupno: 6946
+   ⚡ [LP] Stranice 68-73/94 (6/6 OK) za 22.3s | +568 novih (duplih: 28) | Ukupno: 7514
+   ⚡ [LP] Stranice 74-79/94 (6/6 OK) za 19.3s | +571 novih (duplih: 28) | Ukupno: 8085
+   ⚡ [LP] Stranice 80-85/94 (6/6 OK) za 23.5s | +592 novih (duplih: 8) | Ukupno: 8677
+   ⚡ [LP] Stranice 86-91/94 (6/6 OK) za 20.2s | +592 novih (duplih: 8) | Ukupno: 9269
+   ⚡ [LP] Stranice 92-94/94 (3/3 OK) za 10.5s | +281 novih (duplih: 3) | Ukupno: 9550
+   🏁 Kategorija 'LP' gotova za 381.6s (+9058 unikatnih, filtrirano 309 duplikata).
 
 📂 [12/18] Kategorija '12"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_236
-   ✅ Stranica 1/1: +2 artikala | Ukupno u bazi: 9969
-   🏁 Kategorija '12"' gotova za 1.0s (+2 unikatnih vinila).
+   ✅ Stranica 1/1: +2 unikata (duplikata: 0) | Ukupno u bazi: 9552
+   🏁 Kategorija '12"' gotova za 2.0s (+2 unikatnih, filtrirano 0 duplikata).
 
 📂 [13/18] Kategorija '10"' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_235
-   ✅ Stranica 1/2: +100 artikala | Ukupno u bazi: 10069
-   ⚡ [10"] Stranice 02-02/2 (1/1 OK) za 1.1s | +28 novih | Ukupno: 10097
-   🏁 Kategorija '10"' gotova za 2.7s (+128 unikatnih vinila).
+   ✅ Stranica 1/2: +100 unikata (duplikata: 0) | Ukupno u bazi: 9652
+   ⚡ [10"] Stranice 02-02/2 (1/1 OK) za 2.1s | +28 novih (duplih: 0) | Ukupno: 9680
+   🏁 Kategorija '10"' gotova za 3.5s (+128 unikatnih, filtrirano 0 duplikata).
 
 📂 [14/18] Kategorija '8"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_234
-   ✅ Stranica 1/1: +1 artikala | Ukupno u bazi: 10098
-   🏁 Kategorija '8"' gotova za 0.5s (+1 unikatnih vinila).
+   ✅ Stranica 1/1: +1 unikata (duplikata: 0) | Ukupno u bazi: 9681
+   🏁 Kategorija '8"' gotova za 1.1s (+1 unikatnih, filtrirano 0 duplikata).
 
 📂 [15/18] Kategorija '7"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_233
-   ✅ Stranica 1/25: +100 artikala | Ukupno u bazi: 10198
-   ⚡ [7"] Stranice 02-07/25 (6/6 OK) za 5.9s | +600 novih | Ukupno: 10798
-   ⚡ [7"] Stranice 08-13/25 (6/6 OK) za 6.7s | +599 novih | Ukupno: 11397
-   ⚡ [7"] Stranice 14-19/25 (6/6 OK) za 7.0s | +600 novih | Ukupno: 11997
-   ⚡ [7"] Stranice 20-25/25 (6/6 OK) za 6.4s | +527 novih | Ukupno: 12524
-   🏁 Kategorija '7"' gotova za 27.0s (+2426 unikatnih vinila).
+   ✅ Stranica 1/25: +96 unikata (duplikata: 4) | Ukupno u bazi: 9777
+   ⚡ [7"] Stranice 02-07/25 (6/6 OK) za 8.2s | +584 novih (duplih: 16) | Ukupno: 10361
+   ⚡ [7"] Stranice 08-13/25 (6/6 OK) za 8.6s | +575 novih (duplih: 24) | Ukupno: 10936
+   ⚡ [7"] Stranice 14-19/25 (6/6 OK) za 9.1s | +575 novih (duplih: 25) | Ukupno: 11511
+   ⚡ [7"] Stranice 20-25/25 (6/6 OK) za 8.1s | +488 novih (duplih: 17) | Ukupno: 11999
+   🏁 Kategorija '7"' gotova za 37.5s (+2318 unikatnih, filtrirano 86 duplikata).
 
 📂 [16/18] Kategorija '6"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_232
-   ✅ Stranica 1/1: +13 artikala | Ukupno u bazi: 12537
-   🏁 Kategorija '6"' gotova za 0.9s (+13 unikatnih vinila).
+   ✅ Stranica 1/1: +13 unikata (duplikata: 0) | Ukupno u bazi: 12012
+   🏁 Kategorija '6"' gotova za 1.8s (+13 unikatnih, filtrirano 0 duplikata).
 
 📂 [17/18] Kategorija '5"' (Singl 7") -> https://freebird.hr/index.php?route=product/category&path=225_231
-   ✅ Stranica 1/1: +6 artikala | Ukupno u bazi: 12543
-   🏁 Kategorija '5"' gotova za 0.5s (+6 unikatnih vinila).
+   ✅ Stranica 1/1: +6 unikata (duplikata: 0) | Ukupno u bazi: 12018
+   🏁 Kategorija '5"' gotova za 0.7s (+6 unikatnih, filtrirano 0 duplikata).
 
 📂 [18/18] Kategorija 'MINI LP' (LP) -> https://freebird.hr/index.php?route=product/category&path=225_247
-   ✅ Stranica 1/1: +21 artikala | Ukupno u bazi: 12564
-   🏁 Kategorija 'MINI LP' gotova za 0.7s (+21 unikatnih vinila).
+   ✅ Stranica 1/1: +19 unikata (duplikata: 2) | Ukupno u bazi: 12037
+   🏁 Kategorija 'MINI LP' gotova za 0.7s (+19 unikatnih, filtrirano 2 duplikata).
 
-🧹 Sinkronizacija završena! Uklonjeno 0 prodanih artikala.
-🎉 GOTOVO za 433.5s! U bazi je 12564 dostupnih Freebird vinila (Sa slikom: 11886).
+🧹 Sinkronizacija završena! Uklonjeno 308 prodanih/duplih zapisa iz stare baze (Ukupno filtrirano 400 Freebird duplikata u ovom prolazu).
+🎉 GOTOVO za 445.2s! U bazi je 12037 čistih, unikatnih Freebird vinila (Sa slikom: 11368).
 ----------------------------------------
-Vrijeme završetka (UTC): 27.10.2026. 07:43:20 | Kod izlaza: 0
+Vrijeme završetka (UTC): 27.10.2026. 09:03:43 | Kod izlaza: 0
