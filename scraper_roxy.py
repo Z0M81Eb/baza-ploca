@@ -1,14 +1,21 @@
 import cloudscraper
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urljoin
 import urllib3
-import sys
+import csv
+import os
+import re
+import time
+import html
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 SITE_URL = "https://www.cdshop-roxy.com"
+CSV_FILENAME = "roxy_ploce.csv"
+BROJ_NITI = 5
 
-def stvori_sesiju():
+def kreiraj_sesiju():
     s = cloudscraper.create_scraper(
         browser={"browser": "chrome", "platform": "windows", "desktop": True}
     )
@@ -19,73 +26,166 @@ def stvori_sesiju():
     })
     return s
 
-def izvidnica_roxy():
-    s = stvori_sesiju()
-
-    print(f"🔎 [1/3] Spajam se na naslovnicu: {SITE_URL} ...", flush=True)
+def ocisti_cijenu(sirovo):
+    # Pretvaramo "10,50." u "10.50"
+    cisti = sirovo.replace("€", "").replace("EUR", "").strip()
+    if cisti.endswith("."):
+        cisti = cisti[:-1]
+    cisti = cisti.replace(",", ".")
     try:
-        r = s.get(SITE_URL, timeout=30)
-    except Exception as e:
-        print(f"❌ Greška pri spajanju na naslovnicu: {e}", flush=True)
-        sys.exit(1)
+        val = float(cisti)
+        if val > 0:
+            return f"{val:.2f}"
+    except:
+        pass
+    return "0.00"
 
-    print(f"✅ Naslovnica dohvaćena! HTTP {r.status_code} | Duljina: {len(r.content)} znakova", flush=True)
-    # Stare hrvatske stranice obično koriste windows-1250, bs4 to automatski prepoznaje iz meta taga
-    soup = BeautifulSoup(r.content, "lxml")
+def odredi_tip(tip_sirovo):
+    t_low = tip_sirovo.lower()
+    if '7"' in t_low or 'singl' in t_low:
+        return 'Singl 7"'
+    elif '12"' in t_low or 'maxi' in t_low:
+        return 'Maxi 12"'
+    return 'LP'
 
-    linkovi_kataloga = []
-    vidjeni = set()
-
-    for a in soup.select("a[href]"):
-        href = a["href"].strip()
-        # Tražimo linkove koji završavaju na .htm (a.htm, b.htm itd.)
-        if href.endswith(".htm") or href.endswith(".html"):
-            puni_url = urljoin(SITE_URL, href)
-            if puni_url not in vidjeni and not href.startswith("http"):
-                vidjeni.add(puni_url)
-                linkovi_kataloga.append(puni_url)
-    
-    print(f"\n🎵 === PRONAĐENI LINKOVI KATALOGA ({len(linkovi_kataloga)} komada) ===", flush=True)
-    for l in linkovi_kataloga[:10]:
-        print(f"  * {l}", flush=True)
-    if len(linkovi_kataloga) > 10:
-        print("  * ... (i ostala slova abecede)")
-
-    # Testirat ćemo odmah prvo slovo abecede da vidimo strukturu tablice
-    test_url = urljoin(SITE_URL, "a.htm")
-    print(f"\n🔎 [2/3] Otvaram testnu stranicu kataloga: {test_url}", flush=True)
-    
-    try:
-        r_kat = s.get(test_url, timeout=30)
-        print(f"✅ Katalog dohvaćen! HTTP {r_kat.status_code}", flush=True)
-        soup_kat = BeautifulSoup(r_kat.content, "lxml")
-    except Exception as e:
-        print(f"❌ Greška pri spajanju na katalog: {e}", flush=True)
-        return
-
-    print(f"\n📦 === ANALIZA HTML TABLICE (Redovi) ===", flush=True)
-    redovi = soup_kat.select("tr")
-    print(f"Pronađeno {len(redovi)} redova na stranici.\n", flush=True)
-    
-    ispisano = 0
-    for tr in redovi:
-        tdovi = tr.select("td")
-        # Nas zanimaju samo redovi u kojima pišu artikli (obično imaju 3 do 5 stupaca)
-        if len(tdovi) >= 3:
-            tekst_reda = tr.get_text(" | ", strip=True)
-            # Preskačemo prazne redove
-            if len(tekst_reda) > 5:
-                print(f"--- KARTICA/RED #{ispisano+1} (Tekstualno) ---")
-                print(tekst_reda)
-                print("--- HTML KOD REDA ---")
-                print(tr.prettify()[:800])
-                print("-" * 50)
-                ispisano += 1
+def parsiraj_kondiciju(kond_sirovo):
+    # Format je najčešće Medij/Omot (npr. VG/EX)
+    k = kond_sirovo.strip()
+    if not k or k == "/" or k == "-":
+        return "Rabljeni", "Rabljeni"
         
-        if ispisano >= 4:
-            break
+    if "/" in k:
+        dijelovi = k.split("/")
+        medij = dijelovi[0].strip()
+        omot = dijelovi[1].strip() if len(dijelovi) > 1 else medij
+    else:
+        medij = k
+        omot = k
+        
+    return medij if medij and medij != "-" else "Rabljeni", omot if omot and omot != "-" else "Rabljeni"
+
+def dohvati_katalog_linkove(sesija):
+    print("🔎 Dohvaćam abecedne linkove iz RoxY naslovnice...", flush=True)
+    try:
+        r = sesija.get(SITE_URL, timeout=20)
+        soup = BeautifulSoup(r.content, "lxml")
+        linkovi = set()
+        
+        # Odbacujemo stranice koje nisu katalog (informacije, forme, itd.)
+        ignoriraj = ["prodaja", "zamjena", "clanovi", "forme", "narudzba", "knjiga"]
+        
+        for a in soup.select("a[href]"):
+            href = a["href"].strip()
+            if (href.endswith(".htm") or href.endswith(".html")) and not href.startswith("http"):
+                if not any(ig in href.lower() for ig in ignoriraj):
+                    linkovi.add(urljoin(SITE_URL, href))
+                    
+        return list(linkovi)
+    except Exception as e:
+        print(f"❌ Greška pri dohvaćanju naslovnice: {e}", flush=True)
+        return []
+
+def obradi_stranicu(url):
+    s = kreiraj_sesiju()
+    t_start = time.time()
+    stavke = []
+    
+    try:
+        r = s.get(url, timeout=30)
+        if r.status_code != 200:
+            return False, stavke, 0
             
-    print("\n🔎 [3/3] Izvidnica završena!", flush=True)
+        soup = BeautifulSoup(r.content, "lxml")
+        redovi = soup.select("tr")
+        
+        for tr in redovi:
+            tdovi = tr.find_all(['td', 'th'])
+            # RoxY tablica ima 8 stupaca po redu
+            if len(tdovi) >= 8:
+                medij = tdovi[0].get_text(" ", strip=True).lower()
+                if "ploča" in medij or "ploca" in medij:
+                    tip_sirovo = tdovi[1].get_text(" ", strip=True)
+                    izvodjac = tdovi[2].get_text(" ", strip=True)
+                    naslov = tdovi[3].get_text(" ", strip=True)
+                    kondicija = tdovi[5].get_text(" ", strip=True)
+                    cijena_euro = tdovi[7].get_text(" ", strip=True)
+                    
+                    cijena = ocisti_cijenu(cijena_euro)
+                    if cijena == "0.00":
+                        continue
+                        
+                    puni_naslov = f"{izvodjac} - {naslov}"
+                    puni_naslov = " ".join(puni_naslov.split()).strip(" -")
+                    
+                    # Generiranje jedinstvenog linka sa slugom, pošto RoxY nema stranice pojedinačnih proizvoda
+                    slug = re.sub(r'[^a-z0-9]+', '-', puni_naslov.lower()).strip('-')
+                    jedinstveni_link = f"{url}#{slug}"
+                    
+                    stanje_medija, stanje_omota = parsiraj_kondiciju(kondicija)
+                    tip_artikla = odredi_tip(tip_sirovo)
+                    slika_url = "" # RoxY nema slike ploča
+                    
+                    red = [puni_naslov, cijena, jedinstveni_link, slika_url, stanje_medija, stanje_omota, tip_artikla]
+                    stavke.append((jedinstveni_link, red))
+                    
+        print(f"   ⚡ Stranica {url.split('/')[-1]} obrađena za {time.time() - t_start:.1f}s | Pronađeno ploča: {len(stavke)}", flush=True)
+        return True, stavke, len(stavke)
+        
+    except Exception as e:
+        print(f"   ⚠️ Greška na {url}: {e}", flush=True)
+        return False, [], 0
+
+def scrape_roxy():
+    t_start = time.time()
+    sve_ploce = {}
+    aktivni_linkovi = set()
+
+    if os.path.exists(CSV_FILENAME):
+        with open(CSV_FILENAME, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 7:
+                    sve_ploce[row[2]] = row
+        print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
+
+    sesija = kreiraj_sesiju()
+    stranice = dohvati_katalog_linkove(sesija)
+    
+    if not stranice:
+        print("❌ Nije pronađena niti jedna stranica kataloga. Prekidam.", flush=True)
+        return
+        
+    print(f"📂 Pronađeno {len(stranice)} stranica kataloga. Pokrećem preuzimanje ploča...", flush=True)
+
+    ukupno_neuspjelih = 0
+    ukupno_dodano = 0
+
+    with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
+        rezultati = list(executor.map(obradi_stranicu, stranice))
+        
+        for ok, stavke, br_dodano in rezultati:
+            if not ok:
+                ukupno_neuspjelih += 1
+            for link, red in stavke:
+                sve_ploce[link] = red
+                aktivni_linkovi.add(link)
+                ukupno_dodano += 1
+
+    if ukupno_neuspjelih == 0 and len(aktivni_linkovi) > 100:
+        pocetni_broj = len(sve_ploce)
+        sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
+        obrisano = pocetni_broj - len(sve_ploce)
+        print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} rasprodanih artikala iz stare baze.", flush=True)
+    else:
+        print(f"\n⚠️ Oprez: Zabilježeno {ukupno_neuspjelih} neuspjelih stranica. Preskačem brisanje stare baze radi sigurnosti.", flush=True)
+
+    if sve_ploce:
+        with open(CSV_FILENAME, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"])
+            writer.writerows(sve_ploce.values())
+        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih rabljenih ploča iz RoxY-ja (Slike nažalost nemaju).", flush=True)
 
 if __name__ == "__main__":
-    izvidnica_roxy()
+    scrape_roxy()
