@@ -1,161 +1,197 @@
 import cloudscraper
-from bs4 import BeautifulSoup
-from urllib.parse import urljoin
 import urllib3
-import re
-import sys
+import csv
+import os
+import time
+import html
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 SITE_URL = "https://backstagerecords-zagreb.com"
+CSV_FILENAME = "backstage_ploce.csv"
 
-def stvori_sesiju():
+# ID glavne WooCommerce kategorije "Gramofonske ploče" povući ćemo dinamički,
+# no za slučaj fallbacka postavljamo opće parametre pretraživanja
+API_PRODUCTS_URL = f"{SITE_URL}/wp-json/wc/store/v1/products"
+API_CATEGORIES_URL = f"{SITE_URL}/wp-json/wc/store/v1/products/categories"
+
+
+def kreiraj_sesiju():
     s = cloudscraper.create_scraper(
         browser={"browser": "chrome", "platform": "windows", "desktop": True}
     )
     s.headers.update({
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
-        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept": "application/json, text/plain, */*",
         "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Connection": "keep-alive"
     })
     return s
 
-def izvidnica_backstage():
-    s = stvori_sesiju()
 
-    # 1. Provjera robots.txt i Sitemapa
-    print(f"🔎 [1/5] Provjeravam robots.txt i Sitemapove na {SITE_URL} ...", flush=True)
-    for putanja in ["/robots.txt", "/sitemap.xml", "/sitemap_index.xml", "/wp-sitemap.xml", "/sitemap-products.xml"]:
-        try:
-            r_rob = s.get(SITE_URL + putanja, timeout=15)
-            print(f"  -> {putanja}: HTTP {r_rob.status_code} (Duljina: {len(r_rob.text)})", flush=True)
-            if r_rob.status_code == 200 and len(r_rob.text) > 20:
-                print(r_rob.text[:1000], flush=True)
-                print("  ----------------------------------------", flush=True)
-        except Exception as e:
-            print(f"  -> Greška na {putanja}: {e}", flush=True)
+def ocisti_naziv(sirovi_naslov):
+    """ Uklanja HTML entitete (poput &#8211;) i čisti razmake """
+    cisti = html.unescape(sirovi_naslov)
+    cisti = cisti.replace("–", "-").replace("—", "-")
+    return " ".join(cisti.split()).strip()
 
-    # 2. Provjera javnih API-ja (WooCommerce i Shopify)
-    print(f"\n🔎 [2/5] Provjeravam skrivene JSON API-je (WooCommerce/Shopify) ...", flush=True)
-    api_urlovi = [
-        "/wp-json/wc/store/v1/products?per_page=5",
-        "/wp-json/wp/v2/product?per_page=5",
-        "/products.json?limit=5"
-    ]
-    for api_p in api_urlovi:
-        try:
-            r_api = s.get(SITE_URL + api_p, timeout=15)
-            print(f"  -> {api_p}: HTTP {r_api.status_code} (Duljina: {len(r_api.text)})", flush=True)
-            if r_api.status_code == 200 and r_api.text.strip().startswith(("[", "{")):
-                print(f"  ✅ API OTVOREN! Uzorak JSON-a:\n{r_api.text[:800]}\n", flush=True)
-        except Exception as e:
-            print(f"  -> Greška na API {api_p}: {e}", flush=True)
 
-    # 3. Spajanje na naslovnicu i analiza navigacije
-    print(f"\n🔎 [3/5] Spajam se na naslovnicu: {SITE_URL} ...", flush=True)
+def odredi_tip_artikla(naziv):
+    """ Određuje je li LP ili Singl prema nazivu jer Backstage često stavlja oznaku u naslov """
+    n_up = naziv.upper()
+    if any(oznaka in n_up for oznaka in [' 7"', " 7''", " 7″", " EP", " SINGLE", ' 10"', ' 12" MAXI']):
+        # Sve što nije puni LP računamo kao Singl/EP za brže filtriranje
+        if ' 10"' in n_up or ' 12"' in n_up:
+             return "LP" # Backstage 10" i 12" Maxi drži na LP cijeni
+        return 'Singl 7"'
+    return "LP"
+
+
+def otkrij_id_kategorije_vinila(sesija):
+    print("🔎 Tražim ID WooCommerce kategorije za gramofonske ploče...", flush=True)
     try:
-        r = s.get(SITE_URL, timeout=30)
+        r = sesija.get(f"{API_CATEGORIES_URL}?per_page=100", timeout=15)
+        if r.status_code == 200:
+            kategorije = r.json()
+            # Tražimo ID za "Gramofonske ploče" ili "Vinyl"
+            for kat in kategorije:
+                if "ploč" in kat.get("name", "").lower() or "vinyl" in kat.get("name", "").lower():
+                    print(f"✅ Pronađena kategorija: {kat['name']} (ID: {kat['id']})", flush=True)
+                    return kat['id']
+            # Fallback na DOMAĆA & EX YU GLAZBA ako glavna fali (često sadrži vinile)
+            for kat in kategorije:
+                if "domać" in kat.get("name", "").lower() or "ex yu" in kat.get("name", "").lower():
+                    print(f"✅ Pronađena zamjenska kategorija: {kat['name']} (ID: {kat['id']})", flush=True)
+                    return kat['id']
     except Exception as e:
-        print(f"❌ Greška pri spajanju na naslovnicu: {e}", flush=True)
-        sys.exit(1)
+        print(f"⚠️ Greška pri API dohvatu kategorija: {e}", flush=True)
+    
+    print("⚠️ Nije pronađena specifična ID kategorija, povlačim cijeli katalog uz filter ključnih riječi...", flush=True)
+    return None
 
-    print(f"✅ Naslovnica dohvaćena! HTTP {r.status_code} | Duljina: {len(r.text)} znakova", flush=True)
-    soup = BeautifulSoup(r.text, "lxml")
 
-    svi_linkovi = []
-    vidjeni = set()
+def scrape_backstage():
+    t_start = time.time()
+    sve_ploce = {}
+    aktivni_linkovi = set()
 
-    for a in soup.select("a[href]"):
-        href = a["href"].strip()
-        tekst = " ".join(a.get_text(" ", strip=True).split())
-        if not href or href.startswith(("#", "javascript:", "mailto:", "tel:")):
-            continue
+    # Učitavanje postojećih podataka
+    if os.path.exists(CSV_FILENAME):
+        with open(CSV_FILENAME, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 7:
+                    sve_ploce[row[2]] = row
+        print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-        puni_url = urljoin(SITE_URL, href)
-        if "backstagerecords-zagreb.com" not in puni_url:
-            continue
+    sesija = kreiraj_sesiju()
+    kategorija_id = otkrij_id_kategorije_vinila(sesija)
 
-        kljuc = (puni_url, tekst)
-        if kljuc not in vidjeni and tekst:
-            vidjeni.add(kljuc)
-            svi_linkovi.append((tekst, puni_url))
+    # Parametri za API
+    params = {"per_page": 100, "page": 1}
+    if kategorija_id:
+        params["category"] = str(kategorija_id)
 
-    kljucne_rijeci = ["vinyl", "vinil", "lp", "ploč", "ploc", "12\"", "7\"", "music", "glazb", "kategorij", "category", "shop", "trgovina"]
-    vinil_kandidati = []
+    ukupno_stranica = 1
+    trenutna_stranica = 1
 
-    for tekst, url in svi_linkovi:
-        spojeno = f"{tekst} {url}".lower()
-        if any(v in spojeno for v in kljucne_rijeci):
-            vinil_kandidati.append((tekst, url))
+    print(f"\n🚀 Pokrećem WooCommerce API dohvat ploča...", flush=True)
 
-    print(f"\n🎵 === UŽI IZBOR: KANDIDATI ZA KATEGORIJE ({len(vinil_kandidati)}) ===", flush=True)
-    for idx, (tekst, url) in enumerate(vinil_kandidati[:50], 1):
-        print(f"  * [{tekst}] -> {url}", flush=True)
+    while trenutna_stranica <= ukupno_stranica:
+        params["page"] = trenutna_stranica
+        t_page = time.time()
+        
+        try:
+            r = sesija.get(API_PRODUCTS_URL, params=params, timeout=20)
+            
+            if r.status_code != 200:
+                print(f"   ❌ Stranica {trenutna_stranica} vratila grešku {r.status_code}. Prekidam dohvat.", flush=True)
+                break
+                
+            # Čitanje ukupnog broja stranica iz zaglavlja odgovora (samo prvi put)
+            if trenutna_stranica == 1 and 'X-WP-TotalPages' in r.headers:
+                ukupno_stranica = int(r.headers['X-WP-TotalPages'])
+                total_items = r.headers.get('X-WP-Total', '?')
+                print(f"📊 API javlja: {total_items} artikala kroz {ukupno_stranica} stranica.", flush=True)
 
-    # Odabir testne kategorije
-    test_url = None
-    for tekst, url in vinil_kandidati:
-        if url.rstrip("/") != SITE_URL.rstrip("/") and any(x in url.lower() for x in ["vinyl", "vinil", "lp", "ploc", "shop", "kategorija", "category"]):
-            test_url = url
-            break
+            proizvodi = r.json()
+            if not proizvodi:
+                break
 
-    if not test_url and vinil_kandidati:
-        test_url = vinil_kandidati[0][1]
+            dodano_na_stranici = 0
+            
+            for p in proizvodi:
+                # Filtriranje: Ako nemamo ID kategorije, preskačemo sve što očito nije glazba (majice, funko)
+                naslov = ocisti_naziv(p.get("name", ""))
+                naslov_low = naslov.lower()
+                
+                if not kategorija_id:
+                    if any(x in naslov_low for x in ["t-shirt", "majic", "funko pop", "kaset", "cassette", "cd", "casopis"]):
+                        if " lp" not in naslov_low and " 7\"" not in naslov_low:
+                            continue
 
-    if not test_url:
-        print("\n⚠️ Nisam pronašao očitu kategoriju. Ispisujem početak bodyja:", flush=True)
-        print(soup.body.prettify()[:2000], flush=True)
-        return
+                # Ako artikl ne može biti kupljen, preskačemo
+                if not p.get("is_purchasable", True) or not p.get("is_in_stock", True):
+                    continue
 
-    # 4. Dubinska analiza odabrane kategorije
-    print(f"\n🔎 [4/5] Otvaram testnu kategoriju: {test_url}", flush=True)
-    r_kat = s.get(test_url, timeout=30)
-    print(f"✅ Kategorija dohvaćena! HTTP {r_kat.status_code}", flush=True)
-    soup_kat = BeautifulSoup(r_kat.text, "lxml")
+                cijena = "0.00"
+                cijene_blok = p.get("prices", {})
+                if cijene_blok:
+                    raw_cijena = cijene_blok.get("price", "0")
+                    # WooCommerce vraća iznos u centima (npr. "8000" = 80.00 EUR)
+                    minor_unit = int(cijene_blok.get("currency_minor_unit", 2))
+                    if raw_cijena.isdigit() and int(raw_cijena) > 0:
+                        cijena = f"{int(raw_cijena) / (10 ** minor_unit):.2f}"
 
-    selektori_kartica = [
-        "li.product", "div.product", "div.grid-item", ".product-item",
-        "article.product-miniature", ".product-layout", ".shop-item"
-    ]
+                if cijena == "0.00":
+                    continue
 
-    pronadjene_kartice = []
-    koristeni_selektor = ""
-    for sel in selektori_kartica:
-        el = soup_kat.select(sel)
-        if len(el) >= 3:
-            pronadjene_kartice = el
-            koristeni_selektor = sel
-            break
+                link = p.get("permalink", "")
+                if not link:
+                    continue
+                
+                # Slike
+                slika_url = ""
+                slike = p.get("images", [])
+                if slike and isinstance(slike, list):
+                    slika_url = slike[0].get("src", "")
 
-    print(f"\n📦 === ANALIZA KARTICE PROIZVODA (Selektor: '{koristeni_selektor}', Ukupno: {len(pronadjene_kartice)}) ===", flush=True)
-    if pronadjene_kartice:
-        print("--- KARTICA #1 HTML ---", flush=True)
-        print(pronadjene_kartice[0].prettify()[:3000], flush=True)
+                tip_artikla = odredi_tip_artikla(naslov)
+                
+                # Backstage prodaje isključivo nove i tvornički zapakirane ploče, osim ako napišu "RABLJENO"
+                stanje = "Rabljeni" if "rabljeno" in naslov_low else "Novo"
+
+                red = [naslov, cijena, link, slika_url, stanje, stanje, tip_artikla]
+                sve_ploce[link] = red
+                aktivni_linkovi.add(link)
+                dodano_na_stranici += 1
+
+            print(f"   ⚡ Stranica {trenutna_stranica}/{ukupno_stranica} obrađena za {time.time() - t_page:.1f}s (+{dodano_na_stranici} dostupnih).", flush=True)
+            trenutna_stranica += 1
+            
+        except Exception as e:
+            print(f"   ⚠️ Mrežna greška na stranici {trenutna_stranica}: {e}", flush=True)
+            time.sleep(3)
+            # Nastavljamo na iduću nakon pauze, ne rušimo sve
+            trenutna_stranica += 1
+
+    # Sinkronizacija zaliha
+    if len(aktivni_linkovi) > 50:
+        pocetni_broj = len(sve_ploce)
+        sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
+        obrisano = pocetni_broj - len(sve_ploce)
+        print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} rasprodanih artikala.", flush=True)
     else:
-        print("⚠️ Kartice nisu detektirane. Ispisujem glavni blok:", flush=True)
-        glavni = soup_kat.select_one("main, #main, #content, .site-content, .shop-container") or soup_kat.body
-        if glavni:
-            print(glavni.prettify()[:3000], flush=True)
+        print(f"\n⚠️ Oprez: API je vratio samo {len(aktivni_linkovi)} artikala. Preskačem brisanje starih.", flush=True)
 
-    # 5. Analiza paginacije i pojedinačnog proizvoda
-    print("\n🔢 === ANALIZA PAGINACIJE ===", flush=True)
-    paginacija = soup_kat.select(".woocommerce-pagination, nav.pagination, .pagination, .page-numbers")
-    if paginacija:
-        for p in paginacija:
-            print(p.prettify()[:1500], flush=True)
-    else:
-        page_linkovi = [urljoin(SITE_URL, a["href"]) for a in soup_kat.select('a[href*="/page/"], a[href*="page="]')]
-        print(f"Linkovi s 'page': {page_linkovi[:10]}", flush=True)
-
-    if pronadjene_kartice:
-        prvi_a = pronadjene_kartice[0].select_one("a[href]")
-        if prvi_a:
-            art_url = urljoin(SITE_URL, prvi_a["href"])
-            print(f"\n💿 [5/5] === DETALJI PROIZVODA: {art_url} ===", flush=True)
-            r_art = s.get(art_url, timeout=30)
-            soup_art = BeautifulSoup(r_art.text, "lxml")
-            for blok in soup_art.select(".summary, .product-info, .product-details, .woocommerce-product-details__short-description, #tab-description"):
-                print(blok.prettify()[:2000], flush=True)
+    if sve_ploce:
+        with open(CSV_FILENAME, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"])
+            writer.writerows(sve_ploce.values())
+        ukupno_slika = sum(1 for v in sve_ploce.values() if len(v) >= 4 and v[3])
+        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih ploča (Sa slikom: {ukupno_slika}).", flush=True)
 
 if __name__ == "__main__":
-    izvidnica_backstage()
+    scrape_backstage()
