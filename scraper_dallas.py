@@ -1,14 +1,26 @@
 import cloudscraper
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
 from urllib.parse import urljoin
 import urllib3
-import sys
+import threading
+import csv
+import os
+import re
+import time
+import html
 
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-SITE_URL = "https://shop.dallas.si/hr"
+SITE_URL = "https://shop.dallas.si"
+CSV_FILENAME = "dallas_ploce.csv"
+BROJ_NITI = 5
 
-def stvori_sesiju():
+KATEGORIJA_VINIL = f"{SITE_URL}/hr/13-vinyl"
+
+_thread_local = threading.local()
+
+def kreiraj_sesiju():
     s = cloudscraper.create_scraper(
         browser={"browser": "chrome", "platform": "windows", "desktop": True}
     )
@@ -16,145 +28,222 @@ def stvori_sesiju():
         "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
         "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
         "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
+        "Referer": SITE_URL,
+        "Connection": "keep-alive"
     })
     return s
 
-def izvidnica_dallas():
-    s = stvori_sesiju()
+def dohvati_sesiju():
+    s = getattr(_thread_local, "session", None)
+    if s is None:
+        s = kreiraj_sesiju()
+        _thread_local.session = s
+    return s
 
-    # 1. Provjera robots.txt i Sitemapa
-    print(f"🔎 [1/5] Provjeravam robots.txt i Sitemapove na {SITE_URL} ...", flush=True)
-    for putanja in ["/robots.txt", "/sitemap.xml", "/1_index_sitemap.xml"]:
+def sigurni_get(url, timeout=30, max_pokusaja=4):
+    for pokusaj in range(1, max_pokusaja + 1):
         try:
-            r_rob = s.get("https://shop.dallas.si" + putanja, timeout=15)
-            print(f"  -> {putanja}: HTTP {r_rob.status_code} (Duljina: {len(r_rob.text)})", flush=True)
-            if r_rob.status_code == 200 and len(r_rob.text) > 20:
-                print(r_rob.text[:1000], flush=True)
-                print("  ----------------------------------------", flush=True)
+            s = dohvati_sesiju()
+            r = s.get(url, timeout=timeout)
+            if r.status_code == 200 and len(r.text) > 2000:
+                return r.text
+            time.sleep(1.5 * pokusaj)
+            _thread_local.session = kreiraj_sesiju()
         except Exception as e:
-            print(f"  -> Greška na {putanja}: {e}", flush=True)
+            print(f"   ⚠️ Greška spajanja ({pokusaj}/{max_pokusaja}) na {url}: {e}", flush=True)
+            time.sleep(1.5 * pokusaj)
+            _thread_local.session = kreiraj_sesiju()
+    return None
 
-    # 2. Provjera javnih API-ja (PrestaShop)
-    print(f"\n🔎 [2/5] Provjeravam skrivene JSON API-je ...", flush=True)
-    api_urlovi = [
-        "/api/products?output_format=JSON",
-        "/module/ps_facetedsearch/ajax",
-        "/wp-json/wc/store/v1/products?per_page=5"
-    ]
-    for api_p in api_urlovi:
-        try:
-            r_api = s.get(SITE_URL + api_p, timeout=15)
-            print(f"  -> {api_p}: HTTP {r_api.status_code} (Duljina: {len(r_api.text)})", flush=True)
-            if r_api.status_code == 200 and r_api.text.strip().startswith(("[", "{")):
-                print(f"  ✅ API OTVOREN! Uzorak JSON-a:\n{r_api.text[:800]}\n", flush=True)
-        except Exception as e:
-            print(f"  -> Greška na API {api_p}: {e}", flush=True)
+def ocisti_naziv(sirovi_naslov):
+    cisti = html.unescape(sirovi_naslov)
+    cisti = cisti.replace("–", "-").replace("—", "-")
+    # Ponekad imaju "- VINYL - 1LP" na kraju, što ćemo maknuti iz naslova
+    cisti = re.sub(r"-\s*VINYL\s*-\s*\d*L?P?", "", cisti, flags=re.IGNORECASE)
+    cisti = re.sub(r"-\s*VINYL", "", cisti, flags=re.IGNORECASE)
+    return " ".join(cisti.split()).strip()
 
-    # 3. Spajanje na naslovnicu i analiza navigacije
-    print(f"\n🔎 [3/5] Spajam se na naslovnicu: {SITE_URL} ...", flush=True)
-    try:
-        r = s.get(SITE_URL, timeout=30)
-    except Exception as e:
-        print(f"❌ Greška pri spajanju na naslovnicu: {e}", flush=True)
-        sys.exit(1)
+def odredi_tip_artikla(naziv_original):
+    n_up = naziv_original.upper()
+    if any(oznaka in n_up for oznaka in [' 7"', " 7''", " 7″", " 7-INCH", " EP", " SINGLE"]):
+        return 'Singl 7"'
+    if any(oznaka in n_up for oznaka in [' 12"', ' 10"', " LP", " 2LP", " 3LP", " VINYL"]):
+        return "LP"
+    return "LP"
 
-    print(f"✅ Naslovnica dohvaćena! HTTP {r.status_code} | Duljina: {len(r.text)} znakova", flush=True)
-    soup = BeautifulSoup(r.text, "lxml")
+def izvuci_najbolju_sliku(img_el):
+    if not img_el:
+        return ""
+    src = img_el.get("src", "").strip()
+    if not src:
+        src = img_el.get("data-src", "").strip()
+    if src:
+        return urljoin(SITE_URL, src)
+    return ""
 
-    svi_linkovi = []
-    vidjeni = set()
+def izvuci_cijenu(el):
+    price_el = el.select_one(".product-miniature__price")
+    if price_el:
+        tekst = price_el.get_text(" ", strip=True).upper().replace("€", "").replace("EUR", "").strip()
+        tekst = tekst.replace(".", "").replace(",", ".") if "," in tekst and "." in tekst else tekst.replace(",", ".")
+        m = re.search(r"(\d+(?:\.\d{1,2})?)", tekst)
+        if m:
+            try:
+                val = float(m.group(1))
+                if val > 0:
+                    return f"{val:.2f}"
+            except Exception:
+                pass
+    return "0.00"
 
-    for a in soup.select("a[href]"):
-        href = a["href"].strip()
-        tekst = " ".join(a.get_text(" ", strip=True).split())
-        if not href or href.startswith(("#", "javascript:", "mailto:", "tel:")):
+def izvuci_broj_stranica(soup):
+    max_str = 1
+    # U PrestaShopu zadnji broj prije "Dalje" gumba je obično max stranica
+    linkovi = soup.select("ul.pagination li.page-item button.js-pager-link")
+    for btn in linkovi:
+        tekst = btn.get_text(strip=True)
+        if tekst.isdigit():
+            max_str = max(max_str, int(tekst))
+        
+        data_url = btn.get("data-ps-data", "")
+        m = re.search(r"page=(\d+)", data_url)
+        if m:
+            max_str = max(max_str, int(m.group(1)))
+    return max_str
+
+def normaliziraj_link(href):
+    if not href:
+        return ""
+    puni = urljoin(SITE_URL, html.unescape(str(href)).strip())
+    return puni.split("?")[0].split("#")[0]
+
+def parsiraj_stranicu(html_tekst):
+    soup = BeautifulSoup(html_tekst, "lxml")
+    stavke = []
+    kartice = soup.select("article.product-miniature")
+    
+    vidjeni_na_stranici = set()
+
+    for k in kartice:
+        title_a = k.select_one(".product-miniature__title")
+        if not title_a:
+            continue
+            
+        link = normaliziraj_link(title_a.get("href", ""))
+        if not link or link in vidjeni_na_stranici:
+            continue
+            
+        original_naslov = title_a.get_text(" ", strip=True)
+        naslov = ocisti_naziv(original_naslov)
+        if not naslov:
             continue
 
-        puni_url = urljoin(SITE_URL, href)
-        if "dallas.si" not in puni_url.lower():
+        cijena = izvuci_cijenu(k)
+        if cijena == "0.00":
             continue
 
-        kljuc = (puni_url, tekst)
-        if kljuc not in vidjeni and tekst:
-            vidjeni.add(kljuc)
-            svi_linkovi.append((tekst, puni_url))
+        slika_url = izvuci_najbolju_sliku(k.select_one("img.product-miniature__image"))
+        stanje = "Novo"  # Dallas ima samo nove ploče
+        tip_artikla = odredi_tip_artikla(original_naslov)
 
-    kljucne_rijeci = ["vinyl", "vinil", "lp", "ploč", "ploc", "kategorij", "category"]
-    vinil_kandidati = []
+        vidjeni_na_stranici.add(link)
+        red = [naslov, cijena, link, slika_url, stanje, stanje, tip_artikla]
+        stavke.append((link, red))
 
-    for tekst, url in svi_linkovi:
-        spojeno = f"{tekst} {url}".lower()
-        if any(v in spojeno for v in kljucne_rijeci):
-            vinil_kandidati.append((tekst, url))
+    max_str = izvuci_broj_stranica(soup)
+    return stavke, len(kartice), max_str
 
-    print(f"\n🎵 === UŽI IZBOR: KANDIDATI ZA KATEGORIJE ({len(vinil_kandidati)}) ===", flush=True)
-    for idx, (tekst, url) in enumerate(vinil_kandidati[:20], 1):
-        print(f"  * [{tekst}] -> {url}", flush=True)
+def obradi_stranicu_zadatka(args):
+    url, page = args
+    page_url = f"{url}?page={page}" if page > 1 else url
+    
+    t_start = time.time()
+    html_tekst = sigurni_get(page_url)
+    
+    if not html_tekst:
+        return page, False, [], 0, 1, time.time() - t_start
+        
+    stavke, br_kartica, max_str = parsiraj_stranicu(html_tekst)
+    return page, True, stavke, br_kartica, max_str, time.time() - t_start
 
-    # Odabir testne kategorije (tražimo kategoriju za ploče/LP)
-    test_url = None
-    for tekst, url in vinil_kandidati:
-        u_low = url.lower()
-        if url.rstrip("/") != SITE_URL.rstrip("/") and any(x in u_low for x in ["vinyl", "vinil", "lp"]):
-            test_url = url
-            break
+def scrape_dallas():
+    t_start = time.time()
+    sve_ploce = {}
+    aktivni_linkovi = set()
 
-    if not test_url and vinil_kandidati:
-        test_url = vinil_kandidati[0][1]
+    if os.path.exists(CSV_FILENAME):
+        with open(CSV_FILENAME, "r", encoding="utf-8") as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 7:
+                    norm_k = normaliziraj_link(row[2])
+                    row[2] = norm_k
+                    sve_ploce[norm_k] = row
+        print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
-    if not test_url:
-        print("\n⚠️ Nisam pronašao očitu kategoriju za ploče. Prekidam analizu HTML-a.", flush=True)
-        return
+    ukupno_neuspjelih = 0
 
-    # 4. Dubinska analiza odabrane kategorije
-    print(f"\n🔎 [4/5] Otvaram testnu kategoriju: {test_url}", flush=True)
-    r_kat = s.get(test_url, timeout=30)
-    print(f"✅ Kategorija dohvaćena! HTTP {r_kat.status_code}", flush=True)
-    soup_kat = BeautifulSoup(r_kat.text, "lxml")
+    print(f"\n📂 Analiziram Dallas vinil katalog...", flush=True)
 
-    selektori_kartica = [
-        "article.product-miniature", ".ajax_block_product", "li.product", "div.product", 
-        "div.product-grid-item", ".product-layout", ".product-item", ".item"
-    ]
+    with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
+        _, ok1, stavke1, br_kartica1, max_pages, _ = obradi_stranicu_zadatka((KATEGORIJA_VINIL, 1))
+        
+        if not ok1 or br_kartica1 == 0:
+            print("   ❌ Nema pronađenih artikala na prvoj stranici. Prekidam.", flush=True)
+            return
 
-    pronadjene_kartice = []
-    koristeni_selektor = ""
-    for sel in selektori_kartica:
-        el = soup_kat.select(sel)
-        if len(el) >= 3:
-            pronadjene_kartice = el
-            koristeni_selektor = sel
-            break
+        for link, red in stavke1:
+            sve_ploce[link] = red
+            aktivni_linkovi.add(link)
 
-    print(f"\n📦 === ANALIZA KARTICE PROIZVODA (Selektor: '{koristeni_selektor}', Ukupno: {len(pronadjene_kartice)}) ===", flush=True)
-    if pronadjene_kartice:
-        print("--- KARTICA #1 HTML ---", flush=True)
-        print(pronadjene_kartice[0].prettify()[:3000], flush=True)
+        print(f"   ✅ Stranica 1/{max_pages}: +{len(stavke1)} artikala.", flush=True)
+
+        if max_pages > 1:
+            preostale_stranice = list(range(2, max_pages + 1))
+            
+            for i in range(0, len(preostale_stranice), BROJ_NITI):
+                blok = preostale_stranice[i:i + BROJ_NITI]
+                zadaci = [(KATEGORIJA_VINIL, p) for p in blok]
+                t_blok = time.time()
+
+                rezultati = list(executor.map(obradi_stranicu_zadatka, zadaci))
+                uspjesno_str = 0
+                novih_u_bloku = 0
+
+                for page, ok, stavke, br_kartica, _, _ in rezultati:
+                    if not ok:
+                        ukupno_neuspjelih += 1
+                        continue
+                    uspjesno_str += 1
+                    for link, red in stavke:
+                        if link not in aktivni_linkovi:
+                            novih_u_bloku += 1
+                        sve_ploce[link] = red
+                        aktivni_linkovi.add(link)
+
+                print(
+                    f"   ⚡ Stranice {blok[0]:02d}-{blok[-1]:02d}/{max_pages} "
+                    f"({uspjesno_str}/{len(blok)} OK) za {time.time() - t_blok:.1f}s | "
+                    f"+{novih_u_bloku} novih | Ukupno: {len(aktivni_linkovi)}",
+                    flush=True
+                )
+
+    if ukupno_neuspjelih == 0 and len(aktivni_linkovi) > 50:
+        pocetni_broj = len(sve_ploce)
+        sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
+        obrisano = pocetni_broj - len(sve_ploce)
+        print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} rasprodanih artikala.", flush=True)
     else:
-        print("⚠️ Kartice nisu detektirane. Ispisujem glavni blok:", flush=True)
-        glavni = soup_kat.select_one("main, #main, #content, .site-content, .shop-container, #center_column, #products") or soup_kat.body
-        if glavni:
-            print(glavni.prettify()[:3000], flush=True)
+        print(f"\n⚠️ Oprez: Zabilježeno {ukupno_neuspjelih} neuspjelih stranica. Preskačem brisanje.", flush=True)
 
-    # 5. Analiza paginacije i pojedinačnog proizvoda
-    print("\n🔢 === ANALIZA PAGINACIJE ===", flush=True)
-    paginacija = soup_kat.select(".pagination, .page-list, .woocommerce-pagination, .page-numbers")
-    if paginacija:
-        for p in paginacija:
-            print(p.prettify()[:1500], flush=True)
-    else:
-        page_linkovi = [urljoin(SITE_URL, a["href"]) for a in soup_kat.select('a[href*="/page/"], a[href*="page="], a[href*="p="]')]
-        print(f"Linkovi s paginacijom: {page_linkovi[:10]}", flush=True)
-
-    if pronadjene_kartice:
-        prvi_a = pronadjene_kartice[0].select_one("a[href]")
-        if prvi_a:
-            art_url = urljoin(SITE_URL, prvi_a["href"])
-            print(f"\n💿 [5/5] === DETALJI PROIZVODA: {art_url} ===", flush=True)
-            r_art = s.get(art_url, timeout=30)
-            soup_art = BeautifulSoup(r_art.text, "lxml")
-            for blok in soup_art.select(".product-description, .product-information, #tab-description, .page-content"):
-                print(blok.prettify()[:2000], flush=True)
+    if sve_ploce:
+        with open(CSV_FILENAME, "w", newline="", encoding="utf-8") as f:
+            writer = csv.writer(f)
+            writer.writerow(["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"])
+            writer.writerows(sve_ploce.values())
+        ukupno_slika = sum(1 for v in sve_ploce.values() if len(v) >= 4 and v[3])
+        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih Dallas ploča (Sa slikom: {ukupno_slika}).", flush=True)
 
 if __name__ == "__main__":
-    izvidnica_dallas()
+    scrape_dallas()
