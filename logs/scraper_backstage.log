@@ -1,0 +1,151 @@
+=== IZVJEŠTAJ RADA: scraper_backstage.py ===
+Vrijeme pokretanja (UTC): 27.10.2026. 10:07:01
+----------------------------------------
+🔎 [1/5] Provjeravam robots.txt i Sitemapove na https://backstagerecords-zagreb.com ...
+  -> /robots.txt: HTTP 200 (Duljina: 330)
+User-agent: *
+Disallow: /wp-content/uploads/wc-logs/
+Disallow: /wp-content/uploads/woocommerce_transient_files/
+Disallow: /wp-content/uploads/woocommerce_uploads/
+Disallow: /*?add-to-cart=
+Disallow: /*?*add-to-cart=
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: https://backstagerecords-zagreb.com/wp-sitemap.xml
+
+  ----------------------------------------
+  -> /sitemap.xml: HTTP 200 (Duljina: 1202)
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="https://backstagerecords-zagreb.com/wp-sitemap-index.xsl" ?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-post-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-page-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-2.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-3.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-4.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-ecomus_popup-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-ecomus_builder-1.xml</loc></sitemap><sitemap><loc>https:/
+  ----------------------------------------
+  -> /sitemap_index.xml: HTTP 404 (Duljina: 192913)
+  -> /wp-sitemap.xml: HTTP 200 (Duljina: 1202)
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="https://backstagerecords-zagreb.com/wp-sitemap-index.xsl" ?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-post-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-page-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-2.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-3.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-product-4.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-ecomus_popup-1.xml</loc></sitemap><sitemap><loc>https://backstagerecords-zagreb.com/wp-sitemap-posts-ecomus_builder-1.xml</loc></sitemap><sitemap><loc>https:/
+  ----------------------------------------
+  -> /sitemap-products.xml: HTTP 404 (Duljina: 192913)
+
+🔎 [2/5] Provjeravam skrivene JSON API-je (WooCommerce/Shopify) ...
+  -> /wp-json/wc/store/v1/products?per_page=5: HTTP 200 (Duljina: 29193)
+  ✅ API OTVOREN! Uzorak JSON-a:
+[{"id":42441,"name":"TOM WAITS &#8211; BONE MACHINE LP","slug":"tom-waits-bone-machine-lp","parent":0,"type":"simple","variation":"","permalink":"https:\/\/backstagerecords-zagreb.com\/product\/tom-waits-bone-machine-lp\/","sku":"LP-5347","short_description":"","description":"","on_sale":false,"prices":{"price":"8000","regular_price":"8000","sale_price":"8000","price_range":null,"currency_code":"EUR","currency_symbol":"\u20ac","currency_minor_unit":2,"currency_decimal_separator":".","currency_thousand_separator":",","currency_prefix":"\u20ac","currency_suffix":""},"price_html":"<span class=\"woocommerce-Price-amount amount\"><span class=\"woocommerce-Price-currencySymbol\" dir=\"auto\">&euro;<\/span>80.00<\/span>","average_rating":"0","review_count":0,"images":[{"id":42450,"src":"https:\/\
+
+  -> /wp-json/wp/v2/product?per_page=5: HTTP 200 (Duljina: 10330)
+  ✅ API OTVOREN! Uzorak JSON-a:
+[{"id":42441,"date":"2026-10-24T22:15:52","date_gmt":"2026-10-24T22:15:52","guid":{"rendered":"https:\/\/backstagerecords-zagreb.com\/product\/tom-waits-bone-machine-lp\/"},"modified":"2026-10-26T14:44:32","modified_gmt":"2026-10-26T14:44:32","slug":"tom-waits-bone-machine-lp","status":"publish","type":"product","link":"https:\/\/backstagerecords-zagreb.com\/product\/tom-waits-bone-machine-lp\/","title":{"rendered":"TOM WAITS &#8211; BONE MACHINE LP"},"content":{"rendered":"","protected":false},"excerpt":{"rendered":"","protected":false},"featured_media":42450,"comment_status":"open","ping_status":"closed","template":"","meta":[],"product_brand":[],"product_cat":[81,89],"product_tag":[],"class_list":["post-42441","product","type-product","status-publish","has-post-thumbnail","product_cat-g
+
+  -> /products.json?limit=5: HTTP 404 (Duljina: 192913)
+
+🔎 [3/5] Spajam se na naslovnicu: https://backstagerecords-zagreb.com ...
+✅ Naslovnica dohvaćena! HTTP 200 | Duljina: 304476 znakova
+
+🎵 === UŽI IZBOR: KANDIDATI ZA KATEGORIJE (42) ===
+  * [Backstage Records Zagreb - Prodaja i Otkup Gramofonskih ploča] -> https://backstagerecords-zagreb.com/
+  * [OTKUP GRAMOFONSKIH PLOČA] -> https://backstagerecords-zagreb.com/otkup-gramofonskih-ploca/
+  * [Shop] -> https://backstagerecords-zagreb.com/shop/
+  * [AUDIO KASETE] -> https://backstagerecords-zagreb.com/product-category/audio-kasete/
+  * [CD’s] -> https://backstagerecords-zagreb.com/product-category/cds/
+  * [GRAMOFONSKE PLOČE] -> https://backstagerecords-zagreb.com/product-category/gramofonske-ploce/
+  * [LP] -> https://backstagerecords-zagreb.com/product-category/gramofonske-ploce/lp/
+  * [7″ / 45rpm / EP] -> https://backstagerecords-zagreb.com/product-category/gramofonske-ploce/7-45rpm-ep/
+  * [10″] -> https://backstagerecords-zagreb.com/product-category/gramofonske-ploce/10/
+  * [12″ Maxi] -> https://backstagerecords-zagreb.com/product-category/gramofonske-ploce/12-maxi/
+  * [Prikaži sve] -> https://backstagerecords-zagreb.com/product-category/gramofonske-ploce/
+  * [Domaća & Ex Yu Glazba] -> https://backstagerecords-zagreb.com/product-category/domaca-ex-yu-glazba/
+  * [12″ LP Domaći izvođači] -> https://backstagerecords-zagreb.com/product-category/domaca-ex-yu-glazba/lp-domaca-ex-yu-glazba/
+  * [7″ & EP Domaći izvođači] -> https://backstagerecords-zagreb.com/product-category/domaca-ex-yu-glazba/7/
+  * [CD’s Domaći izvođači] -> https://backstagerecords-zagreb.com/product-category/domaca-ex-yu-glazba/cds-domaca-ex-yu-glazba/
+  * [Audio kasete Domaći izvođači] -> https://backstagerecords-zagreb.com/product-category/domaca-ex-yu-glazba/audio-kasete-domaca-ex-yu-glazba/
+  * [MERCHANDISE] -> https://backstagerecords-zagreb.com/product-category/merchandise/
+  * [T-Shirts] -> https://backstagerecords-zagreb.com/product-category/merchandise/t-shirts/
+  * [TOTE BAG] -> https://backstagerecords-zagreb.com/product-category/merchandise/tote-bag/
+  * [RAZNO] -> https://backstagerecords-zagreb.com/product-category/razno/
+  * [Funko POP!] -> https://backstagerecords-zagreb.com/product-category/razno/funko-pop/
+  * [Časopisi] -> https://backstagerecords-zagreb.com/product-category/razno/casopisi/
+  * [Ostala memorabilija] -> https://backstagerecords-zagreb.com/product-category/razno/ostala-memorabilija/
+  * [Stripovi] -> https://backstagerecords-zagreb.com/product-category/razno/stripovi/
+  * [Prikaži sve] -> https://backstagerecords-zagreb.com/product-category/razno/
+  * [DVD’s & Blu-ray] -> https://backstagerecords-zagreb.com/product-category/dvds/
+  * [NOVO U PONUDI / NEW ARRIVALS] -> https://backstagerecords-zagreb.com/novi-vinili-stigli-u-backstage-records-od-metallice-i-u2-do-dine-dvornika/
+  * [NARUČI SADA] -> https://backstagerecords-zagreb.com/shop/
+  * [VARIOUS ARTISTS – DELICIOUS TUNES 2LP] -> https://backstagerecords-zagreb.com/product/various-artists-delicious-tunes-2lp/
+  * [VAN MORRISON – THE BEST OF LP] -> https://backstagerecords-zagreb.com/product/van-morrison-the-best-of-lp/
+  * [TOM WAITS – BLUE VALENTINE LP] -> https://backstagerecords-zagreb.com/product/tom-waits-blue-valentine-lp-3/
+  * [TOM WAITS – RAIN DOGS LP] -> https://backstagerecords-zagreb.com/product/tom-waits-rain-dogs-lp/
+  * [TOM WAITS – BONE MACHINE LP] -> https://backstagerecords-zagreb.com/product/tom-waits-bone-machine-lp/
+  * [MF DOOM – MM…FOOD 2LP] -> https://backstagerecords-zagreb.com/product/mf-doom-mm-food-2lp/
+  * [Pogledajte sve novitete] -> https://backstagerecords-zagreb.com/shop
+  * [Pogledaj sve kategorije] -> https://backstagerecords-zagreb.com/shop
+  * [CD's] -> https://backstagerecords-zagreb.com/product-category/cds/
+  * [WEBSHOP] -> https://backstagerecords-zagreb.com/shop
+  * [Pogledaj Webshop] -> https://backstagerecords-zagreb.com/shop
+  * [Pogledaj sve rezultate za pojam] -> https://backstagerecords-zagreb.com/shop/
+  * [NASTAVI TRAŽITI] -> https://backstagerecords-zagreb.com/shop/
+  * [Need Help?] -> https://backstagerecords-zagreb.com/kontakt/
+
+🔎 [4/5] Otvaram testnu kategoriju: https://backstagerecords-zagreb.com/otkup-gramofonskih-ploca/
+✅ Kategorija dohvaćena! HTTP 200
+
+📦 === ANALIZA KARTICE PROIZVODA (Selektor: 'li.product', Ukupno: 4) ===
+--- KARTICA #1 HTML ---
+<li class="product type-product post-42441 status-publish first instock product_cat-gramofonske-ploce product_cat-lp has-post-thumbnail shipping-taxable purchasable product-type-simple">
+ <div class="product-inner">
+  <div class="product-thumbnail em-relative">
+   <a aria-label="TOM WAITS – BONE MACHINE LP" class="woocommerce-LoopProduct-link woocommerce-loop-product__link" href="https://backstagerecords-zagreb.com/product/tom-waits-bone-machine-lp/">
+    <img alt="TOM WAITS - BONE MACHINE LP" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail lazyload" data-eio-rheight="500" data-eio-rwidth="500" data-max-width="500" data-sizes="auto" data-src="https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-500x500.jpg.webp" data-srcset="https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-500x500.jpg.webp 500w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-300x300.jpg.webp 300w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-1024x1024.jpg.webp 1024w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-150x150.jpg.webp 150w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-768x768.jpg.webp 768w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-1536x1536.jpg.webp 1536w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-2048x2048.jpg.webp 2048w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-700x700.jpg.webp 700w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-130x130.jpg.webp 130w" decoding="async" height="500" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAfQAAAH0AQMAAADxGE3JAAAAA1BMVEUAAACnej3aAAAAAXRSTlMAQObYZgAAAAlwSFlzAAAOxAAADsQBlSsOGwAAADVJREFUGBntwTEBAAAAwiD7p95jDGAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAF30AAAHoAg2/AAAAAElFTkSuQmCC" width="500"/>
+    <noscript>
+     <img alt="TOM WAITS - BONE MACHINE LP" class="attachment-woocommerce_thumbnail size-woocommerce_thumbnail" data-eio="l" decoding="async" height="500" sizes="(max-width: 500px) 100vw, 500px" src="https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-500x500.jpg.webp" srcset="https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-500x500.jpg.webp 500w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-300x300.jpg.webp 300w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-1024x1024.jpg.webp 1024w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-150x150.jpg.webp 150w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-768x768.jpg.webp 768w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/20261024_110446-1536x1536.jpg.webp 1536w, https://backstagerecords-zagreb.com/wp-content/uploads/2026/10/2026102
+
+🔢 === ANALIZA PAGINACIJE ===
+Linkovi s 'page': []
+
+💿 [5/5] === DETALJI PROIZVODA: https://backstagerecords-zagreb.com/product/tom-waits-bone-machine-lp/ ===
+<div class="summary entry-summary">
+ <h1 class="product_title entry-title">
+  TOM WAITS – BONE MACHINE LP
+ </h1>
+ <div class="ecomus-product-price">
+  <p class="price">
+   <span class="woocommerce-Price-amount amount">
+    <bdi>
+     <span class="woocommerce-Price-currencySymbol" dir="auto" translate="no">
+      €
+     </span>
+     80.00
+    </bdi>
+   </span>
+  </p>
+ </div>
+ <form action="https://backstagerecords-zagreb.com/product/tom-waits-bone-machine-lp/" class="cart" enctype="multipart/form-data" method="post">
+  <div class="ecomus-product-atc-group ecomus-product-type-simple">
+   <div class="quantity hidden">
+    <span class="ecomus-svg-icon ecomus-svg-icon--minus ecomus-qty-button decrease">
+     <svg aria-hidden="true" fill="currentColor" focusable="false" height="2" role="img" viewbox="0 0 12 2" width="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.998 1.85689H6.85519H5.1409H-0.00195312V0.142604H5.1409L6.85519 0.142578L11.998 0.142604V1.85689Z">
+      </path>
+     </svg>
+    </span>
+    <label class="screen-reader-text" for="quantity_6ae077cfefc6c">
+     TOM WAITS - BONE MACHINE LP količina
+    </label>
+    <input aria-label="Količina proizvoda" autocomplete="off" class="input-text qty text" id="quantity_6ae077cfefc6c" inputmode="numeric" max="1" min="1" name="quantity" placeholder="" step="1" type="hidden" value="1"/>
+    <span class="ecomus-svg-icon ecomus-svg-icon--plus ecomus-qty-button increase">
+     <svg aria-hidden="true" fill="currentColor" focusable="false" height="12" role="img" viewbox="0 0 12 12" width="12" xmlns="http://www.w3.org/2000/svg">
+      <path d="M11.998 6.85714H6.85519V12H5.1409V6.85714H-0.00195312V5.14286H5.1409V0H6.85519V5.14286H11.998V6.85714Z">
+      </path>
+     </svg>
+    </span>
+   </div>
+   <button class="single_add_to_cart_button button alt" name="add-to-cart" type="submit" value="42441">
+    <span class="text">
+     Stavi u košaricu
+    </span>
+    <span class="divide">
+     -
+    </span>
+    <span class="price
+----------------------------------------
+Vrijeme završetka (UTC): 27.10.2026. 10:07:13 | Kod izlaza: 0
