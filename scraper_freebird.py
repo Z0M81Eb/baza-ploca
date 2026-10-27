@@ -1,7 +1,7 @@
 import cloudscraper
 from bs4 import BeautifulSoup
 from concurrent.futures import ThreadPoolExecutor
-from urllib.parse import urljoin, urlparse, parse_qs
+from urllib.parse import urljoin
 import urllib3
 import threading
 import csv
@@ -17,7 +17,6 @@ CSV_FILENAME = "freebird_ploce.csv"
 BROJ_NITI = 6
 LIMIT_PO_STRANICI = 100
 
-# Fallback lista vinilnih podkategorija (ako izbornik na naslovnici ikada zakaže)
 ZADANE_VINIL_KATEGORIJE = [
     ("LP", "https://freebird.hr/index.php?route=product/category&path=225_223", "LP"),
     ('7"', "https://freebird.hr/index.php?route=product/category&path=225_233", 'Singl 7"'),
@@ -105,7 +104,6 @@ def otkrij_vinil_kategorije():
         if not href or not tekst:
             continue
 
-        # Ciljamo isključivo podkategorije unutar glavne VINYL grane (path=225_...)
         m_path = re.search(r"path=(225_\d+)", href)
         if not m_path:
             continue
@@ -114,13 +112,11 @@ def otkrij_vinil_kategorije():
         if path_val in vidjeni_pathovi:
             continue
 
-        # Provjera završava li naziv kategorije brojem artikala (npr. "LP 9475" ili "10' 0")
         m_broj = re.search(r"\s+(\d+)$", tekst)
         if m_broj:
             broj_artikala = int(m_broj.group(1))
             cisti_naziv = tekst[:m_broj.start()].strip()
             if broj_artikala == 0:
-                # Preskačemo prazne kategorije s 0 artikala
                 continue
         else:
             cisti_naziv = tekst
@@ -143,18 +139,36 @@ def normaliziraj_link_proizvoda(href):
         return ""
     cisto = html.unescape(str(href)).strip()
     puni = urljoin(SITE_URL, cisto)
-    # Izvlačimo čisti kanonski OpenCart link: https://freebird.hr/index.php?route=product/product&product_id=XXXXX
     m_id = re.search(r"product_id=(\d+)", puni)
     if m_id:
         return f"{SITE_URL}/index.php?route=product/product&product_id={m_id.group(1)}"
     return puni.split("&limit=")[0].split("&page=")[0].rstrip("/")
 
 
+def izvuci_product_id(url):
+    m = re.search(r"product_id=(\d+)", str(url))
+    return int(m.group(1)) if m else 0
+
+
+def stvori_otisak_reda(red, dodatni_opis=""):
+    """
+    Stvara jedinstveni potpis artikla (Naslov + Cijena + Slika + Stanje medija/omota + Opis izdanja).
+    Sluzi za prepoznavanje Freebirdovih duplih importa pod razlicitim product_id brojevima.
+    """
+    naslov_norm = re.sub(r"\s+", " ", str(red[0]).lower()).strip()
+    cijena_norm = str(red[1]).strip()
+    slika_norm = str(red[3]).strip().lower()
+    medij_norm = str(red[4]).strip().lower()
+    omot_norm = str(red[5]).strip().lower()
+    tip_norm = str(red[6]).strip().lower()
+    opis_norm = re.sub(r"\s+", " ", str(dodatni_opis).lower()).strip()
+    return (naslov_norm, cijena_norm, slika_norm, medij_norm, omot_norm, tip_norm, opis_norm)
+
+
 def izvuci_najbolju_sliku(img_el):
     if not img_el:
         return ""
 
-    # Prvo provjeravamo srcset kako bismo uzeli 2x (500x500h.webp) verziju umjesto male 250x250
     srcset = html.unescape(img_el.get("srcset", "")).strip()
     if srcset:
         dijelovi = [d.strip().split(" ")[0] for d in srcset.split(",") if d.strip()]
@@ -173,7 +187,6 @@ def izvuci_najbolju_sliku(img_el):
 
 
 def izvuci_stanja_iz_opisa(opis_tekst):
-    # Primjer: "Condition sleeve: VG+Condition records: VG+Edition: Diskos..."
     stanje_omota = "Rabljeni"
     stanje_medija = "Rabljeni"
 
@@ -208,7 +221,6 @@ def izvuci_stanja_iz_opisa(opis_tekst):
 
 
 def izvuci_cijenu(kartica):
-    # Prvo gledamo akcijsku cijenu (.price-new), a ako nema akcije onda običnu (.price-normal ili .price)
     for sel in ["span.price-new", "span.price-normal", "div.price"]:
         el = kartica.select_one(sel)
         if el:
@@ -226,7 +238,6 @@ def izvuci_cijenu(kartica):
 
 
 def izvuci_broj_stranica(soup):
-    # Primjer: "Showing 1 to 100 of 9475 (95 Pages)"
     for el in soup.select(".pagination-results div, .results"):
         tekst = el.get_text(" ", strip=True)
         m = re.search(r"\((\d+)\s+Pages?\)", tekst, flags=re.IGNORECASE)
@@ -247,12 +258,10 @@ def parsiraj_stranicu_kataloga(html_tekst, zadani_tip):
     soup = BeautifulSoup(html_tekst, "lxml")
     stavke = []
 
-    # Ciljamo glavni katalog (.main-products) kako bismo ignorirali bočne module (Outlet/Bestsellers)
     glavni_spremnik = soup.select_one("div.main-products, #content div.main-products")
     if glavni_spremnik:
         kartice = glavni_spremnik.select("div.product-thumb")
     else:
-        # Fallback: uzimamo samo kartice koje nisu unutar bočnih modula (module-products-...)
         sve_kartice = soup.select("div.product-thumb")
         kartice = []
         for k in sve_kartice:
@@ -266,7 +275,6 @@ def parsiraj_stranicu_kataloga(html_tekst, zadani_tip):
     vidjeni_na_stranici = set()
 
     for k in kartice:
-        # Provjera ima li aktivan gumb za košaricu
         btn_cart = k.select_one("a.btn-cart")
         if not btn_cart:
             continue
@@ -282,7 +290,6 @@ def parsiraj_stranicu_kataloga(html_tekst, zadani_tip):
         if not link or link in vidjeni_na_stranici:
             continue
 
-        # Čišćenje višestrukih razmaka u nazivu (npr. "Adem Seferaj    - Ty Parti...")
         sirovi_naslov = html.unescape(a_name.get_text(" ", strip=True))
         naslov = re.sub(r"\s+", " ", sirovi_naslov).strip()
         if not naslov:
@@ -299,13 +306,14 @@ def parsiraj_stranicu_kataloga(html_tekst, zadani_tip):
         opis_tekst = html.unescape(opis_el.get_text(" ", strip=True)) if opis_el else ""
         stanje_medija, stanje_omota = izvuci_stanja_iz_opisa(opis_tekst)
 
-        # Ako u Remarku piše da je EP ili 7", prilagođavamo tip artikla
         tip_artikla = zadani_tip
         if re.search(r"\bRemark\s*:\s*EP\b", opis_tekst, flags=re.IGNORECASE):
             tip_artikla = 'Singl 7"'
 
         vidjeni_na_stranici.add(link)
-        stavke.append((link, [naslov, cijena, link, slika_url, stanje_medija, stanje_omota, tip_artikla]))
+        red = [naslov, cijena, link, slika_url, stanje_medija, stanje_omota, tip_artikla]
+        otisak = stvori_otisak_reda(red, opis_tekst)
+        stavke.append((link, red, otisak))
 
     max_str = izvuci_broj_stranica(soup)
     return stavke, len(kartice), max_str
@@ -328,10 +336,44 @@ def obradi_stranicu_zadatka(args):
     return page, True, stavke, br_kartica, max_str
 
 
+def registriraj_artikl(link, red, otisak, sve_ploce, aktivni_linkovi, mapa_otisaka):
+    """
+    Ubacuje artikl uz provjeru duplikata po sadržaju.
+    Ako već postoji identičan artikl s drugim product_id-om, zadržava onaj s novijim (većim) product_id-om.
+    Vraća: (je_li_novi_unikat, je_li_preskocen_duplikat)
+    """
+    novi_id = izvuci_product_id(link)
+
+    if otisak in mapa_otisaka:
+        postojeci_link = mapa_otisaka[otisak]
+        if postojeci_link == link:
+            sve_ploce[link] = red
+            aktivni_linkovi.add(link)
+            return False, False
+
+        stari_id = izvuci_product_id(postojeci_link)
+        if novi_id > stari_id:
+            # Zamjenjujemo stariji zapis novijim product_id-om
+            aktivni_linkovi.discard(postojeci_link)
+            sve_ploce.pop(postojeci_link, None)
+            mapa_otisaka[otisak] = link
+            sve_ploce[link] = red
+            aktivni_linkovi.add(link)
+        return False, True
+
+    mapa_otisaka[otisak] = link
+    je_novi = link not in aktivni_linkovi
+    sve_ploce[link] = red
+    aktivni_linkovi.add(link)
+    return je_novi, False
+
+
 def scrape_freebird():
     t_start = time.time()
     sve_ploce = {}
     aktivni_linkovi = set()
+    mapa_otisaka = {}
+    ukupno_duplikata = 0
 
     if os.path.exists(CSV_FILENAME):
         with open(CSV_FILENAME, "r", encoding="utf-8") as f:
@@ -357,14 +399,17 @@ def scrape_freebird():
                 continue
 
             novih_u_kat = 0
-            for link, red in stavke1:
-                if link not in aktivni_linkovi:
+            duplih_u_kat = 0
+            for link, red, otisak in stavke1:
+                je_novi, je_dupli = registriraj_artikl(link, red, otisak, sve_ploce, aktivni_linkovi, mapa_otisaka)
+                if je_novi:
                     novih_u_kat += 1
-                sve_ploce[link] = red
-                aktivni_linkovi.add(link)
+                if je_dupli:
+                    duplih_u_kat += 1
+                    ukupno_duplikata += 1
 
             print(
-                f"   ✅ Stranica 1/{max_pages}: +{len(stavke1)} artikala | "
+                f"   ✅ Stranica 1/{max_pages}: +{novih_u_kat} unikata (duplikata: {duplih_u_kat}) | "
                 f"Ukupno u bazi: {len(aktivni_linkovi)}",
                 flush=True
             )
@@ -379,33 +424,44 @@ def scrape_freebird():
                     rezultati = list(executor.map(obradi_stranicu_zadatka, zadaci))
                     uspjesno_str = 0
                     novih_u_bloku = 0
+                    duplih_u_bloku = 0
 
                     for page, ok, stavke, br_kartica, _ in rezultati:
                         if not ok:
                             continue
                         uspjesno_str += 1
-                        for link, red in stavke:
-                            if link not in aktivni_linkovi:
+                        for link, red, otisak in stavke:
+                            je_novi, je_dupli = registriraj_artikl(link, red, otisak, sve_ploce, aktivni_linkovi, mapa_otisaka)
+                            if je_novi:
                                 novih_u_bloku += 1
                                 novih_u_kat += 1
-                            sve_ploce[link] = red
-                            aktivni_linkovi.add(link)
+                            if je_dupli:
+                                duplih_u_bloku += 1
+                                duplih_u_kat += 1
+                                ukupno_duplikata += 1
 
                     print(
                         f"   ⚡ [{naziv_kat}] Stranice {blok[0]:02d}-{blok[-1]:02d}/{max_pages} "
                         f"({uspjesno_str}/{len(blok)} OK) za {time.time() - t_blok:.1f}s | "
-                        f"+{novih_u_bloku} novih | Ukupno: {len(aktivni_linkovi)}",
+                        f"+{novih_u_bloku} novih (duplih: {duplih_u_bloku}) | Ukupno: {len(aktivni_linkovi)}",
                         flush=True
                     )
 
-            print(f"   🏁 Kategorija '{naziv_kat}' gotova za {time.time() - t_kat:.1f}s (+{novih_u_kat} unikatnih vinila).", flush=True)
+            print(
+                f"   🏁 Kategorija '{naziv_kat}' gotova za {time.time() - t_kat:.1f}s "
+                f"(+{novih_u_kat} unikatnih, filtrirano {duplih_u_kat} duplikata).",
+                flush=True
+            )
 
-    # Sinkronizacija: ako je katalog uspješno pretražen, uklanjamo prodane artikle
     if len(aktivni_linkovi) > 1000:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
         obrisano = pocetni_broj - len(sve_ploce)
-        print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} prodanih artikala.", flush=True)
+        print(
+            f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} prodanih/duplih zapisa iz stare baze "
+            f"(Ukupno filtrirano {ukupno_duplikata} Freebird duplikata u ovom prolazu).",
+            flush=True
+        )
     else:
         print(
             f"\n⚠️ Oprez: Pronađeno samo {len(aktivni_linkovi)} artikala. "
@@ -421,7 +477,7 @@ def scrape_freebird():
         ukupno_slika = sum(1 for v in sve_ploce.values() if len(v) >= 4 and v[3])
         print(
             f"🎉 GOTOVO za {time.time() - t_start:.1f}s! "
-            f"U bazi je {len(sve_ploce)} dostupnih Freebird vinila (Sa slikom: {ukupno_slika}).",
+            f"U bazi je {len(sve_ploce)} čistih, unikatnih Freebird vinila (Sa slikom: {ukupno_slika}).",
             flush=True
         )
 
