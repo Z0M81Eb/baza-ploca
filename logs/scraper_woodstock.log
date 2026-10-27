@@ -1,0 +1,162 @@
+=== IZVJEŠTAJ RADA: scraper_woodstock.py ===
+Vrijeme pokretanja (UTC): 27.10.2026. 10:28:09
+----------------------------------------
+🔎 [1/5] Provjeravam robots.txt i Sitemapove na https://www.woodstock-trgovina.hr ...
+  -> /robots.txt: HTTP 200 (Duljina: 34)
+User-agent: *
+Disallow: /error/
+
+  ----------------------------------------
+  -> /sitemap.xml: HTTP 404 (Duljina: 18172)
+  -> /sitemap_index.xml: HTTP 404 (Duljina: 18183)
+  -> /wp-sitemap.xml: HTTP 404 (Duljina: 18181)
+  -> /sitemap-products.xml: HTTP 404 (Duljina: 18186)
+
+🔎 [2/5] Provjeravam skrivene JSON API-je ...
+  -> /wp-json/wc/store/v1/products?per_page=5: HTTP 404 (Duljina: 18183)
+  -> /wp-json/wp/v2/product?per_page=5: HTTP 404 (Duljina: 18186)
+  -> /products.json?limit=5: HTTP 404 (Duljina: 18181)
+  -> /api/products?output_format=JSON: HTTP 404 (Duljina: 138)
+
+🔎 [3/5] Spajam se na naslovnicu: https://www.woodstock-trgovina.hr ...
+✅ Naslovnica dohvaćena! HTTP 200 | Duljina: 42679 znakova
+
+🎵 === UŽI IZBOR: KANDIDATI ZA KATEGORIJE (40) ===
+  * [HR] -> https://woodstock-trgovina.hr/
+  * [EN] -> https://woodstock-shop.com/en
+  * [Otkup - kupnja gramofonskih ploča i cd-a] -> https://www.woodstock-trgovina.hr/hr/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12
+  * [Otkup] -> https://www.woodstock-trgovina.hr/hr/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12
+  * [Woodstock Shop] -> https://www.woodstock-trgovina.hr/
+  * [0] -> https://www.woodstock-trgovina.hr/hr/checkout
+  * [Ex-YU izdanja] -> https://www.woodstock-trgovina.hr/hr/ex-yu-izdanja/p-7
+  * [GRAMOFONSKE PLOČE] -> https://www.woodstock-trgovina.hr/hr/gramofonske-ploce/p-2
+  * [CD-i] -> https://www.woodstock-trgovina.hr/hr/cd-i/p-5
+  * [Kazete] -> https://www.woodstock-trgovina.hr/hr/kazete/p-4
+  * [Kontakt] -> https://www.woodstock-trgovina.hr/hr/kontakt/p-3
+  * [Novo u ponudi] -> https://www.woodstock-trgovina.hr/hr/search?latest=1
+  * [BoÅ¡ko PetroviÄ‡ 5* - Featuring James Newton (CD, Album)] -> https://www.woodstock-trgovina.hr/hr/bo-ko-petrovi-5-featuring-james-newton-cd-album/ct-193076
+  * [Kupi za 60,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193076
+  * [These Hidden Hands - Vicarious Memories (LP, Album, W/Lbl, 180)] -> https://www.woodstock-trgovina.hr/hr/these-hidden-hands-vicarious-memories-lp-album-w-lbl-180/ct-193077
+  * [Kupi za 25,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193077
+  * [Oliver MandiÄ‡ - Sve Najbolje (LP, Comp)] -> https://www.woodstock-trgovina.hr/hr/oliver-mandi-sve-najbolje-lp-comp/ct-193079
+  * [Kupi za 75,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193079
+  * [Ð˜Ð´Ð¾Ð»Ð¸* - ÐžÐ´Ð±Ñ€Ð°Ð½Ð° Ð˜ ÐŸÐ¾ÑÐ»ÐµÐ´ÑšÐ¸ Ð”Ð°Ð½Ð¸ (LP, Album)] -> https://www.woodstock-trgovina.hr/hr/z-s-lp-album/ct-193080
+  * [Kupi za 90,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193080
+  * [Leonard Cohen - Greatest Hits (LP, Comp, RE)] -> https://www.woodstock-trgovina.hr/hr/leonard-cohen-greatest-hits-lp-comp-re/ct-193081
+  * [Kupi za 25,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193081
+  * [U2 - Rattle And Hum (2xLP, Album)] -> https://www.woodstock-trgovina.hr/hr/u2-rattle-and-hum-2xlp-album/ct-193082
+  * [Kupi za 35,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193082
+  * [U2 - Under A Blood Red Sky (Live) (LP, MiniAlbum, RE)] -> https://www.woodstock-trgovina.hr/hr/u2-under-a-blood-red-sky-live-lp-minialbum-re/ct-193083
+  * [Kupi za 15,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193083
+  * [Bon Jovi - New Jersey (LP, Album)] -> https://www.woodstock-trgovina.hr/hr/bon-jovi-new-jersey-lp-album/ct-193084
+  * [Kupi za 25,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193084
+  * [U2 - October (LP, Album, RE)] -> https://www.woodstock-trgovina.hr/hr/u2-october-lp-album-re/ct-193085
+  * [Kupi za 30,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193085
+  * [Bob Marley & The Wailers - Survival (LP, Album)] -> https://www.woodstock-trgovina.hr/hr/bob-marley-the-wailers-survival-lp-album/ct-193086
+  * [Kupi za 25,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193086
+  * [Arrested Development - Tennessee (12")] -> https://www.woodstock-trgovina.hr/hr/arrested-development-tennessee-12/ct-193087
+  * [Kupi za 8,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193087
+  * [U2 - Achtung Baby (LP, Album, Son)] -> https://www.woodstock-trgovina.hr/hr/u2-achtung-baby-lp-album-son/ct-193088
+  * [Kupi za 50,00 EUR] -> https://www.woodstock-trgovina.hr/hr/checkout?add=193088
+  * [Posjetite nas u našem dućanu] -> https://www.woodstock-trgovina.hr/hr/posjetite-nas-u-nasem-ducanu/p-9
+  * [Poštarina i plaćanje] -> https://www.woodstock-trgovina.hr/hr/postarina-i-placanje/p-10
+  * [Ocjene očuvanosti] -> https://www.woodstock-trgovina.hr/hr/ocjene-ocuvanosti/p-11
+  * [Woodstock Record Cd Dvd Shop] -> https://www.facebook.com/woodstocktrgovina/
+
+🔎 [4/5] Otvaram testnu kategoriju: https://www.woodstock-trgovina.hr/hr/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12
+✅ Kategorija dohvaćena! HTTP 200
+
+📦 === ANALIZA KARTICE PROIZVODA (Selektor: '', Ukupno: 0) ===
+⚠️ Kartice nisu detektirane. Ispisujem glavni blok:
+<body style="padding-top: 80px;">
+ <div class="navbar-fixed-top" data-wrs-id="general-settings" style="background-color: #FFF; padding-top: 4px;">
+  <div class="container">
+   <div>
+    <div style="display:inline-block; float:right; padding-right:10px;">
+     <ul class="list-inline">
+      <li class="active">
+       <a href="//woodstock-trgovina.hr/hr/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12" title="HR">
+        HR
+       </a>
+      </li>
+      <li class="">
+       <a href="//woodstock-shop.com/en/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12" title="EN">
+        EN
+       </a>
+      </li>
+     </ul>
+    </div>
+    <!--<div style="display:inline-block; float:right; padding-right:10px;">
+                    &nbsp;|&nbsp;
+                </div>
+                <div style="display:inline-block; float:right; padding-right:10px;">
+                    <ul class="list-inline">-->
+    <!--<li class="active">
+                            <a href="/hr/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12?cur=eur" title="EUR">EUR</a>
+                        </li>-->
+    <!--</ul>
+                </div>-->
+    <div class="hidden-xs" style="display:inline-block; float:right; padding-right:10px;">
+     |
+    </div>
+    <div style="display:inline-block; float:right; padding-right:10px; color: green;">
+     <ul class="list-inline">
+      <li class="active">
+       <a class="hidden-xs text-uppercase" href="/hr/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12">
+        <u>
+         <span class="glyphicon glyphicon-hand-right">
+         </span>
+         Otkup - kupnja gramofonskih ploča i cd-a
+        </u>
+       </a>
+       <a class="visible-xs text-uppercase" href="/hr/otkup-kupnja-gramofonskih-ploca-i-cd-a/p-12">
+        <u>
+         <span class="glyphicon glyphicon-hand-right">
+         </span>
+         Otkup
+        </u>
+       </a>
+      </li>
+     </ul>
+    </div>
+   </div>
+  </div>
+ </div>
+ <div class="navbar navbar-default navbar-fixed-top" style="top: 30px;">
+  <div class="container">
+   <div class="navbar-header">
+    <a class="navbar-brand hidden-xs" href="/">
+     <strong>
+      Woodstock Shop
+     </strong>
+    </a>
+    <a class="navbar-brand visible-xs" href="/">
+     <strong class="small">
+      Woodstock Shop
+     </strong>
+    </a>
+    <button class="navbar-toggle" data-target="#navbar-main" data-toggle="collapse" type="button">
+     <span class="icon-bar">
+     </span>
+     <span class="icon-bar">
+     </span>
+     <span class="icon-bar">
+     </span>
+    </button>
+    <a class="visible-sm visible-xs navbar-toggle" href="/hr/checkout" style="color:#fff; height: 35px;" title="Kupovina">
+     <span class="badge" style="margin-top: -10px;">
+      0
+     </span>
+     <span aria-hidden="true" class="glyphicon glyphicon-shopping-cart" style="top: -1px;">
+     </span>
+    </a>
+   </div>
+   <div class="navbar-collapse collapse" id="navbar-main" style="max-height: 100%;">
+    <div class="visible-sm visible-xs">
+     <div class="pull-right visible-sm">
+      <!-- PayPal 
+
+🔢 === ANALIZA PAGINACIJE ===
+Linkovi s paginacijom: []
+----------------------------------------
+Vrijeme završetka (UTC): 27.10.2026. 10:28:16 | Kod izlaza: 0
