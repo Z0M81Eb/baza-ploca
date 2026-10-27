@@ -1,161 +1,46 @@
 === IZVJEŠTAJ RADA: scraper_roxy.py ===
-Vrijeme pokretanja (UTC): 27.10.2026. 17:21:43
+Vrijeme pokretanja (UTC): 27.10.2026. 17:26:08
 ----------------------------------------
-🔎 [1/3] Spajam se na naslovnicu: https://www.cdshop-roxy.com ...
-✅ Naslovnica dohvaćena! HTTP 200 | Duljina: 30733 znakova
+🔎 Dohvaćam abecedne linkove iz RoxY naslovnice...
+📂 Pronađeno 36 stranica kataloga. Pokrećem preuzimanje ploča...
+   ⚡ Stranica izdvajamo.htm obrađena za 0.8s | Pronađeno ploča: 0
+   ⚡ Stranica a.htm obrađena za 1.4s | Pronađeno ploča: 118
+   ⚡ Stranica l.htm obrađena za 1.5s | Pronađeno ploča: 82
+   ⚡ Stranica s.htm obrađena za 1.6s | Pronađeno ploča: 124
+   ⚡ Stranica f.htm obrađena za 1.6s | Pronađeno ploča: 98
+   ⚡ Stranica i.htm obrađena za 0.9s | Pronađeno ploča: 100
+   ⚡ Stranica index2.html obrađena za 2.9s | Pronađeno ploča: 0
+   ⚡ Stranica 0-9.htm obrađena za 2.8s | Pronađeno ploča: 26
+   ⚡ Stranica b.htm obrađena za 3.2s | Pronađeno ploča: 152
+   ⚡ Stranica k.htm obrađena za 3.3s | Pronađeno ploča: 126
+   ⚡ Stranica m.htm obrađena za 3.6s | Pronađeno ploča: 126
+   ⚡ Stranica kondicije.htm obrađena za 0.7s | Pronađeno ploča: 0
+   ⚡ Stranica index.html obrađena za 0.8s | Pronađeno ploča: 0
+   ⚡ Stranica c.htm obrađena za 0.6s | Pronađeno ploča: 105
+   ⚡ Stranica Links.htm obrađena za 0.7s | Pronađeno ploča: 0
+   ⚡ Stranica Stalci.htm obrađena za 0.5s | Pronađeno ploča: 0
+   ⚡ Stranica h.htm obrađena za 0.7s | Pronađeno ploča: 75
+   ⚡ Stranica t.htm obrađena za 1.0s | Pronađeno ploča: 113
+   ⚡ Stranica u.htm obrađena za 0.8s | Pronađeno ploča: 28
+   ⚡ Stranica p.htm obrađena za 0.9s | Pronađeno ploča: 103
+   ⚡ Stranica v.htm obrađena za 0.9s | Pronađeno ploča: 146
+   ⚡ Stranica Coveri.htm obrađena za 2.8s | Pronađeno ploča: 0
+   ⚡ Stranica folk.htm obrađena za 2.5s | Pronađeno ploča: 107
+   ⚡ Stranica j.htm obrađena za 2.4s | Pronađeno ploča: 105
+   ⚡ Stranica d.htm obrađena za 3.1s | Pronađeno ploča: 142
+   ⚡ Stranica g.htm obrađena za 1.0s | Pronađeno ploča: 147
+   ⚡ Stranica otkup.htm obrađena za 13.3s | Pronađeno ploča: 0
+   ⚡ Stranica o.htm obrađena za 0.5s | Pronađeno ploča: 96
+   ⚡ Stranica z.htm obrađena za 11.8s | Pronađeno ploča: 86
+   ⚡ Stranica za_clanove.htm obrađena za 11.7s | Pronađeno ploča: 0
+   ⚡ Stranica r.htm obrađena za 11.9s | Pronađeno ploča: 94
+   ⚡ Stranica Kompilacije.htm obrađena za 11.8s | Pronađeno ploča: 81
+   ⚡ Stranica y.htm obrađena za 1.8s | Pronađeno ploča: 27
+   ⚡ Stranica n.htm obrađena za 2.1s | Pronađeno ploča: 157
+   ⚡ Stranica Klasika.htm obrađena za 2.0s | Pronađeno ploča: 213
+   ⚡ Stranica e.htm obrađena za 1.9s | Pronađeno ploča: 152
 
-🎵 === PRONAĐENI LINKOVI KATALOGA (41 komada) ===
-  * https://www.cdshop-roxy.com/index.html
-  * https://www.cdshop-roxy.com/index2.html
-  * https://www.cdshop-roxy.com/Prodaja.htm
-  * https://www.cdshop-roxy.com/Zamjena.htm
-  * https://www.cdshop-roxy.com/forme/narudzba.html
-  * https://www.cdshop-roxy.com/forme/clanovi.html
-  * https://www.cdshop-roxy.com/izdvajamo.htm
-  * https://www.cdshop-roxy.com/knjiga.htm
-  * https://www.cdshop-roxy.com/Kompilacije.htm
-  * https://www.cdshop-roxy.com/folk.htm
-  * ... (i ostala slova abecede)
-
-🔎 [2/3] Otvaram testnu stranicu kataloga: https://www.cdshop-roxy.com/a.htm
-✅ Katalog dohvaćen! HTTP 200
-
-📦 === ANALIZA HTML TABLICE (Redovi) ===
-Pronađeno 276 redova na stranici.
-
---- KARTICA/RED #1 (Tekstualno) ---
-Komisiona 
-              trgovina CD-a i ploča, Zagreb 10000, Savska cesta 34. | Radno 
-              vrijeme: ponedjeljak - petak: 11 - 19 ; subota: 09 - 14.
---- HTML KOD REDA ---
-<tr>
- <td width="200">
-  <object classid="clsid:D27CDB6E-AE6D-11cf-96B8-444553540000" codebase="http://download.macromedia.com/pub/shockwave/cabs/flash/swflash.cab#version=5,0,0,0" height="120" name="roxy" width="200">
-   <param name="movie" value="flash/roxy.swf"/>
-   <param name="quality" value="high"/>
-   <embed height="120" name="roxy" pluginspage="http://www.macromedia.com/shockwave/download/index.cgi?P1_Prod_Version=ShockwaveFlash" quality="high" src="flash/roxy.swf" type="application/x-shockwave-flash" width="200">
-   </embed>
-  </object>
- </td>
- <td valign="top" width="580">
-  <table border="0" cellpadding="0" cellspacing="2" width="100%">
-   <tr>
-    <td height="44" width="25%">
-     <div align="right">
-      <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-       <b>
-
---------------------------------------------------
---- KARTICA/RED #2 (Tekstualno) ---
-0-9 | a | b | c-č-ć | d-dž-đ | e | f | g | h | i | j | k | l-lj | m | n-nj | o | p-q | r | s-š | t | u | v-w | x-y | z-ž | Otkupljujemo 
-              & tražimo | . | / | .. | Objašnjenje 
-              o kondicijama | . | / | . | Coveri | . | / | . | CD-stalci | . | / | . | Za 
-              članove | . | / | . | Linkovi | -
---- HTML KOD REDA ---
-<tr>
- <td colspan="2" height="35">
-  <table align="center" border="1" bordercolor="#66CCCC" cellpadding="2" cellspacing="2" height="22" width="780">
-   <tr bordercolor="#339999">
-    <td height="26" width="27">
-     <div align="center">
-      <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-       <a href="0-9.htm">
-        0-9
-       </a>
-      </font>
-     </div>
-    </td>
-    <td height="26" width="20">
-     <div align="center">
-      <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-       <a href="a.htm">
-        a
-       </a>
-      </font>
-     </div>
-    </td>
-    <td height="26" width="20">
-     <div align="center">
-      <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-       <a href="b.htm">
-        b
-       </a>
-      </font>
-     </div>
-    </
---------------------------------------------------
---- KARTICA/RED #3 (Tekstualno) ---
-0-9 | a | b | c-č-ć | d-dž-đ | e | f | g | h | i | j | k | l-lj | m | n-nj | o | p-q | r | s-š | t | u | v-w | x-y | z-ž
---- HTML KOD REDA ---
-<tr bordercolor="#339999">
- <td height="26" width="27">
-  <div align="center">
-   <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-    <a href="0-9.htm">
-     0-9
-    </a>
-   </font>
-  </div>
- </td>
- <td height="26" width="20">
-  <div align="center">
-   <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-    <a href="a.htm">
-     a
-    </a>
-   </font>
-  </div>
- </td>
- <td height="26" width="20">
-  <div align="center">
-   <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-    <a href="b.htm">
-     b
-    </a>
-   </font>
-  </div>
- </td>
- <td height="26" width="39">
-  <div align="center">
-   <font face="Verdana, Arial, Helvetica, sans-serif" size="2">
-    <a href="c.htm">
-     c-č-ć
-    </a>
-   </font>
-  </div>
- </td>
- <td height="26" width="52">
-  <div align="ce
---------------------------------------------------
---- KARTICA/RED #4 (Tekstualno) ---
-Za pretragu klikni na slovo i upiši naziv: | (naslovi su poredani po izvođaču) | MEDIJ | TIP | IZVOĐAČ | NASLOV | SER. BROJ | KOND. | KN | EURO | CD | LP | Aaaaaaa | Hi-Fi serious | 447762 | / | 78,00. | 10,50. | CD | LP | A canorous quintet | The only pure hate | 66000284 | / | 56,00. | 7,50. | Ploča | LP | A flock of seagulls | Listen | LL0921, YU | VG/EX | 41,00. | 5,50. | Ploča | LP | A flock of seagulls | A flock of seagulls | LL0852 | EX/NM | 25,00. | 3,50. | Ploča | LP | A;Grumh... | A hard day's knight | BIAS140,Belgium | VG/NM | 200,00. | 27,50. | Ploča | 7"singl | A la carte | Ring me, honey / Jimmy gimme reggae | 102429100, Germany | VG/VG | 10,00. | 1,50. | Ploča | 7"singl | A la carte | Do wah diddy diddy / Farewell, farewell to Carlinford | 101677, Germany | VG/EX | 10,00. | 1,50. | Ploča | LP | A split second | From the inside | ANTLER088LP, Belgium | NM/VG | 60,00. | 8,00. | CD | maxi | A tribe called quest | Find a way | 0518982 | / | 19,00. | 2,50. | CD | LP | A zar je to važno | O čemu sanja Adam Zemsta iz Triera | 320025 | / | 74,00. | 10,00. | CD | LP | A-teens | Teen spirit | 134022 | / | 56,00. | 7,50. | CD | LP | Abba | Gold - Greatest Hits | 170072 | / | 59,00. | 8,00. | Ploča | 7"singl | Abba | Money, money, money / Crazy world | S53975, YU | VG/EX | 23,00. | 3,00. | Ploča | 7"singl | Abba | Chiquitita / Lovelight | S54034, YU | NM/-EX | 23,00. | 3,00. | Ploča | 7"singl | Abba | The name of the game / I wonder | S54014, YU | NM/NM | 41,00. | 5,50. | Ploča | 7"singl | Abba | Super trouper / The piper | 1220039, YU | M/EX | 30,00. | 4,00. | Ploča | 7"singl | Abba | Dancing Queen / That's me | S53965, YU | EX/EX+ | 35,00. | 5,00. | Ploča | 7"singl | Abba | Summer night city / Medley : Pick a bale of cotton... | S54030, YU | EX-/EX- | 20,00. | 2,50. | Ploča | 7"singl | Abba | Man in the middle / SOS | S53896, YU | EX/EX | 30,00. | 4,00. | Ploča | LP | Abba | Greatest hits | 555566, YU | EX/EX | 77,00. | 10,50 | Ploča | LP | Abba | Greatest hits vol.2 | STEREO 30 944, Germ. | EX/EX | 70,00. | 9,50. | Ploča | LP | Abba | The Visitors | 2220970, YU | EX/M | 77,00. | 10,50. | Ploča | LP | Abba | Voulez-Vous | STEREO 2344 136, Germ. | EX-/EX- | 30,00. | 4,00. | Ploča | LP | Agnetta Falskog (ex. ABBA) | Wrap your arms aronud me | 813242, Germ. | NM-/NM- | 111,00. | 15,00. | CD | LP | Agnetha & Frida | The voice of Abba | 502122 | / | 64,00. | 9,00. | Ploča | LP | Frida (ex. ABBA) | Something's going on | 80018, U.S.A. | NM/NM | 130,00. | 17,00. | CD | 3LP | Abbey Lincoln | Through the Years | 20961 | / | 135,00. | 18,50. | Ploča | 12"maxi | Abc | Be near me | NTX108 | EX/VG | 30,00. | 4,00. | Ploča | 7"singl | Abc | One better world / One better world (Percapella mix) | 8742887, Germany | NM/EX | 7,00. | 1,00. | CD | LP | Abdullah Ibrahim | Abdullah Ibrahim (Musica Jazz) | ENJA TIDE 9125-2 | / | 45,00. | 6,00. | CD | LP | Abhorrent | Rage | SQN 108 | / | 55,00. | 7,50. | CD | LP | Abigor | Satanized | 233429 | / | 82,00. | 11,00. | CD | LP | Abortus | Judge me not | - | / | 56,00. | 7,50. | CD | LP | Absence, The | From your Grave | 145422 | / | 84,00. | 11,50. | CD | LP | Abysmal Dawn | Leveling the Plane of Existence | 671122 | / | 77,00. | 10,50. | CD | LP | Abysmal Dawn | Programmed to Consume | 661232 | / | 77,00. | 10,50. | Ploča | 7"singl | AC/DC | You Shook Me All Night Long/ Have A Drink On Me (rare press) | W11600, Italy | EX-/EX- | 95,00. | 13,00. | CD | LP | AC/DC | Black ice | 392382 | / | 77,00. | 10,50. | CD | LP | AC/DC | Who made Who (remaster) | 1076926 | / | 74,00. | 10,00. | DVD | LP | AC/DC | Stiff Upper Lip Live | 402322 | / | 51,00. | 7,00. | Ploča | LP | Aca Stepić | Najlepše pesme | 2112205, YU | NM/EX | 41,00. | 5,50. | Ploča | LP | Accept | Best of | 811994-1ME, Germ. | EX/NM | 81,00. | 11,00. | Ploča | LP | Accept | Hungry years | 831077-1, Germ. | EX/NM | 82,00. | 11,00. | Ploča | 2LP | Accept | Staying a life | 472015, Germany | EX/EX+ | 259,00. | 35,00. | CD | LP | Ace of base | Flowers | 557691-2 | / | 51,00. | 7,00. | CD | LP | Ace of base | Happy nation | 5177492 | / | 59,00. | 8,00. | CD | LP | Ace of base | The bridge | 93972 | / | 68,00. | 9,50. | CD | 2LP | Acid drinkers | Are you rebel? / Dirty money, dirty tricks (Metal box) | 018624 | / | 77,00. | 10,50. | CD | LP | Adalberto Alvarez | Milinda habanera | 569954 | / | 71,00. | 9,50. | Ploča | LP | Adam and the ants | Kings of the wild frontier | CBS84549, YU | EX/VG | 15,00. | 2,00. | CD | LP | Adam Ant | Antics in the forbidden zone (Best of) | 876227 | / | 77,00. | 10,50. | Ploča | 7"singl | Adamo | Une larme aux nuages | EPVSM9171, YU | EX/VG | 55,00. | 7,50. | Ploča | LP | ADC Band | Talk that stuff | SD 5216, USA | NM/NM | 72,00. | 10,00. | CD | LP | Adele | Adele 21 | 152024 | / | 74,00. | 10,00. | CD | LP | Adeva | Hits! | 3219662 | / | 60,00. | 8,00. | CD | LP | Adi Lukovac & Ornamenti | Fluid | M/PWS CD001 | / | 74,00. | 10,00. | CD | maxi | Adiemus | cantata mundi (edits) | CDVEDJ932 | / | 25,00. | 3,50. | CD | LP | Ado | Ja bih...da mijenjam | 5637516 | / | 60,00. | 8,00. | CD | LP | Adriano Celentano | The first hits | 220329 | / | 44,00. | 6,00. | Ploča | 7"singl | Adriano Celentano | La festa / Ringo | ACC24027 | NM/NM | 60,00. | 8,00. | Ploča | 7"singl | Adriano Celentano | Sanremo '68 - Canzone / Un bimbo sul leone | ACC24074 | VG/-EX | 82,00. | 11,00. | Ploča | 7"singl | Adriano Celentano | Imapzzivo per te (Voleo sam te) / Pitagora | NDK0018, YU | G/VG | 67,00. | 9,00. | Ploča | 7"singl | Adriano Celentano | Nnata per me / Non essere timida | NDK0014, YU | VG/EX | 82,00. | 11,00. | Ploča | 7"singl | Adriano Celentano | Chi non lavora / Due nemici innamorati | BF69040 | VG/EX | 200,00. | 27,50. | Ploča | 7"singl | Aerodrom | Aerodrom/ Stavi pravu stvar (s albuma Tango Bango) | SY 23776, YU | M/M | 41,00. | 5,50. | Ploča | LP | Aerodrom | Dukat i pribadače | LSY-61935 | NM/NM | 70,00. | 9,50. | Ploča | LP | Aerodrom | Kad misli mi vrludaju | LSY 66072 | EX/NM | 70,00. | 9,50. | Ploča | LP | Aerodrom | Obićne ljubavne pjesme | LSY-63128 | EX-/VG+ | 24,00. | 3,50. | Ploča | LP | Aerodrom | Tango bango | LSY 66117 | EX-/EX- | 45,00. | 6,00. | CD | LP | Aerosmith | Big ones | 245462 | / | 55,00. | 7,50. | CD | LP | Aerosmith | Draw the line | 496622 | / | 78,00. | 10,50. | CD | LP | Aerosmith | Greatest hits | 573672 | / | 68,00. | 9,50. | CD | LP | Aerosmith | Honkin' On Bobo | 544722 | / | 74,00. | 10,00. | CD | LP | Aerosmith | Music from another dimension | 442812 | / | 71,00. | 9,50. | CD | LP | Aerosmith | Nine lives | 502025 | / | 58,00. | 8,00. | Ploča | LP | Aerosmith | Pump | 2023295 YU | NM/NM | 71,00. | 9,50. | Ploča | 7"singl | Aerosmith | Draw the line / Bright, light, fright | CBS5824, YU | EX/EX | 71,00. | 9,50. | Ploča | LP | Aerosmith | Classics - Live II | LL1852, YU | M/M | 55,00. | 7,50. | Ploča | 7"singl | Aerosmith | Rag doll | 9279157, Germany | EX-/EX- | 33,00. | 4,50. | Ploča | LP | Aerosmith | Rocks (1. izdanje) | PC34165, U.S.A. | EX/EX+ | 132,00. | 18,00. | CD | LP | Aeternus | Shadows of Old | 70072 | / | 77,00. | 10,50. | CD | LP | Afi | Sing the sorrow | 04482 | / | 75,00. | 10,50. | CD | LP | Afion | Afion | 830313 | / | 54,00. | 7,50. | CD | LP | Afterlife | Surreality | 898192 | / | 71,00. | 9,50. | CD | LP | Agathodaimon | Chapter III | 665722 | / | 86,00. | 11,50. | CD | LP | Agnostic front | To be continued - The best of | 302023 | / | 75,00. | 10,50. | CD | LP | Agonize | When memory dies... | WRCD001 | / | 60,00. | 8,00. | CD | LP | Agony scene, The | Get damned | 774223 | / | 74,00. | 10,00. | CD | LP | Agrameri | Kao nekad... | 282296 | / | 42,00. | 5,50. | Ploča | LP | Agressor | Neverending destiny | N01541 | NM/-VG | 155,00. | 21,00. | Ploča | LP | Agrumh | A hard day's knight | NR370 | M/M | 50,00. | 7,00. | CD | LP | Ahmad | Ahmad | 199282 | / | 60,00. | 8,00. | CD | LP | Ahmad Jamal | After fajr | 667624 | / | 74,00. | 10,00. | CD | LP | Ahmad Jamal | Chicago revisited / Live at Joe Segal's Jazz Showcase | 33272 | / | 88,00. | 12,00. | CD | LP | Ahmad Jamal | Crystal | 817932 | / | 77,00. | 10,50. | CD | LP | Ahmad Jamal | In search of | 664425 | / | 74,00. | 10,00. | CD | LP | Ahmad Jamal | Rossiter Road | 816452 | / | 74,00. | 10,00. | CD | LP | Ahmad Jamal | The essence part one | 700727 | / | 72,00. | 10,00. | CD | LP | Ahmad Jamal | The essence part two | 700826 | / | 74,00. | 10,00. | CD | LP | Airto Moreira / Flora Purim / Joe Farrell | Three-way mirror | RR24CD | / | 70,00. | 9,50. | CD | LP | Akasha project | Always | 611802 | / | 71,00. | 9,50. | Ploča | 7"singl | Al Bano Carrisi | La siepe | SVdP8169, YU | NM/VG | 70,00. | 9,50. | Ploča | LP | Al Corley | Square rooms | 2222795, YU | EX/VG | 71,00. | 9,50. | Ploča | LP | Al di Meola | Electric rendezvous | CBS85437, YU | EX/EX | 52,00. | 7,00. | CD | 2LP | Al di Meola | Antology | 355625 | / | 110,00. | 15,00. | CD | LP | Al di Meola | Greatest hits | 699529 | / | 67,00. | 9,00. | CD | LP | Al di Meola | Heart of the immigrants | 934724 | / | 78,00. | 10,50. | CD | LP | Al di Meola | Best of - Manhattan years | 805042 | / | 82,00. | 11,00. | CD | LP | Al Green, The reverend | Everything's ok | 458420 | / | 72,00. | 10,00. | CD | LP | Al Green | Call me | 215422 | / | 77,00. | 10,50. | Ploča | 7"singl | Al Green | Tired of being alone / Get back baby (Promo) | 452194, U.S.A. | -/VG | 30,00. | 4,00. | Ploča | LP | Al Green | Love ritual | PS710, U.S.A. | EX-/EX- | 55,00. | 7,50. | Ploča | LP | Al Guttson | Country | LPL-736 | EX/EX | 40,00. | 5,50. | CD | LP | Al Stewart | A beach full of shells (Digi pack) | 009463 | / | 89,00. | 12,00. | CD | LP | Al Stewart | Time passages | 776528 | / | 68,00. | 9,50. | Ploča | LP | Al Stewart | 24 Carrots | AL9520 | VG/NM | 40,00. | 5,50. | Ploča | 7"singl | Al Wilson | Lodi / By the time I get to Phoenix | 690504M, France | NM/NM | 67,00. | 9,00. | Ploča | 7"singl | Alain Barriere | Les genes qui vont / Lisbonne | 86514, France | VG/VG | 280,00. | 38,00. | Ploča | LP | Alan Lomax | Negro prison songs | BJS4039, Germ. | M/NM | 250,00. | 34,00. | CD | LP | Alan Parsons | A valid path | ATMCD51562 | / | 89,00. | 12,00. | CD | LP | Alan Parsons Project | Anthology | 912363 | / | 78,00. | 10,50. | CD | LP | Alan Parsons Project | iRobot | 15242 | / | 66,00. | 9,00. | CD | LP | Alan Parsons Project | Eye Of The Sky | 15272 | / | 56,00. | 5,50. | Ploča | LP | Alan Parsons Project | Eve | 201157, Germany | EX+/EX+ | 68,00. | 9,50. | Ploča | LP | Alan Parsons Project | I Robot | 6499168, Germ. | NM/NM | 70,00. | 9,50. | Ploča | LP | Alan Parsons Project | Pyramid | 201129, Germ. | EX+/EX | 59,00. | 8,00. | CD | LP | Alanis Morissette | Supposed Former Infatuation | 470942 | / | 60,00. | 8,00. | CD | LP | Alanis Morissette | Havoc and bright lights | 441342 | / | 82,00. | 11,00. | Ploča | LP | Alannah Myles | Alannah Myles | 2026586, YU | NM/NM | 44,00. | 6,00. | Ploča | LP | Alannah Myles | Rockinghorse | 2039344, YU | NM/NM | 44,00. | 6,00. | CD | LP | Alastis | ...and Death smiled | 697525 | / | 62,00. | 8,50. | CD | LP | Albert Ayler | Music is the healing force of the universe | 0653832 | / | 82,00. | 11,00. | CD | 2LP | Alberto y los trios paranoias | Mandrax Sunset Variations | 111527 | / | 93,00. | 12,50. | CD | LP | Alcatraz | Alcatraz | MCD015 | / | 68,00. | 9,50. | CD | LP | Alejuandro Buendija | Pepermint | 905029 | / | 71,00. | 9,50. | Ploča | LP | Alek i Sandra | Alek & Sandra | 210072 | NM/NM | 93,00. | 12,50. | CD | LP | Aleksandar Jaćimović | My Old Flame | 415661 | / | 70,00. | 9,50. | Ploča | LP | Aleksander Jež | Aleksander Jež | 2120208 | EX+/NM | 185,00. | 25,00. | Ploča | LP | Aleksander Mežek | Kje so tiste stezice (Rare) | LD0394 | M/M | 220,00. | 30,00. | Ploča | 7"singl | Aleksander Mežek | Izgubljen v plesu / You know too much | SD 0184 | EX/NM | 33,00. | 4,50. | Ploča | LP | Aleksandar Sarievski | Sokol pie voda na vardarot | LP1544 | EX/EX | 41,00. | 5,50. | CD | LP | Alen Islamović | Hitovi za sva vremena | 680819 | / | 70,00. | 9,50. | CD | LP | Alen Islamović | Live! - Bijelo dugme & Divlje jagode | 059258 | / | 110,00. | 15,00. | CD | LP | Alen Islamović & Band | Live tour 95-96 | CDK 001 | / | 110,00. | 15,00. | CD | LP | Alen Islamović & Srčani udar | Mrtvo hladno | 20011 | / | 70,00. | 9,50. | CD | LP | Alen Nižetić | Trebaju mi noći lude | 598312 | / | 70,00. | 9,50. | CD | LP | Alen Polić | Žažara | 313225 | / | 56,00. | 7,50. | CD | LP | Alen Slavica | Toliko malo | 699286 | / | 24,00. | 3,00. | Ploča | LP | Alen Slavica | Alen | 2120860 | EX+/EX+ | 78,00. | 10,50. | Ploča | LP | Alen Slavica | Budi dobra | LSY-61838 | NM/M | 51,00. | 7,00. | Ploča | LP | Alen Slavica | Stepenice do neba | LSY-62093 | EX/M- | 51,00. | 7,00. | CD | LP | Alen Vitasović | Gušti su gušti | 25056768 | / | 111,00. | 15,00. | CD | LP | Alen Vitasović | Svi festivali plus koncert | 072102 | / | 69,00. | 9,50. | CD | 2LP | Alen Vitasović | Zlatna kolekcija | 903055 | / | 68,00. | 9,50. | CD | 2LP | Alex Harvey Band | Live at the BBC | 12356 | / | 110,00. | 15,00. | CD | singl | Alexia | Summer is crazy | 451542 | / | 41,00. | 5,50. | CD | LP | Alexia | Fan club | 800806 | / | 110,00. | 15,00. | Ploča | LP | Alexis korner | All stars | TRASAM7, England | NM/EX | 750,00. | 100,00. | CD | LP | Alfi Kabiljo | 25 šansona | 753261 | / | 49,00. | 7,00. | CD | 2LP | Alfi Kabiljo | Alfi Kabiljo song collection - Pjesme za sva vremena | 700531 | / | 69,00. | 9,50. | Ploča | LP | Alfi Kabiljo (orkestar) | Na te mislim - najljepše gradske pjesme | LPYS61007, YU | EX/EX | 30,00. | 4,00. | CD | LP | Ali Campbell | Big love | 04582 | / | 70,00. | 9,50. | Ploča | 7"singl | Alice & The wonderboy | Don't tell me this is love / When you're young and in 
-            love | 613965AC, Germ. | VG/VG | 7,00. | 1,00. | CD | LP | Alice Cooper | Ain't that just like a woman | 085321 | / | 40,00. | 5,50. | CD | LP | Alice Cooper | Billion dollar babies | 27269-2 | / | 74,00. | 10,00. | CD | LP | Alice Cooper | Classicks | 084521 | / | 74,00. | 10,00. | CD | LP | Alice Cooper | Definitive | 35342 | / | 77,00. | 10,50. | CD | LP | Alice Cooper | Legends | 108522 | / | 66,00. | 9,00. | CD | LP | Alice Cooper | Live USA | 900021 | / | 42,00. | 5,50. | DVD | LP | Alice Cooper | Welcome To MY Nightmare | 9002901 | / | 84,00. | 11,50. | Ploča | LP | Alice Cooper | Billion dollar babies | 56013, YU | EX/EX | 82,00. | 11,00. | Ploča | LP | Alice Cooper | Trash. | LL-1817, YU | M-/M- | 115,00. | 15,50. | CD | LP | Alice in chains | Greatest hits | 412329 | / | 64,00. | 9,00. | CD | 2LP | Alice in chains | The essential | 298225 | / | 88,00. | 24,00. | CD | LP | Alice in chains | Unplugged | 430021 | / | 64,00. | 9,00. | CD | LP | Alicia Keys | As i am - The super edition | 480692 | / | 45,00. | 6,00. | CD | LP | Alien Ant Farm | Anthology | 02932 | / | 70,00. | 9,50. | Ploča | 7"singl | Alisa | 1. kesteni | - | -/VG | 41,00. | 5,50. | CD | LP | Alison Moyet | Essex | 574482 | / | 74,00. | 10,00. | CD | LP | Alison Moyet | Singles | 4806632 | / | 93,00. | 12,50. | CD | 2LP | Alison Moyet | The Best Of - 25 Years Revisited | 581282 | / | 77,00. | 10,50. | Ploča | 7"singl | Alison Moyet | Weak in the presence of beauty / To work on you | CBS6504437, Holland | EX/VG | 23,00. | 3,00. | Ploča | LP | Alison Moyet | Raindancing | CBS 4501521, YU | NM/NM | 42,00. | 5,50. | CD | LP | Alizee | Psychedelices | 86542 | / | 81,00. | 11,00. | CD | LP | Alka Vuica | The Best of | 5088721 | / | 82,00. | 11,00. | CD | LP | Alka Vuica | Balkan girl | 291398 | / | 68,00. | 9,50. | CD | LP | Alka Vuica | Cirkus | 202928 | / | 35,00. | 5,00. | CD | 2LP | Alka Vuica | Cirkus + bonus CD | 586807 | / | 72,00. | 10,00. | Ploča | 7"singl | Alkari, pop grupa | Najlipši cvit / Ljubav, ljubav | SP1010 | EX/EX | 71,00. | 9,50. | CD | LP | All, The | American rejects | 504072 | / | 74,00. | 10,00. | Ploča | LP | All | Allroy Saves | CRZ011. | M/M | 50,00. | 7,00. | CD | LP | All-American Rejects | When the world comes down | 97552 | / | 96,00. | 13,00. | Ploča | LP | All night TV | Iron gates | CRL1500 | M/M | 50,00. | 7,00. | CD | LP | All saints | Studio 1 | 84412 | / | 89,00. | 12,00. | CD | maxi | All saints | Under the bridge / Llady marmalade | LONCD408 | / | 19,00. | 2,50. | CD | maxi | All saints | I know where it's at | / | 35,00. | 5,00. | CD | LP | All that remains | Overcome | 00672 | / | 82,00. | 11,00. | Ploča | 2LP | Alla Pugachova | How disturbing is this way | C6017663, USSR | NM/VG | 74,00. | 10,00. | Ploča | LP | Alla Pugachova | Alla Pugachova | C6009801, USSR | NM/EX | 41,00. | 5,50. | Ploča | LP | Alla Pugachova | Somrthing's still to come... | C6014935, USSR | EX/EX | 41,00. | 5,50. | Ploča | LP | Alla Pugachova | Mirror of the soul | C6009799, USSR | NM/EX | 41,00. | 5,50. | CD | LP | Allanis Morissete | Jagged little pill | 459012 | / | 74,00. | 10,00. | CD | LP | Alliance ethnik | Fat comeback | 7243846 | / | 52,00. | 7,00. | CD | LP | Allman Brothers Band | A decade of hits 1969-1979 | 111562 | / | 74,00. | 10,00. | Ploča | 2LP | Allman brothers band, The | The road goes on forever | 2637101, YU | EX/EX | 66,00. | 9,00. | Ploča | 2LP | Allman brothers band, The | Wipe the windows check the oil dollar gas | 6663/4, YU | EX+/EX+ | 55,00. | 7,50. | Ploča | LP | Allman brothers band, The | Seven turns | LL 1951, YU | EX+/NM | 66,00. | 9,00. | Ploča | LP | Allman brothers band, The | Win, lose or draw | CP0156 | EX/EX | 110,00. | 15,00. | Ploča | 2LP | Allman brothers band, The | Wipe the windows - check the oil - Dollar gas | LP5664, YU | EX/NM | 41,00. | 5,50. | Ploča | LP | Allman brothers band, The | Brothers and sisters | 825092, USA | VG/VG | 71,00. | 9,50. | Ploča | 2LP | Allman brothers band, The | The road goes on forever | 2LP5621/5622, YU | EX/EX | 40,00. | 5,50. | CD | LP | Almighty, The | Almighty | 206320 | / | 70,00. | 9,50. | CD | LP | Almighty, The | Blood, fire & love | 8413472 | / | 60,00. | 8,00. | CD | LP | Almighty, The | Just add life | 71452 | / | 70,00. | 9,50. | CD | LP | Almighty, The | Psycho - narco | 010127 | / | 70,00. | 9,50. | CD | LP | Almost, the | Southern Weather | 524812 | / | 85,00. | 11,50. | CD | LP | Alphaville | First harvest 1984-92 | 764542 | / | 55,00. | 7,50. | CD | LP | Alphaville | Forever pop | 880342 | / | 81,00. | 11,00. | Ploča | LP | Alphonse Mouzon | The Man Incognito | BN-LA584-G0698, USA | EX/EX | 92,00. | 12,50. | Ploča | LP | Alpine+Rudy+friends | Once bitten twice shy | LPS1063, YU | EX/NM | 88,00. | 12,00. | Ploča | LP | Alvin Lee band | R x 5 | LSY61767, YU | M/NM | 30,00. | 4,00. | Ploča | LP | Alvin Stardust | A picture of you | LLO920, YU | NM/NM | 7,00. | 1,00. | Ploča | 7"singl | Alyson Williams | My love is so raw / We're gonna make it | DEF6548987, Holland | EX/EX | 7,00. | 1,00. | CD | LP | Amadeus | Amadeus | 079576 | / | 51,00. | 7,00. | CD | LP | Amadou & Mariam | Dimanche a Bamako | 226023 | / | 89,00. | 12,00. | CD | LP | Amalia Rodrigues | The art of Amalia | 577121 | / | 77,00. | 10,50. | CD | LP | Amazing things | Runrig | 220002 | / | 78,00. | 10,50. | Ploča | 7"singl | Ambasadori | Noćas mi se pjesma piše / Ne mogu skriti svoj bol | SZ 0240 | EX/EX | 62,00. | 8,50. | Ploča | 7"singl | Ambasadori | Zaboravimo sve / Kad te jednom nađem | SZ 0260 | EX/EX | 56,00. | 7,50. | Ploča | 7"singl | Ambasadori | Zaboravimo sve / Kad te jednom nađem | SZ0260 | EX/EX | 110,00. | 14,50. | Ploča | 7"singl | Ambasadori | Dođi u pet do pet / Jer želim sada sve da znam | SZ0280 | EX/VG | 34,00. | 4,50. | Ploča | 7"singl | Ambasadori | Imam jedan strašan plan / Snivaj, snivaj | SZ 0340 | EX+/NM | 74,00. | 10,00. | Ploča | 7"singl | Ambasadori | Negdje na nekom moru / Lijepe riječi | SZF0055 | VG/EX | 48,00. | 6,50. | CD | LP | Amen | We have come for our parents | 99712 | / | 66,00. | 9,00. | Ploča | 7"singl | Amen Corner | Hello Susie / Evil man's gonna win | SIM8313, YU | NM/VG | 150,00. | 20,00. | Ploča | LP | America | Silent letter | 06485917. | M/M | 60,00. | 8,00. | Ploča | 7"singl | America | A horse with no name / Sandman | WB16135, Germ. | M/EX | 30,00. | 4,00. | CD | LP | American Hi-fi | The art of losing | 36572 | / | 60,00. | 8,00. | CD | LP | Amharic, The | 1990's showcase | 08455422 | / | 71,00. | 9,50. | Ploča | 7"singl | Amii Stewart | Rocky woman / Busy busy man | 103437100, Germ. | VG/EX | 20,00. | 2,50. | Ploča | 7"singl | Amii Stewart | Jealousy / Step into the love line | 101024, Germ. | EX/VG | 10,00. | 1,50. | Ploča | 7"singl | Amila | Frka/Frenki (nemoj me zezati) (rare singl) | Amila YU | -/M | 70,00. | 9,50. | CD | LP | Amon Amarth | Fate of nons | 144982 | / | 68,00. | 9,50. | CD | LP | Amon Amarth | Versus The World | 144102 | / | 68,00. | 9,50. | CD | LP | Amos Lee | Amos Lee | 973512 | / | 74,00. | 10,00. | CD | LP | Amy Macdonald | A Curious Thing | 31140 | / | 92,00. | 12,50. | CD | 2LP | Ana Gabriel | 30 Grandes Exitos - Una Voz Para Tu Corazon | 912823 | / | 77,00. | 10,50. | CD | LP | Ana Gabriel | Luna | 811522 | / | 55,00. | 7,50. | CD | LP | Ana Kelin | Glazbni spomenar | 832485 | / | 66,00. | 9,00. | Ploča | 7"singl | Ana Štefok | Gitara romana / Takav je život / Oprosti / Ti želiš to (Rare vinyl) | EPY3248 | NM/EX | 52,00. | 7,00. | Ploča | 7"singl | Ana Štefok | Nemoj nikada reči zbogom / Da to si ti / Hvala ti za ljubav / Ali 
-            danas ne | EPY3868 | M/NM | 33,00. | 4,50. | Ploča | 7"singl | Ana Štefok | Balada / Sve je isto ko pre | SY1276 | -EX/EX | 33,00. | 4,50. | Ploča | 7"singl | Ana Štefok | Daj mi malo nade / U malom gradu | SY1598 | EX/EX | 23,00. | 3,00. | Ploča | 7"singl | Ana Štefok | Daj mi malo nade / U malom gradu | SY1598 | -VG/VG | 10,00. | 1,50. | Ploča | 7"singl | Ana Štefok | Zatvori prozor majko / Samo je jedno srce zaljubljeno bilo | SY23281 | NM/VG | 15,00. | 2,00. | Ploča | 7"singl | Ana Štefok | Želim malo nježnosti i ljubavi / Majko, nemoj plakati | SY1686 | EX/VG | 15,00. | 2,00. | Ploča | 7"singl | Ana Štefok | Doviđenja, sretan put / Živim za tebe | SY1475 | VG/VG | 10,00. | 1,50. | Ploča | 7"singl | Ana Štefok | Balada / Sve je isto ko pre | SY1276 | -VG/VG | 15,00. | 2,00. | Ploča | LP | Ana Štefok | Ana | LSY 62054 | NM/NM | 67,00. | 9,00. | CD | LP | Ana Štefok | Gitara romana (rare) | 001181 | / | 110,00. | 15,00. | Sljedećih 100
---- HTML KOD REDA ---
-<tr align="center" valign="top">
- <td colspan="2">
-  <hr size="1"/>
-  <table align="center" border="0" cellpadding="0" cellspacing="0" width="762">
-   <tr valign="middle">
-    <td align="right" height="63" width="338">
-     <div align="center" class="tablica">
-      <img height="22" src="images/roxy_veliki.gif" width="288"/>
-      <br/>
-      <font color="#DD0000">
-       Za pretragu klikni na slovo i upiši naziv:
-       <br/>
-       (naslovi su poredani po izvođaču)
-      </font>
-     </div>
-    </td>
-    <td align="right" height="63" nowrap="" width="376">
-     <form method="get" name="search" onsubmit="return findInPage(this.string.value);">
-      <div align="center">
-       <font size="3">
-        <input class="findfield" name="string" onchange="n = 0;" size="30" type="text"/>
-       <
---------------------------------------------------
-
-🔎 [3/3] Izvidnica završena!
+🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala iz stare baze.
+🎉 GOTOVO za 24.3s! U bazi je 2858 dostupnih rabljenih ploča iz RoxY-ja (Slike nažalost nemaju).
 ----------------------------------------
-Vrijeme završetka (UTC): 27.10.2026. 17:21:49 | Kod izlaza: 0
+Vrijeme završetka (UTC): 27.10.2026. 17:26:33 | Kod izlaza: 0
