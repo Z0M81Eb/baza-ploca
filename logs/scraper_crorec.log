@@ -1,0 +1,144 @@
+=== IZVJEŠTAJ RADA: scraper_crorec.py ===
+Vrijeme pokretanja (UTC): 27.10.2026. 16:47:29
+----------------------------------------
+🔎 [1/5] Provjeravam robots.txt i Sitemapove na https://webshop.crorec.hr ...
+  -> /robots.txt: HTTP 200 (Duljina: 320)
+User-agent: *
+Disallow: /wp-content/uploads/wc-logs/
+Disallow: /wp-content/uploads/woocommerce_transient_files/
+Disallow: /wp-content/uploads/woocommerce_uploads/
+Disallow: /*?add-to-cart=
+Disallow: /*?*add-to-cart=
+Disallow: /wp-admin/
+Allow: /wp-admin/admin-ajax.php
+
+Sitemap: https://webshop.crorec.hr/wp-sitemap.xml
+
+  ----------------------------------------
+  -> /sitemap.xml: HTTP 200 (Duljina: 834)
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="https://webshop.crorec.hr/wp-sitemap-index.xsl" ?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-posts-page-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-posts-product-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-product_cat-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-product_tag-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-performer-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-publisher-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-users-1.xml</loc></sitemap></sitemapindex>
+
+  ----------------------------------------
+  -> /sitemap_index.xml: HTTP 404 (Duljina: 182098)
+  -> /wp-sitemap.xml: HTTP 200 (Duljina: 834)
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="https://webshop.crorec.hr/wp-sitemap-index.xsl" ?>
+<sitemapindex xmlns="http://www.sitemaps.org/schemas/sitemap/0.9"><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-posts-page-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-posts-product-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-product_cat-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-product_tag-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-performer-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-taxonomies-publisher-1.xml</loc></sitemap><sitemap><loc>https://webshop.crorec.hr/wp-sitemap-users-1.xml</loc></sitemap></sitemapindex>
+
+  ----------------------------------------
+
+🔎 [2/5] Provjeravam skrivene JSON API-je ...
+  -> /wp-json/wc/store/v1/products?per_page=5: HTTP 200 (Duljina: 46430)
+  ✅ API OTVOREN! Uzorak JSON-a:
+[{"id":54620,"name":"PRETPRODAJA: VLADA DIVLJAN &#8211; PRI\u010cA O LJUBAVI","slug":"pretprodaja-vlada-divljan-prica-o-ljubavi","parent":0,"type":"simple","variation":"","permalink":"https:\/\/webshop.crorec.hr\/proizvod\/pretprodaja-vlada-divljan-prica-o-ljubavi\/","sku":"3850126202584","short_description":"<p style=\"text-align: left\" data-pm-slice=\"1 1 []\"><strong>OSTVARITE 10 % POPUSTA NA KUPNJU CD-A I LP-A!<\/strong><\/p>\n<p style=\"text-align: left\">Kupnjom albuma na LP-u i CD-u ostvarujete 10 % popusta uz promo kod <strong>VLADA10<\/strong>, koji unosite u ko\u0161arici.<\/p>\n<p style=\"text-align: left\"><em>(Ponuda vrijedi isklju\u010divo pri kupnji oba izdanja).<\/em><\/p>\n<p style=\"text-align: left\" data-pm-slice=\"1 1 []\"><strong>GET 10% OFF YOUR CD AND LP PURCHASE!<
+
+  -> /wp-json/wp/v2/product?per_page=5: HTTP 200 (Duljina: 35471)
+  ✅ API OTVOREN! Uzorak JSON-a:
+[{"id":54620,"date":"2026-10-26T07:00:50","date_gmt":"2026-10-26T07:00:50","guid":{"rendered":"https:\/\/webshop.crorec.hr\/?post_type=product&#038;p=54620"},"modified":"2026-10-26T10:20:51","modified_gmt":"2026-10-26T10:20:51","slug":"pretprodaja-vlada-divljan-prica-o-ljubavi","status":"publish","type":"product","link":"https:\/\/webshop.crorec.hr\/proizvod\/pretprodaja-vlada-divljan-prica-o-ljubavi\/","title":{"rendered":"PRETPRODAJA: VLADA DIVLJAN &#8211; PRI\u010cA O LJUBAVI"},"content":{"rendered":"","protected":false},"excerpt":{"rendered":"<p style=\"text-align: left;\" data-pm-slice=\"1 1 []\"><strong>OSTVARITE 10 % POPUSTA NA KUPNJU CD-A I LP-A!<\/strong><\/p>\n<p style=\"text-align: left;\">Kupnjom albuma na LP-u i CD-u ostvarujete 10 % popusta uz promo kod <strong>VLADA10<\/stro
+
+  -> /products.json?limit=5: HTTP 404 (Duljina: 182102)
+
+🔎 [3/5] Spajam se na naslovnicu: https://webshop.crorec.hr ...
+✅ Naslovnica dohvaćena! HTTP 200 | Duljina: 586564 znakova
+
+🎵 === UŽI IZBOR: KANDIDATI ZA KATEGORIJE (186) ===
+  * [Moj račun] -> https://webshop.crorec.hr/my-account/edit-account/
+  * [POČETNA] -> http://webshop.crorec.hr
+  * [SHOP] -> https://webshop.crorec.hr/trgovina/
+  * [ŽANROVI] -> https://webshop.crorec.hr/product-category/zanrovi/
+  * [Božićna] -> https://webshop.crorec.hr/product-category/zanrovi/bozicna-2/
+  * [Duhovna] -> https://webshop.crorec.hr/product-category/zanrovi/duhovna-2/
+  * [Folk] -> https://webshop.crorec.hr/product-category/zanrovi/folk-2/
+  * [Folklor] -> https://webshop.crorec.hr/product-category/zanrovi/folklor-2/
+  * [Funk] -> https://webshop.crorec.hr/product-category/zanrovi/funk/
+  * [Hip-hop] -> https://webshop.crorec.hr/product-category/zanrovi/hip-hop-2/
+  * [Instrumental] -> https://webshop.crorec.hr/product-category/zanrovi/instrumental/
+  * [Jazz] -> https://webshop.crorec.hr/product-category/zanrovi/jazz-2/
+  * [Klapa] -> https://webshop.crorec.hr/product-category/zanrovi/klapa/
+  * [Klasika] -> https://webshop.crorec.hr/product-category/zanrovi/klasika-2/
+  * [Narodna] -> https://webshop.crorec.hr/product-category/zanrovi/narodna-2/
+  * [Pop] -> https://webshop.crorec.hr/product-category/zanrovi/pop-2/
+  * [Rock] -> https://webshop.crorec.hr/product-category/zanrovi/rock-2/
+  * [Sevdalinka] -> https://webshop.crorec.hr/product-category/zanrovi/sevdalinka/
+  * [Tamburaška] -> https://webshop.crorec.hr/product-category/zanrovi/tamburaska-2/
+  * [Zabavna] -> https://webshop.crorec.hr/product-category/zanrovi/zabavna-2/
+  * [25 Greatest Hits] -> https://webshop.crorec.hr/product-category/edicije/25-greatest-hits-edicije/
+  * [Antologija] -> https://webshop.crorec.hr/product-category/edicije/antologija/
+  * [Greatest Hits Collection] -> https://webshop.crorec.hr/product-category/edicije/greatest-hits-collection/
+  * [Gold Collection] -> https://webshop.crorec.hr/product-category/edicije/gold-collection/
+  * [Najljepše ljubavne pjesme] -> https://webshop.crorec.hr/product-category/edicije/najljepse-ljubavne-pjesme/
+  * [Original Album Collection] -> https://webshop.crorec.hr/product-category/edicije/original-album-collection/
+  * [The Best of Collection] -> https://webshop.crorec.hr/product-category/edicije/the-best-of-collection/
+  * [The Platinum Collection] -> https://webshop.crorec.hr/product-category/edicije/the-platinum-collection/
+  * [The Ultimate Collection] -> https://webshop.crorec.hr/product-category/edicije/the-ultimate-collection/
+  * [Zlatna kolekcija] -> https://webshop.crorec.hr/product-category/edicije/zlatna-kolekcija/
+  * [50 originalnih hitova] -> https://webshop.crorec.hr/product-category/edicije/50-originalnih-hitova/
+  * [100 originalnih pjesama] -> https://webshop.crorec.hr/product-category/edicije/100-originalnih-pjesama/
+  * [Vinil] -> https://webshop.crorec.hr/product-category/medij/vinil/
+  * [CD] -> https://webshop.crorec.hr/product-category/medij/cd/
+  * [Blu-ray] -> https://webshop.crorec.hr/product-category/medij/blu-ray/
+  * [DVD] -> https://webshop.crorec.hr/product-category/medij/dvd/
+  * [Knjige] -> https://webshop.crorec.hr/product-category/knjiga/
+  * [MERCH] -> https://webshop.crorec.hr/product-category/merch/
+  * [DJEČJI KUTAK] -> https://webshop.crorec.hr/product-category/djecji-kutak/
+  * [OUTLET] -> https://webshop.crorec.hr/product-category/outlet/
+  * [🔥 THOMPSON 🔥] -> https://webshop.crorec.hr/product-category/thompson/
+  * [0] -> https://webshop.crorec.hr/cart/
+  * [NOVO] -> https://webshop.crorec.hr/trgovina/
+  * [Dodaj u košaricu] -> https://webshop.crorec.hr/?add-to-cart=54620
+  * [ROCK] -> https://webshop.crorec.hr/product-category/zanrovi/rock-2/
+  * [VLADA DIVLJAN] -> https://webshop.crorec.hr/product-category/vlada-divljan/
+  * [PRETPRODAJA: VLADA DIVLJAN – PRIČA O LJUBAVI] -> https://webshop.crorec.hr/proizvod/pretprodaja-vlada-divljan-prica-o-ljubavi/
+  * [Dodaj u košaricu] -> https://webshop.crorec.hr/?add-to-cart=54626
+  * [VINIL] -> https://webshop.crorec.hr/product-category/medij/vinil/
+  * [PRETPRODAJA: VLADA DIVLJAN – PRIČA O LJUBAVI (LP)] -> https://webshop.crorec.hr/proizvod/pretprodaja-vlada-divljan-prica-o-ljubavi-lp/
+
+🔎 [4/5] Otvaram testnu kategoriju: https://webshop.crorec.hr/product-category/medij/vinil/
+✅ Kategorija dohvaćena! HTTP 200
+
+📦 === ANALIZA KARTICE PROIZVODA (Selektor: 'li.product', Ukupno: 30) ===
+--- KARTICA #1 HTML ---
+<li class="entry has-media has-product-nav col span_1_of_5 owp-content-center item-entry owp-thumbs-layout-horizontal owp-btn-normal owp-tabs-layout-horizontal circle-sale product type-product post-54626 status-publish first instock product_cat-rock-2 product_cat-vinil product_cat-vlada-divljan product_tag-lp product_tag-vlada-divljan has-post-thumbnail taxable shipping-taxable purchasable product-type-simple">
+ <div class="product-inner clr">
+  <ul class="woo-entry-inner clr">
+   <li class="image-wrap">
+    <div class="woo-entry-image clr">
+     <a class="woocommerce-LoopProduct-link" href="https://webshop.crorec.hr/proizvod/pretprodaja-vlada-divljan-prica-o-ljubavi-lp/">
+      <img alt="PRETPRODAJA: VLADA DIVLJAN – PRIČA O LJUBAVI (LP)" class="woo-entry-image-main" decoding="async" height="600" itemprop="image" sizes="(max-width: 600px) 100vw, 600px" src="https://webshop.crorec.hr/wp-content/uploads/2026/10/VLADA-DIVLJAN-Prica-O-Ljubavi-2LP-2026-DIGITAL-3000x3000-1.jpg" srcset="https://webshop.crorec.hr/wp-content/uploads/2026/10/VLADA-DIVLJAN-Prica-O-Ljubavi-2LP-2026-DIGITAL-3000x3000-1.jpg 600w, https://webshop.crorec.hr/wp-content/uploads/2026/10/VLADA-DIVLJAN-Prica-O-Ljubavi-2LP-2026-DIGITAL-3000x3000-1-300x300.jpg 300w, https://webshop.crorec.hr/wp-content/uploads/2026/10/VLADA-DIVLJAN-Prica-O-Ljubavi-2LP-2026-DIGITAL-3000x3000-1-150x150.jpg 150w, https://webshop.crorec.hr/wp-content/uploads/2026/10/VLADA-DIVLJAN-Prica-O-Ljubavi-2LP-2026-DIGITAL-3000x3000-1-100x100.jpg 100w, https://webshop.crorec.hr/wp-content/uploads/2026/10/VLADA-DIVLJAN-Prica-O-Ljubavi-2LP-2026-DIGITAL-3000x3000-1-64x64.jpg 64w" width="600"/>
+     </a>
+    </div>
+    <!-- .woo-entry-image -->
+    <a aria-describedby="woocommerce_loop_add_to_cart_link_describedby_54626" aria-label="Dodaj u košaricu: “PRETPRODAJA: VLADA DIVLJAN - PRIČA O LJUBAVI (LP)”" class="button product_type_simple add_to_cart_button ajax_add_to_cart" data-product_id="54626" data-product_sku="3850126201686" data-quantity="1" data-success_message='"PRETPRODAJA: VLADA DIVLJAN - PRIČA O LJUBAVI (LP)" je dodan u vašu košaricu' href="/product-category/medij/vinil/?add-to-cart=54626" rel="nofollow" role="button">
+     Dodaj u košaricu
+    </a>
+    <span class="screen-reader-text" id="woocommerce_loop_add_to_cart_link_describedby_54626">
+    </span>
+    <ul class="woo-entry-buttons">
+     <li class="woo-quickview-btn">
+      <a aria-label="Brzi pregled proizvoda PRETPRODAJA: VLADA DIVLJAN - PRIČA O LJUBAVI (LP)" class="owp-quick-view" data-product_id="54626" href="#" id="product_id_54626">
+       <i aria-hidden="true" class="icon-eye" role="img">
+       </i>
+      </a>
+     </li>
+    </ul>
+   </li>
+   <ul class="woo-product-info">
+    <li class="category">
+     <a href="https://webshop.crorec.hr/product-category/zanrovi/rock-2/" rel="tag">
+      ROCK
+     </a>
+     ,
+     <a href="https://webshop.crorec.hr/product-category/medij/vinil/" rel="tag">
+      VINIL
+     </a>
+     ,
+     <a href="https://webshop.c
+
+🔢 === ANALIZA PAGINACIJE ===
+Linkovi s paginacijom: ['https://webshop.crorec.hr/product-category/medij/vinil/?products-per-page=30', 'https://webshop.crorec.hr/product-category/medij/vinil/?products-per-page=60', 'https://webshop.crorec.hr/product-category/medij/vinil/?products-per-page=all', 'https://webshop.crorec.hr/product-category/medij/vinil/page/2/']
+
+💿 [5/5] === DETALJI PROIZVODA: https://webshop.crorec.hr/proizvod/pretprodaja-vlada-divljan-prica-o-ljubavi-lp/ ===
+----------------------------------------
+Vrijeme završetka (UTC): 27.10.2026. 16:47:55 | Kod izlaza: 0
