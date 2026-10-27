@@ -1,0 +1,27 @@
+=== IZVJEŠTAJ RADA: scraper_rockmark.py ===
+Vrijeme pokretanja (UTC): 27.10.2026. 17:39:12
+----------------------------------------
+🔎 [1/4] Provjeravam skrivene WooCommerce API-je na https://www.rockmark.hr ...
+  -> /wp-json/wc/store/v1/products?per_page=5: HTTP 200 (Duljina: 31680)
+  ✅ API OTVOREN! Uzorak JSON-a:
+[{"id":245382,"name":"Pantera &#8211; Steer Skull majica","slug":"pantera-steer-skull-majica","parent":0,"type":"variable","variation":"","permalink":"https:\/\/www.rockmark.hr\/trgovina\/najpopularnije\/p-r\/pantera\/pantera-steer-skull-majica\/","sku":"014211","short_description":"","description":
+
+  -> /wp-json/wp/v2/product?per_page=5: HTTP 200 (Duljina: 73908)
+  ✅ API OTVOREN! Uzorak JSON-a:
+[{"id":245382,"date":"2026-10-27T12:49:55","date_gmt":"2026-10-27T11:49:55","guid":{"rendered":"https:\/\/www.rockmark.hr\/?post_type=product&#038;p=245382"},"modified":"2026-10-27T12:55:57","modified_gmt":"2026-10-27T11:55:57","slug":"pantera-steer-skull-majica","status":"publish","type":"product",
+
+
+🔎 [2/4] Pretražujem API za nove kategorije ploča...
+  ✅ Pronađeno 100 kategorija. Filtriram ključne riječi...
+     -> HIT: CD / DVD / LP (ID: 777) - URL: None
+
+🔎 [3/4] Spajam se na naslovnicu i skeniram HTML linkove...
+✅ Naslovnica dohvaćena! HTTP 200
+
+🎵 === PRONAĐENI HTML KANDIDATI (2) ===
+  * [30,00 €] -> https://www.rockmark.hr/trgovina/merch/letu-stuke-eter-lp/
+  * [35,00 €] -> https://www.rockmark.hr/trgovina/merch/nosaci-zvuka-slike/baby-lasagna-end-the-party-vinyl-lp/
+
+🔎 [4/4] Izvidnica završena!
+----------------------------------------
+Vrijeme završetka (UTC): 27.10.2026. 17:39:15 | Kod izlaza: 0
