@@ -14,7 +14,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 SITE_URL = "https://www.woodstock-trgovina.hr"
 CSV_FILENAME = "woodstock_ploce.csv"
-BROJ_NITI = 4
+BROJ_NITI = 8  # Povećano jer moramo proći puno stranica s po 20 artikala
 
 KATEGORIJE = [
     ("Gramofonske ploče", "https://www.woodstock-trgovina.hr/hr/gramofonske-ploce/p-2"),
@@ -48,8 +48,11 @@ def sigurni_get(url, timeout=30, max_pokusaja=4):
         try:
             s = dohvati_sesiju()
             r = s.get(url, timeout=timeout)
-            if r.status_code == 200 and len(r.text) > 2000:
+            if r.status_code == 200 and len(r.text) > 500:
                 return r.text
+            # Neki serveri izvan granica paginacije vraćaju 404
+            if r.status_code == 404:
+                return "STATUS_404"
             time.sleep(1.5 * pokusaj)
             _thread_local.session = kreiraj_sesiju()
         except Exception as e:
@@ -65,24 +68,21 @@ def ocisti_naziv(sirovi_naslov):
 
 def odredi_tip_artikla(naziv):
     n_up = naziv.upper()
-    # Woodstock u naslovu često stavlja format unutar zagrada npr. (LP, Album) ili (12")
     if any(oznaka in n_up for oznaka in [' 7"', " 7''", " 7″", " 7-INCH", " EP", " SINGLE"]):
         return 'Singl 7"'
     if any(oznaka in n_up for oznaka in [' 12"', ' 10"', " LP", " 2XLP"]):
         return "LP"
-    return "LP" # Default ako ne piše
+    return "LP"
 
 def izvuci_najbolju_sliku(img_el):
     if not img_el:
         return ""
     src = img_el.get("src", "").strip()
     if src:
-        # Woodstock ponekad stavlja relativne URL-ove
         return urljoin(SITE_URL, src)
     return ""
 
 def izvuci_cijenu(el):
-    # Cijena se nalazi u <strong> unutar .panel-footer
     price_el = el.select_one(".panel-footer strong")
     if price_el:
         tekst = price_el.get_text(" ", strip=True).upper().replace("EUR", "").strip()
@@ -98,22 +98,15 @@ def izvuci_cijenu(el):
     return "0.00"
 
 def izvuci_stanje(el):
-    # Stanje ploče i omota su obično u .panel-heading ispod .list-item-title
     stanje_medija = "Rabljeni"
     stanje_omota = "Rabljeni"
     
-    opis_div = el.select_one(".panel-heading .hidden-xs")
-    if not opis_div:
-        opis_div = el.select_one(".panel-heading")
-
+    opis_div = el.select_one(".panel-heading .hidden-xs") or el.select_one(".panel-heading")
     if opis_div:
         opis_tekst = opis_div.get_text(" ", strip=True)
-        # Primjer: "Stanje: Very Good Plus (VG+) Stanje omota: Near Mint (NM or M-)"
-        
         m_medij = re.search(r"Stanje:\s*([^(]+(?:\([^)]+\))?)", opis_tekst, re.IGNORECASE)
         if m_medij:
             stanje_medija = m_medij.group(1).split("Stanje omota:")[0].strip()
-            # Izvuci samo kratku oznaku ako postoji, npr. (VG+) -> VG+
             kratko = re.search(r"\(([^)]+)\)", stanje_medija)
             if kratko:
                 stanje_medija = kratko.group(1)
@@ -123,34 +116,20 @@ def izvuci_stanje(el):
             stanje_omota = m_omot.group(1).strip()
             kratko = re.search(r"\(([^)]+)\)", stanje_omota)
             if kratko:
-                stanje_omota = kratko.group(1).split(" or ")[0] # npr. NM or M- -> NM
+                stanje_omota = kratko.group(1).split(" or ")[0]
 
-    # Ponekad artikl piše "NOVO" u naslovu
-    naslov = ocisti_naziv(el.select_one(".list-item-title a").get_text(" ", strip=True)) if el.select_one(".list-item-title a") else ""
+    title_a = el.select_one(".list-item-title a")
+    naslov = ocisti_naziv(title_a.get_text(" ", strip=True)) if title_a else ""
     if "NOVO" in naslov.upper() or "SEALED" in naslov.upper():
         stanje_medija = "Novo"
         stanje_omota = "Novo"
 
     return stanje_medija, stanje_omota
 
-def izvuci_broj_stranica(soup):
-    max_str = 1
-    for a in soup.select("ul.pagination a"):
-        tekst = a.get_text(strip=True)
-        if tekst.isdigit():
-            max_str = max(max_str, int(tekst))
-        
-        href = a.get("href", "")
-        m = re.search(r"page=(\d+)", href)
-        if m:
-            max_str = max(max_str, int(m.group(1)))
-    return max_str
-
 def normaliziraj_link(href):
     if not href:
         return ""
     puni = urljoin(SITE_URL, html.unescape(str(href)).strip())
-    # Uklanjamo query parametre sa linka na artikl da izbjegnemo duplikate
     return puni.split("?")[0]
 
 def parsiraj_stranicu(html_tekst):
@@ -158,20 +137,14 @@ def parsiraj_stranicu(html_tekst):
     stavke = []
     kartice = soup.select(".list-item")
     
-    vidjeni_na_stranici = set()
-
     for k in kartice:
-        # Naslov i link
         title_a = k.select_one(".list-item-title a")
         if not title_a:
             continue
             
         link = normaliziraj_link(title_a.get("href", ""))
-        if not link or link in vidjeni_na_stranici:
-            continue
-            
         naslov = ocisti_naziv(title_a.get_text(" ", strip=True))
-        if not naslov:
+        if not link or not naslov:
             continue
 
         cijena = izvuci_cijenu(k)
@@ -182,26 +155,23 @@ def parsiraj_stranicu(html_tekst):
         stanje_medija, stanje_omota = izvuci_stanje(k)
         tip_artikla = odredi_tip_artikla(naslov)
 
-        vidjeni_na_stranici.add(link)
         red = [naslov, cijena, link, slika_url, stanje_medija, stanje_omota, tip_artikla]
         stavke.append((link, red))
 
-    max_str = izvuci_broj_stranica(soup)
-    return stavke, len(kartice), max_str
+    return stavke, len(kartice)
 
 def obradi_stranicu_zadatka(args):
     url, page = args
-    # Dodajemo page={page} i limit=100 parametar u nadi da webshop to podržava
-    page_url = f"{url}?page={page}&limit=100" 
+    page_url = f"{url}?page={page}" 
     
     t_start = time.time()
     html_tekst = sigurni_get(page_url)
     
-    if not html_tekst:
-        return page, False, [], 0, 1, time.time() - t_start
+    if not html_tekst or html_tekst == "STATUS_404":
+        return page, False, [], 0, time.time() - t_start
         
-    stavke, br_kartica, max_str = parsiraj_stranicu(html_tekst)
-    return page, True, stavke, br_kartica, max_str, time.time() - t_start
+    stavke, br_kartica = parsiraj_stranicu(html_tekst)
+    return page, True, stavke, br_kartica, time.time() - t_start
 
 def scrape_woodstock():
     t_start = time.time()
@@ -224,54 +194,57 @@ def scrape_woodstock():
     with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
         for naziv_kat, kat_url in KATEGORIJE:
             print(f"\n📂 Analiziram kategoriju: '{naziv_kat}' -> {kat_url}", flush=True)
+            
+            kraj_kategorije = False
+            trenutna_stranica = 1
+            ukupno_u_kat = 0
 
-            _, ok1, stavke1, br_kartica1, max_pages, _ = obradi_stranicu_zadatka((kat_url, 1))
-            if not ok1 or br_kartica1 == 0:
-                print(f"   ℹ️ Nema pronađenih artikala u '{naziv_kat}'.", flush=True)
-                continue
-
-            novih_u_kat = 0
-            for link, red in stavke1:
-                if link not in aktivni_linkovi:
-                    novih_u_kat += 1
-                sve_ploce[link] = red
-                aktivni_linkovi.add(link)
-
-            print(f"   ✅ Stranica 1/{max_pages}: +{len(stavke1)} artikala | Ukupno: {len(aktivni_linkovi)}", flush=True)
-
-            if max_pages > 1:
-                preostale_stranice = list(range(2, max_pages + 1))
+            while not kraj_kategorije:
+                blok_stranica = list(range(trenutna_stranica, trenutna_stranica + BROJ_NITI))
+                zadaci = [(kat_url, p) for p in blok_stranica]
+                t_blok = time.time()
                 
-                # Blok po blok zbog stabilnosti
-                for i in range(0, len(preostale_stranice), BROJ_NITI):
-                    blok = preostale_stranice[i:i + BROJ_NITI]
-                    zadaci = [(kat_url, p) for p in blok]
-                    t_blok = time.time()
+                rezultati = list(executor.map(obradi_stranicu_zadatka, zadaci))
+                
+                novih_u_bloku = 0
+                stranica_sa_nula_novih = 0
+                
+                for page, ok, stavke, br_kartica, _ in rezultati:
+                    if not ok:
+                        ukupno_neuspjelih += 1
+                        kraj_kategorije = True
+                        continue
+                        
+                    if br_kartica == 0:
+                        kraj_kategorije = True
+                        
+                    novih_na_ovoj_str = 0
+                    for link, red in stavke:
+                        if link not in aktivni_linkovi:
+                            novih_na_ovoj_str += 1
+                            novih_u_bloku += 1
+                        sve_ploce[link] = red
+                        aktivni_linkovi.add(link)
+                        
+                    # Zaštita: Ako je stranica vratila artikle, ali su svi već pročitani
+                    if br_kartica > 0 and novih_na_ovoj_str == 0:
+                        stranica_sa_nula_novih += 1
+                        
+                ukupno_u_kat += novih_u_bloku
+                
+                # Ako server krene unedogled vraćati iste ploče za `page=9999`
+                if stranica_sa_nula_novih == len(blok_stranica) and novih_u_bloku == 0:
+                    kraj_kategorije = True
 
-                    rezultati = list(executor.map(obradi_stranicu_zadatka, zadaci))
-                    uspjesno_str = 0
-                    novih_u_bloku = 0
+                print(
+                    f"   ⚡ Stranice {blok_stranica[0]:02d}-{blok_stranica[-1]:02d} | "
+                    f"+{novih_u_bloku} ploča ({time.time() - t_blok:.1f}s) | Ukupno: {len(aktivni_linkovi)}",
+                    flush=True
+                )
+                
+                trenutna_stranica += BROJ_NITI
 
-                    for page, ok, stavke, br_kartica, _, _ in rezultati:
-                        if not ok:
-                            ukupno_neuspjelih += 1
-                            continue
-                        uspjesno_str += 1
-                        for link, red in stavke:
-                            if link not in aktivni_linkovi:
-                                novih_u_bloku += 1
-                                novih_u_kat += 1
-                            sve_ploce[link] = red
-                            aktivni_linkovi.add(link)
-
-                    print(
-                        f"   ⚡ Stranice {blok[0]:02d}-{blok[-1]:02d}/{max_pages} "
-                        f"({uspjesno_str}/{len(blok)} OK) za {time.time() - t_blok:.1f}s | "
-                        f"+{novih_u_bloku} novih | Ukupno: {len(aktivni_linkovi)}",
-                        flush=True
-                    )
-
-            print(f"   🏁 Kategorija '{naziv_kat}' završena (+{novih_u_kat} unikatnih ploča).", flush=True)
+            print(f"   🏁 Kategorija '{naziv_kat}' završena (+{ukupno_u_kat} unikatnih ploča).", flush=True)
 
     if ukupno_neuspjelih == 0 and len(aktivni_linkovi) > 50:
         pocetni_broj = len(sve_ploce)
