@@ -1,151 +1,54 @@
 === IZVJEŠTAJ RADA: scraper_maldoror.py ===
-Vrijeme pokretanja (UTC): 27.10.2026. 10:17:26
+Vrijeme pokretanja (UTC): 27.10.2026. 10:20:12
 ----------------------------------------
-🔎 [1/5] Provjeravam robots.txt i Sitemapove na https://www.maldoror.hr ...
-  -> /robots.txt: HTTP 200 (Duljina: 398)
-User-agent: *
-Disallow: /wp-content/uploads/wc-logs/
-Disallow: /wp-content/uploads/woocommerce_transient_files/
-Disallow: /wp-content/uploads/woocommerce_uploads/
-Disallow: /*?add-to-cart=
-Disallow: /*?*add-to-cart=
-Disallow: /wp-admin/
-Allow: /wp-admin/admin-ajax.php
+🔎 Pretražujem API za kategorije gramofonskih ploča na Maldororu...
+  ✅ Pronađena vinil kategorija: GRAMOFONSKE PLOČE (ID: 4028)
+  ✅ Pronađena vinil kategorija: METAL PLOČE (ID: 9994)
+  ✅ Pronađena vinil kategorija: POP ROCK PLOČE (ID: 9996)
 
-Sitemap: https://maldoror.hr/wp-sitemap.xml
+🚀 Pokrećem WooCommerce API dohvat ploča po kategorijama...
+📂 KATEGORIJA ID 4028 -> Ukupno: 1644 artikala kroz 17 stranica.
+   ⚡ Stranica 1/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 2/17 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 3/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 4/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 5/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 6/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 7/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 8/17 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 9/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 10/17 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 11/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 12/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 13/17 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 14/17 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 15/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 16/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 17/17 obrađena za 1.8s (+44 dostupnih).
+📂 KATEGORIJA ID 9994 -> Ukupno: 993 artikala kroz 10 stranica.
+   ⚡ Stranica 1/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 2/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 3/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 4/10 obrađena za 1.9s (+99 dostupnih).
+   ⚡ Stranica 5/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 6/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 7/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 8/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 9/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 10/10 obrađena za 2.0s (+93 dostupnih).
+📂 KATEGORIJA ID 9996 -> Ukupno: 994 artikala kroz 10 stranica.
+   ⚡ Stranica 1/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 2/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 3/10 obrađena za 2.2s (+100 dostupnih).
+   ⚡ Stranica 4/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 5/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 6/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 7/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 8/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 9/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 10/10 obrađena za 1.9s (+94 dostupnih).
 
-Sitemap: https://maldoror.hr/sitemap.xml
-Sitemap: https://maldoror.hr/sitemap.html
-
-  ----------------------------------------
-  -> /sitemap.xml: HTTP 200 (Duljina: 1450)
-<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet type='text/xsl' href='https://www.maldoror.hr/wp-content/plugins/google-sitemap-generator/sitemap.xsl'?><!-- sitemap-generator-url='http://www.arnebrachhold.de' sitemap-generator-version='4.1.25' -->
-<!-- generated-on='27. October 2026. 10:17' -->
-<sitemapindex xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/siteindex.xsd' xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>	<sitemap>
-		<loc>https://maldoror.hr/sitemap-misc.xml</loc>
-		<lastmod>2026-10-26T14:46:44+00:00</lastmod>
-	</sitemap>
-	<sitemap>
-		<loc>https://maldoror.hr/producttags-sitemap.xml</loc>
-		<lastmod>2026-10-26T14:46:44+00:00</lastmod>
-	</sitemap>
-	<sitemap>
-		<loc>https://maldoror.hr/productcat-sitemap.xml</loc>
-		<lastmod>2026-10-26T14:46:44+00:00</lastmod>
-	</sitemap>
-	<sitemap>
-		<loc>https://maldoror.hr/post-sitemap.xml</loc>
-		<lastmod>2026-10-2
-  ----------------------------------------
-  -> /sitemap_index.xml: HTTP 404 (Duljina: 165876)
-  -> /wp-sitemap.xml: HTTP 200 (Duljina: 818)
-<?xml version='1.0' encoding='UTF-8'?><?xml-stylesheet type='text/xsl' href='https://www.maldoror.hr/wp-content/plugins/google-sitemap-generator/sitemap.xsl'?><!-- sitemap-generator-url='http://www.arnebrachhold.de' sitemap-generator-version='4.1.25' -->
-<!-- generated-on='27. October 2026. 10:17' -->
-<urlset xmlns:xsi='http://www.w3.org/2001/XMLSchema-instance' xsi:schemaLocation='http://www.sitemaps.org/schemas/sitemap/0.9 http://www.sitemaps.org/schemas/sitemap/0.9/sitemap.xsd' xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'></urlset><!-- <p>Please edit wp-db.inc.php in wp-includes and set SAVEQUERIES to true if you want to see the queries.</p> --> <!-- Request ID: 82b5d0c6b1179578585bb22d040cd2a8; Queries for sitemap: 1; Total queries: 95; Seconds: 0; Memory for sitemap: 1KB; Total memory: 86MB -->
-
-  ----------------------------------------
-  -> /1_index_sitemap.xml: HTTP 404 (Duljina: 165876)
-
-🔎 [2/5] Provjeravam skrivene JSON API-je ...
-  -> /wp-json/wc/store/v1/products?per_page=5: HTTP 200 (Duljina: 12495)
-  ✅ API OTVOREN! Uzorak JSON-a:
-[{"id":40613,"name":"10,000 MANIACS Best of &#8211; Campfire songs DCD","slug":"10000-maniacs-best-of-campfire-songs-dcd","parent":0,"type":"simple","variation":"","permalink":"https:\/\/maldoror.hr\/shop\/10000-maniacs-best-of-campfire-songs-dcd\/","sku":"","short_description":"","description":"","on_sale":false,"prices":{"price":"1712","regular_price":"1712","sale_price":"1712","price_range":null,"currency_code":"EUR","currency_symbol":"\u20ac","currency_minor_unit":2,"currency_decimal_separator":".","currency_thousand_separator":",","currency_prefix":"","currency_suffix":" \u20ac"},"price_html":"<span class=\"woocommerce-Price-amount amount\">17.12&nbsp;<span class=\"woocommerce-Price-currencySymbol\" dir=\"auto\">&euro;<\/span><\/span>","average_rating":"0","review_count":0,"images":[{
-
-  -> /products.json?limit=5: HTTP 404 (Duljina: 165876)
-  -> /api/products?output_format=JSON: HTTP 404 (Duljina: 165876)
-
-🔎 [3/5] Spajam se na naslovnicu: https://www.maldoror.hr ...
-✅ Naslovnica dohvaćena! HTTP 200 | Duljina: 460417 znakova
-
-🎵 === UŽI IZBOR: KANDIDATI ZA KATEGORIJE (45) ===
-  * [Follow] -> https://www.facebook.com/MaldororMusicShop
-  * [Follow] -> https://www.instagram.com/maldoror_music_shop/
-  * [Follow] -> https://www.youtube.com/user/MaldororShop
-  * [Majice/hudice] -> https://maldoror.hr/kategorija-proizvoda/majice/
-  * [PRIŠIVCI] -> https://maldoror.hr/kategorija-proizvoda/merchandise/prisivci/
-  * [ČAŠE / ŠALICE/ I SL.] -> https://maldoror.hr/kategorija-proizvoda/merchandise/figure-merchandise/
-  * [Zastave] -> https://maldoror.hr/kategorija-proizvoda/merchandise/zastave/
-  * [Narukvice] -> https://maldoror.hr/kategorija-proizvoda/merchandise/narukvice/
-  * [OGRLICE/ NAKIT] -> https://maldoror.hr/kategorija-proizvoda/merchandise/prsteni/
-  * [PRIVJESCI BADGEVI] -> https://maldoror.hr/kategorija-proizvoda/merchandise/privjesci-upaljaci/
-  * [ODJEĆA/ OBUĆA] -> https://maldoror.hr/kategorija-proizvoda/merchandise/hlace-jakne-cizme/
-  * [RUKSACI / TORBE] -> https://maldoror.hr/kategorija-proizvoda/merchandise/remeni-i-kopce-za-remene/
-  * [MARAME / KAPE] -> https://maldoror.hr/kategorija-proizvoda/merchandise/bandane-marame-kravate/
-  * [Domaća izdanja] -> https://maldoror.hr/kategorija-proizvoda/cddvd/domaca-izdanja/
-  * [DVD/BLU-RAY] -> https://maldoror.hr/kategorija-proizvoda/cddvd/dvd-blu-ray/
-  * [Metal cd] -> https://maldoror.hr/kategorija-proizvoda/metal-cd/
-  * [Metal ploče] -> https://maldoror.hr/kategorija-proizvoda/metal-ploce/
-  * [pop rock cd] -> https://maldoror.hr/kategorija-proizvoda/rock-pop-indie-cd/
-  * [pop rock ploče] -> https://maldoror.hr/kategorija-proizvoda/rock-pop-indie-ploce
-  * [PRIVJESCI / BADGEVI] -> https://maldoror.hr/kategorija-proizvoda/merchandise/privjesci-upaljaci/
-  * [pop rock ploče] -> https://maldoror.hr/kategorija-proizvoda/rock-pop-indie-ploce/
-  * [SEPULTURA Roots (RM) LP+BONUS LP] -> https://maldoror.hr/shop/sepultura-roots-rm-lpbonus-lp/
-  * [ARCTIC MONKEYS AM LP] -> https://maldoror.hr/shop/arctic-monkeys-am-lp/
-  * [U.D.O. Thunderball CD] -> https://maldoror.hr/shop/u-d-o-thunderball-cd/
-  * [ANNIHILATOR Refresh the demon (RM) CD DIGI] -> https://maldoror.hr/shop/annihilator-refresh-the-demon-rm-cd-digi/
-  * [CRAMPS A date with Elvis CD] -> https://maldoror.hr/shop/cramps-a-date-with-elvis-cd/
-  * [U.D.O. Man and machine CD] -> https://maldoror.hr/shop/u-d-o-man-and-machine-cd/
-  * [TESTAMENT Brotherhood of the snake CD] -> https://maldoror.hr/shop/testament-brotherhood-of-the-snake-cd/
-  * [IN FLAMES Siren charms CD] -> https://maldoror.hr/shop/in-flames-siren-charms-cd-2/
-  * [ANTHRAX State of euphoria cover TS] -> https://maldoror.hr/shop/anthrax-state-of-euphoria-cover-ts/
-  * [NIRVANA Capitol TS] -> https://maldoror.hr/shop/nirvana-capitol-ts/
-  * [METALLICA Kill'em all TS] -> https://maldoror.hr/shop/metallica-killem-all-ts/
-  * [METALLICA Four skulls green logo TS] -> https://maldoror.hr/shop/metallica-four-skulls-green-logo-ts-2/
-  * [METALLICA Ride the lightning TS] -> https://maldoror.hr/shop/metallica-ride-the-lightning-ts/
-  * [HIM Funeral of hearts TS] -> https://maldoror.hr/shop/him-funeral-of-hearts-ts/
-  * [SLIPKNOT Band masks TS] -> https://maldoror.hr/shop/slipknot-band-masks-ts/
-  * [BATHORY Blood fire death TS] -> https://maldoror.hr/shop/bathory-blood-fire-death-ts-2/
-  * [MARILYN MANSON ZASTAVA 75 cm x 110 cm] -> https://maldoror.hr/shop/marilyn-manson-zastava-75-cm-x-110-cm-2/
-  * [DOG TAG - VOJNIČKE PLOČICE, GRAVIRANE I PRAZNE] -> https://maldoror.hr/shop/dog-tag-vojnicke-plocice/
-  * [TREGERI CRNI 40MM Y CLIP 120CM] -> https://maldoror.hr/shop/tregeri-crni-40mm-y-clip-120cm/
-  * [TERMOSICA STAINLESS STEEL 1L OLIV] -> https://maldoror.hr/shop/termosica-stainless-steel-1l-oliv/
-  * [JAKNA LORD CANTERBURY GIRLIE CRNA] -> https://maldoror.hr/shop/jakna-lord-canterbury-girlie-crna/
-  * [NARUKVICA 1ROW PIRAMIDE SREBRNE SHN40] -> https://maldoror.hr/shop/narukvica-shn40_14/
-  * [GLADIJATOR NARUKVICA 10cm na kopčanje] -> https://maldoror.hr/shop/narukvica-shn79/
-  * [UPALJAČ STAR Deftones] -> https://maldoror.hr/shop/upaljac-star-deftones/
-
-🔎 [4/5] Otvaram testnu kategoriju: https://www.facebook.com/MaldororMusicShop
-✅ Kategorija dohvaćena! HTTP 400
-
-📦 === ANALIZA KARTICE PROIZVODA (Selektor: '', Ukupno: 0) ===
-⚠️ Kartice nisu detektirane. Ispisujem glavni blok:
-<body>
- <div id="header">
-  <a href="//www.facebook.com/">
-   <img id="icon" src="//static.facebook.com/images/logos/facebook_2x.png"/>
-  </a>
- </div>
- <div class="core">
-  <h1>
-   Sorry, something went wrong.
-  </h1>
-  <p>
-   We're working on getting this fixed as soon as we can.
-  </p>
-  <p>
-   <a href="//www.facebook.com/" id="back">
-    Go back
-   </a>
-  </p>
-  <div class="footer">
-   Meta © 2026 ·
-   <a href="//www.facebook.com/help/?ref=href052">
-    Help
-   </a>
-  </div>
- </div>
- <script nonce="UqFBQicr">
-  document.getElementById("back").onclick = function() {
-                if (history.length > 1) {
-                  history.back();
-                  return false;
-                }
-              };
- </script>
-</body>
-
-
-🔢 === ANALIZA PAGINACIJE ===
-Linkovi s paginacijom: []
+🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala.
+🎉 GOTOVO za 111.1s! U bazi je 2316 dostupnih Maldoror ploča (Sa slikom: 2316).
 ----------------------------------------
-Vrijeme završetka (UTC): 27.10.2026. 10:18:04 | Kod izlaza: 0
+Vrijeme završetka (UTC): 27.10.2026. 10:22:04 | Kod izlaza: 0
