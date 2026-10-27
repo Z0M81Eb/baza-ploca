@@ -1,8 +1,8 @@
 === IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
-Vrijeme pokretanja (UTC): 26.10.2026. 07:38:15
+Vrijeme pokretanja (UTC): 27.10.2026. 07:36:09
 ----------------------------------------
 ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem sa 100% zaštitom slika...
-📦 Učitano 1601 postojećih ploča.
+📦 Učitano 1600 postojećih ploča.
 
 Probijanje početne zaštite (Naslovnica)...
 
@@ -23,8 +23,9 @@ API Paket 13 -> OK (100 ploča, sa slikom: 100/100)
 API Paket 14 -> OK (100 ploča, sa slikom: 100/100)
 API Paket 15 -> OK (100 ploča, sa slikom: 100/100)
 API Paket 16 -> OK (100 ploča, sa slikom: 100/100)
+API Paket 17 -> OK (19 ploča, sa slikom: 19/19)
 
-🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: 1).
-🎉 Gotovo! Ukupno u CSV-u: 1600 (Sa slikom: 1599)
+🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: 5).
+🎉 Gotovo! Ukupno u CSV-u: 1619 (Sa slikom: 1618)
 ----------------------------------------
-Vrijeme završetka (UTC): 26.10.2026. 07:38:48 | Kod izlaza: 0
+Vrijeme završetka (UTC): 27.10.2026. 07:36:46 | Kod izlaza: 0
