@@ -10,8 +10,6 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 SITE_URL = "https://backstagerecords-zagreb.com"
 CSV_FILENAME = "backstage_ploce.csv"
 
-# ID glavne WooCommerce kategorije "Gramofonske ploče" povući ćemo dinamički,
-# no za slučaj fallbacka postavljamo opće parametre pretraživanja
 API_PRODUCTS_URL = f"{SITE_URL}/wp-json/wc/store/v1/products"
 API_CATEGORIES_URL = f"{SITE_URL}/wp-json/wc/store/v1/products/categories"
 
@@ -30,19 +28,16 @@ def kreiraj_sesiju():
 
 
 def ocisti_naziv(sirovi_naslov):
-    """ Uklanja HTML entitete (poput &#8211;) i čisti razmake """
     cisti = html.unescape(sirovi_naslov)
     cisti = cisti.replace("–", "-").replace("—", "-")
     return " ".join(cisti.split()).strip()
 
 
 def odredi_tip_artikla(naziv):
-    """ Određuje je li LP ili Singl prema nazivu jer Backstage često stavlja oznaku u naslov """
     n_up = naziv.upper()
     if any(oznaka in n_up for oznaka in [' 7"', " 7''", " 7″", " EP", " SINGLE", ' 10"', ' 12" MAXI']):
-        # Sve što nije puni LP računamo kao Singl/EP za brže filtriranje
         if ' 10"' in n_up or ' 12"' in n_up:
-             return "LP" # Backstage 10" i 12" Maxi drži na LP cijeni
+             return "LP" 
         return 'Singl 7"'
     return "LP"
 
@@ -53,12 +48,10 @@ def otkrij_id_kategorije_vinila(sesija):
         r = sesija.get(f"{API_CATEGORIES_URL}?per_page=100", timeout=15)
         if r.status_code == 200:
             kategorije = r.json()
-            # Tražimo ID za "Gramofonske ploče" ili "Vinyl"
             for kat in kategorije:
                 if "ploč" in kat.get("name", "").lower() or "vinyl" in kat.get("name", "").lower():
                     print(f"✅ Pronađena kategorija: {kat['name']} (ID: {kat['id']})", flush=True)
                     return kat['id']
-            # Fallback na DOMAĆA & EX YU GLAZBA ako glavna fali (često sadrži vinile)
             for kat in kategorije:
                 if "domać" in kat.get("name", "").lower() or "ex yu" in kat.get("name", "").lower():
                     print(f"✅ Pronađena zamjenska kategorija: {kat['name']} (ID: {kat['id']})", flush=True)
@@ -75,7 +68,6 @@ def scrape_backstage():
     sve_ploce = {}
     aktivni_linkovi = set()
 
-    # Učitavanje postojećih podataka
     if os.path.exists(CSV_FILENAME):
         with open(CSV_FILENAME, "r", encoding="utf-8") as f:
             reader = csv.reader(f)
@@ -88,7 +80,6 @@ def scrape_backstage():
     sesija = kreiraj_sesiju()
     kategorija_id = otkrij_id_kategorije_vinila(sesija)
 
-    # Parametri za API
     params = {"per_page": 100, "page": 1}
     if kategorija_id:
         params["category"] = str(kategorija_id)
@@ -109,7 +100,6 @@ def scrape_backstage():
                 print(f"   ❌ Stranica {trenutna_stranica} vratila grešku {r.status_code}. Prekidam dohvat.", flush=True)
                 break
                 
-            # Čitanje ukupnog broja stranica iz zaglavlja odgovora (samo prvi put)
             if trenutna_stranica == 1 and 'X-WP-TotalPages' in r.headers:
                 ukupno_stranica = int(r.headers['X-WP-TotalPages'])
                 total_items = r.headers.get('X-WP-Total', '?')
@@ -122,7 +112,6 @@ def scrape_backstage():
             dodano_na_stranici = 0
             
             for p in proizvodi:
-                # Filtriranje: Ako nemamo ID kategorije, preskačemo sve što očito nije glazba (majice, funko)
                 naslov = ocisti_naziv(p.get("name", ""))
                 naslov_low = naslov.lower()
                 
@@ -131,7 +120,6 @@ def scrape_backstage():
                         if " lp" not in naslov_low and " 7\"" not in naslov_low:
                             continue
 
-                # Ako artikl ne može biti kupljen, preskačemo
                 if not p.get("is_purchasable", True) or not p.get("is_in_stock", True):
                     continue
 
@@ -139,7 +127,6 @@ def scrape_backstage():
                 cijene_blok = p.get("prices", {})
                 if cijene_blok:
                     raw_cijena = cijene_blok.get("price", "0")
-                    # WooCommerce vraća iznos u centima (npr. "8000" = 80.00 EUR)
                     minor_unit = int(cijene_blok.get("currency_minor_unit", 2))
                     if raw_cijena.isdigit() and int(raw_cijena) > 0:
                         cijena = f"{int(raw_cijena) / (10 ** minor_unit):.2f}"
@@ -151,7 +138,6 @@ def scrape_backstage():
                 if not link:
                     continue
                 
-                # Slike
                 slika_url = ""
                 slike = p.get("images", [])
                 if slike and isinstance(slike, list):
@@ -159,10 +145,29 @@ def scrape_backstage():
 
                 tip_artikla = odredi_tip_artikla(naslov)
                 
-                # Backstage prodaje isključivo nove i tvornički zapakirane ploče, osim ako napišu "RABLJENO"
-                stanje = "Rabljeni" if "rabljeno" in naslov_low else "Novo"
+                # Izvlačenje stanja (grading) direktno iz API atributa
+                stanje_medija = "Novo"
+                stanje_omota = "Novo"
+                
+                atributi = p.get("attributes", [])
+                for attr in atributi:
+                    tax = attr.get("taxonomy", "")
+                    ime = attr.get("name", "").lower()
+                    if tax == "pa_grading" or ime == "stanje":
+                        terms = attr.get("terms", [])
+                        if terms:
+                            vrijednost = terms[0].get("name", "").strip()
+                            if vrijednost and vrijednost.upper() != "NOVO":
+                                dijelovi = vrijednost.split("/")
+                                stanje_medija = dijelovi[0].strip()
+                                stanje_omota = dijelovi[1].strip() if len(dijelovi) > 1 else stanje_medija
+                        break
 
-                red = [naslov, cijena, link, slika_url, stanje, stanje, tip_artikla]
+                if stanje_medija == "Novo" and "rabljeno" in naslov_low:
+                    stanje_medija = "Rabljeni"
+                    stanje_omota = "Rabljeni"
+
+                red = [naslov, cijena, link, slika_url, stanje_medija, stanje_omota, tip_artikla]
                 sve_ploce[link] = red
                 aktivni_linkovi.add(link)
                 dodano_na_stranici += 1
@@ -173,10 +178,8 @@ def scrape_backstage():
         except Exception as e:
             print(f"   ⚠️ Mrežna greška na stranici {trenutna_stranica}: {e}", flush=True)
             time.sleep(3)
-            # Nastavljamo na iduću nakon pauze, ne rušimo sve
             trenutna_stranica += 1
 
-    # Sinkronizacija zaliha
     if len(aktivni_linkovi) > 50:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
