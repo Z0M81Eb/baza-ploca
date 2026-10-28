@@ -100,7 +100,7 @@ jobs:
           if-no-files-found: ignore
           overwrite: true
 
-  # 3. POSAO: Sakuplja nove CSV-ove i logove te radi JEDAN siguran Commit i Push
+  # 3. POSAO: Sakuplja nove CSV-ove, POPUNJAVA SLIKE i radi JEDAN siguran Commit i Push
   commit_results:
     needs: run_scrapers
     if: always()
@@ -114,18 +114,38 @@ jobs:
         with:
           path: collected_outputs
 
-      - name: Spoji nove podatke i spremi na GitHub
+      - name: Spoji nove podatke u glavni repozitorij
         run: |
           mkdir -p logs
           find collected_outputs -name "*.csv" -exec cp {} . \;
           find collected_outputs -name "*.log" -exec cp {} logs/ \;
 
+      - name: Postavljanje Pythona za Discogs Bot
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.10'
+
+      - name: Instalacija requests biblioteke
+        run: pip install requests
+
+      - name: Dopunjavanje nedostajućih slika (Discogs Bot)
+        env:
+          DISCOGS_TOKEN: ${{ secrets.DISCOGS_TOKEN }}
+        run: |
+          if [ -f "discogs_bot.py" ]; then
+            python discogs_bot.py
+          else
+            echo "Skripta discogs_bot.py nije pronađena u repozitoriju, preskačem..."
+          fi
+
+      - name: Spoji sve podatke i spremi na GitHub
+        run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Master Action"
           git add *.csv logs/*.log 2>/dev/null || true
 
           if ! git diff --staged --quiet; then
-            git commit -m "Master Sync: Automatsko ažuriranje kataloga i logova"
+            git commit -m "Master Sync: Automatsko ažuriranje kataloga, slika i logova"
             git pull --rebase origin main
             git push
           else
