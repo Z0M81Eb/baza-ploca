@@ -14,7 +14,7 @@ urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 SITE_URL = "https://www.woodstock-trgovina.hr"
 CSV_FILENAME = "woodstock_ploce.csv"
-BROJ_NITI = 8  # Povećano jer moramo proći puno stranica s po 20 artikala
+BROJ_NITI = 8 
 
 KATEGORIJE = [
     ("Gramofonske ploče", "https://www.woodstock-trgovina.hr/hr/gramofonske-ploce/p-2"),
@@ -50,7 +50,6 @@ def sigurni_get(url, timeout=30, max_pokusaja=4):
             r = s.get(url, timeout=timeout)
             if r.status_code == 200 and len(r.text) > 500:
                 return r.text
-            # Neki serveri izvan granica paginacije vraćaju 404
             if r.status_code == 404:
                 return "STATUS_404"
             time.sleep(1.5 * pokusaj)
@@ -98,33 +97,24 @@ def izvuci_cijenu(el):
     return "0.00"
 
 def izvuci_stanje(el):
-    stanje_medija = "Rabljeni"
-    stanje_omota = "Rabljeni"
+    medij = "VG+"
+    omot = "VG+"
+    for span in el.find_all("span"):
+        label = span.get_text(strip=True).lower()
+        if "stanje:" in label and "omota" not in label:
+            if span.next_sibling:
+                medij = str(span.next_sibling).strip().strip('"').strip()
+        elif "stanje omota:" in label:
+            if span.next_sibling:
+                omot = str(span.next_sibling).strip().strip('"').strip()
     
-    opis_div = el.select_one(".panel-heading .hidden-xs") or el.select_one(".panel-heading")
-    if opis_div:
-        opis_tekst = opis_div.get_text(" ", strip=True)
-        m_medij = re.search(r"Stanje:\s*([^(]+(?:\([^)]+\))?)", opis_tekst, re.IGNORECASE)
-        if m_medij:
-            stanje_medija = m_medij.group(1).split("Stanje omota:")[0].strip()
-            kratko = re.search(r"\(([^)]+)\)", stanje_medija)
-            if kratko:
-                stanje_medija = kratko.group(1)
-
-        m_omot = re.search(r"Stanje omota:\s*([^(]+(?:\([^)]+\))?)", opis_tekst, re.IGNORECASE)
-        if m_omot:
-            stanje_omota = m_omot.group(1).strip()
-            kratko = re.search(r"\(([^)]+)\)", stanje_omota)
-            if kratko:
-                stanje_omota = kratko.group(1).split(" or ")[0]
-
     title_a = el.select_one(".list-item-title a")
     naslov = ocisti_naziv(title_a.get_text(" ", strip=True)) if title_a else ""
     if "NOVO" in naslov.upper() or "SEALED" in naslov.upper():
-        stanje_medija = "Novo"
-        stanje_omota = "Novo"
-
-    return stanje_medija, stanje_omota
+        medij = "Novo"
+        omot = "Novo"
+        
+    return medij, omot
 
 def normaliziraj_link(href):
     if not href:
@@ -187,7 +177,6 @@ def scrape_woodstock():
                     norm_k = normaliziraj_link(row[2])
                     row[2] = norm_k
                     sve_ploce[norm_k] = row
-        print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
     ukupno_neuspjelih = 0
 
@@ -205,7 +194,6 @@ def scrape_woodstock():
                 t_blok = time.time()
                 
                 rezultati = list(executor.map(obradi_stranicu_zadatka, zadaci))
-                
                 novih_u_bloku = 0
                 stranica_sa_nula_novih = 0
                 
@@ -226,13 +214,11 @@ def scrape_woodstock():
                         sve_ploce[link] = red
                         aktivni_linkovi.add(link)
                         
-                    # Zaštita: Ako je stranica vratila artikle, ali su svi već pročitani
                     if br_kartica > 0 and novih_na_ovoj_str == 0:
                         stranica_sa_nula_novih += 1
                         
                 ukupno_u_kat += novih_u_bloku
                 
-                # Ako server krene unedogled vraćati iste ploče za `page=9999`
                 if stranica_sa_nula_novih == len(blok_stranica) and novih_u_bloku == 0:
                     kraj_kategorije = True
 
@@ -244,23 +230,17 @@ def scrape_woodstock():
                 
                 trenutna_stranica += BROJ_NITI
 
-            print(f"   🏁 Kategorija '{naziv_kat}' završena (+{ukupno_u_kat} unikatnih ploča).", flush=True)
-
     if ukupno_neuspjelih == 0 and len(aktivni_linkovi) > 50:
         pocetni_broj = len(sve_ploce)
         sve_ploce = {k: v for k, v in sve_ploce.items() if k in aktivni_linkovi}
-        obrisano = pocetni_broj - len(sve_ploce)
-        print(f"\n🧹 Sinkronizacija završena! Uklonjeno {obrisano} prodanih artikala iz stare baze.", flush=True)
-    else:
-        print(f"\n⚠️ Oprez: Zabilježeno {ukupno_neuspjelih} neuspjelih stranica. Preskačem brisanje.", flush=True)
+        print(f"\n🧹 Sinkronizacija završena! Uklonjeno {pocetni_broj - len(sve_ploce)} prodanih artikala.", flush=True)
 
     if sve_ploce:
         with open(CSV_FILENAME, "w", newline="", encoding="utf-8") as f:
             writer = csv.writer(f)
             writer.writerow(["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"])
             writer.writerows(sve_ploce.values())
-        ukupno_slika = sum(1 for v in sve_ploce.values() if len(v) >= 4 and v[3])
-        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih Woodstock vinila (Sa slikom: {ukupno_slika}).", flush=True)
+        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} Woodstock ploča.", flush=True)
 
 if __name__ == "__main__":
     scrape_woodstock()
