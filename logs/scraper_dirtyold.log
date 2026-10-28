@@ -1,18 +1,18 @@
 === IZVJEŠTAJ RADA: scraper_dirtyold.py ===
-Vrijeme pokretanja (UTC): 28.10.2026. 08:08:48
+Vrijeme pokretanja (UTC): 28.10.2026. 11:44:21
 ----------------------------------------
-📦 Učitano 7049 postojećih zapisa iz dirtyold_ploce.csv.
+📦 Učitano 7062 postojećih zapisa iz dirtyold_ploce.csv.
 🔎 Dohvaćam 1. stranicu Dirty Old Shop vinil kataloga (https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/)...
-✅ Stranica 1/8 obrađena za 1.9s: 1000 kartica (975 dostupnih na zalihi).
-   ⚡ Stranica 2/8 (1.6s): 1000 kartica -> +971 dostupnih | Ukupno aktivnih: 1946
-   ⚡ Stranica 3/8 (13.1s): 1000 kartica -> +960 dostupnih | Ukupno aktivnih: 2906
-   ⚡ Stranica 4/8 (1.6s): 1000 kartica -> +975 dostupnih | Ukupno aktivnih: 3881
-   ⚡ Stranica 5/8 (12.1s): 1000 kartica -> +965 dostupnih | Ukupno aktivnih: 4846
-   ⚡ Stranica 6/8 (12.8s): 1000 kartica -> +975 dostupnih | Ukupno aktivnih: 5821
-   ⚡ Stranica 7/8 (12.3s): 1000 kartica -> +978 dostupnih | Ukupno aktivnih: 6799
-   ⚡ Stranica 8/8 (0.6s): 268 kartica -> +263 dostupnih | Ukupno aktivnih: 7062
+✅ Stranica 1/8 obrađena za 3.0s: 1000 kartica (975 dostupnih na zalihi).
+   ⚡ Stranica 2/8 (13.7s): 1000 kartica -> +967 dostupnih | Ukupno aktivnih: 1942
+   ⚡ Stranica 3/8 (11.9s): 1000 kartica -> +963 dostupnih | Ukupno aktivnih: 2905
+   ⚡ Stranica 4/8 (12.3s): 1000 kartica -> +974 dostupnih | Ukupno aktivnih: 3879
+   ⚡ Stranica 5/8 (12.6s): 1000 kartica -> +967 dostupnih | Ukupno aktivnih: 4846
+   ⚡ Stranica 6/8 (14.6s): 1000 kartica -> +974 dostupnih | Ukupno aktivnih: 5820
+   ⚡ Stranica 7/8 (12.9s): 1000 kartica -> +979 dostupnih | Ukupno aktivnih: 6799
+   ⚡ Stranica 8/8 (6.1s): 304 kartica -> +298 dostupnih | Ukupno aktivnih: 7097
 
-🧹 Sinkronizacija završena! Uklonjeno 12 rasprodanih artikala.
-🎉 GOTOVO za 64.6s! U bazi je 7062 dostupnih Dirty Old Shop vinila (Sa slikom: 7049).
+🧹 Sinkronizacija završena! Uklonjeno 1 rasprodanih artikala.
+🎉 GOTOVO za 95.7s! U bazi je 7097 dostupnih Dirty Old Shop vinila (Sa slikom: 7084).
 ----------------------------------------
-Vrijeme završetka (UTC): 28.10.2026. 08:09:53 | Kod izlaza: 0
+Vrijeme završetka (UTC): 28.10.2026. 11:45:57 | Kod izlaza: 0

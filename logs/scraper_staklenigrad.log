@@ -1,10 +1,10 @@
 === IZVJEŠTAJ RADA: scraper_staklenigrad.py ===
-Vrijeme pokretanja (UTC): 28.10.2026. 08:59:53
+Vrijeme pokretanja (UTC): 28.10.2026. 11:44:50
 ----------------------------------------
 ⚡ Zagrijavam konekciju prema Antikvarijat Stakleni Grad...
 📄 Pronađeno 1 stranica. Pokrećem detaljno preuzimanje i analizu ocjena (Ovo će potrajati)...
 ✅ Stranica 1 obrađena (Detaljno analizirano 72 ploča)
 
-🎉 GOTOVO za 1.8 min! Uspješno preuzeto i ocijenjeno 24 ploča u datoteku scraper_staklenigrad.csv.
+🎉 GOTOVO za 1.4 min! Uspješno preuzeto i ocijenjeno 24 ploča u datoteku scraper_staklenigrad.csv.
 ----------------------------------------
-Vrijeme završetka (UTC): 28.10.2026. 09:01:38 | Kod izlaza: 0
+Vrijeme završetka (UTC): 28.10.2026. 11:46:15 | Kod izlaza: 0
