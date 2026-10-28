@@ -21,7 +21,6 @@ def log_print(poruka):
         f.write(poruka + "\n")
 
 def izvidac(url):
-    # Čišćenje starog loga na početku
     with open(LOG_FILE, "w", encoding="utf-8") as f:
         f.write(f"=== SCOUT IZVJEŠTAJ ({time.strftime('%d.%m.%Y %H:%M:%S')}) ===\n")
         
@@ -49,48 +48,55 @@ def izvidac(url):
         log_print(f"  HTTP Status: {r.status_code}")
         soup = BeautifulSoup(r.text, 'lxml')
         
-        # Provjera je li tablični prikaz (kao Roxy)
         tablice = soup.find_all('table')
         if tablice and len(soup.find_all('tr')) > 20:
-            log_print("  📊 DETEKTIRANA TABLICA (Stil: Roxy)! Provjeravam zaglavlja stupaca:")
+            log_print("  📊 DETEKTIRANA TABLICA! Provjeravam zaglavlja stupaca:")
             prvi_redovi = soup.find_all('tr')[:5]
             for idx, tr in enumerate(prvi_redovi):
                 kolone = [td.get_text(strip=True) for td in tr.find_all(['td', 'th'])]
                 if kolone:
                     log_print(f"     Red {idx}: {kolone}")
                     
-        # Traženje linka na pojedinačni proizvod za dubinsku analizu
+        # 3. Pametno traženje linka za dubinsku analizu
         proizvodi = soup.select('.product, .type-product, .item, .product-item, .product-layout')
+        svi_linkovi = []
         prvi_link = None
         
         if proizvodi:
             log_print(f"  📦 Pronađeno {len(proizvodi)} kartica proizvoda na stranici.")
-            a_tag = proizvodi[0].find('a', href=True)
-            if a_tag:
-                prvi_link = urljoin(base_url, a_tag['href'])
+            for p in proizvodi:
+                a_tag = p.find('a', href=True)
+                if a_tag:
+                    svi_linkovi.append(urljoin(base_url, a_tag['href']))
         else:
-            # Pokušaj pronalaska bilo kakvog linka na proizvod
             for a in soup.find_all('a', href=True):
                 if any(k in a['href'] for k in ['/proizvod/', '/product/', '/artikl/', '/lp-', '/vinyl-']):
-                    prvi_link = urljoin(base_url, a['href'])
-                    break
+                    svi_linkovi.append(urljoin(base_url, a['href']))
 
-        # 3. Dubinska analiza pojedinačnog proizvoda (Traženje stanja i tipa trgovine)
+        if svi_linkovi:
+            # Tražimo link koji sugerira da je riječ o ploči (izbjegavanje majica i opreme)
+            kljucne_rijeci = ['vinil', 'vinyl', 'lp', 'ploca', 'ploča', 'record', '7-inch', '12-inch']
+            for link in svi_linkovi:
+                if any(kljuc in link.lower() for kljuc in kljucne_rijeci):
+                    prvi_link = link
+                    break
+            
+            # Ako ni jedan link ne sadrži ključnu riječ, uzimamo prvi dostupni (fallback)
+            if not prvi_link:
+                prvi_link = svi_linkovi[0]
+
         log_print("\n🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...")
         if prvi_link:
             log_print(f"  🔗 Otvaram uzorak proizvoda: {prvi_link}")
             r_prod = scraper.get(prvi_link, timeout=20)
             soup_prod = BeautifulSoup(r_prod.text, 'lxml')
             
-            # Tražimo ključne riječi za stanje u cijelom HTML-u proizvoda
             uzorci_stanja = re.compile(r'(stanje|condition|sleeve|omot|ploča|vinil|records|broj stranica|uvez|ocjena|grade)', re.I)
             pronadjena_stanja = []
             
             for el in soup_prod.find_all(['tr', 'p', 'div', 'li', 'span']):
-                # Gledamo samo elemente s kratkim tekstom kako ne bismo ispisali cijeli body
                 tekst = el.get_text(" ", strip=True)
                 if 3 < len(tekst) < 250 and uzorci_stanja.search(tekst):
-                    # Provjeravamo ima li unutar teksta i tipičnih ocjena (VG, NM, EX, Mint)
                     if re.search(r'\b(M|NM|M-|EX\+|EX|EX-|VG\+|VG|VG-|G\+|G|Novo|New|Sealed)\b', tekst, re.I):
                         klasa = el.get('class', '')
                         parent_klasa = el.parent.get('class', '') if el.parent else ''
@@ -98,14 +104,13 @@ def izvidac(url):
             
             if pronadjena_stanja:
                 log_print("  🎯 PRONAĐENI PODACI O STANJU PLOČE/OMOTA:")
-                # Ispisujemo unikatne pronalaske
                 for ps in list(dict.fromkeys(pronadjena_stanja))[:8]:
                     log_print(f"     ✅ {ps}")
                 log_print("  🏷️ ZAKLJUČAK: Trgovina je SECOND HAND ili HIBRIDNA (ocjene su prisutne u gornjim HTML elementima).")
             else:
                 log_print("  ℹ️ Nisu pronađene tipične oznake stanja (VG, NM, Condition, Stanje). Trgovina vjerojatno prodaje SAMO NOVE ploče (Mint) ili skriva stanje u slikama.")
         else:
-            log_print("  ⚠️ Nije pronađen link na pojedinačni proizvod (vjerojatno je cijeli katalog na jednoj stranici u tablici).")
+            log_print("  ⚠️ Nije pronađen link na pojedinačni proizvod.")
 
     except Exception as e:
         log_print(f"  ❌ Greška: {e}")
