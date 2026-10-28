@@ -4,21 +4,26 @@ import time
 import requests
 import glob
 import urllib.parse
+from datetime import datetime
 
+# =========================================================================
+# ⚙️ POSTAVKE DISCOGS BOTA
+# =========================================================================
 DISCOGS_TOKEN = os.environ.get("DISCOGS_TOKEN")
-MAX_DNEVNI_UPITI = 800  # Ograničenje kako GitHub Action ne bi predugo trajao. 3000 ploča riješit će za 4 dana.
+MAX_DNEVNI_UPITI = 800  # Globalni limit po jednom pokretanju
+FALLBACK_SLIKA_URL = "https://tvoja-domena.hr/wp-content/uploads/fallback-ploca.jpg" # <-- OVDJE UPIŠI URL SVOJE FALLBACK SLIKE
+# =========================================================================
 
 def nadi_sliku(upit):
     if not DISCOGS_TOKEN:
         print("❌ Greška: Nije pronađen DISCOGS_TOKEN u sustavu!")
-        return ""
+        return None
         
-    # 'type=master' osigurava da dobijemo samo jednu, krovnu sliku albuma
     url = f"https://api.discogs.com/database/search?q={urllib.parse.quote(upit)}&type=master&token={DISCOGS_TOKEN}"
-    headers = {"User-Agent": "TrazimPlocuBot/1.0"}
+    headers = {"User-Agent": "TrazimPlocuBot/2.0"}
     
     try:
-        r = requests.get(url, headers=headers, timeout=10)
+        r = requests.get(url, headers=headers, timeout=12)
         
         if r.status_code == 429:
             print("⚠️ Discogs Rate Limit pogođen! Čekam 65 sekundi...")
@@ -29,18 +34,24 @@ def nadi_sliku(upit):
             podaci = r.json()
             if podaci.get("results"):
                 slika_url = podaci["results"][0].get("cover_image", "")
-                # Odbacujemo generičku sivu sliku ako Discogs nema pravi omot
                 if "spacer.gif" in slika_url or "default" in slika_url:
                     return ""
                 return slika_url
+            return "" # Pretraga je uspjela, ali nema rezultata na Discogsu
     except Exception as e:
         print(f"Greška mreže za {upit}: {e}")
+        return None # Greška mreže - ne stavljamo fallback da pokuša opet sutra
         
-    return ""
+    return None
 
 def pokreni_bota():
-    csv_datoteke = glob.glob("*_ploce.csv")
+    csv_datoteke = glob.glob("*.csv")
     upita_potroseno = 0
+    
+    # Provjeravamo je li danas 1. u mjesecu za ponovnu provjeru fallback slika
+    mjesecna_provjera = (datetime.now().day == 1)
+    if mjesecna_provjera:
+        print("📅 Danas je 1. u mjesecu! Pokrećem mjesečnu re-provjeru ploča s Fallback slikom.")
     
     if not csv_datoteke:
         print("Nema CSV datoteka za analizu.")
@@ -59,26 +70,40 @@ def pokreni_bota():
         azurirano = 0
         
         for i, red in enumerate(redovi):
-            # Provjera: ima li red barem 4 stupca i je li polje za URL_Slike (indeks 3) prazno
-            if len(red) >= 4 and not red[3]:
-                # Mijenjamo minus u razmak za lakšu pretragu (npr. "Abba - Greatest Hits" u "Abba Greatest Hits")
-                cisti_naslov = red[0].replace("-", " ").strip()
+            if len(red) < 4:
+                continue
                 
-                print(f"🔎 Tražim: {cisti_naslov}")
+            trenutna_slika = red[3].strip()
+            
+            # Uvjet kada tražimo sliku:
+            # 1. Polje za sliku je potpuno prazno
+            # 2. Ili je 1. u mjesecu, a u polju se nalazi naša FALLBACK slika
+            treba_traziti = (not trenutna_slika) or (mjesecna_provjera and trenutna_slika == FALLBACK_SLIKA_URL)
+            
+            if treba_traziti:
+                cisti_naslov = red[0].replace("-", " ").strip()
+                print(f"🔎 [{upita_potroseno + 1}/{MAX_DNEVNI_UPITI}] Tražim: {cisti_naslov}")
+                
                 pronadjena_slika = nadi_sliku(cisti_naslov)
                 
                 if pronadjena_slika:
                     print(f"  ✅ Nađeno: {pronadjena_slika}")
                     redovi[i][3] = pronadjena_slika
                     azurirano += 1
-                else:
-                    print("  ❌ Nema rezultata.")
+                elif pronadjena_slika == "":
+                    # Discogs nema ovu ploču -> upisujemo Fallback sliku da je ne vrti sutra opet!
+                    if trenutna_slika != FALLBACK_SLIKA_URL:
+                        print("  ❌ Nema na Discogsu -> Postavljam Fallback sliku.")
+                        redovi[i][3] = FALLBACK_SLIKA_URL
+                        azurirano += 1
+                    else:
+                        print("  ❌ I dalje nema na Discogsu -> Ostaje Fallback slika.")
                 
                 upita_potroseno += 1
-                time.sleep(1.5) # Strogo poštivanje Discogs limita od 60 upita u minuti
+                time.sleep(1.5) # Poštivanje Discogs limita (max 40 u minuti)
                 
                 if upita_potroseno >= MAX_DNEVNI_UPITI:
-                    print(f"\n⏸️ Dosegnut dnevni limit od {MAX_DNEVNI_UPITI} upita. Bot pauzira do sutra.")
+                    print(f"\n⏸️ Dosegnut globalni dnevni limit od {MAX_DNEVNI_UPITI} upita. Bot staje za danas.")
                     break
         
         if azurirano > 0:
@@ -86,10 +111,11 @@ def pokreni_bota():
                 writer = csv.writer(f)
                 writer.writerow(header)
                 writer.writerows(redovi)
-            print(f"💾 Spremljeno {azurirano} novih slika u {file}!")
+            print(f"💾 Spremljeno {azurirano} promjena u {file}!")
         else:
-            print(f"👍 Sve slike su već bile popunjene ili nije nađeno ništa novo za {file}.")
+            print(f"👍 Nema novih izmjena za {file}.")
             
+        # Globalni prekid vanjske petlje ako smo potrošili dnevni limit!
         if upita_potroseno >= MAX_DNEVNI_UPITI:
             break
 
