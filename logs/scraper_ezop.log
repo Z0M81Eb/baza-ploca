@@ -1,46 +1,37 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 27.10.2026. 07:36:05
+Vrijeme pokretanja (UTC): 28.10.2026. 07:27:56
 ----------------------------------------
 📦 Učitano 9661 postojećih zapisa iz CSV-a.
 ⚡ Zagrijavam direktnu konekciju prema Ezop serveru (116.202.174.206)...
-
-⚠️ Palim Tor tunel prema Origin IP-u...
-Selecting previously unselected package libevent-2.1-7t64:amd64.
-(Reading database ... (Reading database ... 5%(Reading database ... 10%(Reading database ... 15%(Reading database ... 20%(Reading database ... 25%(Reading database ... 30%(Reading database ... 35%(Reading database ... 40%(Reading database ... 45%(Reading database ... 50%(Reading database ... 55%(Reading database ... 60%(Reading database ... 65%(Reading database ... 70%(Reading database ... 75%(Reading database ... 80%(Reading database ... 85%(Reading database ... 90%(Reading database ... 95%(Reading database ... 100%(Reading database ... 203540 files and directories currently installed.)
-Preparing to unpack .../libevent-2.1-7t64_2.1.12-stable-9ubuntu2.2_amd64.deb ...
-Unpacking libevent-2.1-7t64:amd64 (2.1.12-stable-9ubuntu2.2) ...
-Selecting previously unselected package tor.
-Preparing to unpack .../tor_0.4.9.11-0ubuntu0.24.04.1_amd64.deb ...
-Unpacking tor (0.4.9.11-0ubuntu0.24.04.1) ...
-Selecting previously unselected package torsocks.
-Preparing to unpack .../torsocks_2.4.0-1_amd64.deb ...
-Unpacking torsocks (2.4.0-1) ...
-Selecting previously unselected package tor-geoipdb.
-Preparing to unpack .../tor-geoipdb_0.4.9.11-0ubuntu0.24.04.1_all.deb ...
-Unpacking tor-geoipdb (0.4.9.11-0ubuntu0.24.04.1) ...
-Setting up libevent-2.1-7t64:amd64 (2.1.12-stable-9ubuntu2.2) ...
-Setting up tor (0.4.9.11-0ubuntu0.24.04.1) ...
-Something or somebody made /var/lib/tor disappear.
-Creating one for you again.
-Something or somebody made /var/log/tor disappear.
-Creating one for you again.
-Created symlink /etc/systemd/system/multi-user.target.wants/tor.service → /usr/lib/systemd/system/tor.service.
-Setting up torsocks (2.4.0-1) ...
-Setting up tor-geoipdb (0.4.9.11-0ubuntu0.24.04.1) ...
-Processing triggers for man-db (2.12.0-4build2) ...
-Not building database; man-db/auto-update is not 'true'.
-Processing triggers for libc-bin (2.39-0ubuntu8.9) ...
-
-Running kernel seems to be up-to-date.
-
-No services need to be restarted.
-
-No containers need to be restarted.
-
-No user sessions are running outdated binaries.
-
-No VM guests are running outdated hypervisor (qemu) binaries on this host.
 📄 Dohvaćam 1. stranicu i ukupan broj stranica arhive...
-❌ Neuspješno dohvaćanje 1. stranice arhive. Prekidam.
+🚀 Pokrećem paralelno skeniranje 447 stranica (6 niti istovremeno)...
+⚡ Stranice 002-019 (18/18 OK) za 20.3s | +399 izravnih | Ukupno u bazi: 420 (+0 novih Izaberi)
+⚡ Stranice 020-037 (18/18 OK) za 16.4s | +385 izravnih | Ukupno u bazi: 805 (+0 novih Izaberi)
+⚡ Stranice 038-055 (18/18 OK) za 15.4s | +402 izravnih | Ukupno u bazi: 1207 (+0 novih Izaberi)
+⚡ Stranice 056-073 (18/18 OK) za 16.2s | +388 izravnih | Ukupno u bazi: 1595 (+0 novih Izaberi)
+⚡ Stranice 074-091 (18/18 OK) za 19.1s | +390 izravnih | Ukupno u bazi: 1985 (+0 novih Izaberi)
+⚡ Stranice 092-109 (18/18 OK) za 17.4s | +420 izravnih | Ukupno u bazi: 2405 (+0 novih Izaberi)
+⚡ Stranice 110-127 (18/18 OK) za 18.5s | +388 izravnih | Ukupno u bazi: 2793 (+0 novih Izaberi)
+⚡ Stranice 128-145 (18/18 OK) za 16.3s | +263 izravnih | Ukupno u bazi: 3056 (+0 novih Izaberi)
+⚡ Stranice 146-163 (18/18 OK) za 16.5s | +388 izravnih | Ukupno u bazi: 3444 (+0 novih Izaberi)
+⚡ Stranice 164-181 (18/18 OK) za 15.4s | +398 izravnih | Ukupno u bazi: 3842 (+0 novih Izaberi)
+⚡ Stranice 182-199 (18/18 OK) za 15.3s | +389 izravnih | Ukupno u bazi: 4231 (+0 novih Izaberi)
+⚡ Stranice 200-217 (18/18 OK) za 13.9s | +387 izravnih | Ukupno u bazi: 4618 (+0 novih Izaberi)
+⚡ Stranice 218-235 (18/18 OK) za 17.5s | +400 izravnih | Ukupno u bazi: 5018 (+0 novih Izaberi)
+⚡ Stranice 236-253 (18/18 OK) za 17.9s | +390 izravnih | Ukupno u bazi: 5408 (+0 novih Izaberi)
+⚡ Stranice 254-271 (18/18 OK) za 15.2s | +417 izravnih | Ukupno u bazi: 5825 (+0 novih Izaberi)
+⚡ Stranice 272-289 (18/18 OK) za 15.1s | +409 izravnih | Ukupno u bazi: 6234 (+0 novih Izaberi)
+⚡ Stranice 290-307 (18/18 OK) za 15.3s | +401 izravnih | Ukupno u bazi: 6635 (+0 novih Izaberi)
+⚡ Stranice 308-325 (18/18 OK) za 16.0s | +392 izravnih | Ukupno u bazi: 7027 (+0 novih Izaberi)
+⚡ Stranice 326-343 (18/18 OK) za 16.1s | +402 izravnih | Ukupno u bazi: 7429 (+0 novih Izaberi)
+⚡ Stranice 344-361 (18/18 OK) za 19.8s | +390 izravnih | Ukupno u bazi: 7819 (+0 novih Izaberi)
+⚡ Stranice 362-379 (18/18 OK) za 17.3s | +409 izravnih | Ukupno u bazi: 8228 (+0 novih Izaberi)
+⚡ Stranice 380-397 (18/18 OK) za 16.6s | +383 izravnih | Ukupno u bazi: 8611 (+0 novih Izaberi)
+⚡ Stranice 398-415 (18/18 OK) za 16.5s | +375 izravnih | Ukupno u bazi: 8986 (+0 novih Izaberi)
+⚡ Stranice 416-433 (18/18 OK) za 15.4s | +368 izravnih | Ukupno u bazi: 9354 (+0 novih Izaberi)
+⚡ Stranice 434-447 (14/14 OK) za 14.8s | +305 izravnih | Ukupno u bazi: 9659 (+0 novih Izaberi)
+
+🧹 Sinkronizacija završena! Uklonjeno 2 prodanih artikala.
+🎉 GOTOVO za 7.0 min! U bazi je 9659 dostupnih Ezop vinila (Sa slikom: 9659).
 ----------------------------------------
-Vrijeme završetka (UTC): 27.10.2026. 07:37:08 | Kod izlaza: 0
+Vrijeme završetka (UTC): 28.10.2026. 07:34:58 | Kod izlaza: 0
