@@ -50,12 +50,7 @@ def izvidac(url):
         
         tablice = soup.find_all('table')
         if tablice and len(soup.find_all('tr')) > 20:
-            log_print("  📊 DETEKTIRANA TABLICA! Provjeravam zaglavlja stupaca:")
-            prvi_redovi = soup.find_all('tr')[:5]
-            for idx, tr in enumerate(prvi_redovi):
-                kolone = [td.get_text(strip=True) for td in tr.find_all(['td', 'th'])]
-                if kolone:
-                    log_print(f"     Red {idx}: {kolone}")
+            log_print("  📊 DETEKTIRANA TABLICA! Provjeravam zaglavlja stupaca...")
                     
         # 3. Pametno traženje linka
         proizvodi = soup.select('.product, .type-product, .item, .product-item, .product-layout')
@@ -78,14 +73,16 @@ def izvidac(url):
 
         prvi_link = None
         kljucne_rijeci = ['vinil', 'vinyl', 'lp', 'ploča', 'ploca', 'record', '7"', '12"', 'cd']
+        zabranjene_rijeci = ['majica', 'pederuša', 'torba', 'kapa', 'hoodie', 'čarape']
         
         # 3.1. Tražimo na trenutnoj stranici
         if kandidati:
             for link, tekst in kandidati:
                 if any(kljuc in tekst for kljuc in kljucne_rijeci) or any(kljuc in link.lower() for kljuc in kljucne_rijeci):
-                    prvi_link = link
-                    log_print(f"  🎯 Detektirana ploča na trenutnoj stranici: {prvi_link}")
-                    break
+                    if not any(zab in tekst for zab in zabranjene_rijeci) and not any(zab in link.lower() for zab in zabranjene_rijeci):
+                        prvi_link = link
+                        log_print(f"  🎯 Detektirana PRAVA ploča na trenutnoj stranici: {prvi_link}")
+                        break
 
         # 3.2. AUTO-DISCOVERY: Ako nema ploča, traži kategoriju u navigaciji (Sitemap / Menu)
         if not prvi_link:
@@ -106,12 +103,25 @@ def izvidac(url):
                     r_kat = scraper.get(odabrana_kat, timeout=20)
                     soup_kat = BeautifulSoup(r_kat.text, 'lxml')
                     proizvodi_kat = soup_kat.select('.product, .type-product, .item, .product-item, .product-layout')
+                    
+                    # OVDJE JE BIO PROBLEM: Sada filtriramo artikle i UNUTAR kategorije
+                    kandidati_kat = []
                     for p in proizvodi_kat:
                         a_tag = p.find('a', href=True)
                         if a_tag:
-                            prvi_link = urljoin(base_url, a_tag['href'])
-                            log_print(f"  🎯 Uspješno pronađena ploča unutar skrivene kategorije: {prvi_link}")
-                            break
+                            kandidati_kat.append((urljoin(base_url, a_tag['href']), p.get_text(" ", strip=True).lower()))
+                            
+                    for link, tekst in kandidati_kat:
+                        if any(kljuc in tekst for kljuc in kljucne_rijeci) or any(kljuc in link.lower() for kljuc in kljucne_rijeci):
+                            if not any(zab in tekst for zab in zabranjene_rijeci) and not any(zab in link.lower() for zab in zabranjene_rijeci):
+                                prvi_link = link
+                                log_print(f"  🎯 Uspješno pronađena PRAVA ploča unutar skrivene kategorije: {prvi_link}")
+                                break
+                                
+                    if not prvi_link and kandidati_kat:
+                        prvi_link = kandidati_kat[0][0]
+                        log_print(f"  ⚠️ U kategoriji nema očitih ploča po ključnim riječima, uzimam prvi artikl (Fallback): {prvi_link}")
+                        
                 except Exception as e:
                     log_print(f"  ❌ Greška pri otvaranju kategorije: {e}")
 
