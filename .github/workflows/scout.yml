@@ -3,6 +3,10 @@ name: Scout Engine (Izviđač)
 on:
   workflow_dispatch:
 
+# OVO JE KLJUČNO: Dozvola botu da smije spremiti log datoteku nazad na GitHub
+permissions:
+  contents: write
+
 jobs:
   scout:
     runs-on: ubuntu-latest
@@ -23,10 +27,10 @@ jobs:
       - name: Pokreni izviđača
         run: python scout.py
 
-- name: Spremi Scout Log u repozitorij
+      - name: Spremi Scout Log u repozitorij
         run: |
           git config --local user.email "action@github.com"
           git config --local user.name "GitHub Scout"
-          git add logs/scout_report.log
+          git add logs/scout_report.log || true
           git commit -m "Scout izvještaj ažuriran" || true
           git push
