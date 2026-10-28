@@ -9,7 +9,7 @@ import re
 # =========================================================================
 # 🎯 OVDJE UNESI URL KATEGORIJE ILI STRANICE ZA IZVIĐANJE
 # =========================================================================
-CILJANI_URL = "https://antikvarijatstaklenigrad.hr/gramofonske-ploce/"
+CILJANI_URL = "https://lumer-shop.eu/"
 # =========================================================================
 
 os.makedirs("logs", exist_ok=True)
