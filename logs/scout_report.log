@@ -1,4 +1,4 @@
-=== SCOUT IZVJEŠTAJ (28.10.2026 11:33:21) ===
+=== SCOUT IZVJEŠTAJ (28.10.2026 11:38:16) ===
 🚀 POKREĆEM DUBINSKO IZVIĐANJE ZA: https://lumer-shop.eu/
 ------------------------------------------------------------
 🔎 [1/4] Provjeravam skrivene API-je...
@@ -8,9 +8,11 @@
 🔎 [2/4] Analiziram strukturu kataloga...
   HTTP Status: 200
   📦 Pronađeno 13 kartica proizvoda na stranici.
+  ⚠️ Na trenutnoj stranici nema očitih ploča. Pretražujem navigacijski izbornik za kategoriju ploča...
+  🔗 Pronađena potencijalna kategorija, otvaram: https://lumer-shop.eu/product-category/misc/music/
+  🎯 Uspješno pronađena ploča unutar skrivene kategorije: https://lumer-shop.eu/shop/zuvi-dalmacija-chritsmas-pederusa/
 
 🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...
-  🔗 Otvaram uzorak proizvoda: https://lumer-shop.eu/shop/i-tebi-i-tvojima-zelena-majica/
   ℹ️ Nisu pronađene tipične oznake stanja (VG, NM, Condition, Stanje). Trgovina vjerojatno prodaje SAMO NOVE ploče (Mint) ili skriva stanje u slikama.
 ------------------------------------------------------------
 🏁 Izviđanje završeno! Izvještaj spremljen u logs/scout_report.log
