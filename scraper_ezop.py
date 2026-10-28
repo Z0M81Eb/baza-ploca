@@ -175,6 +175,9 @@ def ocisti_url_slike(raw_url, is_srcset=False):
     if not val.startswith('http'):
         return ""
 
+    # DODANO: Uklanjanje sufiksa za dimenzije (npr. -300x300) kako bi se povukao original
+    val = re.sub(r'-\d+x\d+\.(jpg|jpeg|png|webp|gif)$', r'.\1', val, flags=re.IGNORECASE)
+
     return val.replace(' ', '%20')
 
 def izvuci_sliku_iz_ezop_kartice(k):
