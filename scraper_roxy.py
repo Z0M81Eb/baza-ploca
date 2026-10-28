@@ -27,7 +27,6 @@ def kreiraj_sesiju():
     return s
 
 def ocisti_cijenu(sirovo):
-    # Pretvaramo "10,50." u "10.50"
     cisti = sirovo.replace("€", "").replace("EUR", "").strip()
     if cisti.endswith("."):
         cisti = cisti[:-1]
@@ -48,22 +47,6 @@ def odredi_tip(tip_sirovo):
         return 'Maxi 12"'
     return 'LP'
 
-def parsiraj_kondiciju(kond_sirovo):
-    # Format je najčešće Medij/Omot (npr. VG/EX)
-    k = kond_sirovo.strip()
-    if not k or k == "/" or k == "-":
-        return "Rabljeni", "Rabljeni"
-        
-    if "/" in k:
-        dijelovi = k.split("/")
-        medij = dijelovi[0].strip()
-        omot = dijelovi[1].strip() if len(dijelovi) > 1 else medij
-    else:
-        medij = k
-        omot = k
-        
-    return medij if medij and medij != "-" else "Rabljeni", omot if omot and omot != "-" else "Rabljeni"
-
 def dohvati_katalog_linkove(sesija):
     print("🔎 Dohvaćam abecedne linkove iz RoxY naslovnice...", flush=True)
     try:
@@ -71,7 +54,6 @@ def dohvati_katalog_linkove(sesija):
         soup = BeautifulSoup(r.content, "lxml")
         linkovi = set()
         
-        # Odbacujemo stranice koje nisu katalog (informacije, forme, itd.)
         ignoriraj = ["prodaja", "zamjena", "clanovi", "forme", "narudzba", "knjiga"]
         
         for a in soup.select("a[href]"):
@@ -100,33 +82,46 @@ def obradi_stranicu(url):
         
         for tr in redovi:
             tdovi = tr.find_all(['td', 'th'])
-            # RoxY tablica ima 8 stupaca po redu
-            if len(tdovi) >= 8:
-                medij = tdovi[0].get_text(" ", strip=True).lower()
-                if "ploča" in medij or "ploca" in medij:
-                    tip_sirovo = tdovi[1].get_text(" ", strip=True)
-                    izvodjac = tdovi[2].get_text(" ", strip=True)
-                    naslov = tdovi[3].get_text(" ", strip=True)
-                    kondicija = tdovi[5].get_text(" ", strip=True)
-                    cijena_euro = tdovi[7].get_text(" ", strip=True)
-                    
-                    cijena = ocisti_cijenu(cijena_euro)
-                    if cijena == "0.00":
-                        continue
-                        
-                    puni_naslov = f"{izvodjac} - {naslov}"
-                    puni_naslov = " ".join(puni_naslov.split()).strip(" -")
-                    
-                    # Generiranje jedinstvenog linka sa slugom, pošto RoxY nema stranice pojedinačnih proizvoda
-                    slug = re.sub(r'[^a-z0-9]+', '-', puni_naslov.lower()).strip('-')
-                    jedinstveni_link = f"{url}#{slug}"
-                    
-                    stanje_medija, stanje_omota = parsiraj_kondiciju(kondicija)
-                    tip_artikla = odredi_tip(tip_sirovo)
-                    slika_url = "" # RoxY nema slike ploča
-                    
-                    red = [puni_naslov, cijena, jedinstveni_link, slika_url, stanje_medija, stanje_omota, tip_artikla]
-                    stavke.append((jedinstveni_link, red))
+            cols = [td.get_text(" ", strip=True) for td in tdovi]
+            if len(cols) < 8:
+                continue
+                
+            medij_tip = cols[0].upper()
+            format_tip = cols[1].strip()
+            
+            # STROGI FILTER ZA CD-ove
+            if "PLOČA" not in medij_tip and "PLOCA" not in medij_tip:
+                continue
+                
+            izvodjac = cols[2].strip()
+            naslov_albuma = cols[3].strip()
+            puni_naslov = f"{izvodjac} - {naslov_albuma}"
+            puni_naslov = " ".join(puni_naslov.split()).strip(" -")
+            kondicija = cols[5].strip()
+            cijena_euro = cols[7].strip()
+            
+            cijena = ocisti_cijenu(cijena_euro)
+            if cijena == "0.00":
+                continue
+                
+            slug = re.sub(r'[^a-z0-9]+', '-', puni_naslov.lower()).strip('-')
+            jedinstveni_link = f"{url}#{slug}"
+            
+            stanje_medija = "VG"
+            stanje_omota = "VG"
+            if "/" in kondicija and kondicija != "/":
+                dijelovi = kondicija.split("/")
+                stanje_medija = dijelovi[0].strip().lstrip("-") or "VG"
+                stanje_omota = dijelovi[1].strip().lstrip("-") or "VG"
+            elif kondicija and kondicija != "/":
+                stanje_medija = kondicija
+                stanje_omota = kondicija
+                
+            tip_artikla = odredi_tip(format_tip)
+            slika_url = "" 
+            
+            red = [puni_naslov, cijena, jedinstveni_link, slika_url, stanje_medija, stanje_omota, tip_artikla]
+            stavke.append((jedinstveni_link, red))
                     
         print(f"   ⚡ Stranica {url.split('/')[-1]} obrađena za {time.time() - t_start:.1f}s | Pronađeno ploča: {len(stavke)}", flush=True)
         return True, stavke, len(stavke)
@@ -185,7 +180,7 @@ def scrape_roxy():
             writer = csv.writer(f)
             writer.writerow(["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"])
             writer.writerows(sve_ploce.values())
-        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih rabljenih ploča iz RoxY-ja (Slike nažalost nemaju).", flush=True)
+        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih ploča iz RoxY-ja.", flush=True)
 
 if __name__ == "__main__":
     scrape_roxy()
