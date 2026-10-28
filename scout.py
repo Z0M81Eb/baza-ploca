@@ -41,7 +41,7 @@ def izvidac(url):
         except Exception:
             pass
 
-    # 2. Analiza glavne stranice (Grid ili Tablica)
+    # 2. Analiza glavne stranice
     log_print("\n🔎 [2/4] Analiziram strukturu kataloga...")
     try:
         r = scraper.get(url, timeout=20)
@@ -57,37 +57,72 @@ def izvidac(url):
                 if kolone:
                     log_print(f"     Red {idx}: {kolone}")
                     
-        # 3. Pametno traženje linka za dubinsku analizu
+        # 3. Pametno traženje linka
         proizvodi = soup.select('.product, .type-product, .item, .product-item, .product-layout')
-        svi_linkovi = []
-        prvi_link = None
+        kandidati = []
         
         if proizvodi:
             log_print(f"  📦 Pronađeno {len(proizvodi)} kartica proizvoda na stranici.")
             for p in proizvodi:
                 a_tag = p.find('a', href=True)
                 if a_tag:
-                    svi_linkovi.append(urljoin(base_url, a_tag['href']))
+                    link = urljoin(base_url, a_tag['href'])
+                    tekst_kartice = p.get_text(" ", strip=True).lower()
+                    kandidati.append((link, tekst_kartice))
         else:
             for a in soup.find_all('a', href=True):
                 if any(k in a['href'] for k in ['/proizvod/', '/product/', '/artikl/', '/lp-', '/vinyl-']):
-                    svi_linkovi.append(urljoin(base_url, a['href']))
+                    link = urljoin(base_url, a['href'])
+                    tekst_kartice = a.get_text(" ", strip=True).lower()
+                    kandidati.append((link, tekst_kartice))
 
-        if svi_linkovi:
-            # Tražimo link koji sugerira da je riječ o ploči (izbjegavanje majica i opreme)
-            kljucne_rijeci = ['vinil', 'vinyl', 'lp', 'ploca', 'ploča', 'record', '7-inch', '12-inch']
-            for link in svi_linkovi:
-                if any(kljuc in link.lower() for kljuc in kljucne_rijeci):
+        prvi_link = None
+        kljucne_rijeci = ['vinil', 'vinyl', 'lp', 'ploča', 'ploca', 'record', '7"', '12"', 'cd']
+        
+        # 3.1. Tražimo na trenutnoj stranici
+        if kandidati:
+            for link, tekst in kandidati:
+                if any(kljuc in tekst for kljuc in kljucne_rijeci) or any(kljuc in link.lower() for kljuc in kljucne_rijeci):
                     prvi_link = link
+                    log_print(f"  🎯 Detektirana ploča na trenutnoj stranici: {prvi_link}")
                     break
-            
-            # Ako ni jedan link ne sadrži ključnu riječ, uzimamo prvi dostupni (fallback)
-            if not prvi_link:
-                prvi_link = svi_linkovi[0]
 
+        # 3.2. AUTO-DISCOVERY: Ako nema ploča, traži kategoriju u navigaciji (Sitemap / Menu)
+        if not prvi_link:
+            log_print("  ⚠️ Na trenutnoj stranici nema očitih ploča. Pretražujem navigacijski izbornik za kategoriju ploča...")
+            kat_linkovi = []
+            for a in soup.find_all('a', href=True):
+                href = a['href'].lower()
+                tekst = a.get_text(" ", strip=True).lower()
+                if any(k in href for k in kljucne_rijeci + ['music', 'glazba']) or any(k in tekst for k in kljucne_rijeci + ['glazba', 'music']):
+                    kat_linkovi.append(urljoin(base_url, a['href']))
+            
+            kat_linkovi = list(dict.fromkeys(kat_linkovi)) # Ukloni duplikate
+            
+            if kat_linkovi:
+                odabrana_kat = kat_linkovi[0]
+                log_print(f"  🔗 Pronađena potencijalna kategorija, otvaram: {odabrana_kat}")
+                try:
+                    r_kat = scraper.get(odabrana_kat, timeout=20)
+                    soup_kat = BeautifulSoup(r_kat.text, 'lxml')
+                    proizvodi_kat = soup_kat.select('.product, .type-product, .item, .product-item, .product-layout')
+                    for p in proizvodi_kat:
+                        a_tag = p.find('a', href=True)
+                        if a_tag:
+                            prvi_link = urljoin(base_url, a_tag['href'])
+                            log_print(f"  🎯 Uspješno pronađena ploča unutar skrivene kategorije: {prvi_link}")
+                            break
+                except Exception as e:
+                    log_print(f"  ❌ Greška pri otvaranju kategorije: {e}")
+
+        # 3.3. Fallback ako baš ništa ne radi
+        if not prvi_link and kandidati:
+            prvi_link = kandidati[0][0]
+            log_print("  ⚠️ Nisu prepoznate ključne riječi za ploču nigdje, uzimam prvi proizvod kao test.")
+
+        # 4. Dubinska analiza
         log_print("\n🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...")
         if prvi_link:
-            log_print(f"  🔗 Otvaram uzorak proizvoda: {prvi_link}")
             r_prod = scraper.get(prvi_link, timeout=20)
             soup_prod = BeautifulSoup(r_prod.text, 'lxml')
             
@@ -106,7 +141,7 @@ def izvidac(url):
                 log_print("  🎯 PRONAĐENI PODACI O STANJU PLOČE/OMOTA:")
                 for ps in list(dict.fromkeys(pronadjena_stanja))[:8]:
                     log_print(f"     ✅ {ps}")
-                log_print("  🏷️ ZAKLJUČAK: Trgovina je SECOND HAND ili HIBRIDNA (ocjene su prisutne u gornjim HTML elementima).")
+                log_print("  🏷️ ZAKLJUČAK: Trgovina je SECOND HAND ili HIBRIDNA (ocjene su prisutne u HTML elementima).")
             else:
                 log_print("  ℹ️ Nisu pronađene tipične oznake stanja (VG, NM, Condition, Stanje). Trgovina vjerojatno prodaje SAMO NOVE ploče (Mint) ili skriva stanje u slikama.")
         else:
