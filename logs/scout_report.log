@@ -1,0 +1,16 @@
+=== SCOUT IZVJEŠTAJ (28.10.2026 11:30:02) ===
+🚀 POKREĆEM DUBINSKO IZVIĐANJE ZA: https://lumer-shop.eu/
+------------------------------------------------------------
+🔎 [1/4] Provjeravam skrivene API-je...
+  ✅ OTVOREN API: /wp-json/wc/store/v1/products?per_page=5
+  ✅ OTVOREN API: /wp-json/wp/v2/product?per_page=5
+
+🔎 [2/4] Analiziram strukturu kataloga...
+  HTTP Status: 200
+  📦 Pronađeno 13 kartica proizvoda na stranici.
+
+🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...
+  🔗 Otvaram uzorak proizvoda: https://lumer-shop.eu/shop/i-tebi-i-tvojima-zelena-majica/
+  ℹ️ Nisu pronađene tipične oznake stanja (VG, NM, Condition, Stanje). Trgovina vjerojatno prodaje SAMO NOVE ploče (Mint) ili skriva stanje u slikama.
+------------------------------------------------------------
+🏁 Izviđanje završeno! Izvještaj spremljen u logs/scout_report.log
