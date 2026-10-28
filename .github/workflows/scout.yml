@@ -22,3 +22,11 @@ jobs:
 
       - name: Pokreni izviđača
         run: python scout.py
+
+- name: Spremi Scout Log u repozitorij
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Scout"
+          git add logs/scout_report.log
+          git commit -m "Scout izvještaj ažuriran" || true
+          git push
