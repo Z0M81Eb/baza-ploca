@@ -1,7 +1,7 @@
 === IZVJEŠTAJ RADA: scraper_menart.py ===
-Vrijeme pokretanja (UTC): 27.10.2026. 07:36:04
+Vrijeme pokretanja (UTC): 28.10.2026. 08:08:48
 ----------------------------------------
-📦 Učitano 6532 postojećih ploča iz memorije.
+📦 Učitano 6548 postojećih ploča iz memorije.
 
 🚀 Pokrećem HTML skeniranje Menart vinilnih arhiva...
 
@@ -35,169 +35,13 @@ Vrijeme pokretanja (UTC): 27.10.2026. 07:36:04
 📄 Stranica 26... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 27... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 28... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 29... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 30... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 31... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 32... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 33... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 34... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 35... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 36... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 37... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 38... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 39... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 40... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 41... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 42... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 43... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 44... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 45... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 46... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 47... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 48... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 49... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 50... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 51... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 52... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 53... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 54... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 55... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 56... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 57... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 58... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 59... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 60... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 61... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 62... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 63... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 64... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 65... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 66... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 67... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 68... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 69... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 70... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 71... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 72... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 73... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 74... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 75... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 76... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 77... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 78... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 79... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 80... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 81... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 82... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 83... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 84... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 85... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 86... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 87... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 88... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 89... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 90... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 91... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 92... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 93... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 94... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 95... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 96... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 97... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 98... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 99... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 100... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 101... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 102... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 103... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 104... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 105... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 106... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 107... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 108... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 109... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 110... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 111... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 112... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 113... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 114... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 115... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 116... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 117... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 118... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 119... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 120... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 121... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 122... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 123... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 124... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 125... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 126... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 127... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 128... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 129... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 130... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 131... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 132... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 133... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 134... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 135... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 136... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 137... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 138... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 139... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 140... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 141... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 142... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 143... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 144... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 145... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 146... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 147... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 148... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 149... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 150... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 151... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 152... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 153... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 154... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 155... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 156... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 157... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 158... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 159... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 160... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 161... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 162... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 163... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 164... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 165... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 166... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 167... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 168... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 169... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 170... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 171... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 172... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 173... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 174... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 175... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 176... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 177... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 178... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 179... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 180... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 181... -> Pronađeno 14 vinila (Sa slikom: 14/14).
-📄 Stranica 182... -> 0 na zalihi na ovoj stranici.
-📄 Stranica 183... -> 0 na zalihi na ovoj stranici.
-📄 Stranica 184... -> 0 na zalihi na ovoj stranici.
-📄 Stranica 185... -> 0 na zalihi na ovoj stranici.
-📄 Stranica 186... -> 0 na zalihi na ovoj stranici.
+📄 Stranica 29... 
+❌ Greška na stranici 29: Failed to perform, curl: (28) Operation timed out after 25001 milliseconds with 8089 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
 
 📂 Skeniram arhivu: https://menartshop.hr/format-glazba/lp-cd/ (LP+CD)
 📄 Stranica 1... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 2... -> Pronađeno 10 vinila (Sa slikom: 10/10).
-📄 Stranica 3... -> Kraj arhive (404).
+📄 Stranica 2... 
+❌ Greška na stranici 2: Failed to perform, curl: (28) Operation timed out after 25000 milliseconds with 38971 bytes received. See https://curl.se/libcurl/c/libcurl-errors.html first for more details.
 
 📂 Skeniram arhivu: https://menartshop.hr/format-glazba/cd-lp/ (CD+LP)
 📄 Stranica 1... -> Pronađeno 4 vinila (Sa slikom: 4/4).
@@ -207,7 +51,7 @@ Vrijeme pokretanja (UTC): 27.10.2026. 07:36:04
 📄 Stranica 1... -> Pronađeno 4 vinila (Sa slikom: 4/4).
 📄 Stranica 2... -> Kraj arhive (404).
 
-🧹 Analiza završena. Obrisano 17 rasprodanih ploča.
-🎉 GOTOVO! U bazi je ukupno 6548 ploča (od toga sa slikom: 6548).
+⚠️ Pronađeno ukupno 1060 ploča. Zadržavam postojeće u bazi.
+🎉 GOTOVO! U bazi je ukupno 6553 ploča (od toga sa slikom: 6553).
 ----------------------------------------
-Vrijeme završetka (UTC): 27.10.2026. 07:43:23 | Kod izlaza: 0
+Vrijeme završetka (UTC): 28.10.2026. 08:12:12 | Kod izlaza: 0
