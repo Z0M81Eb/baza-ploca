@@ -1,44 +1,44 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 28.10.2026. 11:44:25
+Vrijeme pokretanja (UTC): 29.10.2026. 08:41:09
 ----------------------------------------
 📦 Učitano 5306 postojećih zapisa iz cedeterija_ploce.csv.
 📄 Dohvaćam 1. stranicu Cedeterija LP kataloga (čista paginacija)...
-✅ Stranica 1 obrađena: 28 kartica (28 dostupnih LP-a) | Detektirano stranica u navigaciji: 190
-⚡ Stranice 002-007 (6/6 OK) za 15.8s | +168 dostupnih | Ukupno aktivnih: 196
-⚡ Stranice 008-013 (6/6 OK) za 15.2s | +168 dostupnih | Ukupno aktivnih: 364
-⚡ Stranice 014-019 (6/6 OK) za 15.0s | +168 dostupnih | Ukupno aktivnih: 532
-⚡ Stranice 020-025 (6/6 OK) za 14.9s | +168 dostupnih | Ukupno aktivnih: 700
-⚡ Stranice 026-031 (6/6 OK) za 15.4s | +168 dostupnih | Ukupno aktivnih: 868
-⚡ Stranice 032-037 (6/6 OK) za 15.0s | +168 dostupnih | Ukupno aktivnih: 1036
-⚡ Stranice 038-043 (6/6 OK) za 15.0s | +168 dostupnih | Ukupno aktivnih: 1204
-⚡ Stranice 044-049 (6/6 OK) za 14.8s | +168 dostupnih | Ukupno aktivnih: 1372
-⚡ Stranice 050-055 (6/6 OK) za 14.8s | +168 dostupnih | Ukupno aktivnih: 1540
-⚡ Stranice 056-061 (6/6 OK) za 15.0s | +168 dostupnih | Ukupno aktivnih: 1708
-⚡ Stranice 062-067 (6/6 OK) za 15.0s | +168 dostupnih | Ukupno aktivnih: 1876
-⚡ Stranice 068-073 (6/6 OK) za 15.4s | +168 dostupnih | Ukupno aktivnih: 2044
-⚡ Stranice 074-079 (6/6 OK) za 15.1s | +168 dostupnih | Ukupno aktivnih: 2212
-⚡ Stranice 080-085 (6/6 OK) za 15.3s | +168 dostupnih | Ukupno aktivnih: 2380
-⚡ Stranice 086-091 (6/6 OK) za 15.3s | +168 dostupnih | Ukupno aktivnih: 2548
-⚡ Stranice 092-097 (6/6 OK) za 15.4s | +168 dostupnih | Ukupno aktivnih: 2716
-⚡ Stranice 098-103 (6/6 OK) za 16.1s | +168 dostupnih | Ukupno aktivnih: 2884
-⚡ Stranice 104-109 (6/6 OK) za 15.5s | +168 dostupnih | Ukupno aktivnih: 3052
-⚡ Stranice 110-115 (6/6 OK) za 15.1s | +168 dostupnih | Ukupno aktivnih: 3220
-⚡ Stranice 116-121 (6/6 OK) za 15.0s | +168 dostupnih | Ukupno aktivnih: 3388
-⚡ Stranice 122-127 (6/6 OK) za 15.0s | +168 dostupnih | Ukupno aktivnih: 3556
-⚡ Stranice 128-133 (6/6 OK) za 14.9s | +168 dostupnih | Ukupno aktivnih: 3724
-⚡ Stranice 134-139 (6/6 OK) za 15.3s | +168 dostupnih | Ukupno aktivnih: 3892
-⚡ Stranice 140-145 (6/6 OK) za 14.5s | +168 dostupnih | Ukupno aktivnih: 4060
-⚡ Stranice 146-151 (6/6 OK) za 14.5s | +168 dostupnih | Ukupno aktivnih: 4228
-⚡ Stranice 152-157 (6/6 OK) za 14.0s | +168 dostupnih | Ukupno aktivnih: 4396
-⚡ Stranice 158-163 (6/6 OK) za 14.3s | +168 dostupnih | Ukupno aktivnih: 4564
-⚡ Stranice 164-169 (6/6 OK) za 14.6s | +168 dostupnih | Ukupno aktivnih: 4732
-⚡ Stranice 170-175 (6/6 OK) za 14.4s | +168 dostupnih | Ukupno aktivnih: 4900
-⚡ Stranice 176-181 (6/6 OK) za 14.0s | +168 dostupnih | Ukupno aktivnih: 5068
-⚡ Stranice 182-187 (6/6 OK) za 14.1s | +168 dostupnih | Ukupno aktivnih: 5236
-⚡ Stranice 188-193 (3/6 OK) za 13.9s | +70 dostupnih | Ukupno aktivnih: 5306
-⚡ Stranice 194-199 (0/6 OK) za 13.6s | +0 dostupnih | Ukupno aktivnih: 5306
+✅ Stranica 1 obrađena: 28 kartica (28 dostupnih LP-a) | Detektirano stranica u navigaciji: 189
+⚡ Stranice 002-007 (6/6 OK) za 14.5s | +168 dostupnih | Ukupno aktivnih: 196
+⚡ Stranice 008-013 (6/6 OK) za 13.8s | +168 dostupnih | Ukupno aktivnih: 364
+⚡ Stranice 014-019 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 532
+⚡ Stranice 020-025 (6/6 OK) za 14.3s | +168 dostupnih | Ukupno aktivnih: 700
+⚡ Stranice 026-031 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 868
+⚡ Stranice 032-037 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 1036
+⚡ Stranice 038-043 (6/6 OK) za 13.8s | +168 dostupnih | Ukupno aktivnih: 1204
+⚡ Stranice 044-049 (6/6 OK) za 15.6s | +168 dostupnih | Ukupno aktivnih: 1372
+⚡ Stranice 050-055 (6/6 OK) za 14.0s | +168 dostupnih | Ukupno aktivnih: 1540
+⚡ Stranice 056-061 (6/6 OK) za 14.0s | +168 dostupnih | Ukupno aktivnih: 1708
+⚡ Stranice 062-067 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 1876
+⚡ Stranice 068-073 (6/6 OK) za 13.6s | +168 dostupnih | Ukupno aktivnih: 2044
+⚡ Stranice 074-079 (6/6 OK) za 13.8s | +168 dostupnih | Ukupno aktivnih: 2212
+⚡ Stranice 080-085 (6/6 OK) za 14.2s | +168 dostupnih | Ukupno aktivnih: 2380
+⚡ Stranice 086-091 (6/6 OK) za 14.1s | +168 dostupnih | Ukupno aktivnih: 2548
+⚡ Stranice 092-097 (6/6 OK) za 14.3s | +168 dostupnih | Ukupno aktivnih: 2716
+⚡ Stranice 098-103 (6/6 OK) za 14.3s | +168 dostupnih | Ukupno aktivnih: 2884
+⚡ Stranice 104-109 (6/6 OK) za 14.1s | +168 dostupnih | Ukupno aktivnih: 3052
+⚡ Stranice 110-115 (6/6 OK) za 14.2s | +168 dostupnih | Ukupno aktivnih: 3220
+⚡ Stranice 116-121 (6/6 OK) za 14.6s | +168 dostupnih | Ukupno aktivnih: 3388
+⚡ Stranice 122-127 (6/6 OK) za 13.9s | +168 dostupnih | Ukupno aktivnih: 3556
+⚡ Stranice 128-133 (6/6 OK) za 14.1s | +168 dostupnih | Ukupno aktivnih: 3724
+⚡ Stranice 134-139 (6/6 OK) za 14.5s | +168 dostupnih | Ukupno aktivnih: 3892
+⚡ Stranice 140-145 (6/6 OK) za 15.6s | +168 dostupnih | Ukupno aktivnih: 4060
+⚡ Stranice 146-151 (6/6 OK) za 16.8s | +168 dostupnih | Ukupno aktivnih: 4228
+⚡ Stranice 152-157 (6/6 OK) za 15.7s | +168 dostupnih | Ukupno aktivnih: 4396
+⚡ Stranice 158-163 (6/6 OK) za 15.4s | +168 dostupnih | Ukupno aktivnih: 4564
+⚡ Stranice 164-169 (6/6 OK) za 15.8s | +168 dostupnih | Ukupno aktivnih: 4732
+⚡ Stranice 170-175 (6/6 OK) za 15.8s | +168 dostupnih | Ukupno aktivnih: 4900
+⚡ Stranice 176-181 (6/6 OK) za 15.6s | +168 dostupnih | Ukupno aktivnih: 5068
+⚡ Stranice 182-187 (6/6 OK) za 15.3s | +168 dostupnih | Ukupno aktivnih: 5236
+⚡ Stranice 188-193 (2/6 OK) za 16.4s | +55 dostupnih | Ukupno aktivnih: 5291
+⚡ Stranice 194-199 (0/6 OK) za 15.4s | +0 dostupnih | Ukupno aktivnih: 5291
 
-🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala.
-🎉 GOTOVO za 505.6s! U bazi je 5306 dostupnih Cedeterija vinila (Sa slikom: 5292).
+🧹 Sinkronizacija završena! Uklonjeno 16 rasprodanih artikala.
+🎉 GOTOVO za 496.7s! U bazi je 5291 dostupnih Cedeterija vinila (Sa slikom: 5291).
 ----------------------------------------
-Vrijeme završetka (UTC): 28.10.2026. 11:52:51 | Kod izlaza: 0
+Vrijeme završetka (UTC): 29.10.2026. 08:49:27 | Kod izlaza: 0

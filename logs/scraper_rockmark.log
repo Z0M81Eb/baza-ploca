@@ -1,13 +1,13 @@
 === IZVJEŠTAJ RADA: scraper_rockmark.py ===
-Vrijeme pokretanja (UTC): 28.10.2026. 11:44:18
+Vrijeme pokretanja (UTC): 29.10.2026. 08:41:10
 ----------------------------------------
 📦 Učitano 35 postojećih zapisa iz rockmark_ploce.csv.
 
 🚀 Pokrećem API dohvat Rockmark kataloga (Kat. ID: 777)...
 📂 API JAVLJA: Ukupno 61 artikala (CD/DVD/LP mješavina) kroz 1 stranica.
-   ⚡ Stranica 1/1 obrađena za 1.9s | Odvojeno vinila: 35
+   ⚡ Stranica 1/1 obrađena za 1.4s | Odvojeno vinila: 35
 
 🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala iz stare baze.
-🎉 GOTOVO za 2.9s! U bazi je 35 Rockmark ploča (Sa slikom: 35).
+🎉 GOTOVO za 2.4s! U bazi je 35 Rockmark ploča (Sa slikom: 35).
 ----------------------------------------
-Vrijeme završetka (UTC): 28.10.2026. 11:44:21 | Kod izlaza: 0
+Vrijeme završetka (UTC): 29.10.2026. 08:41:13 | Kod izlaza: 0

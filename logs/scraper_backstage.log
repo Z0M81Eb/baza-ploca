@@ -1,51 +1,51 @@
 === IZVJEŠTAJ RADA: scraper_backstage.py ===
-Vrijeme pokretanja (UTC): 28.10.2026. 11:44:26
+Vrijeme pokretanja (UTC): 29.10.2026. 08:41:11
 ----------------------------------------
-📦 Učitano 3537 postojećih zapisa iz backstage_ploce.csv.
+📦 Učitano 3536 postojećih zapisa iz backstage_ploce.csv.
 🔎 Tražim ID WooCommerce kategorije za gramofonske ploče...
 ✅ Pronađena kategorija: GRAMOFONSKE PLOČE (ID: 81)
 
 🚀 Pokrećem WooCommerce API dohvat ploča...
-📊 API javlja: 3633 artikala kroz 37 stranica.
-   ⚡ Stranica 1/37 obrađena za 2.3s (+100 dostupnih).
-   ⚡ Stranica 2/37 obrađena za 1.6s (+99 dostupnih).
-   ⚡ Stranica 3/37 obrađena za 1.5s (+100 dostupnih).
-   ⚡ Stranica 4/37 obrađena za 1.6s (+97 dostupnih).
-   ⚡ Stranica 5/37 obrađena za 1.5s (+98 dostupnih).
-   ⚡ Stranica 6/37 obrađena za 1.5s (+97 dostupnih).
-   ⚡ Stranica 7/37 obrađena za 1.6s (+96 dostupnih).
-   ⚡ Stranica 8/37 obrađena za 1.7s (+95 dostupnih).
-   ⚡ Stranica 9/37 obrađena za 1.5s (+93 dostupnih).
-   ⚡ Stranica 10/37 obrađena za 1.7s (+99 dostupnih).
+📊 API javlja: 3631 artikala kroz 37 stranica.
+   ⚡ Stranica 1/37 obrađena za 2.9s (+100 dostupnih).
+   ⚡ Stranica 2/37 obrađena za 1.5s (+99 dostupnih).
+   ⚡ Stranica 3/37 obrađena za 1.4s (+100 dostupnih).
+   ⚡ Stranica 4/37 obrađena za 1.3s (+97 dostupnih).
+   ⚡ Stranica 5/37 obrađena za 3.0s (+98 dostupnih).
+   ⚡ Stranica 6/37 obrađena za 1.3s (+97 dostupnih).
+   ⚡ Stranica 7/37 obrađena za 1.5s (+96 dostupnih).
+   ⚡ Stranica 8/37 obrađena za 1.4s (+95 dostupnih).
+   ⚡ Stranica 9/37 obrađena za 1.3s (+93 dostupnih).
+   ⚡ Stranica 10/37 obrađena za 1.3s (+99 dostupnih).
    ⚡ Stranica 11/37 obrađena za 1.5s (+96 dostupnih).
-   ⚡ Stranica 12/37 obrađena za 1.6s (+96 dostupnih).
+   ⚡ Stranica 12/37 obrađena za 1.5s (+96 dostupnih).
    ⚡ Stranica 13/37 obrađena za 1.4s (+95 dostupnih).
    ⚡ Stranica 14/37 obrađena za 1.4s (+97 dostupnih).
-   ⚡ Stranica 15/37 obrađena za 1.4s (+97 dostupnih).
-   ⚡ Stranica 16/37 obrađena za 1.6s (+96 dostupnih).
-   ⚡ Stranica 17/37 obrađena za 1.5s (+96 dostupnih).
-   ⚡ Stranica 18/37 obrađena za 1.5s (+98 dostupnih).
-   ⚡ Stranica 19/37 obrađena za 1.5s (+99 dostupnih).
-   ⚡ Stranica 20/37 obrađena za 1.5s (+98 dostupnih).
-   ⚡ Stranica 21/37 obrađena za 1.7s (+99 dostupnih).
-   ⚡ Stranica 22/37 obrađena za 1.7s (+99 dostupnih).
-   ⚡ Stranica 23/37 obrađena za 2.6s (+98 dostupnih).
-   ⚡ Stranica 24/37 obrađena za 2.0s (+92 dostupnih).
-   ⚡ Stranica 25/37 obrađena za 2.5s (+95 dostupnih).
-   ⚡ Stranica 26/37 obrađena za 1.8s (+99 dostupnih).
-   ⚡ Stranica 27/37 obrađena za 1.7s (+100 dostupnih).
-   ⚡ Stranica 28/37 obrađena za 1.8s (+96 dostupnih).
-   ⚡ Stranica 29/37 obrađena za 1.7s (+98 dostupnih).
-   ⚡ Stranica 30/37 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 31/37 obrađena za 1.7s (+98 dostupnih).
-   ⚡ Stranica 32/37 obrađena za 1.6s (+99 dostupnih).
+   ⚡ Stranica 15/37 obrađena za 1.5s (+97 dostupnih).
+   ⚡ Stranica 16/37 obrađena za 1.4s (+96 dostupnih).
+   ⚡ Stranica 17/37 obrađena za 1.4s (+96 dostupnih).
+   ⚡ Stranica 18/37 obrađena za 1.4s (+98 dostupnih).
+   ⚡ Stranica 19/37 obrađena za 1.3s (+99 dostupnih).
+   ⚡ Stranica 20/37 obrađena za 1.4s (+98 dostupnih).
+   ⚡ Stranica 21/37 obrađena za 1.6s (+99 dostupnih).
+   ⚡ Stranica 22/37 obrađena za 1.6s (+99 dostupnih).
+   ⚡ Stranica 23/37 obrađena za 1.4s (+98 dostupnih).
+   ⚡ Stranica 24/37 obrađena za 1.3s (+92 dostupnih).
+   ⚡ Stranica 25/37 obrađena za 1.4s (+95 dostupnih).
+   ⚡ Stranica 26/37 obrađena za 1.4s (+99 dostupnih).
+   ⚡ Stranica 27/37 obrađena za 1.5s (+100 dostupnih).
+   ⚡ Stranica 28/37 obrađena za 1.4s (+96 dostupnih).
+   ⚡ Stranica 29/37 obrađena za 1.3s (+98 dostupnih).
+   ⚡ Stranica 30/37 obrađena za 1.5s (+100 dostupnih).
+   ⚡ Stranica 31/37 obrađena za 1.3s (+98 dostupnih).
+   ⚡ Stranica 32/37 obrađena za 1.3s (+99 dostupnih).
    ⚡ Stranica 33/37 obrađena za 1.7s (+99 dostupnih).
-   ⚡ Stranica 34/37 obrađena za 1.6s (+99 dostupnih).
-   ⚡ Stranica 35/37 obrađena za 1.7s (+98 dostupnih).
-   ⚡ Stranica 36/37 obrađena za 1.8s (+94 dostupnih).
-   ⚡ Stranica 37/37 obrađena za 0.9s (+31 dostupnih).
+   ⚡ Stranica 34/37 obrađena za 1.5s (+99 dostupnih).
+   ⚡ Stranica 35/37 obrađena za 1.4s (+98 dostupnih).
+   ⚡ Stranica 36/37 obrađena za 1.4s (+94 dostupnih).
+   ⚡ Stranica 37/37 obrađena za 0.7s (+29 dostupnih).
 
-🧹 Sinkronizacija završena! Uklonjeno 1 rasprodanih artikala.
-🎉 GOTOVO za 63.3s! U bazi je 3536 dostupnih ploča (Sa slikom: 3536).
+🧹 Sinkronizacija završena! Uklonjeno 2 rasprodanih artikala.
+🎉 GOTOVO za 56.7s! U bazi je 3534 dostupnih ploča (Sa slikom: 3534).
 ----------------------------------------
-Vrijeme završetka (UTC): 28.10.2026. 11:45:29 | Kod izlaza: 0
+Vrijeme završetka (UTC): 29.10.2026. 08:42:08 | Kod izlaza: 0

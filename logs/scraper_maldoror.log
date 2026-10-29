@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_maldoror.py ===
-Vrijeme pokretanja (UTC): 28.10.2026. 11:44:26
+Vrijeme pokretanja (UTC): 29.10.2026. 08:41:12
 ----------------------------------------
 📦 Učitano 2316 postojećih zapisa iz maldoror_ploce.csv.
 🔎 Pretražujem API za kategorije gramofonskih ploča na Maldororu...
@@ -9,47 +9,47 @@ Vrijeme pokretanja (UTC): 28.10.2026. 11:44:26
 
 🚀 Pokrećem WooCommerce API dohvat ploča po kategorijama...
 📂 KATEGORIJA ID 4028 -> Ukupno: 1644 artikala kroz 17 stranica.
-   ⚡ Stranica 1/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 2/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 3/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 4/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 1/17 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 2/17 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 3/17 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 4/17 obrađena za 1.8s (+100 dostupnih).
    ⚡ Stranica 5/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 6/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 7/17 obrađena za 2.0s (+100 dostupnih).
-   ⚡ Stranica 8/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 6/17 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 7/17 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 8/17 obrađena za 1.8s (+100 dostupnih).
    ⚡ Stranica 9/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 10/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 10/17 obrađena za 1.8s (+100 dostupnih).
    ⚡ Stranica 11/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 12/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 12/17 obrađena za 1.8s (+100 dostupnih).
    ⚡ Stranica 13/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 14/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 15/17 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 16/17 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 14/17 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 15/17 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 16/17 obrađena za 1.8s (+100 dostupnih).
    ⚡ Stranica 17/17 obrađena za 1.6s (+44 dostupnih).
 📂 KATEGORIJA ID 9994 -> Ukupno: 993 artikala kroz 10 stranica.
-   ⚡ Stranica 1/10 obrađena za 2.1s (+100 dostupnih).
-   ⚡ Stranica 2/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 3/10 obrađena za 2.0s (+100 dostupnih).
-   ⚡ Stranica 4/10 obrađena za 1.9s (+99 dostupnih).
-   ⚡ Stranica 5/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 6/10 obrađena za 1.8s (+100 dostupnih).
-   ⚡ Stranica 7/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 8/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 9/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 10/10 obrađena za 1.9s (+93 dostupnih).
-📂 KATEGORIJA ID 9996 -> Ukupno: 994 artikala kroz 10 stranica.
-   ⚡ Stranica 1/10 obrađena za 2.0s (+100 dostupnih).
-   ⚡ Stranica 2/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 1/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 2/10 obrađena za 1.8s (+100 dostupnih).
    ⚡ Stranica 3/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 4/10 obrađena za 2.0s (+100 dostupnih).
-   ⚡ Stranica 5/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 4/10 obrađena za 1.8s (+99 dostupnih).
+   ⚡ Stranica 5/10 obrađena za 1.8s (+100 dostupnih).
    ⚡ Stranica 6/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 7/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 8/10 obrađena za 2.0s (+100 dostupnih).
-   ⚡ Stranica 9/10 obrađena za 1.9s (+100 dostupnih).
-   ⚡ Stranica 10/10 obrađena za 1.8s (+94 dostupnih).
+   ⚡ Stranica 7/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 8/10 obrađena za 1.9s (+100 dostupnih).
+   ⚡ Stranica 9/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 10/10 obrađena za 1.8s (+93 dostupnih).
+📂 KATEGORIJA ID 9996 -> Ukupno: 993 artikala kroz 10 stranica.
+   ⚡ Stranica 1/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 2/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 3/10 obrađena za 2.0s (+100 dostupnih).
+   ⚡ Stranica 4/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 5/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 6/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 7/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 8/10 obrađena za 1.8s (+100 dostupnih).
+   ⚡ Stranica 9/10 obrađena za 1.7s (+100 dostupnih).
+   ⚡ Stranica 10/10 obrađena za 1.8s (+93 dostupnih).
 
-🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala.
-🎉 GOTOVO za 109.7s! U bazi je 2316 dostupnih Maldoror ploča (Sa slikom: 2316).
+🧹 Sinkronizacija završena! Uklonjeno 1 rasprodanih artikala.
+🎉 GOTOVO za 106.8s! U bazi je 2315 dostupnih Maldoror ploča (Sa slikom: 2315).
 ----------------------------------------
-Vrijeme završetka (UTC): 28.10.2026. 11:46:16 | Kod izlaza: 0
+Vrijeme završetka (UTC): 29.10.2026. 08:42:59 | Kod izlaza: 0
