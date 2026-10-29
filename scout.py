@@ -1,4 +1,4 @@
-import cloudscraper
+from curl_cffi import requests as cffi_requests
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urljoin
 import time
@@ -9,7 +9,7 @@ import sys
 # =========================================================================
 # 🎯 URL SADA PREUZIMAMO IZ OKOLINE (PROSLIJEĐENO OD WORDPRESSA/GITHUBA)
 # =========================================================================
-CILJANI_URL = os.environ.get("TARGET_URL", "https://www.cdshop-roxy.com/A.htm").strip()
+CILJANI_URL = os.environ.get("TARGET_URL", "https://analogni-zvuk.hr/").strip()
 # =========================================================================
 
 os.makedirs("logs", exist_ok=True)
@@ -33,7 +33,13 @@ def izvidac(url):
     
     parsed_url = urlparse(url)
     base_url = f"{parsed_url.scheme}://{parsed_url.netloc}"
-    scraper = cloudscraper.create_scraper(browser={"browser": "chrome", "platform": "windows", "desktop": True})
+    
+    # KORISTIMO CFFI ZBOG SSL PROBLEMA (ANALOGNI ZVUK FIX)
+    scraper = cffi_requests.Session(impersonate="chrome120")
+    scraper.headers.update({
+        "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
+        "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
+    })
     
     # 1. API Provjera
     log_print("🔎 [1/4] Provjeravam skrivene API-je...")
@@ -133,7 +139,6 @@ def izvidac(url):
 
         for el in elementi_za_analizu:
             tekst = el.get_text(" ", strip=True)
-            # Tražimo tekst optimalne dužine u kojem se spominju standardne ocjene
             if 3 < len(tekst) < 400:
                 if uzorci_stanja.search(tekst) or (not prvi_link and ocjene_regex.search(tekst)):
                     if ocjene_regex.search(tekst):
