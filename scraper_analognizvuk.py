@@ -1,21 +1,67 @@
 from curl_cffi import requests as cffi_requests
 import cloudscraper
+from requests.adapters import HTTPAdapter
+from urllib3.util.ssl_ import create_urllib3_context
 from bs4 import BeautifulSoup
+from concurrent.futures import ThreadPoolExecutor
+from urllib.parse import urljoin
+import urllib3
+import threading
 import csv
 import os
 import re
 import time
 import html
-from urllib.parse import urljoin
+
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 SITE_URL = "https://analogni-zvuk.hr"
 CSV_FILENAME = "analognizvuk_ploce.csv"
+BROJ_NITI = 6
 
 HEADERS = {
+    "User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/122.0.0.0 Safari/537.36",
     "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,image/avif,image/webp,*/*;q=0.8",
     "Accept-Language": "hr-HR,hr;q=0.9,en-US;q=0.8,en;q=0.7",
     "Referer": "https://analogni-zvuk.hr/"
 }
+
+_thread_local = threading.local()
+
+class LegacyTlsAdapter(HTTPAdapter):
+    def init_poolmanager(self, *args, **kwargs):
+        ctx = create_urllib3_context()
+        try:
+            ctx.set_ciphers('DEFAULT@SECLEVEL=1')
+        except Exception:
+            pass
+        kwargs['ssl_context'] = ctx
+        return super(LegacyTlsAdapter, self).init_poolmanager(*args, **kwargs)
+
+def dohvati_klijente():
+    cffi_s = getattr(_thread_local, "cffi", None)
+    cloud_s = getattr(_thread_local, "cloud", None)
+    if cffi_s is None:
+        cffi_s = cffi_requests.Session(impersonate="chrome120", verify=False)
+        cffi_s.headers.update(HEADERS)
+        _thread_local.cffi = cffi_s
+    if cloud_s is None:
+        cloud_s = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'desktop': True})
+        cloud_s.mount('https://', LegacyTlsAdapter())
+        cloud_s.headers.update(HEADERS)
+        _thread_local.cloud = cloud_s
+    return cffi_s, cloud_s
+
+def dohvati_url(url, timeout=25):
+    cffi_s, cloud_s = dohvati_klijente()
+    for s in (cffi_s, cloud_s):
+        try:
+            r = s.get(url, timeout=timeout)
+            if r.status_code in [200, 400, 404]:
+                return r
+        except Exception:
+            continue
+    return None
 
 def normaliziraj_link_proizvoda(href):
     if not href:
@@ -23,223 +69,215 @@ def normaliziraj_link_proizvoda(href):
     puni = urljoin(SITE_URL, href.strip())
     return puni.split('?')[0].rstrip('/') + '/'
 
-def ocisti_url_slike(raw_url, is_srcset=False):
-    if not raw_url: return ""
+def ocisti_url_slike(raw_url):
+    if not raw_url:
+        return ""
     val = html.unescape(str(raw_url)).strip()
-    if val.startswith('//'): val = 'https:' + val
-    elif val.startswith('/'): val = urljoin(SITE_URL, val)
+    if val.startswith('//'):
+        val = 'https:' + val
+    elif val.startswith('/'):
+        val = urljoin(SITE_URL, val)
     return val.replace(' ', '%20') if val.startswith('http') else ""
 
-def dohvati_url(url, cffi_sess, timeout=30):
-    try:
-        r = cffi_sess.get(url, timeout=timeout)
-        if r.status_code in [200, 400, 404]:
-            return r
-    except Exception:
-        pass
-    return None
+def standardiziraj_ocjenu(sirovo):
+    if not sirovo:
+        return ""
+    s = str(sirovo).strip().upper()
+    # Ignoriraj generičke riječi koje nisu ocjena
+    if s in ["RABLJENO", "USED", "SECOND HAND", "VINIL", "LP"]:
+        return ""
+    if "NOVO" in s or "SEALED" in s or "UNPLAYED" in s:
+        return "Novo"
+    # Tražimo točnu oznaku ocjene (npr. NM, VG+, VG, EX-, G+)
+    m = re.search(r'\b(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G-|G|F|P)\b', s)
+    if m:
+        ocjena = m.group(1)
+        return "NM" if ocjena == "M-" else ocjena
+    if "NEAR MINT" in s: return "NM"
+    if "VERY GOOD PLUS" in s: return "VG+"
+    if "VERY GOOD" in s: return "VG"
+    if "EXCELLENT" in s: return "EX"
+    if "MINT" in s: return "M"
+    return ""
 
-def ocisti_stanje(sirovo):
-    if not sirovo: return "VG+"
-    s = str(sirovo).upper()
-    if "NOVO" in s or "SEALED" in s or "MINT" in s and "NEAR" not in s: return "M"
-    if "NEAR MINT" in s or "NM" in s: return "NM"
-    if "EXCELLENT" in s or "EX" in s: return "EX"
-    if "VERY GOOD PLUS" in s or "VG+" in s: return "VG+"
-    if "VERY GOOD" in s or "VG" in s: return "VG"
-    if "GOOD PLUS" in s or "G+" in s: return "G+"
-    if "GOOD" in s or "G" in s: return "G"
-    if "POOR" in s or "P" in s: return "P"
-    return "VG+"
-
-def dohvati_detalje_sa_stranice_proizvoda(product_url, cffi_sess):
+def izvuci_stanje_i_sliku_iz_htmla(product_url):
     img_url = ""
-    medij = "VG+"
-    omot = "VG+"
-    r = dohvati_url(product_url, cffi_sess, timeout=15)
+    medij = ""
+    omot = ""
     
+    r = dohvati_url(product_url, timeout=20)
     if not r or r.status_code != 200:
-        return img_url, medij, omot
-        
+        return img_url, "VG+", "VG+"
+
     try:
         soup = BeautifulSoup(r.text, 'lxml')
         
-        # SLIKA
+        # 1. Slika ako fali
         og = soup.find('meta', property='og:image') or soup.find('meta', attrs={'name': 'twitter:image'})
         if og and og.get('content'):
-            img_url = ocisti_url_slike(og['content'], is_srcset=False)
-            
-        # STANJE IZ TABA ILI TEKSTA
+            img_url = ocisti_url_slike(og['content'])
+
+        # 2. Čitanje iz WooCommerce tablice atributa i teksta stranice
         tekst = soup.get_text("\n", strip=True)
-        m_ploca = re.search(r'Stanje ploče:\s*(.*?)\n', tekst, re.I)
-        m_omot = re.search(r'Stanje omota:\s*(.*?)\n', tekst, re.I)
         
-        if m_ploca: medij = ocisti_stanje(m_ploca.group(1).strip())
-        if m_omot: omot = ocisti_stanje(m_omot.group(1).strip())
-        
-        # STANJE IZ KRATKOG OPISA KAO FALLBACK
-        if medij == "VG+" or omot == "VG+":
-            kratki = soup.select_one(".product-short-description")
-            if kratki:
-                k_tekst = kratki.get_text(" ", strip=True)
-                m_k_ploca = re.search(r'ploča\s+([A-Za-z0-9\+\-]+)', k_tekst, re.I)
-                m_k_omot = re.search(r'omot\s+([A-Za-z0-9\+\-]+)', k_tekst, re.I)
-                if m_k_ploca: medij = ocisti_stanje(m_k_ploca.group(1).strip())
-                if m_k_omot: omot = ocisti_stanje(m_k_omot.group(1).strip())
+        m_ploca = re.search(r'Stanje\s+plo[čc]e\s*:?\s*([^\n\r]+)', tekst, re.I)
+        if m_ploca:
+            medij = standardiziraj_ocjenu(m_ploca.group(1))
+            
+        m_omot = re.search(r'Stanje\s+omota\s*:?\s*([^\n\r]+)', tekst, re.I)
+        if m_omot:
+            omot = standardiziraj_ocjenu(m_omot.group(1))
+
+        # 3. Fallback na kratki opis (npr. "Stanje: ploča VG+, omot VG")
+        if not medij or not omot:
+            m_k_ploca = re.search(r'plo[čc][ae]\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G|Novo)', tekst, re.I)
+            m_k_omot = re.search(r'omot[a]?\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G|Novo)', tekst, re.I)
+            if not medij and m_k_ploca:
+                medij = standardiziraj_ocjenu(m_k_ploca.group(1))
+            if not omot and m_k_omot:
+                omot = standardiziraj_ocjenu(m_k_omot.group(1))
+
+        # 4. Provjera piše li u naslovu ili opisu da je ploča potpuno nova
+        if not medij and re.search(r'\b(nova ploča|novo|tvornički zapakirano|sealed)\b', tekst, re.I):
+            medij = "Novo"
+            omot = "Novo"
+
     except Exception:
         pass
-        
+
+    if not medij:
+        medij = "VG+"
+    if not omot:
+        omot = medij if medij == "Novo" else "VG+"
+
     return img_url, medij, omot
 
-def izvuci_cijenu(tekst):
-    svi_brojevi = re.findall(r'(\d{1,4}[.,]\d{2})\s*€', tekst)
-    if not svi_brojevi:
-        svi_brojevi = re.findall(r'(\d{1,4}[.,]\d{2})', tekst)
-    if svi_brojevi:
-        dijelovi = svi_brojevi[-1].replace(',', '.').split('.')
-        if len(dijelovi) == 2:
-            try:
-                val = float(f"{dijelovi[0]}.{dijelovi[1]}")
-                if val > 0: return f"{val:.2f}"
-            except: pass
-    return "0.00"
-
-print("ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem s CURL CFFI (SSL Fix)...", flush=True)
-
-sve_ploce = {}
-vidjeni_linkovi = set()
-uspjesno_skenirano = False
-
-if os.path.exists(CSV_FILENAME):
-    with open(CSV_FILENAME, 'r', encoding='utf-8') as f:
-        reader = csv.reader(f)
-        next(reader, None)
-        for row in reader:
-            if len(row) >= 7:
-                norm_k = normaliziraj_link_proizvoda(row[2])
-                row[2] = norm_k
-                sve_ploce[norm_k] = row
-    print(f"📦 Učitano {len(sve_ploce)} postojećih ploča.", flush=True)
-
-cffi_sess = cffi_requests.Session(impersonate="chrome120")
-cffi_sess.headers.update(HEADERS)
-
-dohvati_url("https://analogni-zvuk.hr/", cffi_sess, timeout=25)
-time.sleep(1)
-
-# === 1. WOOCOMMERCE STORE API ===
-page = 1
-api_radi = False
-
-while True:
-    api_url = f"https://analogni-zvuk.hr/wp-json/wc/store/products?page={page}&per_page=100"
-    res = dohvati_url(api_url, cffi_sess, timeout=30)
-
-    if res is None or res.status_code != 200 or not res.text.strip().startswith('['):
-        break
+def obradi_jedan_api_item(args):
+    item, stara_baza = args
+    title = html.unescape(item.get('name', '')).strip()
+    link = normaliziraj_link_proizvoda(item.get('permalink', ''))
+    
     try:
-        data = res.json()
-        if not data:
-            uspjesno_skenirano = True
-            break
+        minor = item.get('prices', {}).get('currency_minor_unit', 2)
+        price = f"{float(item.get('prices', {}).get('price', '0')) / (10 ** minor):.2f}"
     except Exception:
-        break
+        price = "0.00"
 
-    api_radi = True
-    dodano = 0
+    images = item.get('images', [])
+    img_url = ocisti_url_slike(images[0].get('src', '')) if images else ""
 
-    for item in data:
-        if not item.get('is_in_stock', False): continue
-        kategorije_slugs = " ".join([k.get('slug', '').lower() for k in item.get('categories', [])])
-        if any(zabranjeno in kategorije_slugs for zabranjeno in ['cd', 'kaset', 'oprema']):
-            if not any(d in kategorije_slugs for d in ['ploc', 'vinil', 'lp', 'singl']): continue
+    # Provjeri imamo li već ovaj proizvod u CSV-u s ispravnom ocjenom (koja nije 'Rabljeno')
+    if link in stara_baza:
+        stari_red = stara_baza[link]
+        stari_medij = standardiziraj_ocjenu(stari_red[4])
+        stari_omot = standardiziraj_ocjenu(stari_red[5])
+        if stari_medij and stari_omot and (img_url or stari_red[3]):
+            return link, [title, price, link, img_url or stari_red[3], stari_medij, stari_omot, "LP"]
 
-        title = html.unescape(item.get('name', '')).strip()
-        link = normaliziraj_link_proizvoda(item.get('permalink', ''))
-        
-        try:
-            price = f"{float(item.get('prices', {}).get('price', '0')) / (10 ** 2):.2f}"
-        except:
-            price = "0.00"
+    # Provjeri nudi li API direktno pravu ocjenu (ako nije samo riječ "Rabljeno")
+    medij_api = ""
+    omot_api = ""
+    for attr in item.get('attributes', []):
+        aname = attr.get('name', '').lower()
+        tval = attr.get('terms', [])[0].get('name', '') if attr.get('terms') else ''
+        ocjena = standardiziraj_ocjenu(tval)
+        if ocjena:
+            if 'ploč' in aname or 'ploc' in aname or 'medij' in aname:
+                medij_api = ocjena
+            elif 'omot' in aname:
+                omot_api = ocjena
 
-        if price == "0.00": continue
+    if medij_api and omot_api and img_url:
+        return link, [title, price, link, img_url, medij_api, omot_api, "LP"]
 
-        images = item.get('images', [])
-        img_url = ocisti_url_slike(images[0].get('src', ''), is_srcset=False) if images else ""
+    # Inače ulazimo u HTML stranice proizvoda po prave ocjene (Deep Inspection)
+    deep_img, deep_medij, deep_omot = izvuci_stanje_i_sliku_iz_htmla(link)
+    final_img = img_url if img_url else deep_img
+    final_medij = medij_api if medij_api else deep_medij
+    final_omot = omot_api if omot_api else deep_omot
 
-        stanje_medija = "VG+"
-        stanje_omota = "VG+"
-        
-        for attr in item.get('attributes', []):
-            aname = attr.get('name', '').lower()
-            tval = attr.get('terms', [])[0].get('name', '') if attr.get('terms') else ''
-            if tval:
-                if 'ploč' in aname or 'medij' in aname or 'stanj' in aname:
-                    stanje_medija = ocisti_stanje(tval)
-                if 'omot' in aname:
-                    stanje_omota = ocisti_stanje(tval)
+    tip_artikla = 'Singl 7"' if any(k in title.lower() for k in ['7"', 'singl']) else "LP"
+    return link, [title, price, link, final_img, final_medij, final_omot, tip_artikla]
 
-        sve_ploce[link] = [title, price, link, img_url, stanje_medija, stanje_omota, "Vinil"]
-        vidjeni_linkovi.add(link)
-        dodano += 1
+def scrape_analogni():
+    print("🚀 ANALOGNI ZVUK: Pokrećem API + Deep HTML Inspection za točna stanja...", flush=True)
+    sve_ploce = {}
+    vidjeni_linkovi = set()
+    uspjesno_skenirano = False
 
-    print(f"API Paket {page} -> OK ({dodano} ploča)", flush=True)
-    page += 1
-    time.sleep(0.5)
+    if os.path.exists(CSV_FILENAME):
+        with open(CSV_FILENAME, 'r', encoding='utf-8') as f:
+            reader = csv.reader(f)
+            next(reader, None)
+            for row in reader:
+                if len(row) >= 7:
+                    norm_k = normaliziraj_link_proizvoda(row[2])
+                    row[2] = norm_k
+                    sve_ploce[norm_k] = row
+        print(f"📦 Učitano {len(sve_ploce)} postojećih ploča iz baze.", flush=True)
 
-# === 2. FALLBACK NA HTML (AKO API NE RADI) ===
-if not api_radi:
-    print("\n--- Pokrećem HTML skeniranje kataloga sa Deep Inspectionom ---", flush=True)
-    current_page_num = 1
+    dohvati_url("https://analogni-zvuk.hr/", timeout=20)
+    
+    page = 1
+    api_radi = False
+    kandidati_za_obradu = []
+
     while True:
-        cat_url = "https://analogni-zvuk.hr/product-category/gramofonske-ploce/"
-        if current_page_num > 1: cat_url += f"page/{current_page_num}/"
+        api_url = f"https://analogni-zvuk.hr/wp-json/wc/store/products?page={page}&per_page=100"
+        res = dohvati_url(api_url, timeout=30)
 
-        response = dohvati_url(cat_url, cffi_sess, timeout=30)
-        if not response or response.status_code != 200:
-            if response and response.status_code == 404: uspjesno_skenirano = True
+        if res is None or res.status_code != 200 or not res.text.strip().startswith('['):
+            break
+        try:
+            data = res.json()
+            if not data:
+                uspjesno_skenirano = True
+                break
+        except Exception:
             break
 
-        soup = BeautifulSoup(response.text, 'lxml')
-        products = soup.select('li.product, div.product, .type-product')
-
-        if not products:
-            uspjesno_skenirano = True
-            break
-
-        dodano = 0
-        for prod in products:
-            if 'outofstock' in " ".join(prod.get('class', [])).lower(): continue
-            a_tag = prod.find('a', class_='woocommerce-LoopProduct-link') or prod.find('a', href=True)
-            if not a_tag: continue
+        api_radi = True
+        for item in data:
+            if not item.get('is_in_stock', False):
+                continue
+            kategorije_slugs = " ".join([k.get('slug', '').lower() for k in item.get('categories', [])])
+            if any(zab in kategorije_slugs for zab in ['cd', 'kaset', 'oprema']):
+                if not any(d in kategorije_slugs for d in ['ploc', 'vinil', 'lp', 'singl']):
+                    continue
             
-            link = normaliziraj_link_proizvoda(a_tag['href'])
-            title_el = prod.select_one('.woocommerce-loop-product__title, .product-title, h2, h3')
-            title = html.unescape(title_el.get_text(" ", strip=True)).strip() if title_el else ""
-            bdi = prod.select_one('.price ins bdi, .price bdi, .price')
-            price = izvuci_cijenu(bdi.get_text(" ", strip=True) if bdi else prod.get_text(" ", strip=True))
-            
-            if not title or price == "0.00": continue
+            try:
+                p_val = float(item.get('prices', {}).get('price', '0'))
+                if p_val <= 0:
+                    continue
+            except Exception:
+                continue
 
-            deep_img, deep_medij, deep_omot = dohvati_detalje_sa_stranice_proizvoda(link, cffi_sess)
+            kandidati_za_obradu.append((item, sve_ploce))
 
-            sve_ploce[link] = [title, price, link, deep_img, deep_medij, deep_omot, "Vinil"]
-            vidjeni_linkovi.add(link)
-            dodano += 1
+        print(f"📡 API Stranica {page} učitana (Kandidata: {len(kandidati_za_obradu)})", flush=True)
+        page += 1
+        time.sleep(0.4)
 
-        print(f"-> Stranica {current_page_num} OK ({dodano} ploča)", flush=True)
-        current_page_num += 1
-        time.sleep(0.8)
+    if api_radi and kandidati_za_obradu:
+        print(f"\n🔎 Provjeravam točne VG+/NM ocjene za {len(kandidati_za_obradu)} ploča ({BROJ_NITI} niti paralelno)...", flush=True)
+        with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
+            for idx, (link, red) in enumerate(executor.map(obradi_jedan_api_item, kandidati_za_obradu), 1):
+                sve_ploce[link] = red
+                vidjeni_linkovi.add(link)
+                if idx % 50 == 0 or idx == len(kandidati_za_obradu):
+                    print(f"   ⚡ Obrađeno {idx}/{len(kandidati_za_obradu)} ploča...", flush=True)
 
-# === 3. SIGURNO BRISANJE I SPREMANJE ===
-if uspjesno_skenirano and len(vidjeni_linkovi) > 20:
-    pocetni = len(sve_ploce)
-    sve_ploce = {k: v for k, v in sve_ploce.items() if k in vidjeni_linkovi}
-    print(f"\n🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: {pocetni - len(sve_ploce)}).", flush=True)
+    if uspjesno_skenirano and len(vidjeni_linkovi) > 20:
+        pocetni = len(sve_ploce)
+        sve_ploce = {k: v for k, v in sve_ploce.items() if k in vidjeni_linkovi}
+        print(f"\n🧹 Sinkronizacija prodanih ploča završena (Obrisano: {pocetni - len(sve_ploce)}).", flush=True)
 
-if sve_ploce:
-    with open(CSV_FILENAME, 'w', newline='', encoding='utf-8') as f:
-        writer = csv.writer(f)
-        writer.writerow(['Naslov', 'Cijena', 'URL_Proizvoda', 'URL_Slike', 'Stanje_Medija', 'Stanje_Omota', 'Tip_Artikla'])
-        writer.writerows(sve_ploce.values())
-    print(f"🎉 Gotovo! Ukupno u CSV-u: {len(sve_ploce)}", flush=True)
+    if sve_ploce:
+        with open(CSV_FILENAME, 'w', newline='', encoding='utf-8') as f:
+            writer = csv.writer(f)
+            writer.writerow(['Naslov', 'Cijena', 'URL_Proizvoda', 'URL_Slike', 'Stanje_Medija', 'Stanje_Omota', 'Tip_Artikla'])
+            writer.writerows(sve_ploce.values())
+        print(f"🎉 Gotovo! Ukupno u CSV-u: {len(sve_ploce)} ploča s čistim ocjenama.", flush=True)
+
+if __name__ == "__main__":
+    scrape_analogni()
