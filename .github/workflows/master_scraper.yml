@@ -128,7 +128,9 @@ jobs:
       - name: Instalacija requests biblioteke
         run: pip install requests
 
+      # KLJUČNI UVJET: Discogs bot pokreće se isključivo pri potpunoj sinkronizaciji
       - name: Dopunjavanje nedostajućih slika (Discogs Bot)
+        if: github.event.inputs.target_scraper == 'ALL' || github.event.inputs.target_scraper == ''
         env:
           DISCOGS_TOKEN: ${{ secrets.DISCOGS_TOKEN }}
         run: |
