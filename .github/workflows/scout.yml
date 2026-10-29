@@ -2,6 +2,11 @@ name: Scout Engine (Izviđač)
 
 on:
   workflow_dispatch:
+    inputs:
+      target_url:
+        description: 'URL trgovine za izviđanje'
+        required: true
+        type: string
 
 # OVO JE KLJUČNO: Dozvola botu da smije spremiti log datoteku nazad na GitHub
 permissions:
@@ -26,6 +31,8 @@ jobs:
 
       - name: Pokreni izviđača
         run: python scout.py
+        env:
+          TARGET_URL: ${{ github.event.inputs.target_url }}
 
       - name: Spremi Scout Log u repozitorij
         run: |
