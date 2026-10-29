@@ -103,7 +103,7 @@ jobs:
   # 3. POSAO: Sakuplja nove CSV-ove, POPUNJAVA SLIKE i radi JEDAN siguran Commit i Push
   commit_results:
     needs: run_scrapers
-    if: always()
+    if: !cancelled()
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repozitorija
