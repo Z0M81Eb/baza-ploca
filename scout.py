@@ -9,7 +9,7 @@ import sys
 # =========================================================================
 # 🎯 URL SADA PREUZIMAMO IZ OKOLINE (PROSLIJEĐENO OD WORDPRESSA/GITHUBA)
 # =========================================================================
-CILJANI_URL = os.environ.get("TARGET_URL", "").strip()
+CILJANI_URL = os.environ.get("TARGET_URL", "https://www.cdshop-roxy.com/A.htm").strip()
 # =========================================================================
 
 os.makedirs("logs", exist_ok=True)
@@ -54,43 +54,40 @@ def izvidac(url):
         
         tablice = soup.find_all('table')
         if tablice and len(soup.find_all('tr')) > 20:
-            log_print("  📊 DETEKTIRANA TABLICA! Provjeravam zaglavlja stupaca...")
+            log_print("  📊 DETEKTIRANA TABLICA S PUNO REDOVA!")
                     
-        # 3. Pametno traženje linka
+        # 3. Pametno traženje linka za moderne webshopove
         proizvodi = soup.select('.product, .type-product, .item, .product-item, .product-layout')
         kandidati = []
         
         if proizvodi:
-            log_print(f"  📦 Pronađeno {len(proizvodi)} kartica proizvoda na stranici.")
+            log_print(f"  📦 Pronađeno {len(proizvodi)} modernih kartica proizvoda na stranici.")
             for p in proizvodi:
                 a_tag = p.find('a', href=True)
                 if a_tag:
                     link = urljoin(base_url, a_tag['href'])
-                    tekst_kartice = p.get_text(" ", strip=True).lower()
-                    kandidati.append((link, tekst_kartice))
+                    kandidati.append((link, p.get_text(" ", strip=True).lower()))
         else:
             for a in soup.find_all('a', href=True):
-                if any(k in a['href'] for k in ['/proizvod/', '/product/', '/artikl/', '/lp-', '/vinyl-']):
-                    link = urljoin(base_url, a['href'])
-                    tekst_kartice = a.get_text(" ", strip=True).lower()
-                    kandidati.append((link, tekst_kartice))
+                href_l = a['href'].lower()
+                if any(k in href_l for k in ['/proizvod/', '/product/', '/artikl/', '/lp-', '/vinyl-']):
+                    kandidati.append((urljoin(base_url, a['href']), a.get_text(" ", strip=True).lower()))
 
         prvi_link = None
-        kljucne_rijeci = ['vinil', 'vinyl', 'lp', 'ploča', 'ploca', 'record', '7"', '12"', 'cd']
-        zabranjene_rijeci = ['majica', 'pederuša', 'torba', 'kapa', 'hoodie', 'čarape']
+        kljucne_rijeci = ['vinil', 'vinyl', 'lp', 'ploča', 'ploca', 'record', '7"', '12"']
+        zabranjene_rijeci = ['majica', 'pederuša', 'torba', 'kapa', 'hoodie', 'čarape', 'stalci', 'oprema']
         
-        # 3.1. Tražimo na trenutnoj stranici
         if kandidati:
             for link, tekst in kandidati:
                 if any(kljuc in tekst for kljuc in kljucne_rijeci) or any(kljuc in link.lower() for kljuc in kljucne_rijeci):
                     if not any(zab in tekst for zab in zabranjene_rijeci) and not any(zab in link.lower() for zab in zabranjene_rijeci):
                         prvi_link = link
-                        log_print(f"  🎯 Detektirana PRAVA ploča na trenutnoj stranici: {prvi_link}")
+                        log_print(f"  🎯 Detektirana ploča po linku: {prvi_link}")
                         break
 
-        # 3.2. AUTO-DISCOVERY: Ako nema ploča, traži kategoriju u navigaciji (Sitemap / Menu)
-        if not prvi_link:
-            log_print("  ⚠️ Na trenutnoj stranici nema očitih ploča. Pretražujem navigacijski izbornik za kategoriju ploča...")
+        # AUTO-DISCOVERY Meni (ako nema proizvoda na naslovnici)
+        if not prvi_link and not tablice:
+            log_print("  ⚠️ Na trenutnoj stranici nema ploča, a ni tablice. Tražim kategorije...")
             kat_linkovi = []
             for a in soup.find_all('a', href=True):
                 href = a['href'].lower()
@@ -98,71 +95,61 @@ def izvidac(url):
                 if any(k in href for k in kljucne_rijeci + ['music', 'glazba']) or any(k in tekst for k in kljucne_rijeci + ['glazba', 'music']):
                     kat_linkovi.append(urljoin(base_url, a['href']))
             
-            kat_linkovi = list(dict.fromkeys(kat_linkovi)) # Ukloni duplikate
-            
             if kat_linkovi:
                 odabrana_kat = kat_linkovi[0]
-                log_print(f"  🔗 Pronađena potencijalna kategorija, otvaram: {odabrana_kat}")
+                log_print(f"  🔗 Otvaram pronađenu kategoriju: {odabrana_kat}")
                 try:
                     r_kat = scraper.get(odabrana_kat, timeout=20)
                     soup_kat = BeautifulSoup(r_kat.text, 'lxml')
-                    proizvodi_kat = soup_kat.select('.product, .type-product, .item, .product-item, .product-layout')
                     
-                    # OVDJE JE BIO PROBLEM: Sada filtriramo artikle i UNUTAR kategorije
-                    kandidati_kat = []
-                    for p in proizvodi_kat:
+                    for p in soup_kat.select('.product, .type-product, .item'):
                         a_tag = p.find('a', href=True)
                         if a_tag:
-                            kandidati_kat.append((urljoin(base_url, a_tag['href']), p.get_text(" ", strip=True).lower()))
-                            
-                    for link, tekst in kandidati_kat:
-                        if any(kljuc in tekst for kljuc in kljucne_rijeci) or any(kljuc in link.lower() for kljuc in kljucne_rijeci):
-                            if not any(zab in tekst for zab in zabranjene_rijeci) and not any(zab in link.lower() for zab in zabranjene_rijeci):
-                                prvi_link = link
-                                log_print(f"  🎯 Uspješno pronađena PRAVA ploča unutar skrivene kategorije: {prvi_link}")
-                                break
-                                
-                    if not prvi_link and kandidati_kat:
-                        prvi_link = kandidati_kat[0][0]
-                        log_print(f"  ⚠️ U kategoriji nema očitih ploča po ključnim riječima, uzimam prvi artikl (Fallback): {prvi_link}")
-                        
+                            prvi_link = urljoin(base_url, a_tag['href'])
+                            log_print(f"  🎯 Uspješno pronađena ploča u kategoriji: {prvi_link}")
+                            break
                 except Exception as e:
                     log_print(f"  ❌ Greška pri otvaranju kategorije: {e}")
 
-        # 3.3. Fallback ako baš ništa ne radi
-        if not prvi_link and kandidati:
-            prvi_link = kandidati[0][0]
-            log_print("  ⚠️ Nisu prepoznate ključne riječi za ploču nigdje, uzimam prvi proizvod kao test.")
-
-        # 4. Dubinska analiza
+        # 4. Dubinska analiza (MODERNO ILI DINOSAUR)
         log_print("\n🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...")
+        
+        uzorci_stanja = re.compile(r'(stanje|condition|sleeve|omot|ploča|vinil|records|ocjena|grade)', re.I)
+        ocjene_regex = re.compile(r'\b(M|NM|M-|EX\+|EX|EX-|VG\+|VG|VG-|G\+|G|Novo|New|Sealed)\b', re.I)
+        pronadjena_stanja = []
+        
         if prvi_link:
             r_prod = scraper.get(prvi_link, timeout=20)
             soup_prod = BeautifulSoup(r_prod.text, 'lxml')
+            elementi_za_analizu = soup_prod.find_all(['tr', 'p', 'div', 'li', 'span'])
             
-            uzorci_stanja = re.compile(r'(stanje|condition|sleeve|omot|ploča|vinil|records|broj stranica|uvez|ocjena|grade)', re.I)
-            pronadjena_stanja = []
+        elif tablice and len(soup.find_all('tr')) > 20:
+            log_print("  🦕 DINOSAUR MODO AKTIVAN: Nema linkova na proizvode, ali postoji ogromna tablica. Analiziram direktno retke!")
+            elementi_za_analizu = soup.find_all('tr')
             
-            for el in soup_prod.find_all(['tr', 'p', 'div', 'li', 'span']):
-                tekst = el.get_text(" ", strip=True)
-                if 3 < len(tekst) < 250 and uzorci_stanja.search(tekst):
-                    if re.search(r'\b(M|NM|M-|EX\+|EX|EX-|VG\+|VG|VG-|G\+|G|Novo|New|Sealed)\b', tekst, re.I):
-                        klasa = el.get('class', '')
-                        parent_klasa = el.parent.get('class', '') if el.parent else ''
-                        pronadjena_stanja.append(f"<{el.name} class='{klasa}' (parent: {parent_klasa})> --> TEKST: '{tekst}'")
-            
-            if pronadjena_stanja:
-                log_print("  🎯 PRONAĐENI PODACI O STANJU PLOČE/OMOTA:")
-                for ps in list(dict.fromkeys(pronadjena_stanja))[:8]:
-                    log_print(f"     ✅ {ps}")
-                log_print("  🏷️ ZAKLJUČAK: Trgovina je SECOND HAND ili HIBRIDNA (ocjene su prisutne u HTML elementima).")
-            else:
-                log_print("  ℹ️ Nisu pronađene tipične oznake stanja (VG, NM, Condition, Stanje). Trgovina vjerojatno prodaje SAMO NOVE ploče (Mint) ili skriva stanje u slikama.")
         else:
-            log_print("  ⚠️ Nije pronađen link na pojedinačni proizvod.")
+            elementi_za_analizu = []
+            log_print("  ⚠️ Nije pronađen link na proizvod niti validna tablica za skeniranje.")
+
+        for el in elementi_za_analizu:
+            tekst = el.get_text(" ", strip=True)
+            # Tražimo tekst optimalne dužine u kojem se spominju standardne ocjene
+            if 3 < len(tekst) < 400:
+                if uzorci_stanja.search(tekst) or (not prvi_link and ocjene_regex.search(tekst)):
+                    if ocjene_regex.search(tekst):
+                        klasa = el.get('class', 'bez_klase')
+                        pronadjena_stanja.append(f"<{el.name} class='{klasa}'> --> {tekst}")
+        
+        if pronadjena_stanja:
+            log_print("  🎯 PRONAĐENI PODACI O STANJU PLOČE/OMOTA:")
+            for ps in list(dict.fromkeys(pronadjena_stanja))[:8]:
+                log_print(f"     ✅ {ps}")
+            log_print("  🏷️ ZAKLJUČAK: Trgovina je SECOND HAND ili HIBRIDNA (ocjene prisutne).")
+        else:
+            log_print("  ℹ️ Nisu pronađene tipične oznake stanja. Trgovina prodaje NOVE ploče ili skriva stanje u slikama.")
 
     except Exception as e:
-        log_print(f"  ❌ Greška: {e}")
+        log_print(f"  ❌ Greška izviđača: {e}")
 
     log_print("-" * 60)
     log_print("🏁 Izviđanje završeno! Izvještaj spremljen u logs/scout_report.log")
