@@ -83,22 +83,67 @@ def standardiziraj_ocjenu(sirovo):
     if not sirovo:
         return ""
     s = str(sirovo).strip().upper()
+    
     # Ignoriraj generičke riječi koje nisu ocjena
     if s in ["RABLJENO", "USED", "SECOND HAND", "VINIL", "LP"]:
         return ""
     if "NOVO" in s or "SEALED" in s or "UNPLAYED" in s:
         return "Novo"
-    # Tražimo točnu oznaku ocjene (npr. NM, VG+, VG, EX-, G+)
-    m = re.search(r'\b(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G-|G|F|P)\b', s)
+    if "NEAR MINT" in s:
+        return "NM"
+    if "VERY GOOD PLUS" in s:
+        return "VG+"
+    if "VERY GOOD" in s:
+        return "VG"
+    if "EXCELLENT" in s:
+        return "EX"
+
+    # ISPRAVLJEN REGEX: Koristimo (?<![A-Z]) i (?![A-Z0-9]) umjesto \b kako ne bi odrezao znak '+' ili '-'!
+    m = re.search(r'(?<![A-Z])(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G-|G|F|P)(?![A-Z0-9])', s)
     if m:
         ocjena = m.group(1)
         return "NM" if ocjena == "M-" else ocjena
-    if "NEAR MINT" in s: return "NM"
-    if "VERY GOOD PLUS" in s: return "VG+"
-    if "VERY GOOD" in s: return "VG"
-    if "EXCELLENT" in s: return "EX"
-    if "MINT" in s: return "M"
+
+    if "MINT" in s:
+        return "M"
     return ""
+
+def izvuci_ocjene_iz_teksta(sirovi_html_ili_tekst):
+    if not sirovi_html_ili_tekst:
+        return "", ""
+        
+    # Pretvaramo HTML opis u čisti tekst
+    cisti_tekst = BeautifulSoup(str(sirovi_html_ili_tekst), "lxml").get_text(" ", strip=True)
+    
+    medij = ""
+    omot = ""
+
+    # 1. Primarni uzorak s Analognog Zvuka (npr. ".Stanje omota: VG+ Stanje ploče: VG+")
+    m_ploca = re.search(r'Stanje\s+plo[čc][ae]\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G-|G|Novo|New|Sealed)(?![A-Za-z0-9])', cisti_tekst, re.I)
+    if m_ploca:
+        medij = standardiziraj_ocjenu(m_ploca.group(1))
+
+    m_omot = re.search(r'Stanje\s+omota\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G-|G|Novo|New|Sealed)(?![A-Za-z0-9])', cisti_tekst, re.I)
+    if m_omot:
+        omot = standardiziraj_ocjenu(m_omot.group(1))
+
+    # 2. Sekundarni uzorak ako piše skraćeno (npr. "Ploča: VG+, Omot: VG")
+    if not medij:
+        m_k_ploca = re.search(r'plo[čc][ae]\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G-|G|Novo)(?![A-Za-z0-9])', cisti_tekst, re.I)
+        if m_k_ploca:
+            medij = standardiziraj_ocjenu(m_k_ploca.group(1))
+
+    if not omot:
+        m_k_omot = re.search(r'omot[a]?\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G-|G|Novo)(?![A-Za-z0-9])', cisti_tekst, re.I)
+        if m_k_omot:
+            omot = standardiziraj_ocjenu(m_k_omot.group(1))
+
+    # 3. Provjera za potpuno nove ploče
+    if not medij and re.search(r'\b(nova ploča|tvornički zapakirano|sealed|unplayed)\b', cisti_tekst, re.I):
+        medij = "Novo"
+        omot = "Novo"
+
+    return medij, omot
 
 def izvuci_stanje_i_sliku_iz_htmla(product_url):
     img_url = ""
@@ -112,36 +157,20 @@ def izvuci_stanje_i_sliku_iz_htmla(product_url):
     try:
         soup = BeautifulSoup(r.text, 'lxml')
         
-        # 1. Slika ako fali
         og = soup.find('meta', property='og:image') or soup.find('meta', attrs={'name': 'twitter:image'})
         if og and og.get('content'):
             img_url = ocisti_url_slike(og['content'])
 
-        # 2. Čitanje iz WooCommerce tablice atributa i teksta stranice
-        tekst = soup.get_text("\n", strip=True)
-        
-        m_ploca = re.search(r'Stanje\s+plo[čc]e\s*:?\s*([^\n\r]+)', tekst, re.I)
-        if m_ploca:
-            medij = standardiziraj_ocjenu(m_ploca.group(1))
+        # Prvo provjeri točan tab s opisom koji je Scout pronašao
+        opis_panel = soup.select_one('.woocommerce-Tabs-panel--description, .product-short-description, .summary')
+        if opis_panel:
+            medij, omot = izvuci_ocjene_iz_teksta(opis_panel.get_text(" ", strip=True))
             
-        m_omot = re.search(r'Stanje\s+omota\s*:?\s*([^\n\r]+)', tekst, re.I)
-        if m_omot:
-            omot = standardiziraj_ocjenu(m_omot.group(1))
-
-        # 3. Fallback na kratki opis (npr. "Stanje: ploča VG+, omot VG")
+        # Ako nije u panelu, pretraži cijeli tekst stranice
         if not medij or not omot:
-            m_k_ploca = re.search(r'plo[čc][ae]\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G|Novo)', tekst, re.I)
-            m_k_omot = re.search(r'omot[a]?\s*:?\s*(NM|M-|M|EX\+|EX-|EX|VG\+|VG-|VG|G\+|G|Novo)', tekst, re.I)
-            if not medij and m_k_ploca:
-                medij = standardiziraj_ocjenu(m_k_ploca.group(1))
-            if not omot and m_k_omot:
-                omot = standardiziraj_ocjenu(m_k_omot.group(1))
-
-        # 4. Provjera piše li u naslovu ili opisu da je ploča potpuno nova
-        if not medij and re.search(r'\b(nova ploča|novo|tvornički zapakirano|sealed)\b', tekst, re.I):
-            medij = "Novo"
-            omot = "Novo"
-
+            m2, o2 = izvuci_ocjene_iz_teksta(soup.get_text(" ", strip=True))
+            if not medij: medij = m2
+            if not omot: omot = o2
     except Exception:
         pass
 
@@ -152,8 +181,7 @@ def izvuci_stanje_i_sliku_iz_htmla(product_url):
 
     return img_url, medij, omot
 
-def obradi_jedan_api_item(args):
-    item, stara_baza = args
+def obradi_jedan_api_item(item):
     title = html.unescape(item.get('name', '')).strip()
     link = normaliziraj_link_proizvoda(item.get('permalink', ''))
     
@@ -166,41 +194,45 @@ def obradi_jedan_api_item(args):
     images = item.get('images', [])
     img_url = ocisti_url_slike(images[0].get('src', '')) if images else ""
 
-    # Provjeri imamo li već ovaj proizvod u CSV-u s ispravnom ocjenom (koja nije 'Rabljeno')
-    if link in stara_baza:
-        stari_red = stara_baza[link]
-        stari_medij = standardiziraj_ocjenu(stari_red[4])
-        stari_omot = standardiziraj_ocjenu(stari_red[5])
-        if stari_medij and stari_omot and (img_url or stari_red[3]):
-            return link, [title, price, link, img_url or stari_red[3], stari_medij, stari_omot, "LP"]
+    # 1. Pokušaj izvući ocjene direktno iz 'description' i 'short_description' polja koja vraća API!
+    api_opis = f"{item.get('description', '')} {item.get('short_description', '')}"
+    medij, omot = izvuci_ocjene_iz_teksta(api_opis)
 
-    # Provjeri nudi li API direktno pravu ocjenu (ako nije samo riječ "Rabljeno")
-    medij_api = ""
-    omot_api = ""
+    # 2. Provjeri i atribute u API-ju (ako slučajno piše 'Novo' ili prava ocjena umjesto 'Rabljeno')
     for attr in item.get('attributes', []):
         aname = attr.get('name', '').lower()
         tval = attr.get('terms', [])[0].get('name', '') if attr.get('terms') else ''
         ocjena = standardiziraj_ocjenu(tval)
         if ocjena:
-            if 'ploč' in aname or 'ploc' in aname or 'medij' in aname:
-                medij_api = ocjena
-            elif 'omot' in aname:
-                omot_api = ocjena
+            if not medij and ('ploč' in aname or 'ploc' in aname or 'medij' in aname or 'stanj' in aname):
+                medij = ocjena
+            if not omot and ('omot' in aname or ocjena == "Novo"):
+                omot = ocjena
 
-    if medij_api and omot_api and img_url:
-        return link, [title, price, link, img_url, medij_api, omot_api, "LP"]
+    # 3. Ako ni u API opisu ni u atributima nema ocjene (ili fali slika), otvori HTML stranicu proizvoda
+    if not medij or not omot or not img_url:
+        deep_img, deep_medij, deep_omot = izvuci_stanje_i_sliku_iz_htmla(link)
+        if not img_url:
+            img_url = deep_img
+        if not medij:
+            medij = deep_medij
+        if not omot:
+            omot = deep_omot
 
-    # Inače ulazimo u HTML stranice proizvoda po prave ocjene (Deep Inspection)
-    deep_img, deep_medij, deep_omot = izvuci_stanje_i_sliku_iz_htmla(link)
-    final_img = img_url if img_url else deep_img
-    final_medij = medij_api if medij_api else deep_medij
-    final_omot = omot_api if omot_api else deep_omot
+    # Određivanje tipa artikla iz API atributa 'Format' ili naslova
+    tip_artikla = "LP"
+    for attr in item.get('attributes', []):
+        if attr.get('name', '').lower() == 'format' and attr.get('terms'):
+            fmt = attr['terms'][0].get('name', '').upper()
+            if '7' in fmt or 'SINGL' in fmt:
+                tip_artikla = 'Singl 7"'
+    if any(k in title.lower() for k in ['7"', 'singl']):
+        tip_artikla = 'Singl 7"'
 
-    tip_artikla = 'Singl 7"' if any(k in title.lower() for k in ['7"', 'singl']) else "LP"
-    return link, [title, price, link, final_img, final_medij, final_omot, tip_artikla]
+    return link, [title, price, link, img_url, medij, omot, tip_artikla]
 
 def scrape_analogni():
-    print("🚀 ANALOGNI ZVUK: Pokrećem API + Deep HTML Inspection za točna stanja...", flush=True)
+    print("🚀 ANALOGNI ZVUK: Pokrećem WooCommerce Store API v1 + Regex +Plus Fix...", flush=True)
     sve_ploce = {}
     vidjeni_linkovi = set()
     uspjesno_skenirano = False
@@ -223,7 +255,8 @@ def scrape_analogni():
     kandidati_za_obradu = []
 
     while True:
-        api_url = f"https://analogni-zvuk.hr/wp-json/wc/store/products?page={page}&per_page=100"
+        # Koristimo v1 API putanju koju je Scout potvrdio
+        api_url = f"https://analogni-zvuk.hr/wp-json/wc/store/v1/products?page={page}&per_page=100"
         res = dohvati_url(api_url, timeout=30)
 
         if res is None or res.status_code != 200 or not res.text.strip().startswith('['):
@@ -252,20 +285,20 @@ def scrape_analogni():
             except Exception:
                 continue
 
-            kandidati_za_obradu.append((item, sve_ploce))
+            kandidati_za_obradu.append(item)
 
-        print(f"📡 API Stranica {page} učitana (Kandidata: {len(kandidati_za_obradu)})", flush=True)
+        print(f"📡 API Stranica {page} učitana (Ukupno kandidata na zalihi: {len(kandidati_za_obradu)})", flush=True)
         page += 1
-        time.sleep(0.4)
+        time.sleep(0.3)
 
     if api_radi and kandidati_za_obradu:
-        print(f"\n🔎 Provjeravam točne VG+/NM ocjene za {len(kandidati_za_obradu)} ploča ({BROJ_NITI} niti paralelno)...", flush=True)
+        print(f"\n🔎 Izvlačim točne ocjene (VG+, VG, NM) za {len(kandidati_za_obradu)} ploča...", flush=True)
         with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
             for idx, (link, red) in enumerate(executor.map(obradi_jedan_api_item, kandidati_za_obradu), 1):
                 sve_ploce[link] = red
                 vidjeni_linkovi.add(link)
-                if idx % 50 == 0 or idx == len(kandidati_za_obradu):
-                    print(f"   ⚡ Obrađeno {idx}/{len(kandidati_za_obradu)} ploča...", flush=True)
+                if idx % 100 == 0 or idx == len(kandidati_za_obradu):
+                    print(f"   ⚡ Obrađeno {idx}/{len(kandidati_za_obradu)} ploča (Zadnja: {red[4]}/{red[5]})...", flush=True)
 
     if uspjesno_skenirano and len(vidjeni_linkovi) > 20:
         pocetni = len(sve_ploce)
