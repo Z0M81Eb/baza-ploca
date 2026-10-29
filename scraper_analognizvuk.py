@@ -1,7 +1,5 @@
 from curl_cffi import requests as cffi_requests
 import cloudscraper
-from requests.adapters import HTTPAdapter
-from urllib3.util.ssl_ import create_urllib3_context
 from bs4 import BeautifulSoup
 import csv
 import os
@@ -19,13 +17,6 @@ HEADERS = {
     "Referer": "https://analogni-zvuk.hr/"
 }
 
-class TlsAdapter(HTTPAdapter):
-    def init_poolmanager(self, *args, **kwargs):
-        context = create_urllib3_context()
-        context.set_ciphers('DEFAULT@SECLEVEL=1')
-        kwargs['ssl_context'] = context
-        return super(TlsAdapter, self).init_poolmanager(*args, **kwargs)
-
 def normaliziraj_link_proizvoda(href):
     if not href:
         return ""
@@ -39,21 +30,33 @@ def ocisti_url_slike(raw_url, is_srcset=False):
     elif val.startswith('/'): val = urljoin(SITE_URL, val)
     return val.replace(' ', '%20') if val.startswith('http') else ""
 
-def dohvati_url(url, cffi_sess, cloud_sess, timeout=30):
-    for s in (cloud_sess, cffi_sess):
-        try:
-            r = s.get(url, timeout=timeout)
-            if r.status_code in [200, 400, 404]:
-                return r
-        except Exception:
-            continue
+def dohvati_url(url, cffi_sess, timeout=30):
+    try:
+        r = cffi_sess.get(url, timeout=timeout)
+        if r.status_code in [200, 400, 404]:
+            return r
+    except Exception:
+        pass
     return None
 
-def dohvati_detalje_sa_stranice_proizvoda(product_url, cffi_sess, cloud_sess):
+def ocisti_stanje(sirovo):
+    if not sirovo: return "VG+"
+    s = str(sirovo).upper()
+    if "NOVO" in s or "SEALED" in s or "MINT" in s and "NEAR" not in s: return "M"
+    if "NEAR MINT" in s or "NM" in s: return "NM"
+    if "EXCELLENT" in s or "EX" in s: return "EX"
+    if "VERY GOOD PLUS" in s or "VG+" in s: return "VG+"
+    if "VERY GOOD" in s or "VG" in s: return "VG"
+    if "GOOD PLUS" in s or "G+" in s: return "G+"
+    if "GOOD" in s or "G" in s: return "G"
+    if "POOR" in s or "P" in s: return "P"
+    return "VG+"
+
+def dohvati_detalje_sa_stranice_proizvoda(product_url, cffi_sess):
     img_url = ""
     medij = "VG+"
     omot = "VG+"
-    r = dohvati_url(product_url, cffi_sess, cloud_sess, timeout=15)
+    r = dohvati_url(product_url, cffi_sess, timeout=15)
     
     if not r or r.status_code != 200:
         return img_url, medij, omot
@@ -68,21 +71,21 @@ def dohvati_detalje_sa_stranice_proizvoda(product_url, cffi_sess, cloud_sess):
             
         # STANJE IZ TABA ILI TEKSTA
         tekst = soup.get_text("\n", strip=True)
-        m_ploca = re.search(r'Stanje ploče:\s*([A-Za-z0-9\+\-]+)', tekst, re.I)
-        m_omot = re.search(r'Stanje omota:\s*([A-Za-z0-9\+\-]+)', tekst, re.I)
+        m_ploca = re.search(r'Stanje ploče:\s*(.*?)\n', tekst, re.I)
+        m_omot = re.search(r'Stanje omota:\s*(.*?)\n', tekst, re.I)
         
-        if m_ploca: medij = m_ploca.group(1).strip()
-        if m_omot: omot = m_omot.group(1).strip()
+        if m_ploca: medij = ocisti_stanje(m_ploca.group(1).strip())
+        if m_omot: omot = ocisti_stanje(m_omot.group(1).strip())
         
-        # STANJE IZ KRATKOG OPISA KAO FALLBACK (ako nije pronađeno)
+        # STANJE IZ KRATKOG OPISA KAO FALLBACK
         if medij == "VG+" or omot == "VG+":
             kratki = soup.select_one(".product-short-description")
             if kratki:
                 k_tekst = kratki.get_text(" ", strip=True)
                 m_k_ploca = re.search(r'ploča\s+([A-Za-z0-9\+\-]+)', k_tekst, re.I)
                 m_k_omot = re.search(r'omot\s+([A-Za-z0-9\+\-]+)', k_tekst, re.I)
-                if m_k_ploca: medij = m_k_ploca.group(1).strip().rstrip(',.)')
-                if m_k_omot: omot = m_k_omot.group(1).strip().rstrip(',.)')
+                if m_k_ploca: medij = ocisti_stanje(m_k_ploca.group(1).strip())
+                if m_k_omot: omot = ocisti_stanje(m_k_omot.group(1).strip())
     except Exception:
         pass
         
@@ -101,7 +104,7 @@ def izvuci_cijenu(tekst):
             except: pass
     return "0.00"
 
-print("ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem...", flush=True)
+print("ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem s CURL CFFI (SSL Fix)...", flush=True)
 
 sve_ploce = {}
 vidjeni_linkovi = set()
@@ -118,14 +121,10 @@ if os.path.exists(CSV_FILENAME):
                 sve_ploce[norm_k] = row
     print(f"📦 Učitano {len(sve_ploce)} postojećih ploča.", flush=True)
 
-cloud_sess = cloudscraper.create_scraper(browser={'browser': 'chrome', 'platform': 'windows', 'desktop': True})
-cloud_sess.mount('https://', TlsAdapter())
-cloud_sess.headers.update(HEADERS)
-
 cffi_sess = cffi_requests.Session(impersonate="chrome120")
 cffi_sess.headers.update(HEADERS)
 
-dohvati_url("https://analogni-zvuk.hr/", cffi_sess, cloud_sess, timeout=25)
+dohvati_url("https://analogni-zvuk.hr/", cffi_sess, timeout=25)
 time.sleep(1)
 
 # === 1. WOOCOMMERCE STORE API ===
@@ -134,7 +133,7 @@ api_radi = False
 
 while True:
     api_url = f"https://analogni-zvuk.hr/wp-json/wc/store/products?page={page}&per_page=100"
-    res = dohvati_url(api_url, cffi_sess, cloud_sess, timeout=30)
+    res = dohvati_url(api_url, cffi_sess, timeout=30)
 
     if res is None or res.status_code != 200 or not res.text.strip().startswith('['):
         break
@@ -148,7 +147,6 @@ while True:
 
     api_radi = True
     dodano = 0
-    sa_slikom = 0
 
     for item in data:
         if not item.get('is_in_stock', False): continue
@@ -177,9 +175,9 @@ while True:
             tval = attr.get('terms', [])[0].get('name', '') if attr.get('terms') else ''
             if tval:
                 if 'ploč' in aname or 'medij' in aname or 'stanj' in aname:
-                    stanje_medija = tval
+                    stanje_medija = ocisti_stanje(tval)
                 if 'omot' in aname:
-                    stanje_omota = tval
+                    stanje_omota = ocisti_stanje(tval)
 
         sve_ploce[link] = [title, price, link, img_url, stanje_medija, stanje_omota, "Vinil"]
         vidjeni_linkovi.add(link)
@@ -197,7 +195,7 @@ if not api_radi:
         cat_url = "https://analogni-zvuk.hr/product-category/gramofonske-ploce/"
         if current_page_num > 1: cat_url += f"page/{current_page_num}/"
 
-        response = dohvati_url(cat_url, cffi_sess, cloud_sess, timeout=30)
+        response = dohvati_url(cat_url, cffi_sess, timeout=30)
         if not response or response.status_code != 200:
             if response and response.status_code == 404: uspjesno_skenirano = True
             break
@@ -223,8 +221,7 @@ if not api_radi:
             
             if not title or price == "0.00": continue
 
-            # Deep Inspection (Ulazimo u svaku ploču da pročitamo omot/medij i sliku)
-            deep_img, deep_medij, deep_omot = dohvati_detalje_sa_stranice_proizvoda(link, cffi_sess, cloud_sess)
+            deep_img, deep_medij, deep_omot = dohvati_detalje_sa_stranice_proizvoda(link, cffi_sess)
 
             sve_ploce[link] = [title, price, link, deep_img, deep_medij, deep_omot, "Vinil"]
             vidjeni_linkovi.add(link)
