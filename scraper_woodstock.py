@@ -100,18 +100,32 @@ def izvuci_stanje(el):
     medij = "VG+"
     omot = "VG+"
     
-    # 1. Regex analiza čistog teksta (Neprobojna metoda)
     tekst = el.get_text(" ", strip=True)
     
+    # 1. Regex analiza čistog teksta
     m_medij = re.search(r'Stanje:\s*(.*?)(?=\s*(?:Stanje omota:|Format:|Godina:|Žanr:|Stil:|Kataloški|$))', tekst, re.IGNORECASE)
+    m_omot = re.search(r'Stanje omota:\s*(.*?)(?=\s*(?:Format:|Godina:|Žanr:|Stil:|Kataloški|$))', tekst, re.IGNORECASE)
+    
+    # Funkcija koja pretvara prljavi tekst (npr. "Near Mint (NM or M-) Kupi za 25 EUR") u standardnu oznaku
+    def ocisti(sirovo):
+        s = sirovo.upper()
+        if "NOVO" in s or "SEALED" in s: return "Novo"
+        if "NEAR MINT" in s or "(NM" in s: return "NM"
+        if "VERY GOOD PLUS" in s or "(VG+)" in s: return "VG+"
+        if "VERY GOOD" in s or "(VG)" in s: return "VG"
+        if "MINT" in s or "(M)" in s: return "M"
+        if "EXCELLENT" in s or "(EX)" in s: return "EX"
+        if "GOOD PLUS" in s or "(G+)" in s: return "G+"
+        if " GOOD " in s or "(G)" in s: return "G"
+        return "VG+" # Fallback
+
     if m_medij:
         v = m_medij.group(1).strip()
-        if v: medij = v
+        if v: medij = ocisti(v)
         
-    m_omot = re.search(r'Stanje omota:\s*(.*?)(?=\s*(?:Format:|Godina:|Žanr:|Stil:|Kataloški|$))', tekst, re.IGNORECASE)
     if m_omot:
         v = m_omot.group(1).strip()
-        if v: omot = v
+        if v: omot = ocisti(v)
     
     # 2. Dodatna provjera za nove ploče iz naslova
     title_a = el.select_one(".list-item-title a")
