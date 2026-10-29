@@ -1,7 +1,7 @@
 === IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
-Vrijeme pokretanja (UTC): 28.10.2026. 11:44:22
+Vrijeme pokretanja (UTC): 29.10.2026. 08:14:57
 ----------------------------------------
-ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem...
+ANALOGNI ZVUK: Pokrećem hibridni API + HTML sistem s CURL CFFI (SSL Fix)...
 📦 Učitano 1615 postojećih ploča.
 API Paket 1 -> OK (100 ploča)
 API Paket 2 -> OK (100 ploča)
@@ -19,9 +19,9 @@ API Paket 13 -> OK (100 ploča)
 API Paket 14 -> OK (100 ploča)
 API Paket 15 -> OK (100 ploča)
 API Paket 16 -> OK (100 ploča)
-API Paket 17 -> OK (15 ploča)
+API Paket 17 -> OK (30 ploča)
 
-🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: 0).
-🎉 Gotovo! Ukupno u CSV-u: 1615
+🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: 3).
+🎉 Gotovo! Ukupno u CSV-u: 1630
 ----------------------------------------
-Vrijeme završetka (UTC): 28.10.2026. 11:44:54 | Kod izlaza: 0
+Vrijeme završetka (UTC): 29.10.2026. 08:15:35 | Kod izlaza: 0
