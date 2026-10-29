@@ -1,18 +1,14 @@
-=== SCOUT IZVJEŠTAJ (28.10.2026 11:41:21) ===
-🚀 POKREĆEM DUBINSKO IZVIĐANJE ZA: https://lumer-shop.eu/
+=== SCOUT IZVJEŠTAJ (29.10.2026 07:10:50) ===
+🚀 POKREĆEM DUBINSKO IZVIĐANJE ZA: https://www.cdshop-roxy.com/
 ------------------------------------------------------------
 🔎 [1/4] Provjeravam skrivene API-je...
-  ✅ OTVOREN API: /wp-json/wc/store/v1/products?per_page=5
-  ✅ OTVOREN API: /wp-json/wp/v2/product?per_page=5
 
 🔎 [2/4] Analiziram strukturu kataloga...
   HTTP Status: 200
-  📦 Pronađeno 13 kartica proizvoda na stranici.
   ⚠️ Na trenutnoj stranici nema očitih ploča. Pretražujem navigacijski izbornik za kategoriju ploča...
-  🔗 Pronađena potencijalna kategorija, otvaram: https://lumer-shop.eu/product-category/misc/music/
-  🎯 Uspješno pronađena PRAVA ploča unutar skrivene kategorije: https://lumer-shop.eu/shop/justins-johnson-justins-johnson-ljubav-napredak-lp/
+  🔗 Pronađena potencijalna kategorija, otvaram: https://www.cdshop-roxy.com/Stalci.htm
 
 🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...
-  ℹ️ Nisu pronađene tipične oznake stanja (VG, NM, Condition, Stanje). Trgovina vjerojatno prodaje SAMO NOVE ploče (Mint) ili skriva stanje u slikama.
+  ⚠️ Nije pronađen link na pojedinačni proizvod.
 ------------------------------------------------------------
 🏁 Izviđanje završeno! Izvještaj spremljen u logs/scout_report.log
