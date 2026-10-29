@@ -103,8 +103,7 @@ jobs:
   # 3. POSAO: Sakuplja nove CSV-ove, POPUNJAVA SLIKE i radi JEDAN siguran Commit i Push
   commit_results:
     needs: run_scrapers
-    # OVO SPREČAVA ZOMBI PONAŠANJE: Radi uvijek osim kad ručno stisneš Cancel!
-    if: !cancelled()
+    if: ${{ !cancelled() }}
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repozitorija
@@ -131,7 +130,7 @@ jobs:
 
       # KLJUČNI UVJET: Discogs bot pokreće se isključivo pri potpunoj sinkronizaciji
       - name: Dopunjavanje nedostajućih slika (Discogs Bot)
-        if: github.event.inputs.target_scraper == 'ALL' || github.event.inputs.target_scraper == ''
+        if: ${{ github.event.inputs.target_scraper == 'ALL' || github.event.inputs.target_scraper == '' }}
         env:
           DISCOGS_TOKEN: ${{ secrets.DISCOGS_TOKEN }}
         run: |
