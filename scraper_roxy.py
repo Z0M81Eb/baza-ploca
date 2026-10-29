@@ -54,7 +54,7 @@ def dohvati_katalog_linkove(sesija):
         soup = BeautifulSoup(r.content, "lxml")
         linkovi = set()
         
-        ignoriraj = ["prodaja", "zamjena", "clanovi", "forme", "narudzba", "knjiga"]
+        ignoriraj = ["prodaja", "zamjena", "clanovi", "forme", "narudzba", "knjiga", "stalci"]
         
         for a in soup.select("a[href]"):
             href = a["href"].strip()
@@ -87,10 +87,15 @@ def obradi_stranicu(url):
                 continue
                 
             medij_tip = cols[0].upper()
-            format_tip = cols[1].strip()
+            format_tip = cols[1].upper()
             
-            # STROGI FILTER ZA CD-ove
-            if "PLOČA" not in medij_tip and "PLOCA" not in medij_tip:
+            # STROGI, NEPROBOJNI ANTI-CD FILTER
+            # Ako sadrži ikakav trag CD-a, DVD-a ili Kazete, odmah ubijamo redak!
+            if "CD" in medij_tip or "CD" in format_tip or "DVD" in medij_tip or "KAS" in medij_tip or "KAZ" in medij_tip:
+                continue
+                
+            # Tražimo da u Mediju barem piše "PLO" (hvata PLOČA i PLOCA) ili da je Format LP/7"
+            if "PLO" not in medij_tip and "LP" not in format_tip and "7\"" not in format_tip and "12\"" not in format_tip:
                 continue
                 
             izvodjac = cols[2].strip()
@@ -142,7 +147,6 @@ def scrape_roxy():
             for row in reader:
                 if len(row) >= 7:
                     sve_ploce[row[2]] = row
-        print(f"📦 Učitano {len(sve_ploce)} postojećih zapisa iz {CSV_FILENAME}.", flush=True)
 
     sesija = kreiraj_sesiju()
     stranice = dohvati_katalog_linkove(sesija)
@@ -154,7 +158,6 @@ def scrape_roxy():
     print(f"📂 Pronađeno {len(stranice)} stranica kataloga. Pokrećem preuzimanje ploča...", flush=True)
 
     ukupno_neuspjelih = 0
-    ukupno_dodano = 0
 
     with ThreadPoolExecutor(max_workers=BROJ_NITI) as executor:
         rezultati = list(executor.map(obradi_stranicu, stranice))
@@ -165,7 +168,6 @@ def scrape_roxy():
             for link, red in stavke:
                 sve_ploce[link] = red
                 aktivni_linkovi.add(link)
-                ukupno_dodano += 1
 
     if ukupno_neuspjelih == 0 and len(aktivni_linkovi) > 100:
         pocetni_broj = len(sve_ploce)
@@ -180,7 +182,7 @@ def scrape_roxy():
             writer = csv.writer(f)
             writer.writerow(["Naslov", "Cijena", "URL_Proizvoda", "URL_Slike", "Stanje_Medija", "Stanje_Omota", "Tip_Artikla"])
             writer.writerows(sve_ploce.values())
-        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih ploča iz RoxY-ja.", flush=True)
+        print(f"🎉 GOTOVO za {time.time() - t_start:.1f}s! U bazi je {len(sve_ploce)} dostupnih ploča iz RoxY-ja (Svi CD-ovi su brutalno odbačeni).", flush=True)
 
 if __name__ == "__main__":
     scrape_roxy()
