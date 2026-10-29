@@ -115,7 +115,7 @@ def skeniraj_sitemape(klijent, base_url):
         for loc in lokacije:
             loc_l = loc.lower()
             if loc_l.endswith(".xml") or "sitemap" in loc_l:
-                if any(k in loc_l for k in ["product", "proizvod", "cat", "kategorij", "post"]):
+                if not any(ig in loc_l for ig in ["author", "user", "tag", "attachment"]):
                     pronadjeni_pod_sitemapi.append(loc)
             else:
                 if any(k in loc_l for k in ["category", "kategorija", "gramofonske", "vinyl", "ploce"]):
