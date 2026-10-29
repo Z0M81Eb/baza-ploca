@@ -2,14 +2,14 @@ import cloudscraper
 from bs4 import BeautifulSoup
 from urllib.parse import urlparse, urljoin
 import time
-import json
 import os
 import re
+import sys
 
 # =========================================================================
-# 🎯 OVDJE UNESI URL KATEGORIJE ILI STRANICE ZA IZVIĐANJE
+# 🎯 URL SADA PREUZIMAMO IZ OKOLINE (PROSLIJEĐENO OD WORDPRESSA/GITHUBA)
 # =========================================================================
-CILJANI_URL = "https://lumer-shop.eu/"
+CILJANI_URL = os.environ.get("TARGET_URL", "").strip()
 # =========================================================================
 
 os.makedirs("logs", exist_ok=True)
@@ -21,6 +21,10 @@ def log_print(poruka):
         f.write(poruka + "\n")
 
 def izvidac(url):
+    if not url:
+        print("❌ GREŠKA: Nije zadan TARGET_URL! Skripta se gasi.")
+        sys.exit(1)
+
     with open(LOG_FILE, "w", encoding="utf-8") as f:
         f.write(f"=== SCOUT IZVJEŠTAJ ({time.strftime('%d.%m.%Y %H:%M:%S')}) ===\n")
         
