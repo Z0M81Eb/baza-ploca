@@ -99,15 +99,21 @@ def izvuci_cijenu(el):
 def izvuci_stanje(el):
     medij = "VG+"
     omot = "VG+"
-    for span in el.find_all("span"):
-        label = span.get_text(strip=True).lower()
-        if "stanje:" in label and "omota" not in label:
-            if span.next_sibling:
-                medij = str(span.next_sibling).strip().strip('"').strip()
-        elif "stanje omota:" in label:
-            if span.next_sibling:
-                omot = str(span.next_sibling).strip().strip('"').strip()
     
+    # 1. Regex analiza čistog teksta (Neprobojna metoda)
+    tekst = el.get_text(" ", strip=True)
+    
+    m_medij = re.search(r'Stanje:\s*(.*?)(?=\s*(?:Stanje omota:|Format:|Godina:|Žanr:|Stil:|Kataloški|$))', tekst, re.IGNORECASE)
+    if m_medij:
+        v = m_medij.group(1).strip()
+        if v: medij = v
+        
+    m_omot = re.search(r'Stanje omota:\s*(.*?)(?=\s*(?:Format:|Godina:|Žanr:|Stil:|Kataloški|$))', tekst, re.IGNORECASE)
+    if m_omot:
+        v = m_omot.group(1).strip()
+        if v: omot = v
+    
+    # 2. Dodatna provjera za nove ploče iz naslova
     title_a = el.select_one(".list-item-title a")
     naslov = ocisti_naziv(title_a.get_text(" ", strip=True)) if title_a else ""
     if "NOVO" in naslov.upper() or "SEALED" in naslov.upper():
