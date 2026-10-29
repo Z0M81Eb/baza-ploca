@@ -1,14 +1,13 @@
-=== SCOUT IZVJEŠTAJ (29.10.2026 07:10:50) ===
+=== SCOUT IZVJEŠTAJ (29.10.2026 07:16:42) ===
 🚀 POKREĆEM DUBINSKO IZVIĐANJE ZA: https://www.cdshop-roxy.com/
 ------------------------------------------------------------
 🔎 [1/4] Provjeravam skrivene API-je...
 
 🔎 [2/4] Analiziram strukturu kataloga...
   HTTP Status: 200
-  ⚠️ Na trenutnoj stranici nema očitih ploča. Pretražujem navigacijski izbornik za kategoriju ploča...
-  🔗 Pronađena potencijalna kategorija, otvaram: https://www.cdshop-roxy.com/Stalci.htm
 
 🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...
-  ⚠️ Nije pronađen link na pojedinačni proizvod.
+  ⚠️ Nije pronađen link na proizvod niti validna tablica za skeniranje.
+  ℹ️ Nisu pronađene tipične oznake stanja. Trgovina prodaje NOVE ploče ili skriva stanje u slikama.
 ------------------------------------------------------------
 🏁 Izviđanje završeno! Izvještaj spremljen u logs/scout_report.log
