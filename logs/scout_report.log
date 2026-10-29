@@ -1,14 +1,38 @@
-=== SCOUT IZVJEŠTAJ (29.10.2026 08:20:03) ===
-🚀 POKREĆEM DUBINSKO IZVIĐANJE ZA: https://analogni-zvuk.hr/
-------------------------------------------------------------
-🔎 [1/4] Provjeravam skrivene API-je...
+=== SCOUT 2.0 FORENZIČKI IZVJEŠTAJ (29.10.2026 08:30:35) ===
+🚀 POKREĆEM KOMPLETNU FORENZIKU ZA DOMENU: https://analogni-zvuk.hr
+🔗 Ulazni URL: https://analogni-zvuk.hr/
+======================================================================
+🔎 [1/6] DIJAGNOSTIKA ZAŠTITE, SERVERA I SSL/TLS PROTOKOLA...
+  ✅ HTTP Status: 200
+  🛡️ Uspješni mrežni motor: curl_cffi (Chrome 120 TLS Impersonation)
+  🖥️ Server: nginx | Cloudflare: NE
 
-🔎 [2/4] Analiziram strukturu kataloga...
-  HTTP Status: 202
-  ⚠️ Na trenutnoj stranici nema ploča, a ni tablice. Tražim kategorije...
+🔎 [2/6] SKENIRANJE ROBOTS.TXT I SITEMAP.XML STRUKTURE...
+  🤖 Pronađen Sitemap u robots.txt: https://analogni-zvuk.hr/sitemap.xml
+  ✅ Otvoren glavni Sitemap: https://analogni-zvuk.hr/sitemap.xml
+  ℹ️ Sitemap nije pronađen ili ne sadrži očite URL-ove ploča. Prelazim na API i HTML.
 
-🔎 [3/4] Dubinska analiza proizvoda i detekcija stanja (Medij / Omot)...
-  ⚠️ Nije pronađen link na proizvod niti validna tablica za skeniranje.
-  ℹ️ Nisu pronađene tipične oznake stanja. Trgovina prodaje NOVE ploče ili skriva stanje u slikama.
-------------------------------------------------------------
-🏁 Izviđanje završeno! Izvještaj spremljen u logs/scout_report.log
+🔎 [3/6] DUBINSKA INSPEKCIJA API SUSTAVA (WooCommerce / WP / Shopify)...
+  ✅ OTVOREN WooCommerce Store API (v1): /wp-json/wc/store/v1/products?per_page=20 (Vraća artikala u testu: 20)
+     📦 Uzorak artikla iz API-ja: 'Bruce Springsteen – The River (Suzy, 1980.) 2 LP'
+     💶 Cijena u API-ju: 4000 (minor_unit: 2)
+     🏷️ Atributi u API-ju: Format: ['2 LP'] | Izdavač: ['Suzy'] | Razdoblje: ['80-te'] | Stanje: ['Rabljeno'] | Žanr: ['Pop Rock', 'Rock'] | Zemlja: ['Jugoslavija']
+     ⚠️ OPREZ: API u atributima vraća samo generičko 'Rabljeno'! Za prave VG+/NM ocjene scraper MORA čitati HTML opis ili ulaziti u proizvod!
+
+🔎 [4/6] ANALIZA HTML STRUKTURE, NAVIGACIJE, TABLICA I PAGINACIJE...
+  🧭 Pronađene ciljane podstranice/kategorije (49): ['https://analogni-zvuk.hr/product-category/gramofonske-ploce/', 'https://analogni-zvuk.hr/product-category/gramofonske-ploce/lp/', 'https://analogni-zvuk.hr/product-category/gramofonske-ploce/lp_set/', 'https://analogni-zvuk.hr/product-category/gramofonske-ploce/7/']
+  📦 Pronađena mreža proizvoda na https://analogni-zvuk.hr/product-category/gramofonske-ploce/ -> CSS Selektor: 'div.product' (12 kom na stranici)
+  📄 Detektiran format PAGINACIJE: https://analogni-zvuk.hr/product-category/gramofonske-ploce/page/2/
+
+🔎 [5/6] FORENZIKA POJEDINAČNOG PROIZVODA: https://analogni-zvuk.hr/proizvod/bruce-springsteen-the-river-suzy-1980-2-lp/
+  🖼️ Slika (og:image): Dostupna -> https://analogni-zvuk.hr/wp-content/uploads/2021/12/GLE_6618-HDR.jpg
+  💶 Cijena na stranici: '40,00 € Bazna cijena 28.10.2026.: 40,00 €' (Tag: <p class='['price', 'product-page-price']'>)
+  🎯 PRONAĐENE LOKACIJE STANJA PLOČE / OMOTA U HTML-u:
+     ✅ <p class='bez-klase' (parent: 'woocommerce-Tabs-panel woocommerce-Tabs-panel--description panel entry-content active')> => ".Stanje omota: VG+ Stanje ploče: VG+"
+     ✅ <tr class='woocommerce-product-attributes-item woocommerce-product-attributes-item--attribute_pa_stanje' (parent: 'woocommerce-product-attributes shop_attributes')> => "Stanje Rabljeno"
+     ✅ <p class='bez-klase' (parent: 'woocommerce-product-attributes-item__value')> => "Rabljeno"
+
+🔎 [6/6] ZAKLJUČAK I PREPORUKA ZA PISANJE SCRAPERA:
+  👉 ARHITEKTURA: Koristi brzi WooCommerce Store API (v1), ali provjeri u točki [3/6] i [5/6] jesu li VG+/NM ocjene u API-ju ili trebaš kombinirati API + HTML Deep Inspection.
+======================================================================
+🏁 Forenzika završena! Izvještaj spremljen u logs/scout_report.log
