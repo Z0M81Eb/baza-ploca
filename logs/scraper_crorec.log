@@ -1,16 +1,16 @@
 === IZVJEŠTAJ RADA: scraper_crorec.py ===
-Vrijeme pokretanja (UTC): 30.10.2026. 07:51:09
+Vrijeme pokretanja (UTC): 30.10.2026. 12:13:36
 ----------------------------------------
 📦 Učitano 195 postojećih zapisa iz crorec_ploce.csv.
 🔎 Pretražujem API za kategoriju 'Vinil' na Croatia Recordsu...
   ✅ Pronađena kategorija: VINIL (ID: 37)
 
 🚀 Pokrećem WooCommerce API dohvat vinila...
-📂 API JAVLJA: Ukupno 195 artikala kroz 2 stranica.
+📂 API JAVLJA: Ukupno 196 artikala kroz 2 stranica.
    ⚡ Stranica 1/2 obrađena za 2.5s (+100 dostupnih).
-   ⚡ Stranica 2/2 obrađena za 2.4s (+95 dostupnih).
+   ⚡ Stranica 2/2 obrađena za 2.4s (+96 dostupnih).
 
-🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala iz stare baze.
-🎉 GOTOVO za 9.7s! U bazi je 195 dostupnih ploča iz CroReca (Sa slikom: 195).
+🧹 Sinkronizacija završena! Uklonjeno 1 rasprodanih artikala iz stare baze.
+🎉 GOTOVO za 10.6s! U bazi je 196 dostupnih ploča iz CroReca (Sa slikom: 196).
 ----------------------------------------
-Vrijeme završetka (UTC): 30.10.2026. 07:51:18 | Kod izlaza: 0
+Vrijeme završetka (UTC): 30.10.2026. 12:13:47 | Kod izlaza: 0
