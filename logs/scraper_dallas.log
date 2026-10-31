@@ -1,24 +1,24 @@
 === IZVJEŠTAJ RADA: scraper_dallas.py ===
-Vrijeme pokretanja (UTC): 30.10.2026. 07:51:12
+Vrijeme pokretanja (UTC): 31.10.2026. 07:40:05
 ----------------------------------------
-📦 Učitano 695 postojećih zapisa iz dallas_ploce.csv.
+📦 Učitano 694 postojećih zapisa iz dallas_ploce.csv.
 
 📂 Analiziram Dallas vinil katalog...
    ✅ Stranica 1/58: +12 artikala.
-   ⚡ Stranice 02-06/58 (5/5 OK) za 1.9s | +60 novih | Ukupno: 72
-   ⚡ Stranice 07-11/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 132
-   ⚡ Stranice 12-16/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 192
-   ⚡ Stranice 17-21/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 252
-   ⚡ Stranice 22-26/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 312
-   ⚡ Stranice 27-31/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 372
-   ⚡ Stranice 32-36/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 432
-   ⚡ Stranice 37-41/58 (5/5 OK) za 1.6s | +60 novih | Ukupno: 492
-   ⚡ Stranice 42-46/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 552
-   ⚡ Stranice 47-51/58 (5/5 OK) za 1.2s | +60 novih | Ukupno: 612
-   ⚡ Stranice 52-56/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 672
-   ⚡ Stranice 57-58/58 (2/2 OK) za 0.8s | +22 novih | Ukupno: 694
+   ⚡ Stranice 02-06/58 (5/5 OK) za 18.2s | +60 novih | Ukupno: 72
+   ⚡ Stranice 07-11/58 (5/5 OK) za 14.7s | +60 novih | Ukupno: 132
+   ⚡ Stranice 12-16/58 (5/5 OK) za 2.9s | +60 novih | Ukupno: 192
+   ⚡ Stranice 17-21/58 (5/5 OK) za 1.1s | +60 novih | Ukupno: 252
+   ⚡ Stranice 22-26/58 (5/5 OK) za 2.0s | +60 novih | Ukupno: 312
+   ⚡ Stranice 27-31/58 (5/5 OK) za 3.6s | +60 novih | Ukupno: 372
+   ⚡ Stranice 32-36/58 (5/5 OK) za 4.5s | +60 novih | Ukupno: 432
+   ⚡ Stranice 37-41/58 (5/5 OK) za 5.3s | +60 novih | Ukupno: 492
+   ⚡ Stranice 42-46/58 (5/5 OK) za 12.4s | +60 novih | Ukupno: 552
+   ⚡ Stranice 47-51/58 (5/5 OK) za 8.7s | +60 novih | Ukupno: 612
+   ⚡ Stranice 52-56/58 (3/5 OK) za 17.6s | +36 novih | Ukupno: 648
+   ⚡ Stranice 57-58/58 (2/2 OK) za 6.3s | +20 novih | Ukupno: 668
 
-🧹 Sinkronizacija završena! Uklonjeno 1 rasprodanih artikala.
-🎉 GOTOVO za 17.6s! U bazi je 694 dostupnih Dallas ploča (Sa slikom: 694).
+⚠️ Oprez: Zabilježeno 2 neuspjelih stranica. Preskačem brisanje.
+🎉 GOTOVO za 103.9s! U bazi je 694 dostupnih Dallas ploča (Sa slikom: 694).
 ----------------------------------------
-Vrijeme završetka (UTC): 30.10.2026. 07:51:30 | Kod izlaza: 0
+Vrijeme završetka (UTC): 31.10.2026. 07:41:49 | Kod izlaza: 0
