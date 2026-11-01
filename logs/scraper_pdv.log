@@ -1,24 +1,19 @@
 === IZVJEŠTAJ RADA: scraper_pdv.py ===
-Vrijeme pokretanja (UTC): 31.10.2026. 07:40:13
+Vrijeme pokretanja (UTC): 01.11.2026. 08:19:10
 ----------------------------------------
-📦 Učitano 3014 postojećih zapisa iz pdv_ploce.csv.
+📦 Učitano 1948 postojećih zapisa iz pdv_ploce.csv.
 
 🚀 Pokrećem Shopify API dohvat proizvoda...
-   ⚡ Stranica 1 obrađena za 1.0s | Pročitano: 250 artikala | Dodano vinila: 235
-   ⚡ Stranica 2 obrađena za 0.7s | Pročitano: 250 artikala | Dodano vinila: 223
+   ⚡ Stranica 1 obrađena za 1.8s | Pročitano: 250 artikala | Dodano vinila: 235
+   ⚡ Stranica 2 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 223
    ⚡ Stranica 3 obrađena za 0.7s | Pročitano: 250 artikala | Dodano vinila: 91
-   ⚡ Stranica 4 obrađena za 0.6s | Pročitano: 250 artikala | Dodano vinila: 91
-   ⚡ Stranica 5 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 165
+   ⚡ Stranica 4 obrađena za 0.7s | Pročitano: 250 artikala | Dodano vinila: 91
+   ⚡ Stranica 5 obrađena za 0.3s | Pročitano: 250 artikala | Dodano vinila: 165
    ⚡ Stranica 6 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 170
-   ⚡ Stranica 7 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 161
-   ⚡ Stranica 8 obrađena za 0.5s | Pročitano: 250 artikala | Dodano vinila: 183
-   ⚡ Stranica 9 obrađena za 0.6s | Pročitano: 250 artikala | Dodano vinila: 150
-   ⚡ Stranica 10 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 161
-   ⚡ Stranica 11 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 172
-   ⚡ Stranica 12 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 146
-   ❌ Stranica 13 vratila grešku 429. Prekidam.
+   ⚡ Stranica 7 obrađena za 0.3s | Pročitano: 250 artikala | Dodano vinila: 161
+   ❌ Stranica 8 vratila grešku 429. Prekidam.
 
-🧹 Sinkronizacija završena! Uklonjeno 1066 rasprodanih artikala iz stare baze.
-🎉 GOTOVO za 6.5s! Ukupno pročitano 3000 shop artikala. U bazi je pohranjeno 1948 dostupnih PDV vinila (Sa slikom: 1947).
+🧹 Sinkronizacija završena! Uklonjeno 812 rasprodanih artikala iz stare baze.
+🎉 GOTOVO za 4.8s! Ukupno pročitano 1750 shop artikala. U bazi je pohranjeno 1136 dostupnih PDV vinila (Sa slikom: 1135).
 ----------------------------------------
-Vrijeme završetka (UTC): 31.10.2026. 07:40:20 | Kod izlaza: 0
+Vrijeme završetka (UTC): 01.11.2026. 08:19:15 | Kod izlaza: 0
