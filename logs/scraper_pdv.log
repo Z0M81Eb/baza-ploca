@@ -1,23 +1,12 @@
 === IZVJEŠTAJ RADA: scraper_pdv.py ===
-Vrijeme pokretanja (UTC): 04.11.2026. 08:15:47
+Vrijeme pokretanja (UTC): 05.11.2026. 08:40:12
 ----------------------------------------
-📦 Učitano 417 postojećih zapisa iz pdv_ploce.csv.
+📦 Učitano 1802 postojećih zapisa iz pdv_ploce.csv.
 
 🚀 Pokrećem Shopify API dohvat proizvoda...
-   ⚡ Stranica 1 obrađena za 0.8s | Pročitano: 250 artikala | Dodano vinila: 190
-   ⚡ Stranica 2 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 225
-   ⚡ Stranica 3 obrađena za 0.7s | Pročitano: 250 artikala | Dodano vinila: 207
-   ⚡ Stranica 4 obrađena za 0.3s | Pročitano: 250 artikala | Dodano vinila: 44
-   ⚡ Stranica 5 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 131
-   ⚡ Stranica 6 obrađena za 0.4s | Pročitano: 250 artikala | Dodano vinila: 170
-   ⚡ Stranica 7 obrađena za 0.5s | Pročitano: 250 artikala | Dodano vinila: 154
-   ⚡ Stranica 8 obrađena za 0.3s | Pročitano: 250 artikala | Dodano vinila: 188
-   ⚡ Stranica 9 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 157
-   ⚡ Stranica 10 obrađena za 0.5s | Pročitano: 250 artikala | Dodano vinila: 160
-   ⚡ Stranica 11 obrađena za 0.5s | Pročitano: 250 artikala | Dodano vinila: 176
-   ❌ Stranica 12 vratila grešku 429. Prekidam.
+   ❌ Stranica 1 vratila grešku 429. Prekidam.
 
-🧹 Sinkronizacija završena! Uklonjeno 2 rasprodanih artikala iz stare baze.
-🎉 GOTOVO za 5.0s! Ukupno pročitano 2750 shop artikala. U bazi je pohranjeno 1802 dostupnih PDV vinila (Sa slikom: 1802).
+⚠️ Oprez: Zadržavam staru bazu jer je povučen sumnjivo mali broj ploča (0).
+🎉 GOTOVO za 0.4s! Ukupno pročitano 0 shop artikala. U bazi je pohranjeno 1802 dostupnih PDV vinila (Sa slikom: 1802).
 ----------------------------------------
-Vrijeme završetka (UTC): 04.11.2026. 08:15:52 | Kod izlaza: 0
+Vrijeme završetka (UTC): 05.11.2026. 08:40:12 | Kod izlaza: 0
