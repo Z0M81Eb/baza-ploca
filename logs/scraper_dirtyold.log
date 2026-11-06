@@ -1,13 +1,13 @@
 === IZVJEŠTAJ RADA: scraper_dirtyold.py ===
-Vrijeme pokretanja (UTC): 05.11.2026. 08:40:15
+Vrijeme pokretanja (UTC): 06.11.2026. 08:41:07
 ----------------------------------------
 📦 Učitano 7075 postojećih zapisa iz dirtyold_ploce.csv.
 🔎 Dohvaćam 1. stranicu Dirty Old Shop vinil kataloga (https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/)...
-✅ Stranica 1/8 obrađena za 4.6s: 24 kartica (23 dostupnih na zalihi).
-   ⚡ Stranica 2/8 (3.1s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 45
-   ⚡ Stranica 3/8 (3.3s): 24 kartica -> +24 dostupnih | Ukupno aktivnih: 69
-   ⚡ Stranica 4/8 (3.2s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 91
-   ⚡ Stranica 5/8 (3.2s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 113
+✅ Stranica 1/8 obrađena za 4.3s: 24 kartica (23 dostupnih na zalihi).
+   ⚡ Stranica 2/8 (2.9s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 45
+   ⚡ Stranica 3/8 (3.1s): 24 kartica -> +24 dostupnih | Ukupno aktivnih: 69
+   ⚡ Stranica 4/8 (3.9s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 91
+   ⚡ Stranica 5/8 (4.3s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 113
    ⚠️ Pokušaj 1/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/6/ vratio HTTP 429 (duljina: 41B). Čekam 2s...
    ⚠️ Pokušaj 2/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/6/ vratio HTTP 429 (duljina: 41B). Čekam 4s...
    ⚠️ Pokušaj 3/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/6/ vratio HTTP 429 (duljina: 41B). Čekam 6s...
@@ -51,6 +51,6 @@ Vrijeme pokretanja (UTC): 05.11.2026. 08:40:15
    ⚠️ Pokušaj 6/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/8/ vratio HTTP 429 (duljina: 41B). Čekam 12s...
 
 ⚠️ Oprez: Neke stranice nisu učitane ([6, 7, 8]). Zadržavam postojeće artikle u bazi bez brisanja.
-🎉 GOTOVO za 317.6s! U bazi je 7075 dostupnih Dirty Old Shop vinila (Sa slikom: 7062).
+🎉 GOTOVO za 313.6s! U bazi je 7075 dostupnih Dirty Old Shop vinila (Sa slikom: 7075).
 ----------------------------------------
-Vrijeme završetka (UTC): 05.11.2026. 08:45:33 | Kod izlaza: 0
+Vrijeme završetka (UTC): 06.11.2026. 08:46:21 | Kod izlaza: 0
