@@ -1,26 +1,26 @@
 === IZVJEŠTAJ RADA: scraper_woodstock.py ===
-Vrijeme pokretanja (UTC): 06.11.2026. 08:41:39
+Vrijeme pokretanja (UTC): 07.11.2026. 07:56:37
 ----------------------------------------
 
 📂 Analiziram kategoriju: 'Gramofonske ploče' -> https://www.woodstock-trgovina.hr/hr/gramofonske-ploce/p-2
-   ⚡ Stranice 01-08 | +96 ploča (1.4s) | Ukupno: 96
-   ⚡ Stranice 09-16 | +96 ploča (0.8s) | Ukupno: 192
-   ⚡ Stranice 17-24 | +96 ploča (0.8s) | Ukupno: 288
+   ⚡ Stranice 01-08 | +96 ploča (1.2s) | Ukupno: 96
+   ⚡ Stranice 09-16 | +96 ploča (0.7s) | Ukupno: 192
+   ⚡ Stranice 17-24 | +96 ploča (0.7s) | Ukupno: 288
    ⚡ Stranice 25-32 | +96 ploča (0.7s) | Ukupno: 384
-   ⚡ Stranice 33-40 | +96 ploča (0.9s) | Ukupno: 480
-   ⚡ Stranice 41-48 | +96 ploča (0.8s) | Ukupno: 576
-   ⚡ Stranice 49-56 | +96 ploča (0.8s) | Ukupno: 672
-   ⚡ Stranice 57-64 | +96 ploča (1.0s) | Ukupno: 768
-   ⚡ Stranice 65-72 | +96 ploča (0.8s) | Ukupno: 864
-   ⚡ Stranice 73-80 | +96 ploča (0.9s) | Ukupno: 960
-   ⚡ Stranice 81-88 | +96 ploča (0.8s) | Ukupno: 1056
+   ⚡ Stranice 33-40 | +96 ploča (0.8s) | Ukupno: 480
+   ⚡ Stranice 41-48 | +96 ploča (0.9s) | Ukupno: 576
+   ⚡ Stranice 49-56 | +96 ploča (0.7s) | Ukupno: 672
+   ⚡ Stranice 57-64 | +96 ploča (0.8s) | Ukupno: 768
+   ⚡ Stranice 65-72 | +96 ploča (0.7s) | Ukupno: 864
+   ⚡ Stranice 73-80 | +96 ploča (0.8s) | Ukupno: 960
+   ⚡ Stranice 81-88 | +96 ploča (0.7s) | Ukupno: 1056
    ⚡ Stranice 89-96 | +17 ploča (0.7s) | Ukupno: 1073
-   ⚡ Stranice 97-104 | +0 ploča (0.6s) | Ukupno: 1073
+   ⚡ Stranice 97-104 | +0 ploča (0.5s) | Ukupno: 1073
 
 📂 Analiziram kategoriju: 'Ex-YU izdanja' -> https://www.woodstock-trgovina.hr/hr/ex-yu-izdanja/p-7
-   ⚡ Stranice 01-08 | +0 ploča (0.9s) | Ukupno: 1073
+   ⚡ Stranice 01-08 | +0 ploča (0.7s) | Ukupno: 1073
 
 🧹 Sinkronizacija završena! Uklonjeno 0 prodanih artikala.
-🎉 GOTOVO za 12.1s! U bazi je 1073 Woodstock ploča.
+🎉 GOTOVO za 10.4s! U bazi je 1073 Woodstock ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 06.11.2026. 08:41:51 | Kod izlaza: 0
+Vrijeme završetka (UTC): 07.11.2026. 07:56:47 | Kod izlaza: 0

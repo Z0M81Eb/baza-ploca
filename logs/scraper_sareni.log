@@ -1,7 +1,7 @@
 === IZVJEŠTAJ RADA: scraper_sareni.py ===
-Vrijeme pokretanja (UTC): 06.11.2026. 08:41:28
+Vrijeme pokretanja (UTC): 07.11.2026. 07:56:25
 ----------------------------------------
-📦 Učitano 186 postojećih zapisa iz sareni_ploce.csv.
+📦 Učitano 171 postojećih zapisa iz sareni_ploce.csv.
 🔎 Pretražujem API za kategorije gramofonskih ploča na Šarenom Dućanu...
   ✅ Pronađena kategorija: Ploče (NAŠA IZDANJA) (ID: 61)
   ✅ Pronađena kategorija: Ploče 2 (STRANA IZDANJA) (ID: 338)
@@ -10,16 +10,17 @@ Vrijeme pokretanja (UTC): 06.11.2026. 08:41:28
 
 🚀 Pokrećem WooCommerce API dohvat ploča po kategorijama...
 📂 KATEGORIJA: Ploče (NAŠA IZDANJA) -> Ukupno: 24 artikala kroz 1 stranica.
-   ⚡ Stranica 1/1 obrađena za 0.7s (+21 dostupnih).
-   ⚠️ Mrežna greška na stranici 1: HTTPSConnectionPool(host='sareni-ducan.hr', port=443): Read timed out. (read timeout=20)
+   ⚡ Stranica 1/1 obrađena za 0.6s (+21 dostupnih).
+📂 KATEGORIJA: Ploče 2 (STRANA IZDANJA) -> Ukupno: 42 artikala kroz 1 stranica.
+   ⚡ Stranica 1/1 obrađena za 0.6s (+13 dostupnih).
 📂 KATEGORIJA: Ploče 3 (EX YU i HR izdanja) -> Ukupno: 88 artikala kroz 1 stranica.
-   ⚡ Stranica 1/1 obrađena za 3.0s (+35 dostupnih).
+   ⚡ Stranica 1/1 obrađena za 0.8s (+35 dostupnih).
 📂 KATEGORIJA: Ploče 4 (BLUES / JAZZ) -> Ukupno: 271 artikala kroz 3 stranica.
-   ⚡ Stranica 1/3 obrađena za 1.0s (+68 dostupnih).
-   ⚡ Stranica 2/3 obrađena za 1.0s (+36 dostupnih).
-   ⚡ Stranica 3/3 obrađena za 0.8s (+11 dostupnih).
+   ⚡ Stranica 1/3 obrađena za 0.8s (+68 dostupnih).
+   ⚡ Stranica 2/3 obrađena za 0.8s (+36 dostupnih).
+   ⚡ Stranica 3/3 obrađena za 0.6s (+11 dostupnih).
 
-🧹 Sinkronizacija završena! Uklonjeno 15 rasprodanih artikala.
-🎉 GOTOVO za 35.4s! U bazi je 171 dostupnih ploča (Sa slikom: 171).
+🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala.
+🎉 GOTOVO za 11.1s! U bazi je 184 dostupnih ploča (Sa slikom: 184).
 ----------------------------------------
-Vrijeme završetka (UTC): 06.11.2026. 08:42:03 | Kod izlaza: 0
+Vrijeme završetka (UTC): 07.11.2026. 07:56:37 | Kod izlaza: 0

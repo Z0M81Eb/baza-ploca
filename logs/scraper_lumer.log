@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_lumer.py ===
-Vrijeme pokretanja (UTC): 06.11.2026. 08:41:06
+Vrijeme pokretanja (UTC): 07.11.2026. 07:56:03
 ----------------------------------------
 🚀 POKREĆEM LUMER SHOP SCRAPER (API + HTML Auto-Discovery)...
 📦 Učitano 8 postojećih ploča.
@@ -30,4 +30,4 @@ API Stranica 21 -> Preuzeto ploča: 0
 🧹 Sinkronizacija prodanih ploča uspješna (Obrisano: 0 starih).
 🎉 GOTOVO! Ukupno u CSV-u: 8 Lumer ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 06.11.2026. 08:41:51 | Kod izlaza: 0
+Vrijeme završetka (UTC): 07.11.2026. 07:56:45 | Kod izlaza: 0
