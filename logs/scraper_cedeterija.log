@@ -1,8 +1,8 @@
 === IZVJEŠTAJ RADA: scraper_cedeterija.py ===
-Vrijeme pokretanja (UTC): 08.11.2026. 08:14:19
+Vrijeme pokretanja (UTC): 09.11.2026. 08:49:14
 ----------------------------------------
 📦 Učitano 5291 postojećih zapisa iz cedeterija_ploce.csv.
 📄 Dohvaćam 1. stranicu Cedeterija LP kataloga (čista paginacija)...
 ❌ Neuspješno dohvaćanje 1. stranice. Prekidam kako ne bih obrisao postojeću bazu.
 ----------------------------------------
-Vrijeme završetka (UTC): 08.11.2026. 08:15:00 | Kod izlaza: 0
+Vrijeme završetka (UTC): 09.11.2026. 08:49:54 | Kod izlaza: 0
