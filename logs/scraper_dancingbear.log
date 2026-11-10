@@ -1,17 +1,17 @@
 === IZVJEŠTAJ RADA: scraper_dancingbear.py ===
-Vrijeme pokretanja (UTC): 09.11.2026. 08:49:17
+Vrijeme pokretanja (UTC): 10.11.2026. 08:54:59
 ----------------------------------------
 Trenutna radna mapa: /home/runner/work/baza-ploca/baza-ploca
 DANCING BEAR: Pokrećem napredni API Sweep s 'Mirror' logikom...
-Učitano 7714 postojećih ploča iz memorije.
+Učitano 7712 postojećih ploča iz memorije.
 
 === POKREĆEM SKENIRANJE ===
-Preuzimam API paket 1... -> Pronađeno vinila: 47
+Preuzimam API paket 1... -> Pronađeno vinila: 45
 Preuzimam API paket 2... -> Pronađeno vinila: 44
 Preuzimam API paket 3... -> Pronađeno vinila: 56
 Preuzimam API paket 4... -> Pronađeno vinila: 62
 Preuzimam API paket 5... -> Pronađeno vinila: 34
-Preuzimam API paket 6... -> Pronađeno vinila: 49
+Preuzimam API paket 6... -> Pronađeno vinila: 48
 Preuzimam API paket 7... -> Pronađeno vinila: 47
 Preuzimam API paket 8... -> Pronađeno vinila: 62
 Preuzimam API paket 9... -> Pronađeno vinila: 48
@@ -76,7 +76,7 @@ Preuzimam API paket 67... -> Pronađeno vinila: 28
 Preuzimam API paket 68... -> Pronađeno vinila: 18
 Preuzimam API paket 69... -> Pronađeno vinila: 33
 Preuzimam API paket 70... -> Pronađeno vinila: 32
-Preuzimam API paket 71... -> Pronađeno vinila: 33
+Preuzimam API paket 71... -> Pronađeno vinila: 32
 Preuzimam API paket 72... -> Pronađeno vinila: 39
 Preuzimam API paket 73... -> Pronađeno vinila: 55
 Preuzimam API paket 74... -> Pronađeno vinila: 49
@@ -127,17 +127,17 @@ Preuzimam API paket 118... -> Pronađeno vinila: 33
 Preuzimam API paket 119... -> Pronađeno vinila: 33
 Preuzimam API paket 120... -> Pronađeno vinila: 20
 Preuzimam API paket 121... -> Pronađeno vinila: 29
-Preuzimam API paket 122... -> Pronađeno vinila: 34
+Preuzimam API paket 122... -> Pronađeno vinila: 33
 Preuzimam API paket 123... -> Pronađeno vinila: 27
 Preuzimam API paket 124... -> Pronađeno vinila: 28
-Preuzimam API paket 125... -> Pronađeno vinila: 35
+Preuzimam API paket 125... -> Pronađeno vinila: 34
 Preuzimam API paket 126... -> Pronađeno vinila: 27
 Preuzimam API paket 127... -> Pronađeno vinila: 32
 Preuzimam API paket 128... -> Pronađeno vinila: 23
 Preuzimam API paket 129... -> Pronađeno vinila: 35
 Preuzimam API paket 130... -> Pronađeno vinila: 30
 Preuzimam API paket 131... -> Pronađeno vinila: 22
-Preuzimam API paket 132... -> Pronađeno vinila: 32
+Preuzimam API paket 132... -> Pronađeno vinila: 31
 Preuzimam API paket 133... -> Pronađeno vinila: 37
 Preuzimam API paket 134... -> Pronađeno vinila: 40
 Preuzimam API paket 135... -> Pronađeno vinila: 16
@@ -146,7 +146,7 @@ Preuzimam API paket 137... -> Pronađeno vinila: 29
 Preuzimam API paket 138... -> Pronađeno vinila: 27
 Preuzimam API paket 139... -> Pronađeno vinila: 34
 Preuzimam API paket 140... -> Pronađeno vinila: 31
-Preuzimam API paket 141... -> Pronađeno vinila: 23
+Preuzimam API paket 141... -> Pronađeno vinila: 21
 Preuzimam API paket 142... -> Pronađeno vinila: 27
 Preuzimam API paket 143... -> Pronađeno vinila: 30
 Preuzimam API paket 144... -> Pronađeno vinila: 9
@@ -191,7 +191,7 @@ Preuzimam API paket 182... -> Pronađeno vinila: 32
 Preuzimam API paket 183... -> Pronađeno vinila: 40
 Preuzimam API paket 184... -> Pronađeno vinila: 41
 Preuzimam API paket 185... -> Pronađeno vinila: 42
-Preuzimam API paket 186... -> Pronađeno vinila: 29
+Preuzimam API paket 186... -> Pronađeno vinila: 28
 Preuzimam API paket 187... -> Pronađeno vinila: 41
 Preuzimam API paket 188... -> Pronađeno vinila: 32
 Preuzimam API paket 189... -> Pronađeno vinila: 32
@@ -270,7 +270,7 @@ Preuzimam API paket 261... -> Pronađeno vinila: 10
 Preuzimam API paket 262... -> Pronađeno vinila: 3
 Preuzimam API paket 263... -> Paket prazan. Kraj arhive.
 
-Analiza završena. Obrisano 2 prodanih ploča koje više ne postoje na webshopu.
-Završeno! Baza je ažurna i sadrži 7712 ploča.
+Analiza završena. Obrisano 10 prodanih ploča koje više ne postoje na webshopu.
+Završeno! Baza je ažurna i sadrži 7702 ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 09.11.2026. 09:02:25 | Kod izlaza: 0
+Vrijeme završetka (UTC): 10.11.2026. 09:07:56 | Kod izlaza: 0
