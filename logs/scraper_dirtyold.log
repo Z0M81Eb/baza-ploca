@@ -1,13 +1,13 @@
 === IZVJEŠTAJ RADA: scraper_dirtyold.py ===
-Vrijeme pokretanja (UTC): 11.11.2026. 08:34:04
+Vrijeme pokretanja (UTC): 12.11.2026. 08:56:17
 ----------------------------------------
-📦 Učitano 7075 postojećih zapisa iz dirtyold_ploce.csv.
+📦 Učitano 7076 postojećih zapisa iz dirtyold_ploce.csv.
 🔎 Dohvaćam 1. stranicu Dirty Old Shop vinil kataloga (https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/)...
-✅ Stranica 1/8 obrađena za 4.6s: 24 kartica (23 dostupnih na zalihi).
-   ⚡ Stranica 2/8 (4.6s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 45
-   ⚡ Stranica 3/8 (3.3s): 24 kartica -> +24 dostupnih | Ukupno aktivnih: 69
-   ⚡ Stranica 4/8 (3.2s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 91
-   ⚡ Stranica 5/8 (3.0s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 113
+✅ Stranica 1/8 obrađena za 4.1s: 24 kartica (23 dostupnih na zalihi).
+   ⚡ Stranica 2/8 (3.2s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 45
+   ⚡ Stranica 3/8 (3.2s): 24 kartica -> +24 dostupnih | Ukupno aktivnih: 69
+   ⚡ Stranica 4/8 (3.0s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 91
+   ⚡ Stranica 5/8 (3.3s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 113
    ⚠️ Pokušaj 1/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/6/ vratio HTTP 429 (duljina: 41B). Čekam 2s...
    ⚠️ Pokušaj 2/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/6/ vratio HTTP 429 (duljina: 41B). Čekam 4s...
    ⚠️ Pokušaj 3/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/6/ vratio HTTP 429 (duljina: 41B). Čekam 6s...
@@ -51,6 +51,6 @@ Vrijeme pokretanja (UTC): 11.11.2026. 08:34:04
    ⚠️ Pokušaj 6/6 za https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/page/8/ vratio HTTP 429 (duljina: 41B). Čekam 12s...
 
 ⚠️ Oprez: Neke stranice nisu učitane ([6, 7, 8]). Zadržavam postojeće artikle u bazi bez brisanja.
-🎉 GOTOVO za 314.3s! U bazi je 7076 dostupnih Dirty Old Shop vinila (Sa slikom: 7076).
+🎉 GOTOVO za 326.2s! U bazi je 7076 dostupnih Dirty Old Shop vinila (Sa slikom: 7076).
 ----------------------------------------
-Vrijeme završetka (UTC): 11.11.2026. 08:39:18 | Kod izlaza: 0
+Vrijeme završetka (UTC): 12.11.2026. 09:01:43 | Kod izlaza: 0
