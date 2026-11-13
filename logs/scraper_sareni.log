@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_sareni.py ===
-Vrijeme pokretanja (UTC): 12.11.2026. 08:56:40
+Vrijeme pokretanja (UTC): 13.11.2026. 08:52:13
 ----------------------------------------
 📦 Učitano 181 postojećih zapisa iz sareni_ploce.csv.
 🔎 Pretražujem API za kategorije gramofonskih ploča na Šarenom Dućanu...
@@ -10,17 +10,17 @@ Vrijeme pokretanja (UTC): 12.11.2026. 08:56:40
 
 🚀 Pokrećem WooCommerce API dohvat ploča po kategorijama...
 📂 KATEGORIJA: Ploče (NAŠA IZDANJA) -> Ukupno: 24 artikala kroz 1 stranica.
-   ⚡ Stranica 1/1 obrađena za 0.9s (+21 dostupnih).
+   ⚡ Stranica 1/1 obrađena za 0.8s (+21 dostupnih).
 📂 KATEGORIJA: Ploče 2 (STRANA IZDANJA) -> Ukupno: 42 artikala kroz 1 stranica.
    ⚡ Stranica 1/1 obrađena za 0.8s (+13 dostupnih).
 📂 KATEGORIJA: Ploče 3 (EX YU i HR izdanja) -> Ukupno: 88 artikala kroz 1 stranica.
    ⚡ Stranica 1/1 obrađena za 1.0s (+35 dostupnih).
 📂 KATEGORIJA: Ploče 4 (BLUES / JAZZ) -> Ukupno: 271 artikala kroz 3 stranica.
-   ⚡ Stranica 1/3 obrađena za 1.1s (+66 dostupnih).
+   ⚡ Stranica 1/3 obrađena za 1.0s (+66 dostupnih).
    ⚡ Stranica 2/3 obrađena za 1.0s (+36 dostupnih).
    ⚡ Stranica 3/3 obrađena za 0.8s (+10 dostupnih).
 
 🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala.
-🎉 GOTOVO za 12.7s! U bazi je 181 dostupnih ploča (Sa slikom: 181).
+🎉 GOTOVO za 12.5s! U bazi je 181 dostupnih ploča (Sa slikom: 181).
 ----------------------------------------
-Vrijeme završetka (UTC): 12.11.2026. 08:56:53 | Kod izlaza: 0
+Vrijeme završetka (UTC): 13.11.2026. 08:52:25 | Kod izlaza: 0

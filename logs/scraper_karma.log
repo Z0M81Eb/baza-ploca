@@ -1,9 +1,9 @@
 === IZVJEŠTAJ RADA: scraper_karma.py ===
-Vrijeme pokretanja (UTC): 12.11.2026. 08:56:15
+Vrijeme pokretanja (UTC): 13.11.2026. 08:51:53
 ----------------------------------------
 Trenutna radna mapa: /home/runner/work/baza-ploca/baza-ploca
 KARMA VINIL: Pokrećem redovito skeniranje, osvježavanje i čišćenje baze...
-Učitano 4417 postojećih ploča iz memorije.
+Učitano 4408 postojećih ploča iz memorije.
 Skeniram stranicu 1... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 2... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 3... -> Pronađeno/ažurirano ploča: 64
@@ -72,10 +72,10 @@ Skeniram stranicu 65... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 66... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 67... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 68... -> Pronađeno/ažurirano ploča: 64
-Skeniram stranicu 69... -> Pronađeno/ažurirano ploča: 56
+Skeniram stranicu 69... -> Pronađeno/ažurirano ploča: 46
 Skeniram stranicu 70... -> Nema više proizvoda. Kraj arhive.
 
-Analiza završena. Obrisano 9 prodanih ploča koje više ne postoje na webshopu.
-Završeno! Baza je ažurna i sadrži 4408 ploča.
+Analiza završena. Obrisano 10 prodanih ploča koje više ne postoje na webshopu.
+Završeno! Baza je ažurna i sadrži 4398 ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 12.11.2026. 08:59:34 | Kod izlaza: 0
+Vrijeme završetka (UTC): 13.11.2026. 08:54:46 | Kod izlaza: 0
