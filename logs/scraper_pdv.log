@@ -1,12 +1,35 @@
 === IZVJEŠTAJ RADA: scraper_pdv.py ===
-Vrijeme pokretanja (UTC): 13.11.2026. 08:51:53
+Vrijeme pokretanja (UTC): 14.11.2026. 08:14:54
 ----------------------------------------
 📦 Učitano 1802 postojećih zapisa iz pdv_ploce.csv.
 
 🚀 Pokrećem Shopify API dohvat proizvoda...
-   ❌ Stranica 1 vratila grešku 429. Prekidam.
+   ⚡ Stranica 1 obrađena za 0.8s | Pročitano: 250 artikala | Dodano vinila: 152
+   ⚡ Stranica 2 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 214
+   ⚡ Stranica 3 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 194
+   ⚡ Stranica 4 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 76
+   ⚡ Stranica 5 obrađena za 0.3s | Pročitano: 250 artikala | Dodano vinila: 94
+   ⚡ Stranica 6 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 156
+   ⚡ Stranica 7 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 164
+   ⚡ Stranica 8 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 162
+   ⚡ Stranica 9 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 168
+   ⚡ Stranica 10 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 148
+   ⚡ Stranica 11 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 164
+   ⚡ Stranica 12 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 150
+   ⚡ Stranica 13 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 152
+   ⚡ Stranica 14 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 134
+   ⚡ Stranica 15 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 108
+   ⚡ Stranica 16 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 129
+   ⚡ Stranica 17 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 133
+   ⚡ Stranica 18 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 114
+   ⚡ Stranica 19 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 89
+   ⚡ Stranica 20 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 93
+   ⚡ Stranica 21 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 81
+   ⚡ Stranica 22 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 91
+   ⚡ Stranica 23 obrađena za 0.2s | Pročitano: 250 artikala | Dodano vinila: 10
+   ⚡ Stranica 24 obrađena za 0.1s | Pročitano: 10 artikala | Dodano vinila: 0
 
-⚠️ Oprez: Zadržavam staru bazu jer je povučen sumnjivo mali broj ploča (0).
-🎉 GOTOVO za 0.7s! Ukupno pročitano 0 shop artikala. U bazi je pohranjeno 1802 dostupnih PDV vinila (Sa slikom: 1802).
+🧹 Sinkronizacija završena! Uklonjeno 92 rasprodanih artikala iz stare baze.
+🎉 GOTOVO za 5.0s! Ukupno pročitano 5760 shop artikala. U bazi je pohranjeno 2976 dostupnih PDV vinila (Sa slikom: 2976).
 ----------------------------------------
-Vrijeme završetka (UTC): 13.11.2026. 08:51:54 | Kod izlaza: 0
+Vrijeme završetka (UTC): 14.11.2026. 08:14:59 | Kod izlaza: 0

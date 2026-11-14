@@ -1,24 +1,24 @@
 === IZVJEŠTAJ RADA: scraper_dallas.py ===
-Vrijeme pokretanja (UTC): 13.11.2026. 08:51:53
+Vrijeme pokretanja (UTC): 14.11.2026. 08:14:56
 ----------------------------------------
 📦 Učitano 691 postojećih zapisa iz dallas_ploce.csv.
 
 📂 Analiziram Dallas vinil katalog...
    ✅ Stranica 1/58: +12 artikala.
-   ⚡ Stranice 02-06/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 72
-   ⚡ Stranice 07-11/58 (5/5 OK) za 1.2s | +60 novih | Ukupno: 132
-   ⚡ Stranice 12-16/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 192
-   ⚡ Stranice 17-21/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 252
-   ⚡ Stranice 22-26/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 312
-   ⚡ Stranice 27-31/58 (5/5 OK) za 1.2s | +60 novih | Ukupno: 372
+   ⚡ Stranice 02-06/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 72
+   ⚡ Stranice 07-11/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 132
+   ⚡ Stranice 12-16/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 192
+   ⚡ Stranice 17-21/58 (5/5 OK) za 1.6s | +60 novih | Ukupno: 252
+   ⚡ Stranice 22-26/58 (5/5 OK) za 1.5s | +60 novih | Ukupno: 312
+   ⚡ Stranice 27-31/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 372
    ⚡ Stranice 32-36/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 432
-   ⚡ Stranice 37-41/58 (5/5 OK) za 1.3s | +60 novih | Ukupno: 492
-   ⚡ Stranice 42-46/58 (5/5 OK) za 1.2s | +60 novih | Ukupno: 552
-   ⚡ Stranice 47-51/58 (5/5 OK) za 1.2s | +60 novih | Ukupno: 612
-   ⚡ Stranice 52-56/58 (5/5 OK) za 1.2s | +60 novih | Ukupno: 672
-   ⚡ Stranice 57-58/58 (2/2 OK) za 0.6s | +19 novih | Ukupno: 691
+   ⚡ Stranice 37-41/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 492
+   ⚡ Stranice 42-46/58 (5/5 OK) za 1.4s | +60 novih | Ukupno: 552
+   ⚡ Stranice 47-51/58 (5/5 OK) za 1.5s | +60 novih | Ukupno: 612
+   ⚡ Stranice 52-56/58 (5/5 OK) za 1.5s | +60 novih | Ukupno: 672
+   ⚡ Stranice 57-58/58 (2/2 OK) za 0.8s | +19 novih | Ukupno: 691
 
 🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala.
-🎉 GOTOVO za 15.5s! U bazi je 691 dostupnih Dallas ploča (Sa slikom: 691).
+🎉 GOTOVO za 17.8s! U bazi je 691 dostupnih Dallas ploča (Sa slikom: 691).
 ----------------------------------------
-Vrijeme završetka (UTC): 13.11.2026. 08:52:08 | Kod izlaza: 0
+Vrijeme završetka (UTC): 14.11.2026. 08:15:14 | Kod izlaza: 0
