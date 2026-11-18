@@ -1,8 +1,8 @@
 === IZVJEŠTAJ RADA: scraper_analognizvuk.py ===
-Vrijeme pokretanja (UTC): 17.11.2026. 09:51:27
+Vrijeme pokretanja (UTC): 18.11.2026. 09:24:39
 ----------------------------------------
 🚀 ANALOGNI ZVUK: Pokrećem WooCommerce Store API v1 + Regex +Plus Fix...
 📦 Učitano 1639 postojećih ploča iz baze.
 🎉 Gotovo! Ukupno u CSV-u: 1639 ploča s čistim ocjenama.
 ----------------------------------------
-Vrijeme završetka (UTC): 17.11.2026. 09:51:30 | Kod izlaza: 0
+Vrijeme završetka (UTC): 18.11.2026. 09:24:42 | Kod izlaza: 0

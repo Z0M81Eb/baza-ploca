@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_freebird.py ===
-Vrijeme pokretanja (UTC): 17.11.2026. 09:51:32
+Vrijeme pokretanja (UTC): 18.11.2026. 09:24:42
 ----------------------------------------
 🔎 Automatski otkrivam aktivne vinil kategorije...
 
@@ -38,6 +38,6 @@ Vrijeme pokretanja (UTC): 17.11.2026. 09:51:32
 📂 Analiziram: '5"'
 
 📂 Analiziram: 'MINI LP'
-🎉 GOTOVO! U bazi je 12688 čistih Freebird vinila.
+🎉 GOTOVO! U bazi je 12683 čistih Freebird vinila.
 ----------------------------------------
-Vrijeme završetka (UTC): 17.11.2026. 09:59:44 | Kod izlaza: 0
+Vrijeme završetka (UTC): 18.11.2026. 09:30:15 | Kod izlaza: 0

@@ -1,9 +1,9 @@
 === IZVJEŠTAJ RADA: scraper_karma.py ===
-Vrijeme pokretanja (UTC): 17.11.2026. 09:51:35
+Vrijeme pokretanja (UTC): 18.11.2026. 09:24:37
 ----------------------------------------
 Trenutna radna mapa: /home/runner/work/baza-ploca/baza-ploca
 KARMA VINIL: Pokrećem redovito skeniranje, osvježavanje i čišćenje baze...
-Učitano 4389 postojećih ploča iz memorije.
+Učitano 4391 postojećih ploča iz memorije.
 Skeniram stranicu 1... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 2... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 3... -> Pronađeno/ažurirano ploča: 64
@@ -27,10 +27,55 @@ Skeniram stranicu 20... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 21... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 22... -> Pronađeno/ažurirano ploča: 64
 Skeniram stranicu 23... -> Pronađeno/ažurirano ploča: 64
-Skeniram stranicu 24... 
-Greška na stranici 24: ('Connection aborted.', RemoteDisconnected('Remote end closed connection without response'))
+Skeniram stranicu 24... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 25... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 26... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 27... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 28... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 29... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 30... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 31... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 32... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 33... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 34... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 35... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 36... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 37... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 38... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 39... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 40... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 41... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 42... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 43... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 44... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 45... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 46... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 47... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 48... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 49... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 50... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 51... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 52... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 53... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 54... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 55... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 56... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 57... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 58... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 59... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 60... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 61... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 62... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 63... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 64... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 65... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 66... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 67... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 68... -> Pronađeno/ažurirano ploča: 64
+Skeniram stranicu 69... -> Pronađeno/ažurirano ploča: 50
+Skeniram stranicu 70... -> Nema više proizvoda. Kraj arhive.
 
-UPOZORENJE: Skripta nije završila čisto zbog greške ili prekida veze. Preskačem brisanje starih ploča radi sigurnosti baze.
-Završeno! Baza je ažurna i sadrži 4391 ploča.
+Analiza završena. Obrisano 47 prodanih ploča koje više ne postoje na webshopu.
+Završeno! Baza je ažurna i sadrži 4402 ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 17.11.2026. 09:52:40 | Kod izlaza: 0
+Vrijeme završetka (UTC): 18.11.2026. 09:27:55 | Kod izlaza: 0
