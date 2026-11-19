@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_backstage.py ===
-Vrijeme pokretanja (UTC): 18.11.2026. 09:24:42
+Vrijeme pokretanja (UTC): 19.11.2026. 09:37:29
 ----------------------------------------
 📦 Učitano 3544 postojećih zapisa iz backstage_ploce.csv.
 🔎 Tražim ID WooCommerce kategorije za gramofonske ploče...
@@ -10,6 +10,6 @@ Vrijeme pokretanja (UTC): 18.11.2026. 09:24:42
    ⚠️ Mrežna greška na stranici 1: HTTPSConnectionPool(host='backstagerecords-zagreb.com', port=443): Read timed out. (read timeout=20)
 
 ⚠️ Oprez: API je vratio samo 0 artikala. Preskačem brisanje starih.
-🎉 GOTOVO za 38.3s! U bazi je 3544 dostupnih ploča (Sa slikom: 3544).
+🎉 GOTOVO za 38.5s! U bazi je 3544 dostupnih ploča (Sa slikom: 3544).
 ----------------------------------------
-Vrijeme završetka (UTC): 18.11.2026. 09:25:21 | Kod izlaza: 0
+Vrijeme završetka (UTC): 19.11.2026. 09:38:07 | Kod izlaza: 0
