@@ -1,9 +1,9 @@
 === IZVJEŠTAJ RADA: scraper_ezop.py ===
-Vrijeme pokretanja (UTC): 19.11.2026. 09:37:24
+Vrijeme pokretanja (UTC): 20.11.2026. 09:20:02
 ----------------------------------------
 📦 Učitano 9624 postojećih zapisa iz CSV-a.
 ⚡ Zagrijavam direktnu konekciju prema Ezop serveru (116.202.174.206)...
 📄 Dohvaćam 1. stranicu i ukupan broj stranica arhive...
 ❌ Neuspješno dohvaćanje 1. stranice arhive. Prekidam.
 ----------------------------------------
-Vrijeme završetka (UTC): 19.11.2026. 09:37:25 | Kod izlaza: 0
+Vrijeme završetka (UTC): 20.11.2026. 09:20:03 | Kod izlaza: 0

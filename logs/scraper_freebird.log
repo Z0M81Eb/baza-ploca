@@ -1,15 +1,43 @@
 === IZVJEŠTAJ RADA: scraper_freebird.py ===
-Vrijeme pokretanja (UTC): 19.11.2026. 09:37:31
+Vrijeme pokretanja (UTC): 20.11.2026. 09:20:10
 ----------------------------------------
 🔎 Automatski otkrivam aktivne vinil kategorije...
 
-📂 Analiziram: 'LP'
+📂 Analiziram: '10'"'
 
-📂 Analiziram: '7"'
+📂 Analiziram: '10'''
 
 📂 Analiziram: '12" SINGLE'
 
+📂 Analiziram: '12" SINGLE + 7"'
+
+📂 Analiziram: '12" VINYL'
+
+📂 Analiziram: '12", MiniAlbum'
+
+📂 Analiziram: 'EP'
+
+📂 Analiziram: 'LP & 12" SINGLE'
+
+📂 Analiziram: 'LP + 12 MAXI SINGLE'
+
+📂 Analiziram: 'LP + EP'
+
+📂 Analiziram: 'LP'
+
+📂 Analiziram: '12"'
+
 📂 Analiziram: '10"'
-🎉 GOTOVO! U bazi je 12683 čistih Freebird vinila.
+
+📂 Analiziram: '8"'
+
+📂 Analiziram: '7"'
+
+📂 Analiziram: '6"'
+
+📂 Analiziram: '5"'
+
+📂 Analiziram: 'MINI LP'
+🎉 GOTOVO! U bazi je 12771 čistih Freebird vinila.
 ----------------------------------------
-Vrijeme završetka (UTC): 19.11.2026. 09:37:33 | Kod izlaza: 0
+Vrijeme završetka (UTC): 20.11.2026. 09:25:35 | Kod izlaza: 0
