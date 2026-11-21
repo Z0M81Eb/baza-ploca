@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_woodstock.py ===
-Vrijeme pokretanja (UTC): 20.11.2026. 09:20:26
+Vrijeme pokretanja (UTC): 21.11.2026. 08:56:46
 ----------------------------------------
 
 📂 Analiziram kategoriju: 'Gramofonske ploče' -> https://www.woodstock-trgovina.hr/hr/gramofonske-ploce/p-2
@@ -7,17 +7,18 @@ Vrijeme pokretanja (UTC): 20.11.2026. 09:20:26
    ⚡ Stranice 09-16 | +96 ploča (0.5s) | Ukupno: 192
    ⚡ Stranice 17-24 | +96 ploča (0.6s) | Ukupno: 288
    ⚡ Stranice 25-32 | +96 ploča (0.5s) | Ukupno: 384
-   ⚡ Stranice 33-40 | +96 ploča (0.5s) | Ukupno: 480
-   ⚡ Stranice 41-48 | +96 ploča (0.4s) | Ukupno: 576
-   ⚡ Stranice 49-56 | +96 ploča (0.8s) | Ukupno: 672
-   ⚡ Stranice 57-64 | +96 ploča (0.4s) | Ukupno: 768
-   ⚡ Stranice 65-72 | +53 ploča (0.5s) | Ukupno: 821
-   ⚡ Stranice 73-80 | +0 ploča (0.7s) | Ukupno: 821
+   ⚡ Stranice 33-40 | +96 ploča (0.6s) | Ukupno: 480
+   ⚡ Stranice 41-48 | +96 ploča (0.5s) | Ukupno: 576
+   ⚡ Stranice 49-56 | +96 ploča (0.6s) | Ukupno: 672
+   ⚡ Stranice 57-64 | +96 ploča (0.5s) | Ukupno: 768
+   ⚡ Stranice 65-72 | +96 ploča (0.5s) | Ukupno: 864
+   ⚡ Stranice 73-80 | +35 ploča (0.5s) | Ukupno: 899
+   ⚡ Stranice 81-88 | +0 ploča (0.5s) | Ukupno: 899
 
 📂 Analiziram kategoriju: 'Ex-YU izdanja' -> https://www.woodstock-trgovina.hr/hr/ex-yu-izdanja/p-7
-   ⚡ Stranice 01-08 | +0 ploča (0.5s) | Ukupno: 821
+   ⚡ Stranice 01-08 | +0 ploča (0.5s) | Ukupno: 899
 
-🧹 Sinkronizacija završena! Uklonjeno 0 prodanih artikala.
-🎉 GOTOVO za 6.4s! U bazi je 821 Woodstock ploča.
+🧹 Sinkronizacija završena! Uklonjeno 9 prodanih artikala.
+🎉 GOTOVO za 6.7s! U bazi je 899 Woodstock ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 20.11.2026. 09:20:33 | Kod izlaza: 0
+Vrijeme završetka (UTC): 21.11.2026. 08:56:53 | Kod izlaza: 0
