@@ -1,45 +1,45 @@
 === IZVJEŠTAJ RADA: scraper_roxy.py ===
-Vrijeme pokretanja (UTC): 21.11.2026. 08:56:40
+Vrijeme pokretanja (UTC): 22.11.2026. 08:58:09
 ----------------------------------------
 🔎 Dohvaćam abecedne linkove iz RoxY naslovnice...
 📂 Pronađeno 35 stranica kataloga. Pokrećem preuzimanje ploča...
-   ⚡ Stranica y.htm obrađena za 2.8s | Pronađeno ploča: 27
-   ⚡ Stranica 0-9.htm obrađena za 2.8s | Pronađeno ploča: 26
-   ⚡ Stranica n.htm obrađena za 3.3s | Pronađeno ploča: 157
-   ⚡ Stranica p.htm obrađena za 3.4s | Pronađeno ploča: 103
-   ⚡ Stranica e.htm obrađena za 3.5s | Pronađeno ploča: 152
-   ⚡ Stranica i.htm obrađena za 0.8s | Pronađeno ploča: 100
-   ⚡ Stranica Coveri.htm obrađena za 0.4s | Pronađeno ploča: 0
-   ⚡ Stranica g.htm obrađena za 1.2s | Pronađeno ploča: 148
-   ⚡ Stranica l.htm obrađena za 0.8s | Pronađeno ploča: 82
-   ⚡ Stranica izdvajamo.htm obrađena za 0.5s | Pronađeno ploča: 0
-   ⚡ Stranica u.htm obrađena za 0.5s | Pronađeno ploča: 28
-   ⚡ Stranica m.htm obrađena za 0.9s | Pronađeno ploča: 127
-   ⚡ Stranica h.htm obrađena za 1.2s | Pronađeno ploča: 75
-   ⚡ Stranica o.htm obrađena za 1.3s | Pronađeno ploča: 96
-   ⚡ Stranica a.htm obrađena za 1.6s | Pronađeno ploča: 118
-   ⚡ Stranica b.htm obrađena za 1.9s | Pronađeno ploča: 152
-   ⚡ Stranica Klasika.htm obrađena za 1.8s | Pronađeno ploča: 213
-   ⚡ Stranica s.htm obrađena za 0.5s | Pronađeno ploča: 124
-   ⚡ Stranica t.htm obrađena za 0.6s | Pronađeno ploča: 114
-   ⚡ Stranica Links.htm obrađena za 11.6s | Pronađeno ploča: 0
-   ⚡ Stranica folk.htm obrađena za 11.8s | Pronađeno ploča: 107
-   ⚡ Stranica kondicije.htm obrađena za 11.6s | Pronađeno ploča: 0
-   ⚡ Stranica v.htm obrađena za 12.0s | Pronađeno ploča: 147
-   ⚡ Stranica f.htm obrađena za 0.6s | Pronađeno ploča: 99
-   ⚡ Stranica otkup.htm obrađena za 0.5s | Pronađeno ploča: 0
-   ⚡ Stranica r.htm obrađena za 12.5s | Pronađeno ploča: 94
-   ⚡ Stranica index2.html obrađena za 0.6s | Pronađeno ploča: 0
-   ⚡ Stranica k.htm obrađena za 1.1s | Pronađeno ploča: 126
-   ⚡ Stranica c.htm obrađena za 1.2s | Pronađeno ploča: 105
-   ⚡ Stranica Kompilacije.htm obrađena za 0.8s | Pronađeno ploča: 82
+   ⚡ Stranica r.htm obrađena za 1.0s | Pronađeno ploča: 94
+   ⚡ Stranica b.htm obrađena za 1.1s | Pronađeno ploča: 152
+   ⚡ Stranica e.htm obrađena za 1.2s | Pronađeno ploča: 152
+   ⚡ Stranica g.htm obrađena za 1.3s | Pronađeno ploča: 148
+   ⚡ Stranica Klasika.htm obrađena za 1.3s | Pronađeno ploča: 213
+   ⚡ Stranica o.htm obrađena za 1.1s | Pronađeno ploča: 96
+   ⚡ Stranica h.htm obrađena za 0.9s | Pronađeno ploča: 75
+   ⚡ Stranica l.htm obrađena za 1.2s | Pronađeno ploča: 82
+   ⚡ Stranica p.htm obrađena za 1.0s | Pronađeno ploča: 103
+   ⚡ Stranica v.htm obrađena za 1.0s | Pronađeno ploča: 147
    ⚡ Stranica za_clanove.htm obrađena za 0.5s | Pronađeno ploča: 0
-   ⚡ Stranica index.html obrađena za 0.5s | Pronađeno ploča: 0
+   ⚡ Stranica y.htm obrađena za 0.6s | Pronađeno ploča: 27
+   ⚡ Stranica Kompilacije.htm obrađena za 0.8s | Pronađeno ploča: 82
    ⚡ Stranica d.htm obrađena za 0.8s | Pronađeno ploča: 142
-   ⚡ Stranica z.htm obrađena za 0.7s | Pronađeno ploča: 86
-   ⚡ Stranica j.htm obrađena za 1.0s | Pronađeno ploča: 106
+   ⚡ Stranica m.htm obrađena za 1.0s | Pronađeno ploča: 127
+   ⚡ Stranica z.htm obrađena za 0.4s | Pronađeno ploča: 86
+   ⚡ Stranica s.htm obrađena za 0.7s | Pronađeno ploča: 124
+   ⚡ Stranica i.htm obrađena za 0.5s | Pronađeno ploča: 100
+   ⚡ Stranica kondicije.htm obrađena za 11.5s | Pronađeno ploča: 0
+   ⚡ Stranica c.htm obrađena za 11.7s | Pronađeno ploča: 105
+   ⚡ Stranica t.htm obrađena za 11.9s | Pronađeno ploča: 114
+   ⚡ Stranica u.htm obrađena za 0.3s | Pronađeno ploča: 28
+   ⚡ Stranica izdvajamo.htm obrađena za 0.3s | Pronađeno ploča: 0
+   ⚡ Stranica index2.html obrađena za 11.9s | Pronađeno ploča: 0
+   ⚡ Stranica 0-9.htm obrađena za 11.8s | Pronađeno ploča: 26
+   ⚡ Stranica index.html obrađena za 0.4s | Pronađeno ploča: 0
+   ⚡ Stranica k.htm obrađena za 0.7s | Pronađeno ploča: 126
+   ⚡ Stranica Coveri.htm obrađena za 2.8s | Pronađeno ploča: 0
+   ⚡ Stranica otkup.htm obrađena za 2.5s | Pronađeno ploča: 0
+   ⚡ Stranica a.htm obrađena za 3.0s | Pronađeno ploča: 118
+   ⚡ Stranica f.htm obrađena za 2.7s | Pronađeno ploča: 99
+   ⚡ Stranica n.htm obrađena za 3.1s | Pronađeno ploča: 157
+   ⚡ Stranica folk.htm obrađena za 0.4s | Pronađeno ploča: 107
+   ⚡ Stranica j.htm obrađena za 0.7s | Pronađeno ploča: 106
+   ⚡ Stranica Links.htm obrađena za 0.8s | Pronađeno ploča: 0
 
 🧹 Sinkronizacija završena! Uklonjeno 0 rasprodanih artikala iz stare baze.
-🎉 GOTOVO za 22.1s! U bazi je 2865 dostupnih ploča iz RoxY-ja (Svi CD-ovi su brutalno odbačeni).
+🎉 GOTOVO za 20.5s! U bazi je 2865 dostupnih ploča iz RoxY-ja (Svi CD-ovi su brutalno odbačeni).
 ----------------------------------------
-Vrijeme završetka (UTC): 21.11.2026. 08:57:03 | Kod izlaza: 0
+Vrijeme završetka (UTC): 22.11.2026. 08:58:29 | Kod izlaza: 0
