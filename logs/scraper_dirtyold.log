@@ -1,18 +1,18 @@
 === IZVJEŠTAJ RADA: scraper_dirtyold.py ===
-Vrijeme pokretanja (UTC): 22.11.2026. 08:57:56
+Vrijeme pokretanja (UTC): 23.11.2026. 09:57:05
 ----------------------------------------
 📦 Učitano 7078 postojećih zapisa iz dirtyold_ploce.csv.
 🔎 Dohvaćam 1. stranicu Dirty Old Shop vinil kataloga (https://www.dirtyoldempire.com/kategorija-proizvoda/vinyl-2/vinil/)...
-✅ Stranica 1/8 obrađena za 0.9s: 24 kartica (23 dostupnih na zalihi).
-   ⚡ Stranica 2/8 (3.5s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 45
+✅ Stranica 1/8 obrađena za 1.4s: 24 kartica (23 dostupnih na zalihi).
+   ⚡ Stranica 2/8 (0.3s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 45
    ⚡ Stranica 3/8 (0.3s): 24 kartica -> +23 dostupnih | Ukupno aktivnih: 68
    ⚡ Stranica 4/8 (0.3s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 90
    ⚡ Stranica 5/8 (0.3s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 112
-   ⚡ Stranica 6/8 (2.9s): 24 kartica -> +23 dostupnih | Ukupno aktivnih: 135
-   ⚡ Stranica 7/8 (2.9s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 157
-   ⚡ Stranica 8/8 (2.9s): 24 kartica -> +24 dostupnih | Ukupno aktivnih: 181
+   ⚡ Stranica 6/8 (0.3s): 24 kartica -> +23 dostupnih | Ukupno aktivnih: 135
+   ⚡ Stranica 7/8 (0.3s): 24 kartica -> +22 dostupnih | Ukupno aktivnih: 157
+   ⚡ Stranica 8/8 (0.3s): 24 kartica -> +24 dostupnih | Ukupno aktivnih: 181
 
 ⚠️ Oprez: Neke stranice nisu učitane ([]). Zadržavam postojeće artikle u bazi bez brisanja.
-🎉 GOTOVO za 22.5s! U bazi je 7078 dostupnih Dirty Old Shop vinila (Sa slikom: 7078).
+🎉 GOTOVO za 12.1s! U bazi je 7078 dostupnih Dirty Old Shop vinila (Sa slikom: 7078).
 ----------------------------------------
-Vrijeme završetka (UTC): 22.11.2026. 08:58:18 | Kod izlaza: 0
+Vrijeme završetka (UTC): 23.11.2026. 09:57:18 | Kod izlaza: 0
