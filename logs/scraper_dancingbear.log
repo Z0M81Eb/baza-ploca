@@ -1,43 +1,43 @@
 === IZVJEŠTAJ RADA: scraper_dancingbear.py ===
-Vrijeme pokretanja (UTC): 23.11.2026. 09:57:05
+Vrijeme pokretanja (UTC): 24.11.2026. 11:44:22
 ----------------------------------------
 Trenutna radna mapa: /home/runner/work/baza-ploca/baza-ploca
 DANCING BEAR: Pokrećem napredni API Sweep s 'Mirror' logikom...
 Učitano 7769 postojećih ploča iz memorije.
 
 === POKREĆEM SKENIRANJE ===
-Preuzimam API paket 1... -> Pronađeno vinila: 1
+Preuzimam API paket 1... -> Pronađeno vinila: 11
 Preuzimam API paket 2... -> Pronađeno vinila: 0
-Preuzimam API paket 3... -> Pronađeno vinila: 1
-Preuzimam API paket 4... -> Pronađeno vinila: 9
-Preuzimam API paket 5... -> Pronađeno vinila: 13
-Preuzimam API paket 6... -> Pronađeno vinila: 8
-Preuzimam API paket 7... -> Pronađeno vinila: 8
-Preuzimam API paket 8... -> Pronađeno vinila: 19
-Preuzimam API paket 9... -> Pronađeno vinila: 11
-Preuzimam API paket 10... -> Pronađeno vinila: 19
-Preuzimam API paket 11... -> Pronađeno vinila: 7
-Preuzimam API paket 12... -> Pronađeno vinila: 13
-Preuzimam API paket 13... -> Pronađeno vinila: 17
-Preuzimam API paket 14... -> Pronađeno vinila: 1
-Preuzimam API paket 15... -> Pronađeno vinila: 8
-Preuzimam API paket 16... -> Pronađeno vinila: 18
-Preuzimam API paket 17... -> Pronađeno vinila: 9
+Preuzimam API paket 3... -> Pronađeno vinila: 0
+Preuzimam API paket 4... -> Pronađeno vinila: 4
+Preuzimam API paket 5... -> Pronađeno vinila: 10
+Preuzimam API paket 6... -> Pronađeno vinila: 9
+Preuzimam API paket 7... -> Pronađeno vinila: 13
+Preuzimam API paket 8... -> Pronađeno vinila: 7
+Preuzimam API paket 9... -> Pronađeno vinila: 19
+Preuzimam API paket 10... -> Pronađeno vinila: 11
+Preuzimam API paket 11... -> Pronađeno vinila: 16
+Preuzimam API paket 12... -> Pronađeno vinila: 11
+Preuzimam API paket 13... -> Pronađeno vinila: 14
+Preuzimam API paket 14... -> Pronađeno vinila: 12
+Preuzimam API paket 15... -> Pronađeno vinila: 4
+Preuzimam API paket 16... -> Pronađeno vinila: 9
+Preuzimam API paket 17... -> Pronađeno vinila: 20
 Preuzimam API paket 18... -> Pronađeno vinila: 11
-Preuzimam API paket 19... -> Pronađeno vinila: 5
-Preuzimam API paket 20... -> Pronađeno vinila: 11
-Preuzimam API paket 21... -> Pronađeno vinila: 17
-Preuzimam API paket 22... -> Pronađeno vinila: 4
-Preuzimam API paket 23... -> Pronađeno vinila: 19
-Preuzimam API paket 24... -> Pronađeno vinila: 16
-Preuzimam API paket 25... -> Pronađeno vinila: 13
-Preuzimam API paket 26... -> Pronađeno vinila: 7
-Preuzimam API paket 27... -> Pronađeno vinila: 16
+Preuzimam API paket 19... -> Pronađeno vinila: 6
+Preuzimam API paket 20... -> Pronađeno vinila: 6
+Preuzimam API paket 21... -> Pronađeno vinila: 16
+Preuzimam API paket 22... -> Pronađeno vinila: 12
+Preuzimam API paket 23... -> Pronađeno vinila: 5
+Preuzimam API paket 24... -> Pronađeno vinila: 21
+Preuzimam API paket 25... -> Pronađeno vinila: 17
+Preuzimam API paket 26... -> Pronađeno vinila: 12
+Preuzimam API paket 27... -> Pronađeno vinila: 6
 Preuzimam API paket 28... -> Pronađeno vinila: 16
-Preuzimam API paket 29... -> Pronađeno vinila: 16
-Preuzimam API paket 30... -> Pronađeno vinila: 15
+Preuzimam API paket 29... -> Pronađeno vinila: 17
+Preuzimam API paket 30... -> Pronađeno vinila: 16
 Preuzimam API paket 31...  [GREŠKA: 429] Ponovni pokušaj...  [GREŠKA: 429] Ponovni pokušaj...  [GREŠKA: 429] Ponovni pokušaj... 
 UPOZORENJE: Prekid na stranici 31. Preskačem brisanje starih ploča radi sigurnosti.
-Završeno! Baza je ažurna i sadrži 7769 ploča.
+Završeno! Baza je ažurna i sadrži 7780 ploča.
 ----------------------------------------
-Vrijeme završetka (UTC): 23.11.2026. 09:58:02 | Kod izlaza: 0
+Vrijeme završetka (UTC): 24.11.2026. 11:45:18 | Kod izlaza: 0
