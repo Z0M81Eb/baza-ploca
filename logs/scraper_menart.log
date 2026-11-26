@@ -1,7 +1,7 @@
 === IZVJEŠTAJ RADA: scraper_menart.py ===
-Vrijeme pokretanja (UTC): 25.11.2026. 10:38:49
+Vrijeme pokretanja (UTC): 26.11.2026. 10:09:13
 ----------------------------------------
-📦 Učitano 6442 postojećih ploča iz memorije.
+📦 Učitano 6417 postojećih ploča iz memorije.
 
 🚀 Pokrećem HTML skeniranje Menart vinilnih arhiva...
 
@@ -183,7 +183,7 @@ Vrijeme pokretanja (UTC): 25.11.2026. 10:38:49
 📄 Stranica 174... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 175... -> Pronađeno 36 vinila (Sa slikom: 36/36).
 📄 Stranica 176... -> Pronađeno 36 vinila (Sa slikom: 36/36).
-📄 Stranica 177... -> Pronađeno 29 vinila (Sa slikom: 29/29).
+📄 Stranica 177... -> Pronađeno 14 vinila (Sa slikom: 14/14).
 📄 Stranica 178... -> 0 na zalihi na ovoj stranici.
 📄 Stranica 179... -> 0 na zalihi na ovoj stranici.
 📄 Stranica 180... -> 0 na zalihi na ovoj stranici.
@@ -204,6 +204,6 @@ Vrijeme pokretanja (UTC): 25.11.2026. 10:38:49
 📄 Stranica 2... -> Kraj arhive (404).
 
 🧹 Analiza završena. Obrisano 31 rasprodanih ploča.
-🎉 GOTOVO! U bazi je ukupno 6417 ploča (od toga sa slikom: 6417).
+🎉 GOTOVO! U bazi je ukupno 6391 ploča (od toga sa slikom: 6391).
 ----------------------------------------
-Vrijeme završetka (UTC): 25.11.2026. 10:44:34 | Kod izlaza: 0
+Vrijeme završetka (UTC): 26.11.2026. 10:13:58 | Kod izlaza: 0
