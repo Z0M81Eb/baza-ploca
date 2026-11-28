@@ -1,5 +1,5 @@
 === IZVJEŠTAJ RADA: scraper_pdv.py ===
-Vrijeme pokretanja (UTC): 27.11.2026. 10:15:03
+Vrijeme pokretanja (UTC): 28.11.2026. 09:33:56
 ----------------------------------------
 📦 Učitano 154 postojećih zapisa iz pdv_ploce.csv.
 
@@ -7,6 +7,6 @@ Vrijeme pokretanja (UTC): 27.11.2026. 10:15:03
    ❌ Stranica 1 vratila grešku 429. Prekidam.
 
 ⚠️ Oprez: Zadržavam staru bazu jer je povučen sumnjivo mali broj ploča (0).
-🎉 GOTOVO za 0.5s! Ukupno pročitano 0 shop artikala. U bazi je pohranjeno 154 dostupnih PDV vinila (Sa slikom: 154).
+🎉 GOTOVO za 1.1s! Ukupno pročitano 0 shop artikala. U bazi je pohranjeno 154 dostupnih PDV vinila (Sa slikom: 154).
 ----------------------------------------
-Vrijeme završetka (UTC): 27.11.2026. 10:15:04 | Kod izlaza: 0
+Vrijeme završetka (UTC): 28.11.2026. 09:33:57 | Kod izlaza: 0
